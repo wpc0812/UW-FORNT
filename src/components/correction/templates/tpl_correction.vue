@@ -8,7 +8,7 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请填写信息</div>
           </template>
-          <el-form ref="form" :rules="rules" :model="UwctrlVO" label-width="150px">
+          <el-form ref="UwctrlVO" :rules="rules" :model="UwctrlVO" label-width="150px">
             <el-row>
               <el-row>
                 <el-col :span="8">
@@ -25,7 +25,12 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:" prop="applicCode">
-                    <el-input type="text" v-model="UwctrlVO.applicCode" maxlength=16 minlength=16></el-input>
+                    <el-input
+                      type="text"
+                      v-model="UwctrlVO.applicCode"
+                      maxlength="16"
+                      minlength="16"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -36,13 +41,23 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="业务号:">
-                    <el-input v-model="UwctrlVO.businessNo"></el-input>
+                  <el-form-item label="业务号:" prop="businessNo">
+                    <el-input
+                      v-model="UwctrlVO.businessNo"
+                      type="text"
+                      maxlength="22"
+                      minlength="22"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" class="marginstyle">
-                  <el-form-item label="团单号:">
-                    <el-input v-model="UwctrlVO.contractNo"></el-input>
+                  <el-form-item label="团单号:"  prop="contractNo">
+                    <el-input
+                      v-model="UwctrlVO.contractNo"
+                      type="text"
+                      maxlength="22"
+                      minlength="22"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -89,7 +104,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="号牌号码录入:" prop="licenseNo">
+                  <el-form-item label="号牌号码录入:" prop="licenseNo" :disabled = "flag11">
                     <el-input v-model="UwctrlVO.licenseNo"></el-input>
                   </el-form-item>
                 </el-col>
@@ -109,14 +124,12 @@
                   <el-input v-model="UwctrlVO.costRateBIUpper"></el-input>
                 </el-form-item>
               </el-col>
-              <!-- action="http://11.205.241.116:8082/greenchannel/upload" -->
-              <!-- :http-request="customUpload" -->
-
               <el-col :span="8">
-                <el-form-item label="号牌号码导入:" prop="licenseNo">
-                  <el-input v-model="UwctrlVO.licenseNo">
+                <el-form-item label="号牌号码导入:" prop="licenses">
+                  <el-input v-model="UwctrlVO.licenses" :disabled=this.flag10>
                     <template slot="append">
                       <el-upload
+                      :disabled = this.flag10
                         class="upload-demo"
                         ref="upload"
                         :multiple="true"
@@ -127,8 +140,9 @@
                         :show-file-list="false"
                         :file-list="fileList"
                         :auto-upload="false"
-                        accept=".xls"
+                        accept=".xls,.txt"
                         :on-preview="handlePreview"
+                        :before-upload="beforeUpload"
                         :before-remove="beforeRemove"
                       >
                         <el-button slot="trigger" size="small" type="primary">浏览</el-button>
@@ -144,7 +158,7 @@
                 <div class="reminder">请在号牌导入与录入两项中选择一项进行特批配置</div>
               </el-col>
               <el-col :span="24" class="text-center">
-                <el-button size="mini" @click="requestdata()" type="primary">保存</el-button>
+                <el-button size="mini" @click="requestdata('UwctrlVO')" type="primary">保存</el-button>
                 <el-button size="mini" @click="goBack()">返回</el-button>
               </el-col>
             </el-row>
@@ -156,14 +170,14 @@
     <el-dialog
       title="提示"
       :visible.sync="outerVisible"
-      width="50%"
+      width="30%"
       class="dialog-footer-parent"
       :before-close="handleClose"
     >
-      <span class="fontSizeTrue">确定保存吗？</span>
+      <span class="fontSizeTrue">{{msg}}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="outerVisible = false">确 定</el-button>
-        <el-button @click="outerVisible = false">取 消</el-button>
+        <el-button type="primary" @click="trues">确 定</el-button>
+        <el-button @click="falses">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -179,9 +193,62 @@ let [inputValidator, selectValidator] = [
 export default {
   name: "UwctrlVO",
   props: {},
+   watch:{
+    'UwctrlVO.businessNo':function(newVal,oldVal){
+      let oldValue = oldVal ? oldVal.length : 0;
+      if (newVal.length && newVal.length < oldValue ) {
+        this.rules.businessNo.required=false
+      }else if(newVal){
+        // this.rules = Object.assign(this.rules,{businessNo:this.businessNo})
+        // this.rules.businessNo = this.businessNo;
+        this.rules.businessNo.required=true
+      }
+    } ,
+    'UwctrlVO.contractNo':function(newVal,oldVal){
+      let oldValue = oldVal ? oldVal.length : 0;
+      if (newVal.length && newVal.length < oldValue ) {
+        this.rules.contractNo.required=false
+      }else if(newVal){
+        this.rules.contractNo.required=true
+      }
+    } 
+  },
   data() {
+      // 号码录入规则
+    var validateTotalSupply = (rules, value, callback) => {
+      console.log(this.UwctrlVO)
+      if(!value && !this.UwctrlVO.licenses){
+        callback(new Error('号码牌录入'))
+      } else if(value && !this.UwctrlVO.licenses) {
+        callback()
+      } else if(!value && this.UwctrlVO.licenses) {
+        this.$refs['UwctrlVO'].clearValidate('licenses')
+        callback()
+        
+      } else if(value && this.UwctrlVO.licenses) {
+        // this.$refs['UwctrlVO'].validateField('licenses')
+        callback(new Error('请在号牌导入与录入两项中选择一项进行特批配置'))
+      }
+    };
+    // 号码导入规则
+    var validatePrice = (rules, value, callback) => {
+      if(!value && !this.UwctrlVO.licenseNo){
+          callback(new Error('号码牌导入'))
+      } else if(value && !this.UwctrlVO.licenseNo){
+        callback()
+      }else if(!value && this.UwctrlVO.licenseNo){
+         this.$refs['UwctrlVO'].clearValidate('licenseNo')
+        callback()
+       
+      } else if(value && this.UwctrlVO.licenseNo) {
+        // this.$refs['UwctrlVO'].validateField('licenseNo')
+        callback(new Error('请在号牌导入与录入两项中选择一项进行特批配置'))
+      } 
+    };
     return {
-      licenseNoImportExcel:"",
+      msg: "",
+      successtrue: false,
+      licenseNoImportExcel: "",
       httphref: "../../../../#/static/LicensenoAddModel.zip",
       UwctrlVO: {
         insuredFlag: "",
@@ -196,130 +263,41 @@ export default {
         finishDate: "",
         licenseNo: "",
         costRateUpper: "",
-        costRateBIUpper: ""
+        costRateBIUpper: "",
+        licenses: ""
       },
+      valids: "",
+      flag10:false,
+      flag11:false,
       fileList: [],
       relationsss: [
-        { value1s: "1_被保险人",label:"1" },
-        { value1s: "2_投保人",label:"2" }
+        { value1s: "1_被保险人", label: "1" },
+        { value1s: "2_投保人", label: "2" }
       ],
-     
-       categoryss: [
-        { value: "1_人工核保" ,label:"1"},
-        { value: "2_自动核保通过",label:"2" },
-        { value: "3_自动打回",label:"3" }
+
+      categoryss: [
+        { value: "1_人工核保", label: "1" },
+        { value: "2_自动核保通过", label: "2" },
+        { value: "3_自动打回", label: "3" }
       ],
       rtReported: {},
-      flagss: [{ value3: "0_无效" ,label:"0"}, { value3: "1_有效" ,label:"1"}],
+      flagss: [
+        { value3: "0_无效", label: "0" },
+        { value3: "1_有效", label: "1" }
+      ],
       relations,
       activeNames: ["1"],
       results: [],
       rules: {},
-      outerVisible: false
-    };
-  },
-  computed: {},
-  methods: {
-    //返回
-    goBack() {
-      this.$router.go(-1);
-    },
-    //关闭弹窗
-    handleClose(done) {
-      // console.log("确认");
-    },
-    // 移除选中文件
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    // 文件个数限制
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
-    },
-    // 文件上传成功回调
-    onSuccess(esponse, file, fileList) {
-      console.log(esponse, file, fileList);
-    },
-    // submitUpload() {
-    //   this.$refs.upload.submit();
-    // },
-    handleRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    handlePreview(file) {
-      // console.log(file);
-    },
-
-    // 文件上传
-    customUpload(file) {
-
-      let formData = new FormData();
-      formData.append("file", file.raw);
-      this.uploading = true;
-      
-      // console.log(file)
-     return this.$axios({
-        url: this.HOST + "/greenchannel/upload",
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        timeout: 20000,
-        data: formData
-      })
-        .then(res => {
-          console.log(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    // 保存
-    requestdata(){
-      if(this.UwctrlVO.insuredFlag.trim().length>0&&this.UwctrlVO.applicCode.trim().length==16&&this.UwctrlVO.insuredName.trim().length>0&&this.UwctrlVO.valid.trim().length>0&&this.UwctrlVO.flag.trim().length>0&&this.UwctrlVO.finishDate.trim().length>0){
-          let uwctrlVO = this.UwctrlVO;
-        this.$axios
-        .post(this.HOST + "greenchannel/saveUwctrl", uwctrlVO)
-        .then(res => {
-          console.log(res.data);
-          // if (res.data.length>0) {
-          // }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      }else{
-        alert("请填写完整红星号标记的输入框，关系人代码为16位")
-      }
-    
-    },
-    // 没使用的多请求
-    save() {
-
-         // 多个网络请求
-      this.$axios.all([this.customUpload(file), this.requestdata()]).then(
-        this.$axios.spread(function(banner, chating) {
-          // 两个请求现在都执行完成
-          console.log(banner.data);
-          console.log(chating.data);
-        })
-      );
-
-     
-    },
-
-    // 校验
-    ValidForm() {
-      this.rules = {
+      outerVisible: false,
+         rules :{
         insuredFlag: [
-          { required: true, message: "关系人标志不能为空", trigger: ["change"] }
+          { required: true, message: "关系人标志不能为空", trigger: ["change"]
+           }
         ],
         applicCode: [
-          { required: true, message: "关系人代码16位", trigger: ["blur"] }
+          { required: true, message: "关系人代码16位", trigger: ["blur"]},
+          { min: 16, max: 16, message: '长度为16个字符', trigger:  ["change",'blur'] }
         ],
         insuredName: [
           { required: true, message: "关系人名称必填", trigger: ["blur"] }
@@ -334,16 +312,161 @@ export default {
           { required: true, message: "结束日期必填", trigger: ["blur"] }
         ],
         licenseNo: [
-          { required: true, message: "号码号牌录入", trigger: ["blur"] }
-        ]
-        //  licenses: [
-        //   {required: true, message: '号码号牌导入', trigger: ['blur']}
-        // ],
-      };
-    }
+          // { required: true, message: "号码号牌录入", trigger: ["blur"] },
+          { validator: validateTotalSupply, trigger: ['blur','change'] }
+        ],
+        licenses: [
+          // {required: true, message: '号码号牌导入', trigger: ['blur']},
+          { validator: validatePrice, trigger: ['blur','change'] }
+        ],
+        
+      businessNo : [
+        { required: false,  trigger: ["change",'blur'] },
+        { min: 22, max: 22, message: '长度为22个字符', trigger:  ["change",'blur'] },
+
+      ],
+        contractNo : [
+           { required: false, message: "团单号不能为空", trigger: ["change",'blur'] },
+        { min: 22, max: 22, message: '长度为22个字符', trigger:  ["change",'blur'] },
+        ],
+      },
+    };
+  },
+  computed: {},
+  methods: {
+    // 成功回调
+    open2() {
+      this.$message({
+        message: "恭喜你保存成功",
+        type: "success"
+      });
+    },
+    // 取消提示框
+    open3() {
+      this.$message({
+        message: "您点击了取消,已取消",
+        type: "warning"
+      });
+    },
+    //返回
+    goBack() {
+      this.$router.go(-1);
+    },
+    //取消请求
+    falses() {
+      this.outerVisible = false;
+      this.open3();
+    },
+    // 确定请求
+    trues() {
+      this.outerVisible = false;
+
+      let uwctrlVO = this.UwctrlVO;
+      this.$axios
+        .post(this.HOST + "greenchannel/saveUwctrl", uwctrlVO)
+        .then(res => {
+          // console.log(res.data);
+          if (res.data > 0) {
+            this.open2();
+            setTimeout(() => {
+              this.pangduan = true;
+              this.$router.push({
+                path: "/queryCorrection",
+                query: { pangduan: this.pangduan }
+              });
+            }, 2000);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //关闭弹窗
+    handleClose(done) {
+      // console.log("确认");
+    },
+    // 移除选中文件
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+     beforeUpload(file){
+      console.log(file)
+    },
+    // 文件个数限制
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
+    // 文件上传成功回调
+    onSuccess(esponse, file, fileList) {
+      // console.log(esponse, file, fileList);
+    },
+    // submitUpload() {
+    //   this.$refs.upload.submit();
+    // },
+    handleRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    handlePreview(file) {
+      // console.log(file);
+    },
+
+    // 文件上传
+    customUpload(file) {
+      let formData = new FormData();
+      formData.append("file", file.raw);
+      this.uploading = true;
+
+      // console.log(file)
+      return this.$axios({
+        url: this.HOST + "/greenchannel/upload",
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        timeout: 20000,
+        data: formData
+      })
+        .then(res => {
+          // console.log(res.data);
+          this.successtrue = res.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 保存
+    requestdata() {
+        // console.log(this.UwctrlVO)
+       this.$refs.UwctrlVO.validate((valids) => {
+         console.log(valids)
+        //  if(valids){
+        //     console.log("555",valids)
+        //  }else{
+        //     console.log("111",valids)
+        //  }
+       })
+
+    
+    
+    },
+    // 暂时没使用的多请求
+    save() {
+      // 多个网络请求
+      this.$axios.all([this.customUpload(file), this.requestdata()]).then(
+        this.$axios.spread(function(banner, chating) {
+          // 两个请求现在都执行完成
+          // console.log(banner.data);
+          // console.log(chating.data);
+        })
+      );
+    },
+
   },
   created() {
-    this.ValidForm();
   }
 };
 </script>
@@ -367,5 +490,8 @@ export default {
   color: red;
   font-size: 12px;
   text-align: center;
+}
+.circular >>> .el-form-item{
+  margin-bottom: 20px;
 }
 </style>

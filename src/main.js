@@ -10,10 +10,12 @@ import '@/assets/js/common.js'
 import VueI18n from 'vue-i18n'
 import zh from '@/assets/js/lang/zh'
 import en from '@/assets/js/lang/en'
-import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
+// import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
 import axios from 'axios'
 Vue.prototype.$axios = axios;
 Vue.prototype.HOST = "/apis"
+import fetch from "./fetch";
+import Url from './url'
 Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'small'})
 
@@ -28,11 +30,12 @@ const i18n = new VueI18n({
     }
 })
 
-Vue.prototype.getRequest = getRequest;
-Vue.prototype.postRequest = postRequest;
-Vue.prototype.deleteRequest = deleteRequest;
-Vue.prototype.putRequest = putRequest;
-
+// Vue.prototype.getRequest = getRequest;
+// Vue.prototype.postRequest = postRequest;
+// Vue.prototype.deleteRequest = deleteRequest;
+// Vue.prototype.putRequest = putRequest;
+Vue.prototype.$fetch = fetch;
+Vue.prototype.$url = Url;
 new Vue({
   i18n,
   router,

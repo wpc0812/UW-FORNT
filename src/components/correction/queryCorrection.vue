@@ -302,25 +302,29 @@ export default {
     //保存
     query() {
       let uwctrlVO = this.UwctrlVO;
-      this.$axios({
-        url: this.HOST + "/greenchannel/queryGreenChannel",
-        method: "post",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        data: uwctrlVO
+      // this.$axios({
+      //   url: this.HOST + "/greenchannel/queryGreenChannel",
+      //   method: "post",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   data: uwctrlVO
+      // })
+      //   .then(res => {
+      //     // if(res.data.length>0){
+      //     // }
+      //     // console.log(res.data)
+      //     // localStorage.setItem("id",res.data[0].id)
+      //     //  console.log(res)
+      //     this.results = res.data;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+      
+      this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(data =>{
+        console.log (data)
       })
-        .then(res => {
-          // if(res.data.length>0){
-          // }
-          // console.log(res.data)
-          // localStorage.setItem("id",res.data[0].id)
-          //  console.log(res)
-          this.results = res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
     }
   },
   created() {}
