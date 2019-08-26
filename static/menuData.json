@@ -1,0 +1,399 @@
+[
+  {
+    "id" : 1 ,
+    "path":"/home",
+    "iconCls": "el-icon-tickets",
+    "name": "核保管理",
+    "component": "Home",
+    "children":[
+      {
+        "id" : 2 ,
+        "path":"/",
+        "iconCls": "el-icon-tickets",
+        "name": "核保",
+        "component": "",
+        "children":[
+          {
+            "id": 3,
+            "path":"/underwriting",
+            "iconCls": "el-icon-tickets",
+            "name": "核保处理",
+            "component": "underwriting",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 4,
+            "path":"/autoPush",
+            "iconCls": "el-icon-tickets",
+            "name": "自动推送",
+            "component": "AutoPush",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          }
+        ],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id" : 5 ,
+        "path": "/",
+        "iconCls": "el-icon-tickets",
+        "name": "业务质量查询",
+        "component": "",
+        "children": [
+          {
+            "id" : 6 ,
+            "path": "",
+            "iconCls": "el-icon-edit-outline",
+            "name": "车队业务质量查询",
+            "component": "Home",
+            "children": [
+              {
+                "id": 7,
+                "path": "/cdInsuranceList",
+                "iconCls": "el-icon-edit-outline",
+                "name": "基础查询",
+                "component": "CdInsuranceList",
+                "children": [],
+                "meta": {
+                  "keepAlive": false,
+                  "reuireAuth": true
+                }
+              },
+              {
+                "id": 8,
+                "path": "/addArticle",
+                "iconCls": "el-icon-edit-outline",
+                "name": "按地区查询",
+                "component": "AddArticle",
+                "children": [],
+                "meta": {
+                  "keepAlive": false,
+                  "reuireAuth": true
+                }
+              },
+              {
+                "id": 9,
+                "path": "/addArticle",
+                "iconCls": "el-icon-edit-outline",
+                "name": "按车辆种类查询",
+                "component": "AddArticle",
+                "children": [],
+                "meta": {
+                  "keepAlive": false,
+                  "reuireAuth": true
+                }
+              },
+              {
+                "id": 10,
+                "path": "/addArticle",
+                "iconCls": "el-icon-edit-outline",
+                "name": "按关系人查询查询",
+                "component": "AddArticle",
+                "children": [],
+                "meta": {
+                  "keepAlive": false,
+                  "reuireAuth": true
+                }
+              }
+            ],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 11,
+            "path": "/cdInsuranceList",
+            "iconCls": "el-icon-edit-outline",
+            "name": "车队承保清单下载",
+            "component": "CdInsuranceList",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 12,
+            "path": "/cdClaimList",
+            "iconCls": "el-icon-edit-outline",
+            "name": "车队理赔清单下载",
+            "component": "CdClaimList",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 13,
+            "path": "/cdQualityReport",
+            "iconCls": "el-icon-edit-outline",
+            "name": "高风险车队业务质量报表下载",
+            "component": "CdQualityReport",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          }
+        ],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id": 14,
+        "path": "/recommendedModRev",
+        "iconCls": "fa fa-hand-stop-o",
+        "name": "推荐送修码修改审核",
+        "component": "RecommendedModRev",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id": 22,
+        "path": "/payeeModificationReview",
+        "iconCls": "fa fa-paw",
+        "name": "收款人账户修改审核",
+        "component": "PayeeModificationReview",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }
+    ],
+    "meta": {
+      "keepAlive": false,
+      "reuireAuth": true
+    }
+  },
+
+  {
+    "id" : 15 ,
+    "path": "/home",
+    "iconCls": "fa fa-exchange",
+    "name": "核保特批管理",
+    "component": "Home",
+    "children": [
+      {
+        "id": 16,
+        "path": "/queryCorrection",
+        "iconCls": "fa fa-sign-in",
+        "name": "核保特批配置",
+        "component": "QueryCorrection",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }
+    ],
+    "meta": {
+      "keepAlive": false,
+      "reuireAuth": true
+    }
+  },
+  {
+    "id" : 17 ,
+    "path": "/home",
+    "iconCls": "fa fa-universal-access",
+    "name": "赔付率管理",
+    "component": "Home",
+    "children": [
+      {
+        "id": 18,
+        "path": "/lossRatioQuery",
+        "iconCls": "fa fa-expeditedssl",
+        "name": "赔付率查询",
+        "component": "lossRatioQuery",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }
+    ],
+    "meta": {
+      "keepAlive": false,
+      "reuireAuth": true
+    }
+  },
+  {
+    "id" : 19 ,
+    "path": "/home",
+    "iconCls": "fa fa-newspaper-o",
+    "name": "综合统计",
+    "component": "Home",
+    "children": [
+      {
+        "id": 20,
+        "path": "/underwritingRate",
+        "iconCls": "fa fa-sliders",
+        "name": "核保率统计",
+        "component": "UnderwritingRate",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id": 21,
+        "path": "/ruleExecution",
+        "iconCls": "fa fa-sort-amount-asc",
+        "name": "规则执行统计",
+        "component": "RuleExecution",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id": 25,
+        "path": "/distributedMonitoring",
+        "iconCls": "fa fa-eye",
+        "name": "分发监控统计",
+        "component": "DistributedMonitoring",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }
+    ],
+    "meta": {
+      "keepAlive": false,
+      "reuireAuth": true
+    }
+  },
+
+  {
+    "id" : 23 ,
+    "path": "/home",
+    "iconCls": "fa fa-server",
+    "name": "人员信息管理",
+    "component": "Home",
+    "children": [
+      {
+        "id": 24,
+        "path": "/underwriterInfor",
+        "iconCls": "fa fa-server",
+        "name": "核保员信息管理",
+        "component": "UnderwriterInfor",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }
+    ],
+    "meta": {
+      "keepAlive": false,
+      "reuireAuth": true
+    }
+  },
+  {
+    "id" : 26 ,
+    "path": "/home",
+    "iconCls": "el-icon-edit",
+    "name": "超权限车队维护",
+    "component": "Home",
+    "children": [
+      {
+        "id" : 27 ,
+        "path": "",
+        "iconCls": "fa fa-file-code-o",
+        "name": "异地车队车队维护",
+        "component": "Home",
+        "children": [
+          {
+            "id": 28,
+            "path": "/rtReported",
+            "iconCls": "el-icon-edit",
+            "name": "已上报车队",
+            "component": "RtReported",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 29,
+            "path": "/rtAdd",
+            "iconCls": "el-icon-edit",
+            "name": "新增车队",
+            "component": "RtAdd",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          }
+        ],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id" : 30 ,
+        "path": "",
+        "iconCls": "fa fa-file-code-o",
+        "name": "其他车队维护",
+        "component": "Home",
+        "children": [
+          {
+            "id": 31,
+            "path": "/otReported",
+            "iconCls": "el-icon-edit",
+            "name": "qt已上报车队",
+            "component": "OtReported",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 32,
+            "path": "/otAdd",
+            "iconCls": "el-icon-edit",
+            "name": "qt新增车队",
+            "component": "OtAdd",
+            "children": [],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          }
+        ],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }
+    ],
+    "meta": {
+      "keepAlive": false,
+      "reuireAuth": true
+    }
+  }
+]
