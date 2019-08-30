@@ -134,14 +134,15 @@
     <el-card class="circular mt4 shadow">
       <el-row class="text-left">
         <el-pagination
-          @size-change="handleCurrentChange"
-          @current-change="handleCurrentChange"
-          :page-size="100"
-          prev-text="上一页"
-          next-text="下一页"
-          layout="prev, pager, next"
-          :total="total"
-        ></el-pagination>
+        small
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[20, 40, 80, 160]"
+        :page-size="20"
+        layout="sizes, prev, pager, next"
+        :total="totalnum">
+      </el-pagination>
       </el-row>
       <el-table
         :data="results"
@@ -174,12 +175,12 @@
         <el-table-column prop="handlerUser" label="特批操作员"></el-table-column>
         <el-table-column label="修改">
           <template slot-scope="scope">
-            <el-button type="text"  :disabled="dochoose" @click="acd('c', scope.row.id)">修改</el-button>
+            <el-button type="text"  :disabled="scope.row.valid=='0'" @click="acd('c', scope.row.id)">修改</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="index" label="注销">
           <template slot-scope="scope">
-            <el-button type="text" :disabled="dochoose" @click="acDelete(scope.row.id,results)">注销</el-button>
+            <el-button type="text" :disabled="scope.row.valid=='0'" @click="acDelete(scope.row.id,results)">注销</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -195,9 +196,10 @@ export default {
 
   data() {
     return {
+        currentPage:4,
+      totalnum:1,
       dochoose: false,
       handleCurrentChange: {},
-      // relations:[{value:"全部"},{value:"1_被保险人"},{value:"2_投保人"}],
       categorys: [
         { value: "全部", label: "0" },
         { value: "1_人工核保", label: "1" },
@@ -224,12 +226,13 @@ export default {
         { value: "0_无效", label: "0" },
         { value: "1_有效", label: "1" }
       ],
-      results: [
-        {businessNo:"1",contractNo:"1",insuredFlag:"1",applicCode:"1",insuredName:"1",licenseNo:"1",
-         profitRateUp:"1",costRateUpper:"1",costRateBIUpper:"1",valid:"1",finishDate:"1",handlerUser:"1",}
-         ,{businessNo:"2",contractNo:"1",insuredFlag:"1",applicCode:"1",insuredName:"1",licenseNo:"1",
-         profitRateUp:"2",costRateUpper:"1",costRateBIUpper:"1",valid:"1",finishDate:"1",handlerUser:"1",}
-      ],
+      // results: [
+      //   {businessNo:"1",contractNo:"1",insuredFlag:"1",applicCode:"1",insuredName:"1",licenseNo:"1",
+      //    profitRateUp:"1",costRateUpper:"1",costRateBIUpper:"1",valid:"1",finishDate:"1",handlerUser:"1",}
+      //    ,{businessNo:"2",contractNo:"1",insuredFlag:"1",applicCode:"1",insuredName:"1",licenseNo:"1",
+      //    profitRateUp:"2",costRateUpper:"1",costRateBIUpper:"1",valid:"1",finishDate:"1",handlerUser:"1",}
+      // ],
+      results:[],
       relationss: [
         { value: "全部", label: "" },
         { value: "1_被保险人", label: "1" },
@@ -248,9 +251,12 @@ export default {
     ...mapActions(["getform"]),
 
     currentSel() {
-      console.log(this.UwctrlVO.insuredFlag);
+      // console.log(this.UwctrlVO.insuredFlag);
     },
-
+      // 页数显示
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+    },
     acd(flag, row) {
       if (flag == "a") {
         this.$router.push({
@@ -272,59 +278,31 @@ export default {
     },
     //点击序号到详情页
     BusinessNum(idx, row) {
-      console.log(idx, row);
-      // this.$router.push({path: '/detailCorrection',query:{row:this.results.id}})
-      for (let i = 0; i < this.results.length; i++) {
-        if (idx == i) {
-          // console.log()
-          this.$router.push({
-            path: "/detailCorrection",
-            query: { row: this.results[i].id }
-          });
-        }
-      }
+       this.$router.push({path: '/detailCorrection',query:{row:row}})
     },
     //注销
     acDelete(id, row) {
-        
-      // this.$axios
-      //   .get(this.HOST + `/greenchannel/deleteUwctrl?id=${id}`)
-      //   .then(res => {
-      //     // console.log(res.data)
-      //     if (res.data == "true") {
-      //       this.dochoose = true;
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
+           let uwctrlVO = this.UwctrlVO;
+      this.$fetch.get(this.HOST + this.$url.correctionDelete,{params:{id:id}}).then(res=>{
+          if (res == true) {
+            this.query()
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     //保存
     query() {
       let uwctrlVO = this.UwctrlVO;
-      // this.$axios({
-      //   url: this.HOST + "/greenchannel/queryGreenChannel",
-      //   method: "post",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   data: uwctrlVO
-      // })
-      //   .then(res => {
-      //     // if(res.data.length>0){
-      //     // }
-      //     // console.log(res.data)
-      //     // localStorage.setItem("id",res.data[0].id)
-      //     //  console.log(res)
-      //     this.results = res.data;
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
-      
-      this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(data =>{
-        console.log (data)
-      })
+      this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(res=>{
+          if(res.length>0){
+          this.results = res;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   created() {}

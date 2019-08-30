@@ -9,7 +9,7 @@
             <div class="card-title">请填写信息</div>
           </template>
           <el-form
-            :disabled="flag == 'detail'"
+            disabled
             ref="form"
             :rules="form"
             :model="UwctrlVO"
@@ -19,11 +19,11 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select v-model="UwctrlVO.insuredFlag" placeholder="请选择">
+                    <el-select v-model="UwctrlVO.insuredFlag"  clearable placeholder="请选择">
                       <el-option
                         v-for="item in relationsss"
                         :key="item.label"
-                        :label="item.value"
+                        :label="item.values"
                         :value="item.label"
                       ></el-option>
                     </el-select>
@@ -171,8 +171,8 @@ export default {
     return {
       valuesssss: 1,
       relationsss: [
-        { value: "1_被保险人", label: "1" },
-        { value: "2_投保人", label: "2" }
+        { values: "1_被保险人", label: "1" },
+        { values: "2_投保人", label: "2" }
       ],
       categoryss: [
         { value: "1_人工核保", label: "1" },
@@ -198,9 +198,9 @@ export default {
   methods: {
     //返回
     goBack() {
-      // this.$router.go(-1);
-      console.log(this.UwctrlVO.insuredFlag);
-      this.UwctrlVO.insuredFlag = this.valuesssss;
+      this.$router.go(-1);
+      // console.log(this.UwctrlVO.insuredFlag);
+      // this.UwctrlVO.insuredFlag = this.valuesssss;
     },
     handleClose(done) {
       console.log("确认");
@@ -210,16 +210,15 @@ export default {
     save() {}
   },
   created() {
-    console.log(this.$route.query.row)
-        this.$axios.get(this.HOST + `/greenchannel/showGreenChannel?id=${this.$route.query.row}`)
-      .then(res => {
-        console.log(res.data)
-        this.UwctrlVO=res.data
-        // this.results[0]=res.data
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.$fetch.get(this.HOST + this.$url.correctionShow,{params:{id:this.$route.query.row}}).then(res=>{
+         console.log(res)
+         if (res) {
+            this.UwctrlVO=res
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
   }
 };
 </script>

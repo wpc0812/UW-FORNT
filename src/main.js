@@ -11,8 +11,8 @@ import VueI18n from 'vue-i18n'
 import zh from '@/assets/js/lang/zh'
 import en from '@/assets/js/lang/en'
 // import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
-import axios from 'axios'
-Vue.prototype.$axios = axios;
+// import axios from 'axios'
+// Vue.prototype.$axios = axios;
 Vue.prototype.HOST = "/apis"
 import fetch from "./fetch";
 import Url from './url'

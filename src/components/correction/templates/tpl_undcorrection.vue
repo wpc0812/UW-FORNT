@@ -10,7 +10,7 @@
           </template>
           <el-form
             :disabled="flag == 'detail'"
-            ref="form"
+            ref="UwctrlVO"
             :rules="rules"
             :model="UwctrlVO"
             label-width="150px"
@@ -31,7 +31,11 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:" prop="applicCode">
-                    <el-input v-model="UwctrlVO.applicCode"></el-input>
+                    <el-input v-model="UwctrlVO.applicCode"
+                      type="text"
+                      maxlength="16"
+                      minlength="16"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -42,13 +46,21 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="业务号:">
-                    <el-input v-model="UwctrlVO.businessNo"></el-input>
+                  <el-form-item label="业务号:" prop="businessNo">
+                    <el-input v-model="UwctrlVO.businessNo"
+                    type="text"
+                      maxlength="22"
+                      minlength="22"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="团单号:">
-                    <el-input v-model="UwctrlVO.contractNo"></el-input>
+                  <el-form-item label="团单号:" prop="contractNo">
+                    <el-input v-model="UwctrlVO.contractNo"
+                    type="text"
+                      maxlength="22"
+                      minlength="22"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -146,7 +158,26 @@
 import { relations } from "@/assets/js/baseCode";
 export default {
   name: "undUwctrlVO",
-
+   watch:{
+    'UwctrlVO.businessNo':function(newVal,oldVal){
+      let oldValue = oldVal ? oldVal.length : 0;
+      if (newVal.length && newVal.length < oldValue ) {
+        this.rules.businessNo.required=false
+      }else if(newVal){
+        // this.rules = Object.assign(this.rules,{businessNo:this.businessNo})
+        // this.rules.businessNo = this.businessNo;
+        this.rules.businessNo.required=true
+      }
+    } ,
+    'UwctrlVO.contractNo':function(newVal,oldVal){
+      let oldValue = oldVal ? oldVal.length : 0;
+      if (newVal.length && newVal.length < oldValue ) {
+        this.rules.contractNo.required=false
+      }else if(newVal){
+        this.rules.contractNo.required=true
+      }
+    } 
+  },
   props: {
     flag: {
       type: String
@@ -154,7 +185,39 @@ export default {
   },
   data() {
     return {
-        rules:{},
+        rules : {
+        insuredFlag: [
+          { required: true, message: "关系人标志不能为空", trigger: ["blur"] }
+        ],
+        applicCode: [
+            { required: true, message: "关系人代码16位", trigger: ["blur"]},
+          { min: 16, max: 16, message: '长度为16个字符', trigger:  ["change",'blur'] }
+        ],
+        insuredName: [
+          { required: true, message: "关系人名称必填", trigger: ["blur"] }
+        ],
+        valid: [
+          { required: true, message: "有效标志选择", trigger: ["blur"] }
+        ],
+        flag: [
+          { required: true, message: "核保类别必选", trigger: ["blur"] }
+        ],
+        finishDate: [
+          { required: true, message: "结束日期必填", trigger: ["blur"] }
+        ],
+        licenseNo: [
+          { required: true, message: "号码号牌修改？", trigger: ["blur"] }
+        ],
+           businessNo : [
+        { required: false,  trigger: ["change",'blur'] },
+        { min: 22, max: 22, message: '长度为22个字符', trigger:  ["change",'blur'] },
+
+      ],
+        contractNo : [
+           { required: false, message: "团单号不能为空", trigger: ["change",'blur'] },
+        { min: 22, max: 22, message: '长度为22个字符', trigger:  ["change",'blur'] },
+        ],
+      },
 
        UwctrlVO:{
         // "insuredFlag":"",
@@ -210,55 +273,25 @@ export default {
     acd() {},
 // 修改保存
     save() {
-      // this.outerVisible = true;
-      // this.getUwctrlVO(this.UwctrlVO);
-       // this.outerVisible=true;
-      // this.getUwctrlVO(this.UwctrlVO);
-      // console.log()
-      let uwctrlVO=this.UwctrlVO
-       this.$axios.post(this.HOST+"greenchannel/updateUwctrl",uwctrlVO)
+      this.$refs.UwctrlVO.validate((valids) => {
+         console.log(valids)
+        let uwctrlVO=this.UwctrlVO
+      this.$fetch.post(this.HOST + this.$url.correctionUpdate,uwctrlVO)
       .then(res=> {
-          console.log(res.data)
+          console.log(res)
       }).catch(error=> {
        console.log(error)
       })
+       })
+    
     },
 
-    // 校验
-    ValidForm() {
-      this.rules = {
-        insuredFlag: [
-          { required: true, message: "关系人标志不能为空", trigger: ["blur"] }
-        ],
-        applicCode: [
-          { required: true, message: "关系人代码不能为空", trigger: ["blur"] }
-        ],
-        insuredName: [
-          { required: true, message: "关系人名称必填", trigger: ["blur"] }
-        ],
-        valid: [
-          { required: true, message: "有效标志选择", trigger: ["blur"] }
-        ],
-        flag: [
-          { required: true, message: "核保类别必选", trigger: ["blur"] }
-        ],
-        finishDate: [
-          { required: true, message: "结束日期必填", trigger: ["blur"] }
-        ],
-        licenseNo: [
-          { required: true, message: "号码号牌修改？", trigger: ["blur"] }
-        ]
-      };
-    }
   },
   created() {
-    this.ValidForm();
     // 数据渲染
-    console.log(this.$route.query.row+"66666666666")
-        this.$axios.get(this.HOST + `/greenchannel/showGreenChannel?id=${this.$route.query.row}`)
-      .then(res => {
-        console.log(res.data)
-        this.UwctrlVO=res.data
+    this.$fetch.get(this.HOST + this.$url.correctionShow, {params:{id:this.$route.query.row}}).then(res =>{
+        console.log(res)
+        this.UwctrlVO=res
         // this.results[0]=res.data
       })
       .catch(error => {

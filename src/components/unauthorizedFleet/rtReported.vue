@@ -9,12 +9,12 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入查询条件</div>
           </template>
-          <el-form ref="form" :model="rtReported" label-width="140px">
+          <el-form ref="form" :model="MotorcadeNo" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select v-model="rtReported.value" clearable placeholder="请选择">
+                    <el-select v-model="MotorcadeNo.value" clearable placeholder="请选择">
                       <el-option
                         v-for="relation in relations"
                         :key="relation.code"
@@ -26,26 +26,26 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:">
-                    <el-input v-model="rtReported.memberName"></el-input>
+                    <el-input v-model="MotorcadeNo.memberName"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人名称:">
-                    <el-input v-model="rtReported.vesselName"></el-input>
+                    <el-input v-model="MotorcadeNo.vesselName"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="业务号:">
-                    <el-input v-model="rtReported.vesselName"></el-input>
+                    <el-input v-model="MotorcadeNo.contractNo"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="提交时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="rtReported.value1"
+                      v-model="MotorcadeNo.value1"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -99,16 +99,18 @@ import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
 
 export default {
-  name: "rtReported",
+  name: "MotorcadeNo",
   components:{
      LeftMenu, HeadMenu 
   },
   data() {
     return {
+      MotorcadeNo:{
+        contractNo:""
+              },
       activeNames: ["1"],
       relations,
-      flag:false,
-      rtReported: {},
+      flag:true,
       results: [{memberName: 111111111,insuranceType:"待审核"},{memberName: 111112111,insuranceType:"待审核"},{memberName: 111331111,insuranceType:"待审核"},{memberName: 111111111,insuranceType:"待审核"},
       ]
     };
@@ -119,14 +121,21 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getrtReported"]),
+    ...mapActions(["getMotorcadeNo"]),
 
     reset() {},
 
     query() {
-      // this.getrtReported(this.rtReported);
-      this.flag=true
+       this.$fetch.post(this.HOST + this.$url.rtAddFindMotorcadeMain, this.$MotorcadeNo.contractNo)
+    .then(res=>{
+      console.log(res)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+      
     },
+
     BusinessNum(row){
       // console.log(row)
       this.$router.push({path: '/carAuditPage',query:{row:row.memberName}})

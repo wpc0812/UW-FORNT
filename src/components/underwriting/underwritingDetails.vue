@@ -1,33 +1,44 @@
 <template>
-  <div class="titlestyle">
+  <div class="titlestyle" style="margin-top:30px">
     <!-- 任务审核 -->
+    <div style="margin: 5px 0">
+      <el-row class="text-center buttons" >
+            <el-button size='mini'>详细信息</el-button>
+            <el-button size='mini' @click='goToFlowLog()' >流转记录</el-button>
+            <el-button size='mini'>查看总公司资料</el-button>
+            <el-button size='mini'>查看分公司资料</el-button>
+
+            <el-button size='mini'>上传影像</el-button>
+            <el-button size='mini'>设备信息</el-button>
+
+            <!-- <el-button size='mini'>手机影像</el-button> -->
+            <el-button size='mini'>查看风险类别占比</el-button>
+            <el-button size='mini'>车队业务质量统计查询</el-button>
+      </el-row>
+    </div>
+    
     <el-card class="circular">
+       
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title" >
             <div class="title-blue-bar"></div>
             <div class="card-title">任务审核</div>
           </template>
-          <!-- <el-row class="text-left buttons">
-            <el-button>详细信息</el-button>
-            <el-button>流转记录</el-button>
-            <el-button>查看总公司资料</el-button>
-            <el-button>上传影像</el-button>
-            <el-button>手机影像</el-button>
-            <el-button>查看风险类别占比</el-button>
-            <el-button>车队业务质量统计查询</el-button>
-          </el-row>-->
+         
           <el-row class="pt11">
             <!-- <el-col :span="24" class="el-card__header text-left">任务审核</el-col> -->
             <el-col :span="24" class="pt11">
               <el-button type="primary" @click="outerVisible = true" size="mini">提交审核</el-button>
               <el-button size="mini">放弃</el-button>
+
+
             </el-col>
           </el-row>
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-form  :model="underwritingDetails" label-width="170px">
+    <el-form  :model="underwritingDetails" label-width="150px">
       <!-- 处理核保任务 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
@@ -96,7 +107,10 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="保单号:">
-                  <el-input v-model="underwritingDetails.policyNo"></el-input>
+                  <el-input v-model="underwritingDetails.policyNo">
+                     <el-button size="mini" slot="append" type="primary" > 关联</el-button>
+                  </el-input>
+                 
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -760,7 +774,11 @@
               <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
               <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
               <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
-              <el-table-column align="center" prop="adjustRate" label="续保调整比例%"></el-table-column>
+              <el-table-column align="center" prop="adjustRate" label="续保调整比例%">
+                <template slot-scope="scope">
+                  <span @click="openAdjustRateDialog(scope.row)"> {{scope.row.adjustRate}}</span>
+                </template>
+              </el-table-column>
               <el-table-column align="center" prop="premium" label="应交保费(元)"></el-table-column>
             </el-table>
             <el-row class="mt10">
@@ -1343,6 +1361,47 @@
         class="mt10"
       >关闭当前窗口</el-button>
     </el-dialog>
+
+ <!-- // 保费折扣率 弹框 列表 -->
+    <el-dialog
+      class="el-dialog__body__update"
+      width="60%"
+      title="核保任务提交"
+      :visible.sync="adjustRateDialog"
+      >
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            label="优惠代码"
+            width="120">
+
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="优惠原因"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="优惠率"
+            width="120"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="优惠条件"
+            >
+          </el-table-column>
+        </el-table>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -1356,13 +1415,15 @@ export default {
       parameter: {},
       activeNames: [],
       underwritingDetails: {},
-      tableList: [],
+      tableList: [{}],
       value: "",
       form: {},
       rules: {},
       radio: 1,
+      tableData: [], // 保费折扣率 弹框 列表
       outerVisible: false,
       innerVisible: false,
+      adjustRateDialog: false, // 保费折扣率 弹框】
       textarea1: "",
       textarea2: "",
       options: [
@@ -1387,13 +1448,36 @@ export default {
     },
 
     init() {
-      this.postRequest(`/fridayService02/queryobject1detail`, {
-        businessNo: this.parameter.businessNo
-      }).then(res => {
-        this.underwritingDetails = res.data.data;
-      });
+      // this.postRequest(`/fridayService02/queryobject1detail`, {
+      //   businessNo: this.parameter.businessNo
+      // }).then(res => {
+      //   this.underwritingDetails = res.data.data;
+      // });
+    },
+    // 设备信息
+    goToDeviceInfo(){
+
+    },
+    // 流转记录
+    goToFlowLog(){
+      let routeUrl = this.$router.resolve({
+          path: "/flowLog",
+           query: {
+          businessNo: '123'
+        }
+      })
+      window.open(routeUrl.href, '_blank')
+    },
+    // 打开保费折扣率弹框
+    openAdjustRateDialog(row){
+      this.adjustRateDialog = true
+    },
+    handleSelectionChange(){
+
     }
   },
+  
+  
 
   created() {
     //设置collapse全部展开

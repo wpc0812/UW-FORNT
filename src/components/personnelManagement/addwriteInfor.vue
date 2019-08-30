@@ -8,16 +8,21 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">增加核保员信息</div>
           </template>
-          <el-form :model="rtReported" label-width="150px" :rules="formData">
+          <el-form ref="rtReportedFrom" :model="rtReported" label-width="150px" :rules="rtReportedRules">
             <el-row>
               <el-col :span="8">
-                <el-form-item label="员工姓名:" prop="name">
-                  <el-input v-model="rtReported.memberName"></el-input>
+                <el-form-item label="员工姓名:" prop="userName">
+                  <el-input v-model="rtReported.userName" :disabled="this.routeType === 'READY'"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="有效标志:" prop="indicator">
-                  <el-select v-model="flags.value" clearable placeholder="请选择">
+                <el-form-item label="员工代码:" prop="userCode">
+                  <el-input v-model="rtReported.userCode" :disabled="true"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="有效标志:" prop="vaild">
+                  <el-select :disabled="this.routeType === 'READY'" v-model="rtReported.vaild" clearable placeholder="请选择">
                     <el-option
                       v-for="relation in flags"
                       :key="relation.value"
@@ -27,22 +32,18 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              
               <el-col :span="8">
-                <el-form-item label="员工代码:" prop="userCode">
-                  <el-input v-model="rtReported.memberName"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="员工邮箱:" prop="userEmail">
-                  <el-input v-model="rtReported.vesselName"></el-input>
+                <el-form-item label="员工邮箱:" prop="mailbox">
+                  <el-input :disabled="this.routeType === 'READY'" v-model="rtReported.mailbox"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="自动分发标志:">
-                  <el-select v-model="value" clearable placeholder="请选择">
+                  <el-select :disabled="this.routeType === 'READY'" v-model="rtReported.autoDistributeFlag" clearable placeholder="请选择">
                     <el-option
-                      v-for="relation in relations"
-                      :key="relation.value"
+                      v-for="(relation,index) in relations"
+                      :key="index"
                       :label="relation.label"
                       :value="relation.value"
                     ></el-option>
@@ -51,21 +52,21 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="手机号码:" prop="iphone">
-                  <el-input v-model="rtReported.vesselName"></el-input>
+                  <el-input :disabled="this.routeType === 'READY'" v-model="rtReported.phonecode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="自动推送条数:" prop="pushNum">
-                  <el-input v-model="rtReported.vesselName"></el-input>
+                <el-form-item label="自动推送条数:" prop="autoPushNum">
+                  <el-input :disabled="this.routeType === 'READY'" v-model="rtReported.autoPushNum"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="rtReported.vesselName"></el-input>
+                  <el-input :disabled="this.routeType === 'READY'" v-model="rtReported.telephone"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="24" class="text-center">
-                <el-button size="mini" @click="addOne">增加</el-button>
+              <el-col :span="24" class="text-center" v-if="this.routeType !== 'READY'">
+                <el-button size="mini" @click="save">增加</el-button>
               </el-col>
             </el-row>
           </el-form>
@@ -85,30 +86,47 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
-let [inputValidator, selectValidator] = [
-  { required: true, message: "请录入", trigger: "blur" },
-  // { required: true, message: "请选择哦", trigger: "change" }
-];
+// let [inputValidator, selectValidator] = [
+//   { required: true, message: "请录入", trigger: "blur" },
+//   // { required: true, message: "请选择哦", trigger: "change" }
+// ];
 
 export default {
   name: "addwriterInfor",
-
   data() {
+    var pushNum =/^([1-9]|10)$/
+    var autoPushNumRolus =(rule, value, callback) =>{
+      if(!value){
+        callback(new Error('请输入自动推送条数!'));
+      } else if(!pushNum.test(Number(value))) {
+        callback(new Error('自动推送条数1到10!'));
+      } else{
+        callback()
+      }
+      // if(pushNum.test()){
+
+      // }
+    }
     return {
       formData: {},
+      routeType: '',
       outerVisible: false,
       activeNames: ["1"],
       flags: [{ value: "0_无效" }, { value: "1_有效" }],
       relations: [{ value: "0_停止分发" }, { value: "1_继续分发" }],
-      rtReported: {},
+      rtReported: {
+        userCode: this.$route.query.userCode
+      },
       pageSize: 10,
       underwriterInfor: {},
-      results: [
-        { memberName: 111111111 },
-        { memberName: 111111111 },
-        { memberName: 111111111 },
-        { memberName: 111111111 }
-      ]
+      rtReportedRules:{
+        userName:[ { required: true, message: '请输入员工姓名', trigger: 'blur' }],
+        vaild:[ { required: true, message: '请选择有效标志', trigger: 'change' }],
+        userCode:[ { required: true, message: '请输入员工代码', trigger: 'blur' }],
+        mailbox:[ { required: true, message: '请输入员工邮箱', trigger: 'blur' }],
+        autoPushNum:[ {required: true, validator: autoPushNumRolus, trigger: 'blur'} ]
+
+      }
     };
   },
 
@@ -122,28 +140,53 @@ export default {
     query() {
       this.getunderwriterInfor(this.underwriterInfor);
     },
-    addOne() {
-      if (1) {
-        this.$confirm("确认是否保存该信息~", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "保存成功!"
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消保存"
-            });
-          });
-      }
+    save() {
+      this.$refs.rtReportedFrom.validate((valid) => {
+          if (valid) {
+            // 判断是增加还是修改核保人员
+            if (tthis.routeType === 'ADD'){
+              this.addCheker()
+            } else if(this.routeType === 'CHANGE'){
+              this.updateCheker()
+            }
+          } else {
+            
+            return false;
+          }
+      });
+    
+      // if (1) {
+      //   this.$confirm("确认是否保存该信息~", "提示", {
+      //     confirmButtonText: "确定",
+      //     cancelButtonText: "取消",
+      //     type: "warning"
+      //   })
+      //     .then(() => {
+      //       this.$message({
+      //         type: "success",
+      //         message: "保存成功!"
+      //       });
+      //     })
+      //     .catch(() => {
+      //       this.$message({
+      //         type: "info",
+      //         message: "已取消保存"
+      //       });
+      //     });
+      // }
     },
-
+    // 增加 核保人员
+    addCheker() {
+      this.$fetch.post(this.HOST + this.$url.underWriterInforAddcheker,this.rtReported).then(data =>{
+          console.log(data)
+      })
+    },
+    // 修改核保人员
+    updateCheker(){
+      this.$fetch.post(this.HOST + this.$url.underWriterInforUpdateCkecker,this.rtReported).then(data =>{
+          console.log(data)
+      })
+    },
     handleSizeChange(val) {
       this.task.tab1 = val;
     },
@@ -151,20 +194,26 @@ export default {
     handleCurrentChange(val) {
       this.task.tab2 = val;
     },
-    //校检
-    ruleForm() {
-      this.formData = {
-        name: [inputValidator],
-        indicator: [selectValidator],
-        userCode: [inputValidator],
-        userEmail: [inputValidator],
-        iphone: [inputValidator],
-        pushNum: [inputValidator]
-      };
+     // 查询 核保人员详细信息
+    getCheckerInfo(userCode){
+      this.$fetch.post(this.HOST + this.$url.underWriterInforQueryCkecker,{'usercode':userCode }).then(data =>{
+        this.rtReported = data
+      })
     }
   },
   created() {
-    this.ruleForm();
+    // this.ruleForm();
+    console.log(this.$route)
+    this.routeType = this.$route.query.type
+    switch( this.routeType) {
+      case 'CHANGE':
+      case 'READY':
+        this.getCheckerInfo(this.$route.query.userCode)
+        break 
+      case 'ADD' :
+        this.webPostion = '增加核保员信息'
+      break
+    }
   }
 };
 </script>

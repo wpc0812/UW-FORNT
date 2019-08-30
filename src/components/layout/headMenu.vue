@@ -16,7 +16,7 @@
             </span>
           </el-col>
           <el-col :span="23" class="head pt10">
-            <span class="pt5">您当前的位置：{{this.$route.name}}</span>
+            <span class="pt5">您当前的位置：{{ webPostion }}</span>
             <span>
               <el-button class="white" type="text">重新登录</el-button>
               <el-button class="white" type="text">[意见反馈]</el-button>
@@ -31,8 +31,32 @@
 </template>
 <script>
 import Screenfull from "@/components/templates/Screenfull";
+import { debuglog } from 'util';
 export default {
-  components: { Screenfull }
+  components: { Screenfull },
+  data(){
+    return{
+      webPostion:''
+    }
+  },
+  created() {
+    if( this.$route.path === '/addwriteInfor') {
+     
+      switch(this.$route.query.type){
+        case 'CHANGE':
+          this.webPostion = '修改核保员信息'
+          break
+        case 'ADD' :
+          this.webPostion = '增加核保员信息'
+          break
+        case 'READY':
+          this.webPostion = '查看核保员信息'
+          break
+      }
+    } else{
+        this.webPostion = this.$route.name
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

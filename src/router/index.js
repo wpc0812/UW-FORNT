@@ -127,6 +127,11 @@ const router = new Router({
           name: '核保详情',
           component: _import('underwriting/underwritingDetails')
         },
+        {
+          path: '/flowLog',
+          name: '流转记录',
+          component: _import('underwriting/flowLog')
+        },
         
         {
           path: '/underwriting',
