@@ -267,7 +267,7 @@ export default {
         });
       }
       if (flag == "c") {
-        console.log(row);
+        // console.log(row);
         this.$router.push({
           name: "修改核保特批页面",
           query: {
@@ -305,7 +305,17 @@ export default {
         });
     }
   },
-  created() {}
+  created() {
+     let uwctrlVO = this.UwctrlVO;
+      this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(res=>{
+          if(res.length>0){
+          this.results = res;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+  }
 };
 </script>
 <style scoped>

@@ -14,7 +14,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select v-model="MotorcadeNo.value" clearable placeholder="请选择">
+                    <el-select v-model="MotorcadeNo.insuredflag" clearable placeholder="请选择">
                       <el-option
                         v-for="relation in relations"
                         :key="relation.code"
@@ -26,12 +26,12 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:">
-                    <el-input v-model="MotorcadeNo.memberName"></el-input>
+                    <el-input v-model="MotorcadeNo.insuredCode"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人名称:">
-                    <el-input v-model="MotorcadeNo.vesselName"></el-input>
+                    <el-input v-model="MotorcadeNo.insuredName"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -45,7 +45,7 @@
                   <el-form-item label="提交时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="MotorcadeNo.value1"
+                      v-model="MotorcadeNo.firstSubmitDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -72,21 +72,21 @@
         :header-cell-class-name="'table-header-bg'"
       >
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column prop="insuranceType" label="流转状态"></el-table-column>
-        <el-table-column prop="memberName" label="业务号" >
+        <el-table-column prop="state" label="流转状态"></el-table-column>
+        <el-table-column prop="contractNo" label="业务号">
           <template slot-scope="scope"> 
             <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.memberName}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="memberName" label="分公司"></el-table-column>
-        <el-table-column prop="memberName" label="关系人标志"></el-table-column>
-        <el-table-column prop="memberName" label="关系人名称"></el-table-column>
-        <el-table-column prop="memberName" label="业务来源"></el-table-column>
-        <el-table-column prop="memberName" width="115" label="历史满期赔付率"></el-table-column>
-        <el-table-column prop="memberName" label="控制结束日期"></el-table-column>
-        <el-table-column prop="memberName" label="是否续保"></el-table-column>
-        <el-table-column prop="memberName" label="提交时间"></el-table-column>
-        <el-table-column prop="memberName" label="分公司上报人"></el-table-column>
+        <el-table-column prop="comcode" label="分公司"></el-table-column>
+        <el-table-column prop="insuredflag" label="关系人标志"></el-table-column>
+        <el-table-column prop="insuredName" label="关系人名称"></el-table-column>
+        <el-table-column prop="businessNature" label="业务来源"></el-table-column>
+        <el-table-column prop="lastFourYearPayPercent" width="115" label="历史满期赔付率"></el-table-column>
+        <el-table-column prop="finishdate" label="控制结束日期"></el-table-column>
+        <el-table-column prop="isextendtime" label="是否续保"></el-table-column>
+        <el-table-column prop="firstSubmitDate" label="提交时间"></el-table-column>
+        <el-table-column prop="submitUser" label="分公司上报人"></el-table-column>
         <el-table-column prop="memberName" label="总公司审核人"></el-table-column>
       </el-table>
     </el-card>
@@ -111,8 +111,7 @@ export default {
       activeNames: ["1"],
       relations,
       flag:true,
-      results: [{memberName: 111111111,insuranceType:"待审核"},{memberName: 111112111,insuranceType:"待审核"},{memberName: 111331111,insuranceType:"待审核"},{memberName: 111111111,insuranceType:"待审核"},
-      ]
+      results: []
     };
   },
 
@@ -126,7 +125,7 @@ export default {
     reset() {},
 
     query() {
-       this.$fetch.post(this.HOST + this.$url.rtAddFindMotorcadeMain, this.$MotorcadeNo.contractNo)
+    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.MotorcadeNo.contractNo}})
     .then(res=>{
       console.log(res)
     })
@@ -150,7 +149,15 @@ export default {
       this.task.tab2 = val;
     }
   },
-  created() {}
+  created() {
+    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:null}})
+    .then(res=>{
+      console.log(res)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
 };
 </script>
 <style scoped>

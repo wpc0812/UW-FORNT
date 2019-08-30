@@ -63,20 +63,21 @@
                     <el-select
                       v-model="UwMotorcadeMainVO.businessNature"
                       clearable
-                      placeholder="新车车队"
+                      placeholder="请选择"
                     >
                       <el-option
                         v-for="item in carmainmodelvalue"
-                        :key="item.value"
-                        :label="item.labe"
-                        :value="item.value"
+                        :key="item.labe"
+                        :label="item.value"
+                        :value="item.label"
+                        :disabled="item.disabled"
                       ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <a href class="acolor">查询</a>
+                    <a href class="acolor" target="_blank">查询</a>
                     <!-- <el-input v-model="UwMotorcadeMainVO.lastFourYearPayPercent" placeholder="查询"></el-input> -->
                   </el-form-item>
                 </el-col>
@@ -106,10 +107,12 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="涉及车籍地:" prop="carCadastral">
+                    <!-- <el-input v-model="UwMotorcadeMainVO.carCadastral" placeholder="点击选择" @focus='carCadastralflag'></el-input> -->
                     <el-select
                       v-model="UwMotorcadeMainVO.carCadastral"
                       clearable
                       placeholder="点击选择"
+                      :focus="carCadastralflag"
                     >
                       <el-option
                         v-for="item in UwMoto"
@@ -205,10 +208,18 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <!-- <el-button @click="baocun"> -->
-    <!-- <router-link :to="{path:'/rtReported'}">保存</router-link> -->
-    <!-- 保存 -->
-    <!-- </el-button> -->
+    <!-- 弹出框 -->
+    <el-dialog title="请选择" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
+          <template>
+                <el-transfer v-model="value"  class="labelmargin" :data="data"></el-transfer>
+          </template>
+          <span slot="footer" class="dialog-footer">
+              <el-button @click="carCadastralVisible = false">取 消</el-button>
+              <el-button type="primary" @click="valLen()">确 定</el-button>
+          </span>
+      </el-dialog>
+
+ 
   </div>
 </template>
 <script>
@@ -220,8 +231,25 @@ let [blur, change] = [
 ];
 export default {
   name: "rtAdd",
+  
   data() {
+        const generateData = _ => {
+        const datas = [];
+        const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
+        const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+        cities.forEach((city, index) => {
+          datas.push({
+            label: city,
+            key: index,
+            pinyin: pinyin[index]
+          });
+        });
+        return datas;
+      };
     return {
+        data: generateData(),
+        value: [1, 4],
+      carCadastralVisible:false,
       UwMotorcadeMainVO: {
         comcode: "",
         insuredflag: "",
@@ -245,7 +273,7 @@ export default {
       carmainmodelvalue: [
         { value: "新车车队", label: "1" },
         { value: "转入车队", label: "2" },
-        { value: "续保车队", label: "3" }
+        { value: "续保车队", label: "3" ,disabled:true}
       ],
       rules: {
         comcode: [
@@ -307,26 +335,33 @@ export default {
 
       relations,
       flags: true,
-      formData: {}
+      formData: {},
     };
   },
   computed: {},
-
   methods: {
+    handleClose: function() {
+        this.carCadastralVisible = false;
+    },
+    valLen(){
+    this.carCadastralVisible = false;
+    },
+    // 点击弹出
+    carCadastralflag(){
+      this.carCadastralVisible=true
+    },
     //保存
     save() {
       this.$refs.UwMotorcadeMainVO.validate(valid => {
         
         if (valid) {
           let uwMotorcadeMainVO=this.UwMotorcadeMainVO
-          // console.log(this.UwMotorcadeMainVO,valid)
+          console.log(this.UwMotorcadeMainVO,valid)
           this.$confirm("确认是否保存该信息~", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
           })
-          
-          // let _that=this
             .then(() => {
               // console.log(this.$url.rtAddSaves)
               this.$fetch.post(this.HOST + this.$url.rtAddSaves, uwMotorcadeMainVO)
@@ -406,4 +441,8 @@ export default {
   text-decoration: none;
   margin-left: 13px;
 }
+
+/* .labelmargin .el-transfer-panel__item.el-checkbox .el-checkbox__label｛
+text-algin:left;
+｝ */
 </style>

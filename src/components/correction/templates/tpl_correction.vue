@@ -463,13 +463,10 @@ export default {
     },
     // 保存
     requestdata() {
-      // console.log(this.UwctrlVO)
       this.$refs.UwctrlVO.validate(valids => {
         if(valids){
           this.trues();
         }
-
-        
       });
     }
   },

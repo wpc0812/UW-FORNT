@@ -31,7 +31,8 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:" prop="applicCode">
-                    <el-input v-model="UwctrlVO.applicCode"
+                    <el-input
+                      v-model="UwctrlVO.applicCode"
                       type="text"
                       maxlength="16"
                       minlength="16"
@@ -47,8 +48,9 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="业务号:" prop="businessNo">
-                    <el-input v-model="UwctrlVO.businessNo"
-                    type="text"
+                    <el-input
+                      v-model="UwctrlVO.businessNo"
+                      type="text"
                       maxlength="22"
                       minlength="22"
                     ></el-input>
@@ -56,8 +58,9 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="团单号:" prop="contractNo">
-                    <el-input v-model="UwctrlVO.contractNo"
-                    type="text"
+                    <el-input
+                      v-model="UwctrlVO.contractNo"
+                      type="text"
                       maxlength="22"
                       minlength="22"
                     ></el-input>
@@ -158,25 +161,23 @@
 import { relations } from "@/assets/js/baseCode";
 export default {
   name: "undUwctrlVO",
-   watch:{
-    'UwctrlVO.businessNo':function(newVal,oldVal){
+  watch: {
+    "UwctrlVO.businessNo": function(newVal, oldVal) {
       let oldValue = oldVal ? oldVal.length : 0;
-      if (newVal.length && newVal.length < oldValue ) {
-        this.rules.businessNo.required=false
-      }else if(newVal){
-        // this.rules = Object.assign(this.rules,{businessNo:this.businessNo})
-        // this.rules.businessNo = this.businessNo;
-        this.rules.businessNo.required=true
+      if (newVal.length && newVal.length < oldValue) {
+        this.rules.businessNo.required = false;
+      } else if (newVal) {
+        this.rules.businessNo.required = true;
       }
-    } ,
-    'UwctrlVO.contractNo':function(newVal,oldVal){
+    },
+    "UwctrlVO.contractNo": function(newVal, oldVal) {
       let oldValue = oldVal ? oldVal.length : 0;
-      if (newVal.length && newVal.length < oldValue ) {
-        this.rules.contractNo.required=false
-      }else if(newVal){
-        this.rules.contractNo.required=true
+      if (newVal.length && newVal.length < oldValue) {
+        this.rules.contractNo.required = false;
+      } else if (newVal) {
+        this.rules.contractNo.required = true;
       }
-    } 
+    }
   },
   props: {
     flag: {
@@ -185,72 +186,72 @@ export default {
   },
   data() {
     return {
-        rules : {
+      rules: {
         insuredFlag: [
           { required: true, message: "关系人标志不能为空", trigger: ["blur"] }
         ],
         applicCode: [
-            { required: true, message: "关系人代码16位", trigger: ["blur"]},
-          { min: 16, max: 16, message: '长度为16个字符', trigger:  ["change",'blur'] }
+          { required: true, message: "关系人代码16位", trigger: ["blur"] },
+          {
+            min: 16,
+            max: 16,
+            message: "长度为16个字符",
+            trigger: ["change", "blur"]
+          }
         ],
         insuredName: [
           { required: true, message: "关系人名称必填", trigger: ["blur"] }
         ],
-        valid: [
-          { required: true, message: "有效标志选择", trigger: ["blur"] }
-        ],
-        flag: [
-          { required: true, message: "核保类别必选", trigger: ["blur"] }
-        ],
+        valid: [{ required: true, message: "有效标志选择", trigger: ["blur"] }],
+        flag: [{ required: true, message: "核保类别必选", trigger: ["blur"] }],
         finishDate: [
           { required: true, message: "结束日期必填", trigger: ["blur"] }
         ],
         licenseNo: [
           { required: true, message: "号码号牌修改？", trigger: ["blur"] }
         ],
-           businessNo : [
-        { required: false,  trigger: ["change",'blur'] },
-        { min: 22, max: 22, message: '长度为22个字符', trigger:  ["change",'blur'] },
-
-      ],
-        contractNo : [
-           { required: false, message: "团单号不能为空", trigger: ["change",'blur'] },
-        { min: 22, max: 22, message: '长度为22个字符', trigger:  ["change",'blur'] },
+        businessNo: [
+          { required: false, trigger: ["change", "blur"] },
+          {
+            min: 22,
+            max: 22,
+            message: "长度为22个字符",
+            trigger: ["change", "blur"]
+          }
         ],
+        contractNo: [
+          {
+            required: false,
+            message: "团单号不能为空",
+            trigger: ["change", "blur"]
+          },
+          {
+            min: 22,
+            max: 22,
+            message: "长度为22个字符",
+            trigger: ["change", "blur"]
+          }
+        ]
       },
 
-       UwctrlVO:{
-        // "insuredFlag":"",
-        // "applicCode":"",
-        // "insuredName":"",
-        // "businessNo":"",
-        // "contractNo":"",
-        // "profitRateUp":"",
-        // "flag":"",
-        // "licenseNo":"",
-        // "costRateUpper":"",
-        // "finishDate":"",
-        // "operateDate":"",
-        // "inputDate":"",
-        // "valid":"",
-        // "handlerUser":"",
-        // "message":"",
-        // "costRateBIUpper":"",
-      },
+      UwctrlVO: {},
 
       relationsss: [
-        { value1: "1_被保险人",label:"1" },
-        { value1: "2_投保人",label:"2" }
+        { value1: "1_被保险人", label: "1" },
+        { value1: "2_投保人", label: "2" }
       ],
-     
-        categoryss: [
-        { value: "1_人工核保",label:"1" },
-        { value: "2_自动核保通过" ,label:"2"},
-        { value: "3_自动打回" ,label:"3"}
+
+      categoryss: [
+        { value: "1_人工核保", label: "1" },
+        { value: "2_自动核保通过", label: "2" },
+        { value: "3_自动打回", label: "3" }
       ],
-    
+
       rtReported: {},
-      flagss: [{ value: "0_无效" ,label:"0"}, { value: "1_有效",label:"1" }],
+      flagss: [
+        { value: "0_无效", label: "0" },
+        { value: "1_有效", label: "1" }
+      ],
       relations,
       activeNames: ["1"],
       UwctrlVO: {},
@@ -271,28 +272,30 @@ export default {
       console.log("确认");
     },
     acd() {},
-// 修改保存
+    // 修改保存
     save() {
-      this.$refs.UwctrlVO.validate((valids) => {
-         console.log(valids)
-        let uwctrlVO=this.UwctrlVO
-      this.$fetch.post(this.HOST + this.$url.correctionUpdate,uwctrlVO)
-      .then(res=> {
-          console.log(res)
-      }).catch(error=> {
-       console.log(error)
-      })
-       })
-    
-    },
-
+      this.$refs.UwctrlVO.validate(valids => {
+        console.log(valids);
+        let uwctrlVO = this.UwctrlVO;
+        this.$fetch
+          .post(this.HOST + this.$url.correctionUpdate, uwctrlVO)
+          .then(res => {
+            // console.log(res)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      });
+    }
   },
   created() {
     // 数据渲染
-    this.$fetch.get(this.HOST + this.$url.correctionShow, {params:{id:this.$route.query.row}}).then(res =>{
-        console.log(res)
-        this.UwctrlVO=res
-        // this.results[0]=res.data
+    this.$fetch
+      .get(this.HOST + this.$url.correctionShow, {
+        params: { id: this.$route.query.row }
+      })
+      .then(res => {
+        this.UwctrlVO = res;
       })
       .catch(error => {
         console.log(error);
