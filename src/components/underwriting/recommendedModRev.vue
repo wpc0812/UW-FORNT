@@ -24,8 +24,15 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="状态:">
-                   <el-radio v-model="recommended.handleComCod" label="0"> 未处理</el-radio>
-                    <el-radio v-model="recommended.handleComCod" label="1">已处理</el-radio>
+                  <el-checkbox-group v-model="recommended.stateList">
+                      <el-checkbox
+                        class="check-group"
+                        v-for="state in status"
+                        :label="state.code"
+                        :key="state.code"
+                      >{{state.value}}</el-checkbox>
+                    </el-checkbox-group>
+
                   </el-form-item>
               </el-col>
 
@@ -34,7 +41,8 @@
               <el-col :span="8">
                 <el-form-item label="占用状态:">
                    <!-- {{ recommended.handleComCod }} -->
-                   已占用<span style="color:red">（针对当前用户）</span>
+                    <el-checkbox v-model="recommended.checked2" true-label="1"  false-label="0"> 已占用<span style="color:red">（针对当前用户）</span></el-checkbox>
+                  
                   </el-form-item>
               </el-col>
               <el-col :span="15">
@@ -166,13 +174,21 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
+import {
+  typeApproval,
+  status,
+  occupancyState,
+  underwritingTypes
+} from "@/assets/js/baseCode";
 export default {
   name: "carAuditPage",
   data() {
     return {
       activeNames:'',
-      recommended: {},
+      recommended: {
+        stateList: [],
+      },
+      status,
       results: [],
       total: 0,
       pageSize: 10,

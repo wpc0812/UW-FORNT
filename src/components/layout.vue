@@ -90,5 +90,6 @@ export default {
 /* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
+  
 }
 </style>

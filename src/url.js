@@ -19,6 +19,9 @@ module.exports  = {
     otAddSaves:'/motorcade/motorcadeMainSave',//超权限车队  其他新增
     otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
     // -----核保处理 ---
-    uwmainGetUwList: '/uwmain/getUwList'
+    uwmainGetUwList: '/uwmain/getUwList',
+    getUwPayeeList: '/getUwPayeeList',
+    saveUwPayee:'/saveUwPayee',
+    giveUpUwPayee: '/giveUpUwPayee'
 }
 

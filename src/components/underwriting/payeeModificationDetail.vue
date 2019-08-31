@@ -20,7 +20,7 @@
           </template>
           <el-row>
             <el-col :span="24">
-              <el-button type="primary" @click="outerVisible = true" size="mini">提交审核</el-button>
+              <el-button type="primary" @click="submitModification" size="mini">提交审核</el-button>
               <el-button type="primary" @click="giveUp" size="mini">放弃</el-button>
             </el-col>
           </el-row>
@@ -512,7 +512,7 @@
           </template>
           <el-row>
             <el-col :span="24">
-              <el-button type="primary" @click="outerVisible = true" size="mini">提交审核</el-button>
+              <el-button type="primary" @click=" submitModification" size="mini">提交审核</el-button>
               <el-button type="primary" @click="giveUp" size="mini">放弃</el-button>
             </el-col>
           </el-row>
@@ -538,10 +538,10 @@
               <el-form-item label="请选择">
                 <el-select v-model="form.value" placeholder="请选择">
                   <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="item in subOptions"
+                      :key="item.path"
+                      :label="item.pathName"
+                      :value="item.path"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -598,6 +598,7 @@ export default {
           code4: "1"
         }
       ],
+      parameter:'',
       correction: {},
       flagCode: false,
       fileList: [],
@@ -614,16 +615,7 @@ export default {
       innerVisible: false,
       textarea1: "",
       textarea2: "",
-      options: [
-        {
-          value: 1,
-          label: "提交总公司"
-        },
-        {
-          value: 2,
-          label: "审核未通过"
-        }
-      ]
+      subOptions: [] // 提交审核的弹款的选择下拉
     };
   },
 
@@ -634,8 +626,33 @@ export default {
         this.activeNames.push(JSON.stringify(i));
       }
     },
-    upload() {},
-    giveUp() {},
+    // 提交审核任务
+    submitModification(){
+      let key ={
+          "businessNo": this.parameter.businessNo,
+          "businessType": this.parameter.businessType,
+          "usercode":"A000"
+        }
+      this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data =>{
+        console.log(data)
+        this.subOptions = data.selectPath
+        this.outerVisible = true
+
+      })
+     
+    },
+    // 放弃
+    giveUp() {
+      let key ={
+          "businessNo": this.parameter.businessNo,
+          "businessType": this.parameter.businessType,
+          "usercode":"A000"
+        }
+      this.$fetch.post(this.HOST + this.$url.giveUpUwPayee,key).then(data => {
+        console.log(data)
+        this.$message.success(data)
+      })
+    },
     BusinessNum(row) {
       // console.log(row)
       this.$router.push({ path: "/carContrast", query: { row: row.flag } });
@@ -663,10 +680,13 @@ export default {
   },
 
   created() {
+  
     //设置collapse全部展开
     this.setActiveNames();
+    this.parameter = this.$route.query;
+    console.log(this.parameter)
     // this.init();
-    // this.parameter = this.$route.query;
+    
   }
 };
 </script>

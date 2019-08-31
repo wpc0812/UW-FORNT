@@ -21,7 +21,7 @@ module.exports = {
     // 查阅 参数描述 https://github.com/chimurai/http-proxy-middleware
     proxy: {
         '/apis': {
-            target: 'http://11.205.241.56:8082',
+            target: 'http://11.205.241.15:8082',
             pathRewrite: {
                 '^/apis': ''
             },

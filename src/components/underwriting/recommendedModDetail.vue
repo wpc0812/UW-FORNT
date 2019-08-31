@@ -294,7 +294,8 @@ export default {
     //设置collapse全部展开
     this.setActiveNames();
     this.init();
-    this.parameter = this.$route.query;
+    this.parameter = this.$route.query
+    
   }
 };
 </script>

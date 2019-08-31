@@ -50,41 +50,41 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="处理部门:">
-                  <el-input v-model="underwritingDetails.handleComCode"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.handleComCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="流入时间:">
-                  <el-input v-model="underwritingDetails.handleTime"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.handleTime"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="流转状态:">
-                  <el-input v-model="underwritingDetails.businessType_CN"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.businessType_CN"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="是否续保:">
-                  <el-input v-model="underwritingDetails.xubao"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.xubao"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="是否新车:">
-                  <el-input v-model="underwritingDetails.isNewCar"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.isNewCar"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="是否短期单:">
-                  <el-input v-model="underwritingDetails.isShort"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.isShort"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="电子投保/纸质投保:">
-                  <el-input v-model="underwritingDetails.isNetProp"></el-input>
+                  <el-input v-model="underwritingDetails.taskProcessing.isNetProp"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -99,15 +99,22 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">概要信息</div>
             </template>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="投保单号:">
-                  <el-input v-model="underwritingDetails.proposalNo"></el-input>
+            <el-row :gutter="20">
+              <el-col :span="8" v-if="parameter.type === 'ENDOR' ">
+                <el-form-item label="批单号:">
+                  <el-input v-model="underwritingDetails.SummaryInfo.endorseno"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
+                <el-form-item label="投保单号:" >
+                  <el-input v-model="underwritingDetails.SummaryInfo.proposalNo"></el-input>
+                </el-form-item>
+              </el-col>
+              
+             
+              <el-col :span="8">
                 <el-form-item label="保单号:">
-                  <el-input v-model="underwritingDetails.policyNo">
+                  <el-input v-model="underwritingDetails.SummaryInfo.policyNo">
                      <el-button size="mini" slot="append" type="primary" > 关联</el-button>
                   </el-input>
                  
@@ -115,20 +122,30 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="合同号:">
-                  <el-input v-model="underwritingDetails.contractNo"></el-input>
+                  <el-input v-model="underwritingDetails.SummaryInfo.contractNo"></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
+            
               <el-col :span="8">
                 <el-form-item label="签单日期:">
-                  <el-input v-model="underwritingDetails.operateDate"></el-input>
+                  <el-input v-model="underwritingDetails.SummaryInfo.operateDate"></el-input>
+                </el-form-item>
+              </el-col>
+            
+               <el-col :span="8" v-if="parameter.type === 'ENDOR' ">
+                <el-form-item label="退保原因:" >
+                  <el-input v-model="underwritingDetails.SummaryInfo.cancelReason"></el-input>
+                </el-form-item>
+              </el-col>
+               <el-col :span="8" v-if="parameter.type === 'POLICY' ">
+                <el-form-item label="批改类型:">
+                  <el-input v-model="underwritingDetails.SummaryInfo.endorType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="保险期限从:">
                   <el-date-picker
-                    v-model="underwritingDetails.startDate"
+                    v-model="underwritingDetails.SummaryInfo.startDate"
                     type="date"
                     value-format="yyyy-MM-dd"
                   ></el-date-picker>
@@ -137,19 +154,23 @@
               <el-col :span="8">
                 <el-form-item label="至:">
                   <el-date-picker
-                    v-model="underwritingDetails.endDate"
+                    v-model="underwritingDetails.SummaryInfo.endDate"
                     type="date"
                     value-format="yyyy-MM-dd"
                   ></el-date-picker>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="承保意见:">
-                  <el-input v-model="underwritingDetails.remark"></el-input>
+             <el-col :span="8">
+                <el-form-item label="生效日期:">
+                  <el-input v-model="underwritingDetails.SummaryInfo.validDate"></el-input>
                 </el-form-item>
               </el-col>
+              <el-col :span="24">
+                <el-form-item label="承保意见:" v-if=" parameter.type === 'POLICY' ">
+                  <el-input v-model="underwritingDetails.SummaryInfo.remark"></el-input>
+                </el-form-item>
+              </el-col>
+             
             </el-row>
           </el-collapse-item>
         </el-collapse>
@@ -165,17 +186,17 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="序号:">
-                  <el-input v-model="underwritingDetails.number"></el-input>
+                  <el-input v-model="underwritingDetails.underwriteOpinion.index"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="处理部门:">
-                  <el-input v-model="underwritingDetails.department"></el-input>
+                  <el-input v-model="underwritingDetails.underwriteOpinion.makeCom"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="审核人员:">
-                  <el-input v-model="underwritingDetails.auditor"></el-input>
+                  <el-input v-model="underwritingDetails.underwriteOpinion.userName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -183,7 +204,7 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="承保意见:">
-                  <el-input v-model="underwritingDetails.idea"></el-input>
+                  <el-input v-model="underwritingDetails.underwriteOpinion.handleText"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -201,58 +222,58 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="投保人名称:">
-                  <el-input v-model="underwritingDetails.insuredName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.insuredName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="投保人住所:">
-                  <el-input v-model="underwritingDetails.insuredAddress"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.insuredAddress"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="投保人别名:">
-                  <el-input v-model="underwritingDetails.aliasName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.aliasName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="投保人单位性质:">
-                  <el-input v-model="underwritingDetails.businessSort"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.businessSort"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="投保人性质:">
-                  <el-input v-model="underwritingDetails.insurednature"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.insurednature"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="法人代码/身份证号码:">
-                  <el-input v-model="underwritingDetails.IdentifyNumber"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.IdentifyNumber"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
-                  <el-input v-model="underwritingDetails.linkerName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.linkerName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="underwritingDetails.phoneNumber"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.phoneNumber"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="移动电话:">
-                  <el-input v-model="underwritingDetails.mobile"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.mobile"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="邮政编码:">
-                  <el-input v-model="underwritingDetails.postCode"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredT.postCode"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -270,58 +291,63 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="被投保人名称:">
-                  <el-input v-model="underwritingDetails.insuredName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.insuredName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被投保人住所:">
-                  <el-input v-model="underwritingDetails.insuredAddress"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.insuredAddress"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被投保人别名:">
-                  <el-input v-model="underwritingDetails.aliasName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.aliasName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="被投保人单位性质:">
-                  <el-input v-model="underwritingDetails.businessSort"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.businessSort"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被投保人性质:">
-                  <el-input v-model="underwritingDetails.insurednature"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.insurednature"></el-input>
+                </el-form-item>
+              </el-col>
+               <el-col :span="8">
+                <el-form-item label="被保险人证件类型:">
+                  <el-input v-model="underwritingDetails.uwinsuredI.identifyType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="法人代码/身份证号码:">
-                  <el-input v-model="underwritingDetails.IdentifyNumber"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.IdentifyNumber"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
-                  <el-input v-model="underwritingDetails.linkerName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.linkerName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="underwritingDetails.phoneNumber"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.phoneNumber"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="移动电话:">
-                  <el-input v-model="underwritingDetails.mobile"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.mobile"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="邮政编码:">
-                  <el-input v-model="underwritingDetails.postCode"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredI.postCode"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -339,58 +365,58 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车主名称:">
-                  <el-input v-model="underwritingDetails.insuredName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.insuredName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车主住所:">
-                  <el-input v-model="underwritingDetails.insuredAddress"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.insuredAddress"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车主别名:">
-                  <el-input v-model="underwritingDetails.aliasName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.aliasName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车主单位性质:">
-                  <el-input v-model="underwritingDetails.businessSort"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.businessSort"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车主性质:">
-                  <el-input v-model="underwritingDetails.insurednature"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.insurednature"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="法人代码/身份证号码:">
-                  <el-input v-model="underwritingDetails.IdentifyNumber"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.identifyNumber"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
-                  <el-input v-model="underwritingDetails.linkerName"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.linkerName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="underwritingDetails.phoneNumber"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.phoneNumber"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="移动电话:">
-                  <el-input v-model="underwritingDetails.mobile"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.mobile"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="邮政编码:">
-                  <el-input v-model="underwritingDetails.postCode"></el-input>
+                  <el-input v-model="underwritingDetails.uwinsuredC.postCode"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -408,148 +434,148 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="号牌号码:">
-                  <el-input v-model="underwritingDetails.flapper"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="号牌种类:">
-                  <el-input v-model="underwritingDetails.kind"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.licenseType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车型名称:">
-                  <el-input v-model="underwritingDetails.modelName"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.brandName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车辆种类:">
-                  <el-input v-model="underwritingDetails.type"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.carKindCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="载客量:">
-                  <el-input v-model="underwritingDetails.busload"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.seatCount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="排量/功率(升):">
-                  <el-input v-model="underwritingDetails.displacement"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.ExhaustScale"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="核定载质量(吨):">
-                  <el-input v-model="underwritingDetails.capacity"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.tonCount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="整备质量(吨):">
-                  <el-input v-model="underwritingDetails.reorganize"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.carloteququality"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="初登日期:">
-                  <el-date-picker v-model="form.appStartDate" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+                  <el-date-picker v-model="underwritingDetails.uwitemCar.enrollDate" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="使用年限:">
-                  <el-input v-model="underwritingDetails.limit"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.useYears"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="使用性质:">
-                  <el-input v-model="underwritingDetails.employ"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.UseNatureCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="条款类型:">
-                  <el-input v-model="underwritingDetails.clause"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.clauseTypeCname"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="条款类别:">
-                  <el-input v-model="underwritingDetails.category"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.clauseType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="新车购置价格:">
-                  <el-input v-model="underwritingDetails.price"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.purchasePrice"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="总保险费:">
-                  <el-input v-model="underwritingDetails. premium"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.sumPremium"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="发动机号:">
-                  <el-input v-model="underwritingDetails.engine"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.engineNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="VIN码:">
-                  <el-input v-model="underwritingDetails.vin"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.vinNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="新增设备:">
-                  <el-input v-model="underwritingDetails.equipment"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.carDevice"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="品牌:">
-                  <el-input v-model="underwritingDetails.brand"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.brandName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车系:">
-                  <el-input v-model="underwritingDetails.series"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.familyName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车架号:">
-                  <el-input v-model="underwritingDetails.underwritingDetails"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.frameNo"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车辆气缸数:">
-                  <el-input v-model="underwritingDetails.cylinder"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.cylinderCount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="是否符合拖拉机标准:">
-                  <el-input v-model="underwritingDetails.accord"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.isCriterion"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车型别名:">
-                  <el-input v-model="underwritingDetails.alia"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.aliasName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="重载货车智能设备:">
-                  <el-input v-model="underwritingDetails.intelligent"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.intelligentDevice"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="安装日期:">
-                  <el-date-picker v-model="form.appStartDate" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+                  <el-date-picker v-model="underwritingDetails.uwitemCar.installDate" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -567,111 +593,111 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车型代码:">
-                  <el-input v-model="underwritingDetails.code"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.vehicleid"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="快速查询码:">
-                  <el-input v-model="underwritingDetails.inquire"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.searchcode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车型名称:">
-                  <el-input v-model="underwritingDetails.name"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.brandName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="类型:">
-                  <el-input v-model="underwritingDetails.type"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.vehicleclass"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="种类:">
-                  <el-input v-model="underwritingDetails.variety"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.strVehicleType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="品牌名称:">
-                  <el-input v-model="underwritingDetails.brand"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.brandidAndName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车系名称:">
-                  <el-input v-model="underwritingDetails.series"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.familyidAndName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="生产厂商:">
-                  <el-input v-model="underwritingDetails.production"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.vehiclemaker"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="整车质量:">
-                  <el-input v-model="underwritingDetails.quality"></el-input>
+                <el-form-item label="整车质量(吨):">
+                  <el-input v-model="underwritingDetails.uwcarmodel.vehicleweight"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="变速器:">
-                  <el-input v-model="underwritingDetails.variable"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.transmissiontype"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="16">
                 <el-form-item label="发动机型号/功率:">
-                  <el-input v-model="underwritingDetails.engine"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.enginetypeAndPower"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="标准配置:">
-                  <el-input v-model="underwritingDetails.normal"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.equipstandard"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="选装配置:">
-                  <el-input v-model="underwritingDetails.optional"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.equipoptional"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="外形尺寸:">
-                  <el-input v-model="underwritingDetails.size"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.vehiclesize"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="前轮距/后轮距:">
-                  <el-input v-model="underwritingDetails.tread"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.trackfrontAndRear"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="轴距:">
-                  <el-input v-model="underwritingDetails.wheel"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.wheelbase"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="年款:">
-                  <el-input v-model="underwritingDetails.paragraph"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.vehicleyear"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="风险说明:">
-                  <el-input v-model="underwritingDetails.explain"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.dirrisk"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车型别名:">
-                  <el-input v-model="underwritingDetails.nickname"></el-input>
+                  <el-input v-model="underwritingDetails.uwcarmodel.nickname"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -685,15 +711,15 @@
               :header-cell-class-name="'table-header-bg'"
             >
               <el-table-column align="center" label width="55"></el-table-column>
-              <el-table-column align="center" prop="passenger" label="载客数"></el-table-column>
-              <el-table-column align="center" prop="capacity" label="载重量"></el-table-column>
-              <el-table-column align="center" prop=" displacement" label=" 排气量(升)"></el-table-column>
-              <el-table-column align="center" prop="guard" label="防盗" show-overflow-tooltip></el-table-column>
-              <el-table-column align="center" prop="vesselName" label="ABS" show-overflow-tooltip></el-table-column>
-              <el-table-column align="center" prop="SRS" label="安全气囊"></el-table-column>
-              <el-table-column align="center" label="车损系数" prop="coefficient"></el-table-column>
-              <el-table-column align="center" prop="Dumb" label="盗抢系数"></el-table-column>
-              <el-table-column align="center" prop="price" label="车辆价格"></el-table-column>
+              <el-table-column align="center" prop="dirrisk" label="载客数"></el-table-column>
+              <el-table-column align="center" prop="vehicletonnage" label="载重量"></el-table-column>
+              <el-table-column align="center" prop=" vehicleexhaust" label=" 排气量(升)"></el-table-column>
+              <el-table-column align="center" prop="strIsAlarm" label="防盗" show-overflow-tooltip></el-table-column>
+              <el-table-column align="center" prop="strIsABS" label="ABS" show-overflow-tooltip></el-table-column>
+              <el-table-column align="center" prop="strIsAirBag" label="安全气囊"></el-table-column>
+              <el-table-column align="center" label="车损系数" prop="quotietydam"></el-table-column>
+              <el-table-column align="center" prop="quotietyloss" label="盗抢系数"></el-table-column>
+              <el-table-column align="center" prop="vehicleprice" label="车辆价格"></el-table-column>
             </el-table>
           </el-collapse-item>
         </el-collapse>
@@ -709,7 +735,7 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="保险期限从:">
-                  <el-input v-model="underwritingDetails.date"></el-input>
+                  <el-input v-model="underwritingDetails.insurancePeriod.startDate"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -726,7 +752,7 @@
             </template>
             <el-row>
               <el-table
-                :data="tableList"
+                :data="underwritingDetails.uwitemkindZ"
                 stripe
                 tooltip-effect="dark"
                 style="width: 100%"
@@ -734,17 +760,17 @@
                 :header-cell-style="{'text-align': 'center'}"
                 :header-cell-class-name="'table-header-bg'"
               >
-                <el-table-column align="center" label="险别代码" prop="riskcode"></el-table-column>
-                <el-table-column align="center" prop="riskname" label="险别名称"></el-table-column>
-                <el-table-column align="center" prop="excess" label="不计免赔率"></el-table-column>
+                <el-table-column align="center" label="险别代码" prop="kindCode"></el-table-column>
+                <el-table-column align="center" prop="kindCode" label="险别名称"></el-table-column>
+                <el-table-column align="center" prop="flag" label="不计免赔率"></el-table-column>
                 <el-table-column align="center" prop=" sum" label="保险金额/责任限额"></el-table-column>
                 <el-table-column align="center" prop="rate" label="费率(%)"></el-table-column>
-                <el-table-column align="center" prop="standard" label="标准保费(元)"></el-table-column>
+                <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
                 <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
-                <el-table-column align="center" label="可选免赔系数%" prop="choosableDeductible"></el-table-column>
-                <el-table-column align="center" prop="premium" label="保费折扣%"></el-table-column>
-                <el-table-column align="center" prop="renew" label="续保调整比例%"></el-table-column>
-                <el-table-column align="center" prop="price" label="应交保费(元)"></el-table-column>
+                <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
+                <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
+                <el-table-column align="center" prop="premium" label="续保调整比例%"></el-table-column>
+                <el-table-column align="center" prop="adjustRate" label="应交保费(元)"></el-table-column>
               </el-table>
             </el-row>
           </el-collapse-item>
@@ -759,7 +785,7 @@
               <div class="card-title">附加险</div>
             </template>
             <el-table
-              :data="tableList"
+              :data="underwritingDetails.uwitemkindF"
               stripe
               tooltip-effect="dark"
               style="width: 100%"
@@ -768,40 +794,42 @@
               <el-table-column align="center" label="险别代码" prop="kindCode"></el-table-column>
               <el-table-column align="center" prop="kindName" label="险别名称"></el-table-column>
               <el-table-column align="center" prop="flag" label="不计免赔率"></el-table-column>
-              <el-table-column align="center" prop=" amount" label="保险金额/责任限额"></el-table-column>
+              <el-table-column align="center" prop="amount" label="保险金额/责任限额"></el-table-column>
               <el-table-column align="center" prop="rate" label="费率(%)"></el-table-column>
               <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
               <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
               <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
-              <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
-              <el-table-column align="center" prop="adjustRate" label="续保调整比例%">
+              <el-table-column align="center" prop="discount" label="保费折扣%">
                 <template slot-scope="scope">
-                  <span @click="openAdjustRateDialog(scope.row)"> {{scope.row.adjustRate}}</span>
+                  <span @click="openAdjustRateDialog(scope.row)"> {{scope.row.discount}}</span>
                 </template>
+              </el-table-column>
+              <el-table-column align="center" prop="adjustRate" label="续保调整比例%">
+                
               </el-table-column>
               <el-table-column align="center" prop="premium" label="应交保费(元)"></el-table-column>
             </el-table>
             <el-row class="mt10">
               <el-col :span="8">
                 <el-form-item label="折扣保费合计:">
-                  <el-input v-model="underwritingDetails.discountPremiumCount"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemkindCount.discountPremiumCount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="续保调整保费合计:">
-                  <el-input v-model="underwritingDetails.adjustPremiumCount"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemkindCount.adjustPremiumCount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="实交保费合计:">
-                  <el-input v-model="underwritingDetails.premiumCount"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemkindCount.premiumCount"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="总折扣:">
-                  <el-input v-model="underwritingDetails.dbProfit"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemkindCount.dbProfit"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -819,126 +847,131 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="投保单号:">
-                  <el-input v-model="underwritingDetails.proposalNo"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.proposalNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="批单号:">
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.endorseNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="产品代码:">
-                  <el-input v-model="underwritingDetails.riskCode"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.riskCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="折扣率:">
-                  <el-input v-model="underwritingDetails.disCount"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.disCount"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="利润率:">
-                  <el-input v-model="underwritingDetails.profits"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.profits"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定成本率:">
-                  <el-input v-model="underwritingDetails.cost"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.cost"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="营业税金及附加比率:">
-                  <el-input v-model="underwritingDetails.taxorAppend"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.taxorAppend"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="赔付率R:">
-                  <el-input v-model="underwritingDetails.payMentR"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.payMentR"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="标准赔付率R:">
-                  <el-input v-model="underwritingDetails.basePayMentR"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.payMentR"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="销售费用率:">
-                  <el-input v-model="underwritingDetails.poundAge"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.poundAge"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="标准保费:">
-                  <el-input v-model="underwritingDetails.basePremium"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.basePremium"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="风险保费:">
-                  <el-input v-model="underwritingDetails.riskPremium"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.riskPremium"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="签单保费:">
-                  <el-input v-model="underwritingDetails.signPremium"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.signPremium"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="是否报价(0:否 1:是):">
-                  <el-input v-model="underwritingDetails.uwtqfixationDetails"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.isQuotation"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="风险类别:">
-                  <el-input v-model="underwritingDetails.riskClass"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.riskClass"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="业务说明:">
-                  <el-input v-model="underwritingDetails.operationInfo"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.operationInfo"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="实际折扣率:">
-                  <el-input v-model="underwritingDetails.realDisCount"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.realDisCount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="实际利润率:">
-                  <el-input v-model="underwritingDetails.realProfits"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.realProfits"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="实际赔付率:">
-                  <el-input v-model="underwritingDetails.realPayMentR"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.realPayMentR"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="保单盈利类别:">
-                  <el-input v-model="underwritingDetails.profitClass"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.profitClass"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="定价返回的跟单风险保费合计:" label-width="190px">
-                  <el-input v-model="underwritingDetails.riskSumPremium"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.riskSumPremium"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="不考虑模拟交强的折扣率:">
-                  <el-input v-model="underwritingDetails.discountBI"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.discountBI"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="不考虑模拟交强的销售费用率:" label-width="200px">
-                  <el-input v-model="underwritingDetails.poundageBI"></el-input>
+                  <el-input v-model="underwritingDetails.uwqfixationDetails.poundageBI"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -953,29 +986,20 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">约定驾驶人信息</div>
             </template>
-            <el-row>
-              <el-col :span="3">
-                <el-form-item label="姓名">{{underwritingDetails.driverName}}</el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="驾驶证号">{{underwritingDetails.drivingLicenseNo}}</el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-form-item label="性别"></el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-form-item label="年龄"></el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="上年违章次数"></el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-form-item label="驾龄"></el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="初次领证日期"></el-form-item>
-              </el-col>
-            </el-row>
+            <el-table
+              :data="underwritingDetails.uwcardrivers"
+              style="width: 100%">
+
+              <el-table-column prop="driverName" label="姓名" > </el-table-column>
+              <el-table-column prop="drivingLicenseNo" label="驾驶证号"> </el-table-column>
+              <el-table-column prop="sex" label="性别" > </el-table-column>
+              <el-table-column prop="age" label="年龄" > </el-table-column>
+              <el-table-column prop="causetroubleTimes" label="上年违章次数" > </el-table-column>
+              <el-table-column prop="drivingYears" label="驾龄" > </el-table-column>
+              <el-table-column prop="acceptLicenseDate" label="初次领证日期" > </el-table-column>
+            </el-table>
+           
+
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -987,17 +1011,16 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">特别约定</div>
             </template>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="序号"></el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="特约序号"></el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="特约内容"></el-form-item>
-              </el-col>
-            </el-row>
+
+            <el-table
+              :data="underwritingDetails.uwengages"
+              style="width: 100%">
+
+              <el-table-column prop="serialNo" label="序号" > </el-table-column>
+              <el-table-column prop="clauseCode" label="特约序号" > </el-table-column>
+              <el-table-column prop="clauses" label="特约内容" > </el-table-column>
+            </el-table>
+           
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1010,13 +1033,13 @@
               <div class="card-title">赔付情况</div>
             </template>
             <el-row>
-              <el-col :span="8">
+              <el-col :span="12">
                 <el-form-item label="请选择查询条件:">
                   <el-radio v-model="radio" label="1">客户</el-radio>
                   <el-radio v-model="radio" label="2">车辆</el-radio>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="12">
                 <el-form-item>
                   <el-button size="mini">赔付率查询</el-button>
                 </el-form-item>
@@ -1033,86 +1056,189 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">代收代缴车船税信息</div>
             </template>
-            <el-row>
-              <el-col :span="3">
-                <el-form-item label="姓名"></el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="驾驶证号"></el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-form-item label="性别"></el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-form-item label="年龄"></el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="上年违章次数"></el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-form-item label="驾龄"></el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="初次领证日期"></el-form-item>
-              </el-col>
-            </el-row>
-          </el-collapse-item>
-        </el-collapse>
-      </el-card>
-      <!-- 特别约定 -->
-      <el-card class="circular mt4 shadow">
-        <el-collapse v-model="activeNames">
-          <el-collapse-item name="18">
-            <template slot="title">
-              <div class="title-blue-bar"></div>
-              <div class="card-title">特别约定</div>
-            </template>
-            <el-row>
+            <el-row :gutter="20">
               <el-col :span="8">
-                <el-form-item label="序号"></el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="特约序号"></el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="特约内容"></el-form-item>
-              </el-col>
-            </el-row>
-          </el-collapse-item>
-        </el-collapse>
-      </el-card>
-      <!-- 赔付情况 -->
-      <el-card class="circular mt4 shadow">
-        <el-collapse v-model="activeNames">
-          <el-collapse-item name="19">
-            <template slot="title">
-              <div class="title-blue-bar"></div>
-              <div class="card-title">赔付情况</div>
-            </template>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="请选择查询条件:">
-                  <el-radio v-model="radio" label="1">客户</el-radio>
-                  <el-radio v-model="radio" label="2">车辆</el-radio>
+                <el-form-item label="号牌号码:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.source"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item>
-                  <el-button type="primary">赔付率查询</el-button>
+                <el-form-item label="号牌种类:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.licenseType"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="车辆种类:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.carKindCode"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="发动机号:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.engineNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="VIN 码:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.source"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="车架号:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.frameNo"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="初登日期:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.enrollDate"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="座位数:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.seatCount"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="整备质量（吨）:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.carloteququality"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="滞纳金:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.delaypaytax"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="纳税人代码:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayercode"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="纳税人类型:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayernature"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="纳税人名称:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayername"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item > 
+                   <div slot="label" style="line-height:16px;">纳税人<br>身份证号:</div>
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayeridentno"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item >
+                   <div slot="label" style="line-height:16px;">纳税人<br>识别号:</div>
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayernumber"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="纳税类型:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxtype"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="纳税说明:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxexplanation"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="减免税原因:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxabatereason"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="减免税方案:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxabatetype"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item >
+                <div slot="label" style="line-height:16px;">减免税<br>比例/金额:</div>
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxabateamount"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item >
+                  <div slot="label" style="line-height:16px;">开具税务机关<br>代码/名称:</div>
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxcomcode"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item >
+                <div slot="label">
+                  <!-- 批单申请单号号 -->
+                  <div slot="label" style="line-height:16px;">完税凭证号/<br>减免税证明号：</div>
+
+                </div>
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.dutypaidproofno"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="计税单位:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.TaxUnit"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="年单位税额:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.taxUnitAmount"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item >
+                   <div slot="label" style="line-height:16px;">前次缴费<br>年度:</div>
+
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.prepaytaxyear"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item >
+                  <div slot="label" style="line-height:16px;">前次保单<br>止期:</div>
+
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.prepolicyenddate"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item >
+                   <div slot="label" style="line-height:16px;">本次缴费<br>起期:</div>
+
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.paystartdate"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="本次交税止期:">
+
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.payenddate"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="今年应缴:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.thispaytax"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="总缴付税额:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.sumpaytax"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="往年补缴:">
+                  <el-input v-model="underwritingDetails.payTravelTaxInfo.prepaytax"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-          </el-collapse-item>
-        </el-collapse>
-      </el-card>
-      <!-- 代收代缴车船税信息 -->
-      <el-card class="circular mt4 shadow">
-        <el-collapse v-model="activeNames">
-          <el-collapse-item name="20">
-            <template slot="title">
-              <div class="title-blue-bar"></div>
-              <div class="card-title">代收代缴车船税信息</div>
-            </template>
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1127,29 +1253,29 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务来源:">
-                  <el-input v-model="underwritingDetails.source"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.businessNature"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="渠道:">
-                  <el-input v-model="underwritingDetails.channel"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.agentName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="归属部门:">
-                  <el-input v-model="underwritingDetails.affiliation"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.comCName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="操作员:">
-                  <el-input v-model="underwritingDetails.operator"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.operatorCodeCName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="优惠给付方式:">
-                  <el-input v-model="underwritingDetails.payment"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.otherNature_foure"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -1166,96 +1292,118 @@
             </template>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="保险合同争议解决方式:">
-                  <el-input v-model="underwritingDetails.argueSolution"></el-input>
+                <el-form-item >
+                  <div slot="label" style="line-height:16px;">保险合同争<br>议解决方式:</div>
+                  <el-input v-model="underwritingDetails.otherInformation.argueSolution"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="经办人:">
-                  <el-input v-model="underwritingDetails.handlerCodeCName"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.handlerCodeCName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="归属经办人:">
-                  <el-input v-model="underwritingDetails.handler1CodeCName"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.handler1CodeCName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="验车情况:">
-                  <el-input v-model="underwritingDetails.carCheckStatus"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.carCheckStatus"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="验车时间:">
-                  <el-date-picker v-model="form.carCheckTime" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+                  <el-date-picker v-model="underwritingDetails.otherInformation.carCheckTime" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="验车人:">
-                  <el-input v-model="underwritingDetails.carChecker"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.carChecker"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="归属部门:">
-                  <el-input v-model="underwritingDetails.comCName"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.comCName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="操作员:">
-                  <el-input v-model="underwritingDetails.operatorCodeCName"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.operatorCodeCName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="初审人:">
-                  <el-input v-model="underwritingDetails.approverName"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.approverName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="批改次数:">
-                  <el-input v-model="underwritingDetails.endorseTimes"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.endorseTimes"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="立案次数:">
-                  <el-input v-model="underwritingDetails.claimTimes"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.claimTimes"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="共保标志:">
-                  <el-input v-model="underwritingDetails.coinsFlag"></el-input>
+                  <el-input v-model="underwritingDetails.uwitemCar.coinsFlag"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="上年度是否在本公司承保:">
-                  <el-input v-model="underwritingDetails.otherNature_two"></el-input>
+                <el-form-item >
+                  <div slot="label" style="line-height:16px;">上年度是否<br>在本公司承保:</div>
+                  <el-input v-model="underwritingDetails.otherInformation.otherNature_two"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="优惠给付方式:">
-                  <el-input v-model="underwritingDetails.otherNature_foure"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.otherNature_foure"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="驾驶行为全国评分:">
-                  <el-input v-model="underwritingDetails.nationalDriScore"></el-input>
+                <el-form-item >
+                  <div slot="label" style="line-height:16px;">驾驶行为<br>全国评分:</div>
+                  <el-input v-model="underwritingDetails.otherInformation.nationalDriScore"></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
+            
+
+              <el-col :span="8">
                 <el-form-item label="驾驶行为本省评分:">
-                  <el-input v-model="underwritingDetails.provinceDriScore"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.provinceDriScore"></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
+              <el-col :span="8">
+                <el-form-item >
+                  <div slot="label" style="line-height:16px;">是否有同车<br>保期重复:</div>
+                  <el-input v-model="underwritingDetails.otherInformation.ssss"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="客户等级:">
+                  <el-input v-model="underwritingDetails.otherInformation.gradeName"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="24">
+                <el-form-item >
+                   <div slot="label" style="line-height:16px;">同车情况下的<br>投保单号列表:</div>
+                  <el-input v-model="underwritingDetails.otherInformation.ssss"></el-input>
+                </el-form-item>
+              </el-col>
+              
+            </el-row>  
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1412,9 +1560,31 @@ export default {
   data() {
     return {
       aaa: true,
-      parameter: {},
+      parameter: {
+        type:'POLICY'
+      },
       activeNames: [],
-      underwritingDetails: {},
+      underwritingDetails: {
+        taskProcessing: {}, //处理核保任务
+	      SummaryInfo: {}, //概要信息
+        underwriteOpinion:{}, // 历次审核意见	
+	      uwpTexts: {}, // 显示批文
+        uwinsuredT: {}, // 投保人信息
+        uwinsuredI: {}, // 被保险人信息
+        uwinsuredC: {}, // 车主信息
+        uwitemCar: {}, // 投保车辆信息
+        uwcarmodel: {}, // 车型信息变动情况
+        insurancePeriod: {}, // 保险期限
+        uwitemkindZ: [], // 主险
+        uwitemkindF: [], // 附加险
+        payTravelTaxInfo:{} ,//代收代缴车船税信息
+        uwqfixationDetails: {}, // 定报价指标信息
+        uwcardrivers: [], // 约定驾驶人信息
+        uwengages: [], // 特别约定
+        otherInformation: {}, // 一般信息
+        otherInformation: {}, // 其他信息
+        uwitemkindCount: {} // 险别总计
+      },
       tableList: [{}],
       value: "",
       form: {},

@@ -27,13 +27,14 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   response => {
-    if (response.status !== 200) {
+    if (response.status != 1) {
         loadService.close()
         Message.error('接口返回错误')
         throw new Error();
     } else {
       loadService.close()
-        return response.data
+
+      return response.data
     }
   },
   err => {

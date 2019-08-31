@@ -4,9 +4,9 @@
       <el-menu
         class="el-menu-vertical-demo scrollbar text-left left-bar"
         :unique-opened="false"
-        text-color="#fff"
+        text-color="#A875AD"
         :default-active="active"
-        background-color="#301C1C"
+        background-color="#ffffff"
         :collapse-transition="false"
         :router="true"
       >
@@ -98,7 +98,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .color-blue {
-  color: #ffffff;
+  color: #A875AD;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 250px;
@@ -106,7 +106,7 @@ export default {
 .left-menu {
   display: flex;
   align-items: center;
-  background-color: #301C1C;
+  background-color: #ffffff;
   // border-radius: 18px;
 }
 .menu-arrow {
@@ -118,7 +118,7 @@ export default {
   }
 }
 .menu-arrow-bar {
-  background-color: #301C1C;
+  background-color: #ffffff;
   color: #ccc;
   height:50px;
   line-height: 50px;
@@ -130,9 +130,9 @@ export default {
   }
 }
 .el-menu-item.is-active{
-  // background-color: #00FFFF;
+  background-color: #68EE68  !important;
   // color: #00FFFF;
-  color: #A875AD;
+  color: #ffffff;
 }
 </style>
 
