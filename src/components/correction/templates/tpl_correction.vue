@@ -387,7 +387,7 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.correctionSave, uwctrlVO)
         .then(res => {
-          // console.log(res);
+          console.log(res);
             if (res) {
             this.open2();
             setTimeout(() => {

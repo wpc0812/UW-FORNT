@@ -308,7 +308,7 @@ export default {
   created() {
      let uwctrlVO = this.UwctrlVO;
       this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(res=>{
-          if(res.length>0){
+          if(res){
           this.results = res;
           }
         })

@@ -107,20 +107,13 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="涉及车籍地:" prop="carCadastral">
-                    <!-- <el-input v-model="UwMotorcadeMainVO.carCadastral" placeholder="点击选择" @focus='carCadastralflag'></el-input> -->
-                    <el-select
-                      v-model="UwMotorcadeMainVO.carCadastral"
-                      clearable
-                      placeholder="点击选择"
-                      :focus="carCadastralflag"
+                    <el-input 
+                    v-model="UwMotorcadeMainVO.carCadastral"
+                    placeholder="点击选择"
+                    @focus='carCadastralflag'
+                     class="labelmargin"
                     >
-                      <el-option
-                        v-for="item in UwMoto"
-                        :key="item.value1"
-                        :label="item.label"
-                        :value="item.value1"
-                      ></el-option>
-                    </el-select>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -209,17 +202,21 @@
       </el-collapse>
     </el-card>
     <!-- 弹出框 -->
-    <el-dialog title="请选择" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
+    <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
           <template>
-                <el-transfer v-model="value"  class="labelmargin" :data="data"></el-transfer>
+                <el-transfer 
+                v-model="aaaa"
+                :props="{key: 'id',label: 'name'}"
+                :data="datas"
+                :titles="['未选择', '已选择']"
+                @change ="transfer1"
+                ></el-transfer>
           </template>
           <span slot="footer" class="dialog-footer">
               <el-button @click="carCadastralVisible = false">取 消</el-button>
               <el-button type="primary" @click="valLen()">确 定</el-button>
           </span>
       </el-dialog>
-
- 
   </div>
 </template>
 <script>
@@ -233,22 +230,23 @@ export default {
   name: "rtAdd",
   
   data() {
-        const generateData = _ => {
-        const datas = [];
-        const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-        const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
-        cities.forEach((city, index) => {
-          datas.push({
-            label: city,
-            key: index,
-            pinyin: pinyin[index]
-          });
-        });
-        return datas;
-      };
+      //   const generateData = _ => {
+      //   const datas = [];
+      //   const cities = ['北京11000000', '天津12000000', '河北13000000', '山西14000000', '內蒙15000000','辽宁21000000','北京11000000', '天津12000000', '河北13000000', '山西14000000', '內蒙15000000','辽宁21000000'];
+      //   const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+      //   cities.forEach((city, index) => {
+      //     datas.push({
+      //       label: city,
+      //       key: index,
+      //       pinyin: index
+      //     });
+      //   });
+      //   return datas;
+      // };
     return {
-        data: generateData(),
-        value: [1, 4],
+      val:[],
+      aaaa:[],
+        datas: [{"id":1,name:'北京11000000'}, {"id":2,name:'北京11000000'},],
       carCadastralVisible:false,
       UwMotorcadeMainVO: {
         comcode: "",
@@ -340,11 +338,26 @@ export default {
   },
   computed: {},
   methods: {
+    transfer1(value, direction, movedKeys){
+      this.aaaa=value
+            // console.log(value, direction, movedKeys);
+    },
     handleClose: function() {
         this.carCadastralVisible = false;
     },
     valLen(){
     this.carCadastralVisible = false;
+    let b=[]
+    for(let i=0;i<this.aaaa.length;i++){
+      for(let j=0;j<this.datas.length;j++){
+        if(this.aaaa[i]==this.datas[j].id){
+          b.push(this.datas[j].name)
+          console.log(b)
+        }
+      }
+    }
+    this.UwMotorcadeMainVO.carCadastral=this.aaaa.join()
+    console.log(this.aaaa.join())
     },
     // 点击弹出
     carCadastralflag(){
@@ -395,6 +408,7 @@ export default {
   
   },
   created() {
+    
     // console.log(this.$url.rtAddSaves)
   }
 };
@@ -436,13 +450,26 @@ export default {
 .UwMotorcadeMainVOupdate >>> .text-center {
   margin-top: 20px;
 }
+.checkboxmargin  >>> .el-checkbox {
+  display: inline;
+  text-align: left;
+}
+.checkboxmargin  >>> .el-transfer-panel__header .el-checkbox__label span {
+  display: none;
+}
+.checkboxmargin  >>> .el-transfer-panel__item{
+  display: block;
+}
+.checkboxmargin  >>>.el-transfer-panel{
+  width: 35%;
+}
+.checkboxmargin  >>>.el-transfer__buttons{
+  padding: 0 10px;
+}
 .acolor {
   color: #0066cc;
   text-decoration: none;
   margin-left: 13px;
 }
 
-/* .labelmargin .el-transfer-panel__item.el-checkbox .el-checkbox__label｛
-text-algin:left;
-｝ */
 </style>

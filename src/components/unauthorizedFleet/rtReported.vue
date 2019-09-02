@@ -75,7 +75,7 @@
         <el-table-column prop="state" label="流转状态"></el-table-column>
         <el-table-column prop="contractNo" label="业务号">
           <template slot-scope="scope"> 
-            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.memberName}}</el-button>
+            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.contractNo}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="comcode" label="分公司"></el-table-column>
@@ -106,12 +106,17 @@ export default {
   data() {
     return {
       MotorcadeNo:{
-        contractNo:""
+        insuredflag:"",
+        insuredCode:"",
+        insuredName:"",
+        contractNo:"",
+        firstSubmitDate:""
               },
       activeNames: ["1"],
       relations,
       flag:true,
-      results: []
+
+      results:[{contractNo:"222222"}],
     };
   },
 
@@ -120,7 +125,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getMotorcadeNo"]),
+    // ...mapActions(["getMotorcadeNo"]),
 
     reset() {},
 
@@ -128,6 +133,7 @@ export default {
     this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.MotorcadeNo.contractNo}})
     .then(res=>{
       console.log(res)
+      this.results.push(res)
     })
     .catch(error=>{
       console.log(error)
@@ -150,9 +156,10 @@ export default {
     }
   },
   created() {
-    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:null}})
+    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.MotorcadeNo.contractNo}})
     .then(res=>{
       console.log(res)
+      this.results.push(res)
     })
     .catch(error=>{
       console.log(error)

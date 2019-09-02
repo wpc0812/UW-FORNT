@@ -27,14 +27,22 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   response => {
-    if (response.status != 1) {
+    // debugger
+    if (response.status !== 200) {
         loadService.close()
         Message.error('接口返回错误')
         throw new Error();
     } else {
       loadService.close()
-
-      return response.data
+      // debugger
+      console.log(response)
+      if(response.data.code === 1){
+        return response.data.data
+      } else {
+        Message.error('response.data.message')
+        throw new Error();
+      }
+       
     }
   },
   err => {
