@@ -235,7 +235,7 @@ const router = new Router({
           },
           {
             path: '/transferRecord',
-            name: '流转记录',
+            name: '超权限车队流转记录',
             component: _import('unauthorizedFleet/transferRecord'),
             hidden: true,
             meta: {

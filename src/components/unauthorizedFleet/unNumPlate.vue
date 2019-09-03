@@ -8,27 +8,27 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">号码单车修改</div>
           </template>
-          <el-form ref="form" :model="underwriterInfor" label-width="280px">
+          <el-form ref="UwMotorcadeInfoVO" :model="UwMotorcadeInfoVO" :rules="rules" label-width="280px">
             <el-row>
               <el-row>
                 <el-col :span="10">
-                  <el-form-item label="车牌号:" label-width="200px">
-                    <el-input  class="peoCode" v-model="underwriterInfor.vesselName"></el-input>
+                  <el-form-item label="车牌号:" label-width="200px" prop="motorcadeNo">
+                    <el-input  class="peoCode" v-model="UwMotorcadeInfoVO.motorcadeNo"></el-input>
                   </el-form-item>
                 </el-col>
                   <el-col :span="14">
                   <el-form-item label="商业险手续费上限:">
-                    <el-input  class="peoCode" v-model="underwriterInfor.vesselName"></el-input>
+                    <el-input  class="peoCode" v-model="UwMotorcadeInfoVO.costRatemax"></el-input>
                   </el-form-item>
                 </el-col>
                   <el-col :span="10">
                   <el-form-item label="商业险总折扣率下限:" label-width="200px">
-                    <el-input class="peoCode"  v-model="underwriterInfor.vesselName"></el-input>
+                    <el-input class="peoCode"  v-model="UwMotorcadeInfoVO.costdisountmin"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="14">
                   <el-form-item label="自主核保系数*自助渠道系数下限(出ncd系数):">
-                    <el-input  class="peoCode" v-model="underwriterInfor.vesselName"></el-input>
+                    <el-input  class="peoCode" v-model="UwMotorcadeInfoVO.exceptNCDDiscountUpper"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24" class="text-center">
@@ -67,25 +67,43 @@ export default {
 
   data() {
     return {
-        outerVisible: false,
-        underwriterInfor:{},
+      outerVisible: false,
+      UwMotorcadeInfoVO:{},
       centerDialogVisible:false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
       valueidx:"",
-      underwriterInfor: {},
+      UwMotorcadeInfoVO: {},
+        rules: {
+        motorcadeNo: [
+          { required: true, message: "号码牌不能和修改前相同", trigger: ["change","blur"] },
+          {
+            min: 7,
+            max: 7,
+            message: "长度为7个字符",
+            trigger: ["change", "blur"]
+          },
+        ],
+        },
     };
   },
-
+  watch:{
+  },
   computed: {
     ...mapGetters(["getList"])
   },
 
   methods: {
-    ...mapActions(["getunderwriterInfor"]),
+    ...mapActions(["getUwMotorcadeInfoVO"]),
+    //保存
      save() {
-      this.outerVisible = true;
+      this.$refs.UwMotorcadeInfoVO.validate(valids => {
+        if(valids){
+          console.log("555555")
+        }
+      });
+      // this.outerVisible = true;
       // this.getcorrection(this.correction);
     },
      goBack() {

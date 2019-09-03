@@ -9,12 +9,12 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入查询条件</div>
           </template>
-          <el-form ref="form" :model="MotorcadeNo" label-width="140px">
+          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select v-model="MotorcadeNo.insuredflag" clearable placeholder="请选择">
+                    <el-select v-model="UwMotorcadeMainVO.insuredflag" clearable placeholder="请选择">
                       <el-option
                         v-for="relation in relations"
                         :key="relation.code"
@@ -26,26 +26,26 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:">
-                    <el-input v-model="MotorcadeNo.insuredCode"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人名称:">
-                    <el-input v-model="MotorcadeNo.insuredName"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.insuredName"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="业务号:">
-                    <el-input v-model="MotorcadeNo.contractNo"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.motorcadeNo"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="提交时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="MotorcadeNo.firstSubmitDate"
+                      v-model="UwMotorcadeMainVO.firstSubmitDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -73,9 +73,9 @@
       >
         <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="state" label="流转状态"></el-table-column>
-        <el-table-column prop="contractNo" label="业务号">
+        <el-table-column prop="motorcadeNo" label="业务号">
           <template slot-scope="scope"> 
-            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.contractNo}}</el-button>
+            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.motorcadeNo}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="comcode" label="分公司"></el-table-column>
@@ -99,24 +99,23 @@ import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
 
 export default {
-  name: "MotorcadeNo",
+  name: "rtReported",
   components:{
      LeftMenu, HeadMenu 
   },
   data() {
     return {
-      MotorcadeNo:{
+      UwMotorcadeMainVO:{
         insuredflag:"",
         insuredCode:"",
         insuredName:"",
-        contractNo:"",
+        motorcadeNo:"",
         firstSubmitDate:""
-              },
+      },
       activeNames: ["1"],
       relations,
       flag:true,
-
-      results:[{contractNo:"222222"}],
+      results:[],
     };
   },
 
@@ -125,25 +124,24 @@ export default {
   },
 
   methods: {
-    // ...mapActions(["getMotorcadeNo"]),
+    // ...mapActions(["getUwMotorcadeMainVO"]),
 
     reset() {},
 
     query() {
-    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.MotorcadeNo.contractNo}})
+      console.log(this.UwMotorcadeMainVO.motorcadeNo);
+    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.UwMotorcadeMainVO.motorcadeNo}})
     .then(res=>{
-      console.log(res)
-      this.results.push(res)
-    })
-    .catch(error=>{
-      console.log(error)
+      console.log(res);
+      this.results=res;
+      // this.$set(this.results,res)
     })
       
     },
 
     BusinessNum(row){
-      // console.log(row)
-      this.$router.push({path: '/carAuditPage',query:{row:row.memberName}})
+      // console.log(row);
+      this.$router.push({path: '/carAuditPage',query:{row:row.motorcadeNo}})
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -156,13 +154,11 @@ export default {
     }
   },
   created() {
-    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.MotorcadeNo.contractNo}})
+    let uwMotorcadeMainVO=this.UwMotorcadeMainVO
+    this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
     .then(res=>{
       console.log(res)
-      this.results.push(res)
-    })
-    .catch(error=>{
-      console.log(error)
+      this.results=res
     })
   }
 };

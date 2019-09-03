@@ -199,8 +199,6 @@ export default {
     //返回
     goBack() {
       this.$router.go(-1);
-      // console.log(this.UwctrlVO.insuredFlag);
-      // this.UwctrlVO.insuredFlag = this.valuesssss;
     },
     handleClose(done) {
       console.log("确认");
@@ -216,9 +214,6 @@ export default {
             this.UwctrlVO=res
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
   }
 };
 </script>

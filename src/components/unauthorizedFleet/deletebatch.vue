@@ -8,7 +8,7 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">异地车对信息</div>
           </template>
-          <el-form ref="form" :model="underwriterInfor" label-width="140px">
+          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="删除批次:">
@@ -24,12 +24,12 @@
         :header-cell-style="{'text-align': 'center'}"
         :header-cell-class-name="'table-header-bg'"
       >
-        <el-table-column prop="insuranceType" label="序号"></el-table-column>
-        <el-table-column prop="usersCode" label="批次号"></el-table-column>
-        <el-table-column prop="memberName" label="号牌号码"></el-table-column>
-        <el-table-column prop="memberName" label="商业险手续费上限"></el-table-column>
-        <el-table-column prop="memberName" label="商业险总折扣率下限"></el-table-column>
-        <el-table-column prop="memberName" label="自主核保系数*自助渠道系数下限(出ncd系数)"></el-table-column>
+        <el-table-column prop="index" label="序号"></el-table-column>
+        <el-table-column prop="batchNo" label="批次号"></el-table-column>
+        <el-table-column prop="licenseNo" label="号牌号码"></el-table-column>
+        <el-table-column prop="costRatemax" label="商业险手续费上限"></el-table-column>
+        <el-table-column prop="costdisountmin" label="商业险总折扣率下限"></el-table-column>
+        <el-table-column prop="exceptNCDDiscountUpper" label="自主核保系数*自助渠道系数下限(出ncd系数)"></el-table-column>
       </el-table>
           </el-form>
         </el-collapse-item>
@@ -55,38 +55,14 @@ export default {
 
   data() {
     return {
+      UwMotorcadeMainVO:{},
       centerDialogVisible:false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
       valueidx:"",
       underwriterInfor: {},
-      results: [
-        {
-          memberName: 111111111,
-          usersCode: "ASDSAF0",
-          insuranceType: "张三",
-          undate: "修改"
-        },
-        {
-          memberName: 111111111,
-          usersCode: "ASDSAF1",
-          insuranceType: "李四",
-          undate: "修改"
-        },
-        {
-          memberName: 111111111,
-          usersCode: "ASDSAF2",
-          insuranceType: "王五",
-          undate: "修改"
-        },
-        {
-          memberName: 111111111,
-          usersCode: "ASDSAF3",
-          insuranceType: "赵六",
-          undate: "修改"
-        }
-      ]
+      results: []
     };
   },
 

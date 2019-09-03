@@ -13,15 +13,18 @@ module.exports  = {
     underWriterInforUpdateCkecker: '/updateCkecker', // 核保人员 修改
     underWriterInforDeleteChechker: '/deleteCkecker', // 删除
     //  ----- 超权限车队 start ----
-    rtAddFindMotorcadeMain: '/motorcade/findMotorcadeMainByMotorcadeNo', //超权限车队  异地已上报查询
+    rtAddGetUnder: '/motorcade/getUnderwritingTaskList', //超权限车队  根据不同条件查询
+    rtAddFindMotorcadeMain: '/motorcade/findMotorcadeMainByMotorcadeNo', //超权限车队  异地已上报根据业务号查询查询
     rtAddSaves:'/motorcade/motorcadeMainSave', //超权限车队  异地新增
     rtAddToInsured:'/motorcade/toInsuredList',//超权限车队  异地新增  表单查询按钮
     otAddSaves:'/motorcade/motorcadeMainSave',//超权限车队  其他新增
     otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
     // -----核保处理 ---
     uwmainGetUwList: '/uwmain/getUwList',
-    getUwPayeeList: '/getUwPayeeList', // 收款人账户审核  查询
+    getUwPayeeList: '/getUwPayeeList',
     saveUwPayee:'/saveUwPayee',
     giveUpUwPayee: '/giveUpUwPayee',
     uwmainGetUwInfo: '/uwmain/getUwInfo'  // 核保详情查询
+
 }
+

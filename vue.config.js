@@ -11,8 +11,7 @@ module.exports = {
     // proxy: 'http://localhost:3000',//模拟数据
     // 11.205.241.116 葛超印
     //11.205.241.15 金生哥
-    // 11.205.241.56 吕鑫,
-    // 11.205.242.200 赵现栋
+    // 11.205.241.56 吕鑫
     open: true,
     host: '0.0.0.0',
     port: 8080,
@@ -22,7 +21,7 @@ module.exports = {
     // 查阅 参数描述 https://github.com/chimurai/http-proxy-middleware
     proxy: {
         '/apis': {
-            target: 'http://11.205.242.200:8082',
+            target: 'http://11.205.241.116:8082',
             pathRewrite: {
                 '^/apis': ''
             },

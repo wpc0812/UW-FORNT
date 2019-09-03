@@ -37,7 +37,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-form :model="carAuditPage"  class="updatastyleinput" label-width="185px">
+    <el-form :model="UwMotorcadeInfoVO"  class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
@@ -49,109 +49,133 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:">
-                  <el-input v-model="carAuditPage.handleComCode"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.contractNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="分公司">
-                  <el-input v-model="carAuditPage.handleTime"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.comcode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="控制关系人标志:">
-                  <el-input v-model="carAuditPage.businessType_CN"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.insuredflag"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="控制关系人名称:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.insuredName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="控制关系人代码:">
-                  <el-input v-model="carAuditPage.isNewCar"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.insuredCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="业务来源:">
-                  <el-input v-model="carAuditPage.isShort"></el-input>
+                  <el-select v-model="UwMotorcadeInfoVO.businessNature" clearable placeholder="请选择">
+                      <el-option
+                        v-for="item in categoryss"
+                        :key="item.label"
+                        :label="item.value"
+                        :value="item.label"
+                      ></el-option>
+                    </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="历史年度满期赔付率(%):">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <a href class="acolor" target="_blank">查询</a>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车队车辆总数:">
-                  <el-input v-model="carAuditPage.isNewCar"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.carcountAll"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="预估保费规模(单位:万元):">
-                  <el-input v-model="carAuditPage.isShort"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.estimatedPremiumSize"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="异地车辆数:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.foreigncarcount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="涉及车辖地:">
-                  <el-input v-model="carAuditPage.isNewCar"></el-input>
+                <el-form-item label="涉及车籍地:">
+                  <el-input v-model="UwMotorcadeInfoVO.carCadastral"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车队车辆主要车型:">
-                  <el-input v-model="carAuditPage.isShort"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.carmainmodel"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车辆主要使用地:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.carmainarea"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="控制结束日期:">
-                  <el-input v-model="carAuditPage.isNewCar"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.finishdate"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="商业险手续费上限(%):">
-                  <el-input v-model="carAuditPage.isShort"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.costRateUpper"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="监控方案:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input 
+                  class="textareaheight"
+                  v-model="UwMotorcadeInfoVO.monitoringProgramme"
+                  type="textarea"
+                  :rows="1"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="关联关系人姓名:">
-                  <el-input v-model="carAuditPage.isNewCar"></el-input>
+                  <el-input 
+                  v-model="UwMotorcadeInfoVO.insuredNameSUB"
+                  type="textarea"
+                  :rows="1"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="承保条件:">
-                  <el-input v-model="carAuditPage.isShort"></el-input>
+                  <el-input 
+                  v-model="UwMotorcadeInfoVO.underWritingCondition"
+                  type="textarea"
+                  :rows="1"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="备注:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input 
+                  v-model="UwMotorcadeInfoVO.remark"
+                  type="textarea"
+                  :rows="1"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -159,24 +183,9 @@
               </el-col>
             </el-row>
             <el-row>
-              <!-- <el-col :span="8" v-if="flag == 'add'">
-                <el-form-item label="修改批次:">
-                  <el-input v-model="correction.vesselName">
-                    <template slot="append">浏览</template>
-                  </el-input>
-                </el-form-item>
-              </el-col>
-              <el-button type="primary" class="float-left ml10" v-if="flag == 'add'">上传文件</el-button>
-              <el-button type="text" class="float-left ml10" v-if="flag == 'add'">号牌号码导入模板下载</el-button>
-              <el-col :span="8" v-if="flag == 'change'">
-                <el-form-item label="号牌号码修改:" prop="changeLicense">
-                  <el-input v-model="correction.changeLicense"></el-input>
-                </el-form-item>
-              </el-col>-->
-
               <el-col :span="10">
-                <el-form-item label="修改批次:">
-                  <el-input v-model="carAuditPage.xubao">
+                <el-form-item label="增加批次:">
+                  <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">浏览</template>
                   </el-input>
                 </el-form-item>
@@ -201,6 +210,41 @@
                   <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
                 </el-upload>
               </el-col>
+              <el-col :span="4">
+                <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
+              </el-col>
+            </el-row>
+              <el-row>
+              <el-col :span="10">
+                <el-form-item label="修改批次:">
+                  <el-input v-model="UwMotorcadeInfoVO.uppici">
+                    <template slot="append">浏览</template>
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :file-list="fileList"
+                  :auto-upload="false"
+                >
+                  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                  <el-button
+                    style="margin-left: 10px;"
+                    size="small"
+                    type="success"
+                    @click="submitUpload"
+                  >上传到服务器</el-button>
+                  <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+                </el-upload>
+              </el-col>
+              <el-col :span="4">
+                <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
+              </el-col>
             </el-row>
           </el-collapse-item>
         </el-collapse>
@@ -217,16 +261,16 @@
             <el-row>
               <el-col :span="20">
                 <el-form-item label="号牌号码:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.licenseNo"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-button v-model="carAuditPage.xubao" @click="selectCode">查询</el-button>
+                <el-button @click="selectCode">查询</el-button>
               </el-col>
               <el-col :span="12">
-                <el-button v-model="carAuditPage.xubao">导出</el-button>
+                <el-button>导出</el-button>
               </el-col>
             </el-row>
             <el-table
@@ -236,9 +280,9 @@
               style="width: 100%"
               :header-cell-style="{background:'white'}"
             >
-              <el-table-column align="center" type="index" label="序号" prop="kindCode"></el-table-column>
-              <el-table-column align="center" prop="kindName" label="批次号"></el-table-column>
-              <el-table-column align="center" prop="flag" label="号码号牌">
+              <el-table-column align="center" prop="index" label="序号" type="index"></el-table-column>
+              <el-table-column align="center" prop="batchNo" label="批次号"></el-table-column>
+              <el-table-column align="center" prop="licenseNo" label="号牌号码">
                 <template slot-scope="scope">
                   <el-button
                     type="text"
@@ -247,11 +291,11 @@
                   >{{scope.row.flag}}</el-button>
                 </template>
               </el-table-column>
-              <el-table-column align="center" prop="amount" label="商业险手续费上限"></el-table-column>
-              <el-table-column align="center" prop="rate" label="商业险总折扣率下限"></el-table-column>
+              <el-table-column align="center" prop="costRatemax" label="商业险手续费上限"></el-table-column>
+              <el-table-column align="center" prop="costdisountmin" label="商业险总折扣率下限"></el-table-column>
               <el-table-column
                 align="center"
-                prop="benchMarkPremium"
+                prop="exceptNCDDiscountUpper"
                 label="自主核保系数*自助渠道系统下限(除nod系数)"
               ></el-table-column>
               <el-table-column align="center" prop="deductible" label="删除批次">
@@ -268,23 +312,7 @@
         </el-collapse>
       </el-card>
     </el-form>
-    <!-- 任务审核 -->
-    <!-- <el-card class="circular mt4 shadow">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item name="23">
-          <template slot="title">
-            <div class="title-blue-bar"></div>
-            <div class="card-title">任务审核</div>
-          </template>
-          <el-row class="pt10">
-            <el-col :span="24" class="pt10">
-              <el-button type="primary" size="mini" @click="outerVisible  = true">提交审核</el-button>
-              <el-button size="mini">放弃</el-button>
-            </el-col>
-          </el-row>
-        </el-collapse-item>
-      </el-collapse>
-    </el-card>-->
+   
     <!-- dialog弹出框 -->
     <el-dialog title="核保任务提交"  :lock-scroll="false" class="text-left" :visible.sync="outerVisible">
       <div id="form">
@@ -351,7 +379,14 @@ export default {
   name: "carAuditPage",
   data() {
     return {
+      httphref: "../../../../#/static/LicensenoAddModel.zip",
+      UwMotorcadeInfoVO:{},
       outerVisible:false,
+      categoryss: [
+        { value: "新车车队", label: "1" },
+        { value: "转入车队", label: "2" },
+        { value: "续保车队", label: "3" }
+      ],
       results: [
         {
           kindName: "111",
@@ -517,9 +552,23 @@ export default {
    background: #E8F6F9;
  }   
 .updatastyleinput .el-form-item{
-   margin-bottom: 0px;
+   margin-bottom: 25px;
  }
-
+.acolor {
+  color: #0066cc;
+  text-decoration: none;
+  margin-left: 13px;
+}
+.dec {
+  text-decoration: none;
+  color: #7cb2e3;
+  position: relative;
+  top: 6px;
+}
+/* .textareaheight{
+  min-height: 62px;
+  height: 62px;
+} */
 </style>
 <style>
 </style>

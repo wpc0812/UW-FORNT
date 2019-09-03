@@ -282,9 +282,6 @@ export default {
           .then(res => {
             // console.log(res)
           })
-          .catch(error => {
-            console.log(error);
-          });
       });
     }
   },
@@ -297,9 +294,6 @@ export default {
       .then(res => {
         this.UwctrlVO = res;
       })
-      .catch(error => {
-        console.log(error);
-      });
   }
 };
 </script>

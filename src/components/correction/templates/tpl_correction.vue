@@ -380,10 +380,6 @@ export default {
     trues() {
       this.outerVisible = false;
       let uwctrlVO = this.UwctrlVO;
-      //后期打开
-      // if(this.UwctrlVO.licenses!=""){
-      //   this.customUpload();
-      // }else{
       this.$fetch
         .post(this.HOST + this.$url.correctionSave, uwctrlVO)
         .then(res => {
@@ -399,10 +395,6 @@ export default {
             }, 2000);
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
-      // }
     },
     //关闭弹窗
     handleClose(done) {
@@ -427,16 +419,12 @@ export default {
     onSuccess(esponse, file, fileList) {
       // console.log(esponse, file, fileList);
     },
-    // submitUpload() {
-    //   this.$refs.upload.submit();
-    // },
     handleRemove(file, fileList) {
       // console.log(file, fileList);
     },
     handlePreview(file) {
       // console.log(file);
     },
-
     // 文件上传
     customUpload(file) {
       
@@ -456,10 +444,6 @@ export default {
         .then(res => {
           this.successtrue = res;
         })
-        .catch(error => {
-          console.log(error);
-        });
-     
     },
     // 保存
     requestdata() {

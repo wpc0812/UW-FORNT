@@ -226,12 +226,6 @@ export default {
         { value: "0_无效", label: "0" },
         { value: "1_有效", label: "1" }
       ],
-      // results: [
-      //   {businessNo:"1",contractNo:"1",insuredFlag:"1",applicCode:"1",insuredName:"1",licenseNo:"1",
-      //    profitRateUp:"1",costRateUpper:"1",costRateBIUpper:"1",valid:"1",finishDate:"1",handlerUser:"1",}
-      //    ,{businessNo:"2",contractNo:"1",insuredFlag:"1",applicCode:"1",insuredName:"1",licenseNo:"1",
-      //    profitRateUp:"2",costRateUpper:"1",costRateBIUpper:"1",valid:"1",finishDate:"1",handlerUser:"1",}
-      // ],
       results:[],
       relationss: [
         { value: "全部", label: "" },
@@ -288,9 +282,6 @@ export default {
             this.query()
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
     },
     //保存
     query() {
@@ -300,9 +291,6 @@ export default {
           this.results = res;
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
     }
   },
   created() {
@@ -312,9 +300,6 @@ export default {
           this.results = res;
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
   }
 };
 </script>
