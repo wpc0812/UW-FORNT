@@ -145,7 +145,7 @@
     </el-card>
     <!-- 查询结果 -->
   
-    <el-card class="circular mt4 shadow">
+    <el-card class="circular mt4 shadow" v-if=" list0['ST']||list0['GT'] ||  list0['E']||  list0['H'] ||underwriting.stateList|| list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
       <el-collapse v-model="activeNames">
         
         <el-collapse-item name="2" v-if="underwriting.stateList.indexOf('0') > -1|| list0['ST']||list0['GT'] ||  list0['E']||  list0['H']">
@@ -311,12 +311,11 @@ export default {
       occupancyState,
       status,
       underwritingTypes,
-      getList: []
     };
   },
 
   computed: {
-    ...mapGetters(["getList"])
+   
   },
 
   methods: {
@@ -341,60 +340,7 @@ export default {
         taskType: false
       }
     },
-    //未处理-散单投保单
-    UntreatedBulk(pageSize = 10, pageNo = 1) {
-      this.postRequest(
-        `/fridayService02/queryobject1`,
-        this.underwriting
-      ).then(res => {
-        this.getList = res.data.data;
-      });
-    },
-    //未处理-团单投保单
-    UntreatedGroup(pageSize = 10, pageNo = 1) {
-      this.postRequest(
-        `/fridayService02/queryobject1?_pageSize=${pageSize}&_pageNo=${pageNo}`,
-        this.underwriting
-      ).then(res => {
-        this.getList = res.data.data;
-      });
-    },
-    //未处理-批单
-    UntreatedBatch(pageSize = 10, pageNo = 1) {
-      this.postRequest(
-        `/fridayService02/queryobject1?_pageSize=${pageSize}&_pageNo=${pageNo}`,
-        this.underwriting
-      ).then(res => {
-        this.getList = res.data.data;
-      });
-    },
-    //已处理-散
-    TreatedBulk(pageSize = 10, pageNo = 1) {
-      this.postRequest(
-        `/fridayService02/queryobject1?_pageSize=${pageSize}&_pageNo=${pageNo}`,
-        this.underwriting
-      ).then(res => {
-        this.getList = res.data.data;
-      });
-    },
-    //已处理-团
-    TreatedGroup(pageSize = 10, pageNo = 1) {
-      this.postRequest(
-        `/fridayService02/queryobject1?_pageSize=${pageSize}&_pageNo=${pageNo}`,
-        this.underwriting
-      ).then(res => {
-        this.getList = res.data.data;
-      });
-    },
-    //已处理-团
-    TreatedBatch(pageSize = 10, pageNo = 1) {
-      this.postRequest(
-        `/fridayService02/queryobject1?_pageSize=${pageSize}&_pageNo=${pageNo}`,
-        this.underwriting
-      ).then(res => {
-        this.getList = res.data.data;
-      });
-    },
+
 
     //查询
     query() {
@@ -432,36 +378,38 @@ export default {
         console.log(typeof(key))
       this.$fetch.post(this.HOST + this.$url.uwmainGetUwList,key).then( data => {
         // console.log(data)
-        if( data.data.state ==='1'){
-          if (data.data.taskType == 'H'){
-            this.$set(this.list1,data.data.taskType,data.data.businessHVOList)
+        if( data.state ==='1'){
+          if (data.taskType == 'H'){
+            this.$set(this.list1,data.taskType,data.businessHVOList)
 
             // this.list1[data.data.taskType] = data.data.businessHVOList
           } else{
-            this.$set(this.list1,data.data.taskType,data.data.businessVOList)
+            this.$set(this.list1,data.taskType,data.businessVOList)
             // this.$set(this.list1[data.data.taskType],data.data.businessVOList)
           }
           
-          this.list1.total[data.data.taskType] =data.data.sumRecords
+          this.list1.total[data.taskType] =data.sumRecords
 
         }else{
-         if (data.data.taskType == 'H'){
-           this.$set(this.list0,data.data.taskType,data.data.businessHVOList)
+         if (data.taskType == 'H'){
+           this.$set(this.list0,data.taskType,data.businessHVOList)
             // this.list0[data.data.taskType] = data.data.businessHVOList
           } else{
-             this.$set(this.list0,data.data.taskType,data.data.businessVOList)
+             this.$set(this.list0,data.taskType,data.businessVOList)
             // this.list0[data.data.taskType] = data.data.businessVOList
           }
-            this.list0.total[data.data.taskType] =data.data.sumRecords
+            this.list0.total[data.taskType] =data.sumRecords
         }
       })
     },
     //详情
-    goDetail(businessNo) {
+    goDetail(row) {
+      debugger
       this.$router.push({
         path: '/underwritingDetails',
         query: {
-          businessNo
+          businessNo: row.businessNo,
+          type: row.businessType
         }
       })
     },

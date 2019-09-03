@@ -20,8 +20,8 @@ module.exports  = {
     otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
     // -----核保处理 ---
     uwmainGetUwList: '/uwmain/getUwList',
-    getUwPayeeList: '/getUwPayeeList',
+    getUwPayeeList: '/getUwPayeeList', // 收款人账户审核  查询
     saveUwPayee:'/saveUwPayee',
-    giveUpUwPayee: '/giveUpUwPayee'
+    giveUpUwPayee: '/giveUpUwPayee',
+    uwmainGetUwInfo: '/uwmain/getUwInfo'  // 核保详情查询
 }
-

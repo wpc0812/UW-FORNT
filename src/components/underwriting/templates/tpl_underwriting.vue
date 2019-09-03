@@ -31,7 +31,7 @@
         <el-table-column prop="businessType" label="业务状态"></el-table-column>
         <el-table-column label="业务号">
           <template slot-scope="scope">
-            <el-button type="text" size="mini" @click="goDetail(scope.row.businessNo)">{{scope.row.businessNo}}</el-button>
+            <el-button type="text" size="mini" @click="goDetail(scope.row)">{{scope.row.businessNo}}</el-button>
           </template>
         </el-table-column>
         <el-table-column v-if="title == '团单方案'" prop="businessNo" label="批次号"></el-table-column>
@@ -104,8 +104,9 @@ export default {
         pageNo: val
       });
     },
-    goDetail(businessNo) {
-      this.$emit('goDetail', businessNo)
+    goDetail(row) {
+      debugger
+      this.$emit('goDetail', row)
     }
   }
 };

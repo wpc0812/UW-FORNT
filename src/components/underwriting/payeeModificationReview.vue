@@ -8,7 +8,7 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入核保任务查询条件</div>
           </template>
-          <el-form ref="form" :model="payeeModificationReview" label-width="140px">
+          <el-form ref="form" :model="payeeModificationReview" label-width="100px">
             <el-row>
               <el-row>
                 <el-col :span="8">

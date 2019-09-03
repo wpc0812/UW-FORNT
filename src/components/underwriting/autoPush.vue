@@ -53,7 +53,7 @@
             </el-col>
           </el-row>
           <el-row class="text-left">
-            <!-- <el-pagination
+            <el-pagination
           class="mb10 mt10"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -64,10 +64,10 @@
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
-            ></el-pagination>-->
+            ></el-pagination>
           </el-row>
           <el-table
-            :data="tableList"
+            :data="businessList"
             stripe
             tooltip-effect="dark"
             style="width: 100%"
@@ -75,26 +75,26 @@
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
-            <el-table-column align="center" label="业务状态" prop="riskcode"></el-table-column>
-            <el-table-column align="center" prop="riskname" label="业务号">
+            <el-table-column align="center" label="业务状态" prop="businessSates"></el-table-column>
+            <el-table-column align="center" prop="businessNo" label="业务号">
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   size="mini"
-                  @click="godetail(scope.row.riskname)"
-                >{{scope.row.riskname}}</el-button>
+                  @click="godetail(scope.row.businessNo)"
+                >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
-            <el-table-column align="center" prop="excess" label="车牌号"></el-table-column>
-            <el-table-column align="center" prop="sum" label="渠道名称"></el-table-column>
-            <el-table-column align="center" prop="rate" label="被保险人名称"></el-table-column>
-            <el-table-column align="center" prop="standard" label="险种"></el-table-column>
-            <el-table-column align="center" prop="deductible" label="归属机构"></el-table-column>
-            <el-table-column align="center" label="任务级别" prop="choosableDeductible"></el-table-column>
-            <el-table-column align="center" prop="premium" label="提交时间"></el-table-column>
-            <el-table-column align="center" prop="renew" label="处理人"></el-table-column>
-            <el-table-column align="center" prop="price" label="跟单手续费比例"></el-table-column>
-            <el-table-column align="center" prop="pricecode" label="推荐送修代码"></el-table-column>
+            <el-table-column align="center" prop="carNumber" label="车牌号"></el-table-column>
+            <el-table-column align="center" prop="channelName" label="渠道名称"></el-table-column>
+            <el-table-column align="center" prop="insuredName" label="被保险人名称"></el-table-column>
+            <el-table-column align="center" prop="riskName" label="险种"></el-table-column>
+            <el-table-column align="center" prop="companyCode" label="归属机构"></el-table-column>
+            <el-table-column align="center" label="任务级别" prop="taskLevel"></el-table-column>
+            <el-table-column align="center" prop="subTime" label="提交时间"></el-table-column>
+            <el-table-column align="center" prop="handler" label="处理人"></el-table-column>
+            <el-table-column align="center" prop="feesroportion" label="跟单手续费比例"></el-table-column>
+            <el-table-column align="center" prop="repairCode" label="推荐送修代码"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -119,22 +119,24 @@ export default {
 
   data() {
     return {
-      tableList: [
+      businessList: [
         {
-          riskcode: "正常流转",
-          riskname: "TAS123154aa",
-          excess: "BJ6666",
-          sum: "服务人员",
-          rate: "八哥",
-          standard: "BZA",
-          deductible: "100001",
-          choosableDeductible: "省公司一级核保",
-          premium: "2019-8-13 13:43:30",
-          renew: "516465",
-          price: "0.0001",
-          pricecode: ""
+          businessSates: '正常' ,//	业务状态
+          businessNo: '12322123' ,//	业务号
+          carNumber: '京B123122' ,//	车牌号
+          channelName: 'free' ,//	渠道名称
+          insuredName: 'wpc' ,//	被保险人名称
+          riskName: '车险' ,//	险种
+          companyCode: '北京' ,//	归属机构
+          taskLevel: 'AAA' ,//	任务级别
+          subTime: '2019-09-02 23:23:23' ,//	提交时间
+          handler: '乌篷船' ,//	处理人
+          feesroportion: '3.004%' ,//	跟单手续费比例
+          repairCode: 'A1232' ,//	推荐送修代码
         }
       ],
+      total: 0,
+      pageSize: 10,
       disableds: true,
       companiess: [],
       companies: [
@@ -211,6 +213,12 @@ export default {
 
     submitUpload() {
       this.$refs.upload.submit();
+    },
+    handleCurrentChange(){
+
+    },
+    handleSizeChange(){
+
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
