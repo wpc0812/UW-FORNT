@@ -591,26 +591,25 @@ export default {
       this.flagCode = true;
     },
     init() {
-      this.postRequest(`/fridayService02/queryobject1detail`, {
-        businessNo: this.parameter.businessNo
-      }).then(res => {
-        // this.carAuditPage = res.data.data;
+       // 查询详情
+      this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
+        params:{motorcadeNo:this.$route.query.motorcadeNo || "YD450000001"}}
+        )
+      .then(res=>{
+        this.UwMotorcadeInfoVO = res
+        this.results = res.uwMotorcadeInfos
         console.log(res);
-      });
+      })
     }
   },
 
   created() {
-  this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {motorcadeNo:this.$route.query.row})
-  .then(res=>{
-    this.UwMotorcadeInfoVO=res
-    this.results=res
-    console.log(res);
-  })
+
     //设置collapse全部展开
     this.setActiveNames();
     // this.init();
     this.parameter = this.$route.query;
+    this.init()
   }
 };
 </script>

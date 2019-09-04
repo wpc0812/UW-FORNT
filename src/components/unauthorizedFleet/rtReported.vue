@@ -134,21 +134,21 @@ export default {
     })
       
     },
-
+     // 查询列表
     query() {
-      console.log(this.UwMotorcadeMainVO.motorcadeNo);
-    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.UwMotorcadeMainVO.motorcadeNo}})
-    .then(res=>{
-      console.log(res);
-      this.results=res;
-      // this.$set(this.results,res)
-    })
+
+    
+      this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
+      .then(res=>{
+        console.log(res)
+        this.results = res
+      })
       
     },
 
     BusinessNum(row){
       // console.log(row);
-      this.$router.push({path: '/carAuditPage',query:{row:row.motorcadeNo}})
+      this.$router.push({path: '/carAuditPage',query:{ motorcadeNo:row.motorcadeNo}})
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -162,11 +162,7 @@ export default {
   },
   created() {
     let uwMotorcadeMainVO=this.UwMotorcadeMainVO
-    this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
-    .then(res=>{
-      console.log(res)
-      this.results=res
-    })
+    this.query()
   }
 };
 </script>
