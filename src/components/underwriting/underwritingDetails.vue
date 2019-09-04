@@ -11,9 +11,12 @@
             <el-button size='mini'>上传影像</el-button>
             <el-button size='mini'>设备信息</el-button>
 
+
             <!-- <el-button size='mini'>手机影像</el-button> -->
             <el-button size='mini'>查看风险类别占比</el-button>
             <el-button size='mini' @click="goTolinks('teamquality')">车队业务质量统计查询</el-button>
+            <el-button size='mini' @click="getBack()">撤回</el-button>
+
       </el-row>
     </div>
     
@@ -1641,6 +1644,23 @@ export default {
         this.activeNames.push(JSON.stringify(i));
       }
     },
+    // 撤回
+    getBack(){
+       let keyWords ={
+          businessNo: this.routeDate.businessNo || 'AST12312312',
+          ComCode: this.routeDate.businessNo || 'BJ233',
+          UserCode: this.routeDate.businessNo || 'WPC212',
+          UserName: this.routeDate.businessNo || '宛平城',
+          revokeType: this.routeDate.type || 'EH', // 撤回类型 1：省级从承保撤回  2：省级从总公司撤回  3：总公司从省级撤回
+          taskId: this.routeDate.businessNo || 'id12312', // 任务id
+          businessType: this.routeDate.type || 'ST',
+          batchNo: this.routeDate.type || 12312312,
+       }
+      this.$fetch.post(this.HOST + this.$url.undwrtrevokeUndwrt ,keyWords).then(data => {
+        console.log(data)
+        this.$message.success(data.message)
+      })
+    },
 
     init() {
       
@@ -1667,12 +1687,12 @@ export default {
     goTolinks(type){
       switch(type){
         case 'teamquality' :
-          let key ={
+          let key = { 
             'reportFormsType': 'teamquality',
             'businessNo': this.routeDate.businessNo || '123', // 业务号
             'taskType': this.routeDate.type || 'T'// 业务类型
           }
-          this.$fetch.post(this.HOST + this.$url.uwmainTeamquality, key).then(data => {
+          this.$fetch.get(this.HOST + this.$url.uwmainTeamquality, {params:key}).then(data => {
             console.log(data)
           })
 

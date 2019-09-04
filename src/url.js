@@ -41,6 +41,7 @@ module.exports  = {
     saveUwPayee:'/saveUwPayee',
     giveUpUwPayee: '/giveUpUwPayee',
     uwmainGetUwInfo: '/uwmain/getUwInfo',  // 核保详情查询
+    undwrtrevokeUndwrt:'/undwrt/revokeUndwrt', // 撤回
     uwmainTeamquality: '/uwmain/teamquality', // 核保详情- 车队业务质量查询
     recommendedQury: '/recommended', // 推荐送修码查询
      ///
