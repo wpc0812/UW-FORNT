@@ -13,7 +13,7 @@
 
             <!-- <el-button size='mini'>手机影像</el-button> -->
             <el-button size='mini'>查看风险类别占比</el-button>
-            <el-button size='mini'>车队业务质量统计查询</el-button>
+            <el-button size='mini' @click="goTolinks('teamquality')">车队业务质量统计查询</el-button>
       </el-row>
     </div>
     
@@ -872,128 +872,132 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">定报价指标信息</div>
             </template>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="投保单号:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.proposalNo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="批单号:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.endorseNo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="产品代码:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.riskCode"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="折扣率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.disCount"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="利润率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.profits"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="固定成本率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.cost"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item>
-                  <div slot="label" style="line-height: 16px"> 营业税金<br>及附加比率:</div>
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.taxorAppend"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="赔付率R:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.payMentR"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="标准赔付率R:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.payMentR"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="销售费用率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.poundAge"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="标准保费:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.basePremium"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="风险保费:">
-                  <el-input v-model="underwritingDetails.uwitemCar.riskPremium"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="签单保费:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.signPremium"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px">是否报价<br>(0:否 1:是):</div>
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.isQuotation"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="风险类别:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.riskClass"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="业务说明:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.operationInfo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="实际折扣率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.realDisCount"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="实际利润率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.realProfits"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="实际赔付率:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.realPayMentR"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="保单盈利类别:">
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.profitClass"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px">定价返回的跟单 <br> 风险保费合计:</div>
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.riskSumPremium"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height: 16px"> 不考虑模拟<br>交强的折扣率:</div>
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.discountBI"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item>
-                   <div slot="label" style="line-height: 16px"> 不考虑模拟交强<br>的销售费用率:</div>
-                  <el-input v-model="underwritingDetails.uwqfixationDetails.poundageBI"></el-input>
-                </el-form-item>
-              </el-col>
+            <div v-for="(uwqfixationDetail, index) in underwritingDetails.uwqfixationDetails " 
+            :key="index" :class="(index+1) != underwritingDetails.uwqfixationDetails.length ? 'border-btm-gra': '' "> 
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="投保单号:">
+                    <el-input v-model="uwqfixationDetail.proposalNo"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="批单号:">
+                    <el-input v-model="uwqfixationDetail.endorseNo"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="产品代码:">
+                    <el-input v-model="uwqfixationDetail.riskCode"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="折扣率:">
+                    <el-input v-model="uwqfixationDetail.disCount"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="利润率:">
+                    <el-input v-model="uwqfixationDetail.profits"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="固定成本率:">
+                    <el-input v-model="uwqfixationDetail.cost"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item>
+                    <div slot="label" style="line-height: 16px"> 营业税金<br>及附加比率:</div>
+                    <el-input v-model="uwqfixationDetail.taxorAppend"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="赔付率R:">
+                    <el-input v-model="uwqfixationDetail.payMentR"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="标准赔付率R:">
+                    <el-input v-model="uwqfixationDetail.payMentR"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="销售费用率:">
+                    <el-input v-model="uwqfixationDetail.poundAge"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="标准保费:">
+                    <el-input v-model="uwqfixationDetail.basePremium"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="风险保费:">
+                    <el-input v-model="underwritingDetails.uwitemCar.riskPremium"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="签单保费:">
+                    <el-input v-model="uwqfixationDetail.signPremium"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item >
+                    <div slot="label" style="line-height:16px">是否报价<br>(0:否 1:是):</div>
+                    <el-input v-model="uwqfixationDetail.isQuotation"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="风险类别:">
+                    <el-input v-model="uwqfixationDetail.riskClass"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="业务说明:">
+                    <el-input v-model="uwqfixationDetail.operationInfo"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="实际折扣率:">
+                    <el-input v-model="uwqfixationDetail.realDisCount"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="实际利润率:">
+                    <el-input v-model="uwqfixationDetail.realProfits"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="实际赔付率:">
+                    <el-input v-model="uwqfixationDetail.realPayMentR"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="保单盈利类别:">
+                    <el-input v-model="uwqfixationDetail.profitClass"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item >
+                    <div slot="label" style="line-height:16px">定价返回的跟单 <br> 风险保费合计:</div>
+                    <el-input v-model="uwqfixationDetail.riskSumPremium"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item >
+                    <div slot="label" style="line-height: 16px"> 不考虑模拟<br>交强的折扣率:</div>
+                    <el-input v-model="uwqfixationDetail.discountBI"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item>
+                    <div slot="label" style="line-height: 16px"> 不考虑模拟交强<br>的销售费用率:</div>
+                    <el-input v-model="uwqfixationDetail.poundageBI"></el-input>
+                  </el-form-item>
+                </el-col>
             </el-row>
+            </div>
+            
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1406,7 +1410,7 @@
               <el-col :span="8">
                 <el-form-item >
                   <div slot="label" style="line-height:16px;">是否有同车<br>保期重复:</div>
-                  <el-input v-model="underwritingDetails.otherInformation.ssss"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.isProposalRepetition"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -1418,7 +1422,7 @@
               <el-col :span="24">
                 <el-form-item >
                    <div slot="label" style="line-height:16px;">同车情况下的<br>投保单号列表:</div>
-                  <el-input v-model="underwritingDetails.otherInformation.ssss"></el-input>
+                  <el-input v-model="underwritingDetails.otherInformation.repetitionProposalNos"></el-input>
                 </el-form-item>
               </el-col>
               
@@ -1573,6 +1577,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { setTimeout } from 'timers';
 
 export default {
   name: "UnderwritingDetails",
@@ -1598,7 +1603,7 @@ export default {
         uwitemkindZ: [], // 主险
         uwitemkindF: [], // 附加险
         payTravelTaxInfo:{} ,//代收代缴车船税信息
-        uwqfixationDetails: {}, // 定报价指标信息
+        uwqfixationDetails: [], // 定报价指标信息
         uwcardrivers: [], // 约定驾驶人信息
         uwengages: [], // 特别约定
         generalInformation: {}, // 一般信息
@@ -1658,6 +1663,23 @@ export default {
     goToDeviceInfo(){
 
     },
+    // 获取跳转链接并打开新窗口
+    goTolinks(type){
+      switch(type){
+        case 'teamquality' :
+          let key ={
+            'reportFormsType': 'teamquality',
+            'businessNo': this.routeDate.businessNo || '123', // 业务号
+            'taskType': this.routeDate.type || 'T'// 业务类型
+          }
+          this.$fetch.post(this.HOST + this.$url.uwmainTeamquality, key).then(data => {
+            console.log(data)
+          })
+
+          break
+      }
+
+    },
     // 流转记录
     goToFlowLog(){
       let routeUrl = this.$router.resolve({
@@ -1681,9 +1703,13 @@ export default {
 
   created() {
     //设置collapse全部展开
-    this.setActiveNames();
-    this.init();
     this.routeDate = this.$route.query;
+    setTimeout(()=> {
+      this.setActiveNames();
+      this.init();
+    }) 
+   
+    
   }
 };
 </script>
@@ -1712,13 +1738,13 @@ export default {
 .pt11{
   padding-top: 0px;
 }
-  .el-collapse-item__wrap /deep/ .el-collapse-item__content{
+.el-collapse-item__wrap /deep/ .el-collapse-item__content{
         padding-bottom: 0px;
 }
 .el-collapse-item__wrap >>>  .el-form-item{
   margin-bottom: 20px;
 }
-/* .titlestyle /deep/ .el-input__inner{
-  border:none;
-} */
+.border-btm-gra{
+  border-bottom: solid 1px rgba(70, 90, 100, 0.6)
+}
 </style>

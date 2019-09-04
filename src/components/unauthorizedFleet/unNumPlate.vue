@@ -68,13 +68,14 @@ export default {
   data() {
     return {
       outerVisible: false,
-      UwMotorcadeInfoVO:{},
       centerDialogVisible:false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
       valueidx:"",
-      UwMotorcadeInfoVO: {},
+      UwMotorcadeInfoVO: {
+        motorcadeNo:""
+      },
         rules: {
         motorcadeNo: [
           { required: true, message: "号码牌不能和修改前相同", trigger: ["change","blur"] },
@@ -100,7 +101,12 @@ export default {
      save() {
       this.$refs.UwMotorcadeInfoVO.validate(valids => {
         if(valids){
-          console.log("555555")
+          // console.log("555555")
+        this.$fetch.post(this.HOST + this.$url.unNumPlateUpdate, this.UwMotorcadeInfoVO)
+        .then(res=>{
+          console.log(res);
+        })
+          
         }
       });
       // this.outerVisible = true;

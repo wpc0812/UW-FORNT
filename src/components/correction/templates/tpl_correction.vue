@@ -143,7 +143,6 @@
                         :auto-upload="false"
                         accept=".xls, .txt"
                         :on-preview="handlePreview"
-                        :before-upload="beforeUpload"
                         :before-remove="beforeRemove"
                       >
                         <el-button slot="trigger" size="small" type="primary">浏览</el-button>
@@ -403,9 +402,6 @@ export default {
     // 移除选中文件
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    beforeUpload(file) {
-      console.log(file);
     },
     // 文件个数限制
     handleExceed(files, fileList) {

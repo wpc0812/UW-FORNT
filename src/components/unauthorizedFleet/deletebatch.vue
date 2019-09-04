@@ -24,7 +24,7 @@
         :header-cell-style="{'text-align': 'center'}"
         :header-cell-class-name="'table-header-bg'"
       >
-        <el-table-column prop="index" label="序号"></el-table-column>
+        <el-table-column prop="index" label="序号" type="index"></el-table-column>
         <el-table-column prop="batchNo" label="批次号"></el-table-column>
         <el-table-column prop="licenseNo" label="号牌号码"></el-table-column>
         <el-table-column prop="costRatemax" label="商业险手续费上限"></el-table-column>
@@ -55,14 +55,25 @@ export default {
 
   data() {
     return {
-      UwMotorcadeMainVO:{},
+      UwMotorcadeMainVO:{
+          motorcadeNo:"",
+      },
       centerDialogVisible:false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
       valueidx:"",
       underwriterInfor: {},
-      results: []
+      results: [
+        {
+          batchNo: "111",
+          licenseNo: "A0190Q",
+          costRatemax: "11",
+          costdisountmin: "11",
+          exceptNCDDiscountUpper: "1",
+        }
+        
+      ]
     };
   },
 
@@ -74,6 +85,14 @@ export default {
     ...mapActions(["getunderwriterInfor"]),
 
     deletes() {
+      
+      this.$fetch.post(this.HOST + this.$url.deletebatchDel,
+      {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
+      licenseNo:this.results[0].batchNo
+      }})
+      .then(res=>{
+        console.log(res);
+      })
     //   this.valueidx=idx;
     // console.log(this.$route.query.row)
     // row.splice(idx + 1, 1);

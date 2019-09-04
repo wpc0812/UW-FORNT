@@ -39,12 +39,12 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:">
-                  <el-input v-model="carAuditPage.handleComCode"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.businiessNO"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="7">
                 <el-form-item label="处理部门:">
-                  <el-input v-model="carAuditPage.handleTime"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.comCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="9">
@@ -58,7 +58,7 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="流转状态:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.xubao"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -76,24 +76,24 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="序号:">
-                  <el-input v-model="carAuditPage.handleComCode"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.handleComCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="7">
                 <el-form-item label="处理部门:">
-                  <el-input v-model="carAuditPage.handleTime"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.handleTime"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="9">
                 <el-form-item label="审核人员:">
-                  <el-input v-model="carAuditPage.handleTime"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.handleTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="审核意见:">
-                  <el-input v-model="carAuditPage.xubao"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.xubao"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -207,6 +207,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { setTimeout } from 'timers';
 
 export default {
   name: "carAuditPage",
@@ -231,10 +232,12 @@ export default {
       fileList: [],
       parameter: {},
       activeNames: [],
-      carAuditPage: {},
-      tableList: [],
+      carAuditPage: {
+        basicInfo: { }, //  基本信息
+        recordOpinions: {}, // 历次审核意见
+        recommendedModList: [] // 推荐送修码信息
+      },
       time1: "",
-      value: "",
       form: {},
       rules: {},
       radio: 1,
@@ -281,20 +284,28 @@ export default {
       this.flagCode = true;
     },
     init() {
-      this.postRequest(`/fridayService02/queryobject1detail`, {
-        businessNo: this.parameter.businessNo
-      }).then(res => {
-        this.carAuditPage = res.data.data;
-        console.log(res);
-      });
+      // this.$fetch.post(this.HOST + this.$url.recommendedDetailQury).then(data => {
+      //   console.log(data)
+      // })
+
+      // this.postRequest(`/fridayService02/queryobject1detail`, {
+      //   businessNo: this.parameter.businessNo
+      // }).then(res => {
+      //   this.carAuditPage = res.data.data;
+      //   console.log(res);
+      // });
     }
   },
 
   created() {
     //设置collapse全部展开
-    this.setActiveNames();
-    this.init();
     this.parameter = this.$route.query
+    setTimeout(() => {
+      this.setActiveNames();
+      this.init();
+    })
+    
+    
     
   }
 };

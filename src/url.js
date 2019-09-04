@@ -17,14 +17,33 @@ module.exports  = {
     rtAddFindMotorcadeMain: '/motorcade/findMotorcadeMainByMotorcadeNo', //超权限车队  异地已上报根据业务号查询查询
     rtAddSaves:'/motorcade/motorcadeMainSave', //超权限车队  异地新增
     rtAddToInsured:'/motorcade/toInsuredList',//超权限车队  异地新增  表单查询按钮
+    rtReportedToInsured:'/motorcade/createMotorcadeMainExcel', //超权限车队 异地导出接口
+    carAuditPageToInsured:'/motorcade/createMotorcadeInfoExcel', //超权限车队 异地详情导出接口
+    carAuditPageaddfile:'/motorcade/uwmotorcadeinfoImport', //超权限车队 异地详情增加上传文件
+    carAuditPageUpdatefile:'/motorcade/uwmotorcadeinfoUpdate', //超权限车队 异地详情修改上传文件 
+    carAuditPageSubmits:'/motorcade/submits', //超权限车队 异地详情提交审核
+    deletebatchDel:'/motorcade/delectBatchByNo', //超权限车队 异地详情删除批次
+    unNumPlateUpdate:'/motorcade/UpdateUwmotorcadeinfo', //超权限车队 异地详情 车辆详情修改页面
     otAddSaves:'/motorcade/motorcadeMainSave',//超权限车队  其他新增
     otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
+                                                         //--------------------顶部按钮----------------------
+    carAuditPageDelete:'/motorcade/motorcadeMainDelete', //超权限车队 异地详情顶部 删除
+    carAuditPageUpdate:'/motorcade/motorcadeRemoteAddOrUpdate', //超权限车队 异地详情顶部 修改
+    carAuditPageOuterRatio:'/motorcade/motorcadeMainContrast', //超权限车队 异地详情顶部 对比
+    carAuditPageTransferRecord:'/motorcade/findUwMotorcadeFlowRecord', //超权限车队 异地详情顶部 流转记录
+    carAuditPageOuterRenewal:'/motorcade/motorcadeMainRenewal', //超权限车队 异地详情顶部 续保
+    carAuditPageAuditOpinion:'/motorcade/findUwMotorcadeNotion', //超权限车队 异地详情顶部 审核意见
+    carAuditPageOuterBranch:'/motorcade/effectiveHandling', //超权限车队 异地详情顶部 分公司办结
+ 
     // -----核保处理 ---
     uwmainGetUwList: '/uwmain/getUwList',
     getUwPayeeList: '/getUwPayeeList',
     saveUwPayee:'/saveUwPayee',
     giveUpUwPayee: '/giveUpUwPayee',
-    uwmainGetUwInfo: '/uwmain/getUwInfo'  // 核保详情查询
+    uwmainGetUwInfo: '/uwmain/getUwInfo',  // 核保详情查询
+    uwmainTeamquality: '/uwmain/teamquality', // 核保详情- 车队业务质量查询
+    recommendedQury: '/recommended', // 推荐送修码查询
+    recommendedDetailQury: '/recommendedQury' , // 推荐送修码 详情查询
 
 }
 

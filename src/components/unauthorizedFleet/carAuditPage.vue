@@ -3,6 +3,15 @@
     <!-- 提交审核 -->
     <el-card class="circular">
       <el-row class="pt10">
+         <el-col :span="3" v-if="state==6">
+          <el-button class="btn" type="primary" @click="outerBranch" size="mini">分公司办结</el-button>
+        </el-col>
+        <el-col :span="3" v-if="state==66">
+          <el-button class="btn" type="primary" @click="outerRenewal" size="mini">续保</el-button>
+        </el-col>
+        <el-col :span="3" v-if="state==666">
+          <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
+        </el-col>
         <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
@@ -37,7 +46,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-form :model="UwMotorcadeInfoVO"  class="updatastyleinput" label-width="185px">
+    <el-form :model="UwMotorcadeInfoVO"   class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
@@ -49,7 +58,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:">
-                  <el-input v-model="UwMotorcadeInfoVO.contractNo"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.motorcadeNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -185,64 +194,68 @@
             <el-row>
               <el-col :span="10">
                 <el-form-item label="增加批次:">
-                  <el-input v-model="UwMotorcadeInfoVO.uppici">
-                    <template slot="append">浏览</template>
+                    <el-input v-model="UwMotorcadeInfoVO.appici">
+                    <template slot="append">
+                      <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        :multiple="true"
+                        action
+                        :auto-upload="false"
+                        accept=".xls, .txt"
+                        :on-remove="handleRemove"
+                        :on-success="onSuccess"
+                        :http-request="addExcel"
+                        :on-change="uploadname"
+                        :show-file-list="false"
+                        :file-list="fileList1"
+                        :on-preview="handlePreview"
+                        :before-remove="beforeRemove"
+                      >
+                        <el-button slot="trigger" size="small" type="primary">浏览</el-button>
+                      </el-upload>
+                    </template>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
-                <el-upload
-                  class="upload-demo"
-                  ref="upload"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  :file-list="fileList"
-                  :auto-upload="false"
-                >
-                  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                  <el-button
-                    style="margin-left: 10px;"
-                    size="small"
-                    type="success"
-                    @click="submitUpload"
-                  >上传到服务器</el-button>
-                  <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-                </el-upload>
-              </el-col>
               <el-col :span="4">
+                   <el-button slot="trigger" size="small" @click="addpici" type="primary">上传文件</el-button>
+              </el-col>
+              <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
               <el-row>
               <el-col :span="10">
-                <el-form-item label="修改批次:">
-                  <el-input v-model="UwMotorcadeInfoVO.uppici">
-                    <template slot="append">浏览</template>
+                 <el-form-item label="修改批次:">
+                    <el-input v-model="UwMotorcadeInfoVO.appici">
+                    <template slot="append">
+                      <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        :multiple="true"
+                        action
+                        :auto-upload="false"
+                        accept=".xls, .txt"
+                        :on-remove="handleRemove"
+                        :on-success="onSuccess"
+                        :http-request="updateExcel"
+                        :on-change="uploadname"
+                        :show-file-list="false"
+                        :file-list="fileList2"
+                        :on-preview="handlePreview"
+                        :before-remove="beforeRemove"
+                      >
+                        <el-button slot="trigger" size="small" type="primary">浏览</el-button>
+                      </el-upload>
+                    </template>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
-                <el-upload
-                  class="upload-demo"
-                  ref="upload"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  :file-list="fileList"
-                  :auto-upload="false"
-                >
-                  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                  <el-button
-                    style="margin-left: 10px;"
-                    size="small"
-                    type="success"
-                    @click="submitUpload"
-                  >上传到服务器</el-button>
-                  <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-                </el-upload>
-              </el-col>
               <el-col :span="4">
+                  <el-button slot="trigger" size="small" @click="updatepici" type="primary">上传文件</el-button>
+              </el-col>
+              <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
@@ -270,7 +283,7 @@
                 <el-button @click="selectCode">查询</el-button>
               </el-col>
               <el-col :span="12">
-                <el-button>导出</el-button>
+                <el-button @click="carAuditPagechu">导出</el-button>
               </el-col>
             </el-row>
             <el-table
@@ -379,8 +392,14 @@ export default {
   name: "carAuditPage",
   data() {
     return {
+      state:"666",
       httphref: "../../../../#/static/LicensenoAddModel.zip",
-      UwMotorcadeInfoVO:{},
+      UwMotorcadeInfoVO:{
+        motorcadeNo:"",
+        licenseNo:"",
+        appici:"",
+        uppici:""
+      },
       outerVisible:false,
       categoryss: [
         { value: "新车车队", label: "1" },
@@ -444,6 +463,8 @@ export default {
       form: {},
       rules: {},
       radio: 1,
+      fileList1:[],
+      fileList2:[],
       outerVisible: false,
       innerVisible: false,
       textarea1: "",
@@ -462,6 +483,63 @@ export default {
   },
 
   methods: {
+    onSuccess(file, fileList){
+
+    },    
+    customUpload(file, fileList){
+
+    },
+    uploadname(file, fileList){
+      console.log(file,fileList)
+      this.UwMotorcadeInfoVO.appici = file.name;
+
+    },
+    handlePreview(file, fileList){
+
+    },
+    beforeRemove(file, fileList){
+
+    },
+               
+    // 新增文件上传
+    addpici(){
+      this.addExcel()
+    },
+    addExcel(file){
+     let formData = new FormData();
+      formData.append("file", file.raw);
+      this.uploading = true;
+      // console.log(file)
+      this.$fetch.post(this.HOST + this.$url.carAuditPageaddfile, {data:formData,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
+    .then(res=>{
+      console.log(res);
+    })
+    },
+    updatepici(){
+      this.updateExcel()
+    },
+
+    //修改文件上传
+    updateExcel(file){
+      let formData = new FormData();
+      formData.append("file", file.raw);
+      this.uploading = true;
+      // console.log(file)
+      this.$fetch.post(this.HOST + this.$url.carAuditPageUpdatefile, {data:formData,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
+    .then(res=>{
+      console.log(res);
+    })
+
+    },
+    //导出
+    carAuditPagechu(){
+        this.$fetch.post(this.HOST + this.$url.carAuditPageToInsured, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
+        licenseNo:this.UwMotorcadeInfoVO.batchNo
+        }})
+        .then(res=>{
+          console.log(res);
+        })
+    },
     //设置collapse全部展开
     setActiveNames() {
       for (let i = 1; i <= 23; i++) {
@@ -470,34 +548,59 @@ export default {
     },
     //提交审核
     submitaudit(){
-      this.outerVisible=true;
+      this.$fetch.post(this.HOST + this.$url.carAuditPageSubmits, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
+      .then(res=>{
+        console.log(res);
+      })
+      // this.outerVisible=true;
       
       // document.querySelector("div").style=" padding-right:0 !important;";
     },
-    outerRatio(){
-       this.$router.push({ path: "/carContrast"});
-    },
+  
     deletebatch(idx){
+      this.$fetch.post(this.HOST + this.$url.carAuditPageDelete, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
+      .then(res=>{
+        console.log(res);
+      })
       // console.log(idx)
-       this.$router.push({ path: "/deletebatch", query: { row: idx } });
-
+      //  this.$router.push({ path: "/deletebatch", query: { row: idx } });
     },
+
+    //分公司办结
+    outerBranch(){},
+    //续保
+    outerRenewal(){},
+    //修改
+    outerUpdate(){},
+    //对比
+    outerRatio(){
+      this.$router.push({ path: "/carContrast"});
+    },
+    //删除
+    outerDelete(){},
+    //影像上传
+    outerUpdate(){},
+    //资料查看
+    outerRenewal(){},
+    //查看审核意见
     auditOpinion(){
        this.$router.push({ path: "/auditOpinion"});
     },
-    deletedata(idx){
-      this.results.replace(idx,1)
-    },
+    //流转记录
     transferRecord(){
       this.$router.push({ path: "/transferRecord"});
     },
+    // deletedata(idx){
+    //   this.results.replace(idx,1)
+    // },
     upload() {},
     BusinessNum(row) {
       // console.log(row)
       this.$router.push({ path: "/unNumPlate", query: { row: row.flag } });
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      // this.$refs.upload.submit();
+
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

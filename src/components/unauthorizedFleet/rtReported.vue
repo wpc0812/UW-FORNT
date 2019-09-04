@@ -54,7 +54,7 @@
               </el-row>
               <el-col :span="24" class="text-center">
                 <el-button @click="query()" size="mini" type="primary">查询</el-button>
-                <el-button @click="reset" size="mini">导出</el-button>
+                <el-button @click="rtReportedchu" size="mini">导出</el-button>
               </el-col>
             </el-row>
           </el-form>
@@ -125,8 +125,15 @@ export default {
 
   methods: {
     // ...mapActions(["getUwMotorcadeMainVO"]),
-
-    reset() {},
+    //导出
+    rtReportedchu() {
+      let uwMotorcadeMainVO=this.UwMotorcadeMainVO 
+    this.$fetch.post(this.HOST + this.$url.rtReportedToInsured, uwMotorcadeMainVO)
+    .then(res=>{
+      console.log(res);
+    })
+      
+    },
 
     query() {
       console.log(this.UwMotorcadeMainVO.motorcadeNo);
