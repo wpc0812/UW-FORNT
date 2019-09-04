@@ -19,7 +19,7 @@
               <el-form-item class="text-left">
                 <el-checkbox-group
                   class="inline-block"
-                  v-model="companiess"
+                  v-model="companyCodes"
                   @change="handleCheckedCitiesChange"
                 >
                   <el-checkbox
@@ -30,7 +30,7 @@
                 </el-checkbox-group>
               </el-form-item>
               <el-col :span="24" class="text-center">
-                <el-button @click="query()" size="mini" type="primary" :disabled="disableds">请求分发</el-button>
+                <el-button @click="autoPushQuery()" size="mini" type="primary" :disabled="disableds">请求分发</el-button>
                 <el-button @click="stopPush" size="mini" :disabled="!disableds">停止分发</el-button>
               </el-col>
             </el-row>
@@ -59,7 +59,7 @@
           @current-change="handleCurrentChange"
           :pager-count="5"
           small
-          :current-page="1"
+          :current-page="pageNo"
           :page-sizes="[10, 20, 50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
@@ -136,9 +136,10 @@ export default {
         }
       ],
       total: 0,
+      pageNo: 1,
       pageSize: 10,
       disableds: true,
-      companiess: [],
+      companyCodes: [],
       companies: [
         "南京分公司",
         "苏州分公司",
@@ -187,8 +188,20 @@ export default {
     handleClose(done) {
       console.log("确认");
     },
-    acd() {},
-    query() {},
+    // 自动推送 查询
+    autoPushQuery() {
+      let keyWords = {
+        companyCodes:this.companyCodes,
+        pageSize:this.pageSize,
+        pageNo: this.pageNo
+      }
+      this.$fetch.post( this.HOST + this.$url.autoDistributeSelectTaskList,keyWords).then(data => {
+
+        this.businessList = data.businessList
+        this.total = data.total
+        this.$forceUpdate() // 更新数据
+      })
+    },
     godetail(riskname) {
       this.$router.push({
         path: "/autoPushDetail",
@@ -214,11 +227,17 @@ export default {
     submitUpload() {
       this.$refs.upload.submit();
     },
-    handleCurrentChange(){
-
+    //  分页页数查询
+    handleCurrentChange(value){
+      console.log(value)
+      this.pageNo = value
+      this.autoPushQuery()
     },
-    handleSizeChange(){
-
+    // 分页 条数查询
+    handleSizeChange(value){
+      console.log(value)
+      this.pageSize = value
+      this.autoPushQuery()
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

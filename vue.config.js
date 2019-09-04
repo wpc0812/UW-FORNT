@@ -12,7 +12,9 @@ module.exports = {
     // 11.205.241.116 葛超印
     //11.205.241.15 金生哥
     // 11.205.241.56 吕鑫
+    // 11.205.241.53 天宇
     //http://11.205.242.159  刘晓晨
+    
     open: true,
     host: '0.0.0.0',
     port: 8080,
@@ -22,7 +24,7 @@ module.exports = {
     // 查阅 参数描述 https://github.com/chimurai/http-proxy-middleware
     proxy: {
         '/apis': {
-            target: 'http://11.205.241.116:8082',
+            target: 'http://11.205.241.53:8082',
             pathRewrite: {
                 '^/apis': ''
             },

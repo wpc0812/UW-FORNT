@@ -44,7 +44,7 @@ module.exports  = {
     undwrtrevokeUndwrt:'/undwrt/revokeUndwrt', // 撤回
     uwmainTeamquality: '/uwmain/teamquality', // 核保详情- 车队业务质量查询
     recommendedQury: '/recommended', // 推荐送修码查询
-     ///
+    autoDistributeSelectTaskList: '/autoDistribute/selectTaskList', // 自动推送 查询
     recommendedDetailQury: '/recommendedQury' , // 推荐送修码 详情查询
 
 }
