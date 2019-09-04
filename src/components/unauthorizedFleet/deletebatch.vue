@@ -63,7 +63,6 @@ export default {
       relations,
       pageSize: 10,
       valueidx:"",
-      underwriterInfor: {},
       results: [
         {
           batchNo: "111",
@@ -87,7 +86,7 @@ export default {
     deletes() {
       
       this.$fetch.post(this.HOST + this.$url.deletebatchDel,
-      {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
+      {params:{motorcadeNo:this.$route.query.motorcadeNo,
       licenseNo:this.results[0].batchNo
       }})
       .then(res=>{
@@ -113,7 +112,14 @@ export default {
       this.task.tab2 = val;
     }
   },
-  created() {}
+  created() {
+    console.log(this.$route.query.row,this.$route.query.motorcadeNo);
+     this.$fetch.post(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.$route.query.motorcadeNo}})
+      .then(res=>{
+        this.results=res
+        console.log(res);
+      })
+  }
 };
 </script>
 <style scoped>

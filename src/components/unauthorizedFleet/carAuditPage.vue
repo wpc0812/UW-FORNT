@@ -188,7 +188,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="距离控制日期结束日期:">92 天</el-form-item>
+                <el-form-item v-model="UwMotorcadeInfoVO.finishdate" label="距离控制日期结束日期:">{{UwMotorcadeInfoVO.finishdate}} 天</el-form-item>
               </el-col>
             </el-row>
             <el-row>
@@ -219,7 +219,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                   <el-button slot="trigger" size="small" @click="addpici" type="primary">上传文件</el-button>
+                   <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
@@ -253,7 +253,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                  <el-button slot="trigger" size="small" @click="updatepici" type="primary">上传文件</el-button>
+                  <el-button size="small" @click="updatepici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
@@ -293,6 +293,7 @@
               style="width: 100%"
               :header-cell-style="{background:'white'}"
             >
+           
               <el-table-column align="center" prop="index" label="序号" type="index"></el-table-column>
               <el-table-column align="center" prop="batchNo" label="批次号"></el-table-column>
               <el-table-column align="center" prop="licenseNo" label="号牌号码">
@@ -316,7 +317,7 @@
                   <el-button
                     type="text"
                     size="small"
-                    @click="deletebatch(scope.$index+1)"
+                    @click="deletebatch(scope.row)"
                   >删除批次</el-button>
                 </template>
               </el-table-column>
@@ -398,7 +399,26 @@ export default {
         motorcadeNo:"",
         licenseNo:"",
         appici:"",
-        uppici:""
+        uppici:"",
+        comcode:"",
+        insuredflag:"",
+        insuredName:"",
+        insuredNCode:"",
+        carmainmodel:"",
+        businessNature:"",
+        carcountAll:"",
+        estimatedPremiumSize:"",
+        foreigncarcount:"",
+        carCadastral:"",
+        carmainmodel:"",
+        carmainarea:"",
+        finishdate:"",
+        costRateUpper:"", 
+        monitoringProgramme:"",
+        insuredNameSUB:"",
+        underWritingCondition:"", 
+        remark:"",
+        finishdate:"",
       },
       outerVisible:false,
       categoryss: [
@@ -408,49 +428,12 @@ export default {
       ],
       results: [
         {
-          kindName: "111",
+          batchNo: "111",
           flag: "A0190Q",
-          amount: "11",
-          rate: "11",
-          benchMarkPremium: "1",
-          deductible: "123"
+          costRatemax: "11",
+          costdisountmin: "11",
+          exceptNCDDiscountUpper: "1",
         },
-        ,
-        {
-          kindName: "122",
-          flag: "A0190Q",
-          amount: "22",
-          rate: "12",
-          benchMarkPremium: "2",
-          deductible: "123"
-        },
-        ,
-        {
-          kindName: "133",
-          flag: "A0190Q",
-          amount: "33",
-          rate: "13",
-          benchMarkPremium: "3",
-          deductible: "123"
-        },
-        ,
-        {
-          kindName: "144",
-          flag: "A0190Q",
-          amount: "44",
-          rate: "14",
-          benchMarkPremium: "4",
-          deductible: "123"
-        },
-        ,
-        {
-          kindName: "155",
-          flag: "A0190Q",
-          amount: "55",
-          rate: "15",
-          benchMarkPremium: "5",
-          deductible: "123"
-        }
       ],
       correction: {},
       flagCode: false,
@@ -534,7 +517,7 @@ export default {
     //导出
     carAuditPagechu(){
         this.$fetch.post(this.HOST + this.$url.carAuditPageToInsured, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
-        licenseNo:this.UwMotorcadeInfoVO.batchNo
+        licenseNo:this.UwMotorcadeInfoVO.licenseNo
         }})
         .then(res=>{
           console.log(res);
@@ -556,14 +539,10 @@ export default {
       
       // document.querySelector("div").style=" padding-right:0 !important;";
     },
-  
-    deletebatch(idx){
-      this.$fetch.post(this.HOST + this.$url.carAuditPageDelete, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
-      .then(res=>{
-        console.log(res);
-      })
-      // console.log(idx)
-      //  this.$router.push({ path: "/deletebatch", query: { row: idx } });
+  //删除批次
+    deletebatch(row){
+      console.log(row)
+       this.$router.push({ path: "/deletebatch", query: { row: row.flag ,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo} });
     },
 
     //分公司办结
@@ -622,6 +601,12 @@ export default {
   },
 
   created() {
+  this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {motorcadeNo:this.$route.query.row})
+  .then(res=>{
+    this.UwMotorcadeInfoVO=res
+    this.results=res
+    console.log(res);
+  })
     //设置collapse全部展开
     this.setActiveNames();
     // this.init();
