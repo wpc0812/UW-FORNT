@@ -1676,6 +1676,7 @@ export default {
      this.$fetch.post(this.HOST + this.$url.uwmainGetUwInfo, keyWords).then(data =>{
        console.log(data)
        this.underwritingDetails = data
+       
 
      })
     },
@@ -1689,11 +1690,14 @@ export default {
         case 'teamquality' :
           let key = { 
             'reportFormsType': 'teamquality',
+            'comcode': '12322312',
             'businessNo': this.routeDate.businessNo || '123', // 业务号
             'taskType': this.routeDate.type || 'T'// 业务类型
           }
           this.$fetch.get(this.HOST + this.$url.uwmainTeamquality, {params:key}).then(data => {
             console.log(data)
+            window.open(data)
+
           })
 
           break
