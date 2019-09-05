@@ -591,7 +591,7 @@ export default {
       this.flagCode = true;
     },
     init() {
-       // 查询详情
+       // 业务号查询详情
       this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
         params:{motorcadeNo:this.$route.query.motorcadeNo || "YD450000001"}}
         )

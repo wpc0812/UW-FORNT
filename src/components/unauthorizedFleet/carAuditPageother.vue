@@ -187,8 +187,8 @@
                   ></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
-                <el-form-item v-model="UwMotorcadeInfoVO.finishdate" label="距离控制日期结束日期:">{{UwMotorcadeInfoVO.finishdate}} 天</el-form-item>
+              <el-col :span="12">
+                <el-form-item v-model="UwMotorcadeInfoVO.finishdate" label="距离控制日期结束日期:">{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
               </el-col>
             </el-row>
             <el-row>
@@ -207,7 +207,7 @@
                         :on-success="onSuccess"
                         :http-request="addExcel"
                         :on-change="uploadname"
-                        :show-file-list="false"
+                        :show-file-list="true"
                         :file-list="fileList1"
                         :on-preview="handlePreview"
                         :before-remove="beforeRemove"
@@ -226,7 +226,7 @@
               </el-col>
             </el-row>
               <el-row>
-              <el-col :span="10">
+              <!-- <el-col :span="10">
                  <el-form-item label="修改批次:">
                     <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">
@@ -251,7 +251,7 @@
                     </template>
                   </el-input>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
               <el-col :span="4">
                   <el-button size="small" @click="updatepici" type="primary">上传文件</el-button>
               </el-col>
@@ -302,7 +302,7 @@
                     type="text"
                     size="small"
                     @click="BusinessNum(scope.row)"
-                  >{{scope.row.flag}}</el-button>
+                  >{{scope.row.licenseNo}}</el-button>
                 </template>
               </el-table-column>
               <el-table-column align="center" prop="costRatemax" label="商业险手续费上限"></el-table-column>
@@ -427,13 +427,6 @@ export default {
         { value: "续保车队", label: "3" }
       ],
       results: [
-        {
-          batchNo: "111",
-          flag: "A0190Q",
-          costRatemax: "11",
-          costdisountmin: "11",
-          exceptNCDDiscountUpper: "1",
-        },
       ],
       correction: {},
       flagCode: false,
@@ -461,7 +454,9 @@ export default {
           value: 2,
           label: "审核未通过"
         }
-      ]
+      ],
+      formDataAdd:{},
+      formDataUP:{}
     };
   },
 
@@ -473,9 +468,12 @@ export default {
 
     },
     uploadname(file, fileList){
-      console.log(file,fileList)
+      // console.log(file,fileList)
       this.UwMotorcadeInfoVO.appici = file.name;
-
+      let formData = new FormData();
+      formData.append("file", file.raw);
+      this.uploading = true;
+      this.formDataAdd=formData
     },
     handlePreview(file, fileList){
 
@@ -488,12 +486,8 @@ export default {
     addpici(){
       this.addExcel()
     },
-    addExcel(file){
-     let formData = new FormData();
-      formData.append("file", file.raw);
-      this.uploading = true;
-      // console.log(file)
-      this.$fetch.post(this.HOST + this.$url.carAuditPageaddfile, {data:formData,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
+    addExcel(){
+      this.$fetch.post(this.HOST + this.$url.carAuditPageaddfile, {datas:this.formDataAdd,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
     .then(res=>{
       console.log(res);
     })
@@ -529,15 +523,21 @@ export default {
         this.activeNames.push(JSON.stringify(i));
       }
     },
-    //提交审核
+  
+  //删除批次
+    deletebatch(row){
+      // console.log(row)
+       this.$router.push({ path: "/deletebatch", query: { row: row.batchNo ,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo} });
+    },
+  //提交审核
     submitaudit(){
-        let PiccInfoRequestDTO={
+        let picc={
             motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
             userCode:"userCode",
             handleText:"yes",
             userName:"userName"
         }
-      this.$fetch.post(this.HOST + this.$url.carAuditPageSubmits,PiccInfoRequestDTO)
+      this.$fetch.post(this.HOST + this.$url.carAuditPageSubmits,picc)
       .then(res=>{
         console.log(res);
       })
@@ -545,12 +545,6 @@ export default {
       
       // document.querySelector("div").style=" padding-right:0 !important;";
     },
-  //删除批次
-    deletebatch(row){
-      console.log(row)
-       this.$router.push({ path: "/deletebatch", query: { row: row.flag ,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo} });
-    },
-
 
 
 
@@ -558,8 +552,8 @@ export default {
     //生效办结
     outerBranch(){
         //  this.$router.push({ path: "/toUwmotorcadeinfoPage"});
-        let  PiccInfoRequestDTO={motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,userCode:"userCode",handleText:"yes",userName:"userName"}
-        this.$fetch.post(this.HOST + this.$url.carAuditPageOuterBranch, PiccInfoRequestDTO)
+        let  picc={motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,userCode:"userCode",handleText:"yes",userName:"userName"}
+        this.$fetch.post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
         .then(res=>{
         console.log(res);
         })
@@ -587,7 +581,7 @@ export default {
     },
     //删除
     outerDelete(){
-        this.$fetch.post(this.HOST + this.$url.carAuditPageDelete, {motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
+        this.$fetch.get(this.HOST + this.$url.carAuditPageDelete, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
         .then(res=>{
         console.log(res);
         })
@@ -646,7 +640,7 @@ export default {
     upload() {},
     BusinessNum(row) {
       // console.log(row)
-      this.$router.push({ path: "/unNumPlate", query: { row: row.flag } });
+      this.$router.push({ path: "/unNumPlate", query: { row: row.licenseNo, motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo} });
     },
     submitUpload() {
       // this.$refs.upload.submit();
@@ -658,29 +652,32 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
+    //车牌号查询
     selectCode() {
       this.flagCode = true;
+      this.$fetch.get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {params:{licenseNo:this.UwMotorcadeInfoVO.licenseNo,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
+      .then(res=>{
+        this.results=res
+        console.log(res);
+      })
     },
     init() {
-      this.postRequest(`/fridayService02/queryobject1detail`, {
-        businessNo: this.parameter.businessNo
-      }).then(res => {
-        // this.carAuditPage = res.data.data;
+      // 业务号查询详情
+      this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
+        params:{motorcadeNo:this.$route.query.motorcadeNo || "YD450000001"}}
+        )
+      .then(res=>{
+        this.UwMotorcadeInfoVO = res
+        this.results = res.uwMotorcadeInfos
         console.log(res);
-      });
+      })
     }
   },
 
   created() {
-//   this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.$route.query.row}})
-//   .then(res=>{
-//     this.UwMotorcadeInfoVO=res
-//     this.results=res
-//     console.log(res);
-//   })
     //设置collapse全部展开
     this.setActiveNames();
-    // this.init();
+    this.init();
     this.parameter = this.$route.query;
   }
 };

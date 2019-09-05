@@ -16,10 +16,10 @@
                   <el-form-item label="关系人标志:">
                     <el-select v-model="UwMotorcadeMainVO.insuredflag" clearable placeholder="请选择">
                       <el-option
-                        v-for="relation in relations"
-                        :key="relation.code"
-                        :label="relation.value"
-                        :value="relation.code"
+                        v-for="item in relations"
+                        :key="item.label"
+                        :label="item.value"
+                        :value="item.label"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -94,10 +94,11 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { relations } from "@/assets/js/baseCode";
+// import { relations } from "@/assets/js/baseCode";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
 import qs from "querystring";
+import utils from '../../utils/index'
 export default {
   name: "otReported",
   components:{
@@ -113,7 +114,10 @@ export default {
         firstSubmitDate:""
       },
       activeNames: ["1"],
-      relations,
+      relations:[
+        { value: "1_被保险人", label: "1" },
+        { value: "2_投保人", label: "2" }
+      ],
       flag:true,
       results:[],
     };
@@ -128,21 +132,22 @@ export default {
     //导出
     rtReportedchu() {
       let uwMotorcadeMainVO=this.UwMotorcadeMainVO 
-    this.$fetch.post(this.HOST + this.$url.rtReportedToInsured, uwMotorcadeMainVO)
-    .then(res=>{
-      console.log(res);
-    })
+    // this.$fetch.post(this.HOST + this.$url.rtReportedToInsured, uwMotorcadeMainVO)
+    // .then(res=>{
+    //   console.log(res);
+    // })
+    window.open(this.$url.rtReportedToInsured+ "?"+ utils.encodeSearchParams(uwMotorcadeMainVO))
+    // window.open(this.$url.rtReportedToInsured+ "?"+ utils.encodeSearchParams(uwMotorcadeMainVO))
       
     },
-
+   
+    //查询
     query() {
-      console.log(this.UwMotorcadeMainVO.motorcadeNo);
-    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.UwMotorcadeMainVO.motorcadeNo}})
-    .then(res=>{
-      console.log(res);
-      this.results=res;
-      // this.$set(this.results,res)
-    })
+       this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
+      .then(res=>{
+        console.log(res)
+        this.results = res
+      })
       
     },
 
@@ -161,6 +166,7 @@ export default {
     }
   },
   created() {
+    // this.UwMotorcadeMainVO.insuredflag="全部"
     let uwMotorcadeMainVO=this.UwMotorcadeMainVO
     this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
     .then(res=>{

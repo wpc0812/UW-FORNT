@@ -8,35 +8,39 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">号码单车修改</div>
           </template>
-          <el-form ref="UwMotorcadeInfoVO" :model="UwMotorcadeInfoVO" :rules="rules" label-width="280px">
+          <el-form
+            ref="UwMotorcadeInfoVO"
+            :model="UwMotorcadeInfoVO"
+            :rules="rules"
+            label-width="280px"
+          >
             <el-row>
               <el-row>
                 <el-col :span="10">
-                  <el-form-item label="车牌号:" label-width="200px" prop="motorcadeNo">
-                    <el-input  class="peoCode" v-model="UwMotorcadeInfoVO.motorcadeNo"></el-input>
+                  <el-form-item label="车牌号:" label-width="200px" prop="licenseNo">
+                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.licenseNo"></el-input>
                   </el-form-item>
                 </el-col>
-                  <el-col :span="14">
+                <el-col :span="14">
                   <el-form-item label="商业险手续费上限:">
-                    <el-input  class="peoCode" v-model="UwMotorcadeInfoVO.costRatemax"></el-input>
+                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.costRatemax" :disabled="flags"></el-input>
                   </el-form-item>
                 </el-col>
-                  <el-col :span="10">
+                <el-col :span="10">
                   <el-form-item label="商业险总折扣率下限:" label-width="200px">
-                    <el-input class="peoCode"  v-model="UwMotorcadeInfoVO.costdisountmin"></el-input>
+                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.costdisountmin" :disabled="flags"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="14">
                   <el-form-item label="自主核保系数*自助渠道系数下限(出ncd系数):">
-                    <el-input  class="peoCode" v-model="UwMotorcadeInfoVO.exceptNCDDiscountUpper"></el-input>
+                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.exceptNCDDiscountUpper" :disabled="flags"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24" class="text-center">
-                <el-button size="mini" @click="save()"  type="primary">保存</el-button>
-                <el-button size="mini" @click="goBack()">返回</el-button>
-              </el-col>
+                  <el-button size="mini" @click="save()" type="primary">保存</el-button>
+                  <el-button size="mini" @click="goBack()">返回</el-button>
+                </el-col>
               </el-row>
-            
             </el-row>
           </el-form>
         </el-collapse-item>
@@ -67,30 +71,32 @@ export default {
 
   data() {
     return {
+      flags:true,
       outerVisible: false,
-      centerDialogVisible:false,
+      centerDialogVisible: false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
-      valueidx:"",
-      UwMotorcadeInfoVO: {
-        motorcadeNo:""
-      },
-        rules: {
-        motorcadeNo: [
-          { required: true, message: "号码牌不能和修改前相同", trigger: ["change","blur"] },
+      valueidx: "",
+      UwMotorcadeInfoVO: {},
+      rules: {
+        licenseNo: [
           {
-            min: 7,
-            max: 7,
-            message: "长度为7个字符",
+            required: true,
+            message: "号码牌不能和修改前相同",
             trigger: ["change", "blur"]
           },
-        ],
-        },
+          // {
+          //   min: 7,
+          //   max: 7,
+          //   message: "长度为7个字符",
+          //   trigger: ["change", "blur"]
+          // }
+        ]
+      }
     };
   },
-  watch:{
-  },
+  watch: {},
   computed: {
     ...mapGetters(["getList"])
   },
@@ -98,24 +104,27 @@ export default {
   methods: {
     ...mapActions(["getUwMotorcadeInfoVO"]),
     //保存
-     save() {
+    save() {
       this.$refs.UwMotorcadeInfoVO.validate(valids => {
-        if(valids){
+        if (valids) {
           // console.log("555555")
-        this.$fetch.post(this.HOST + this.$url.unNumPlateUpdate, this.UwMotorcadeInfoVO)
-        .then(res=>{
-          console.log(res);
-        })
-          
+          this.$fetch
+            .post(
+              this.HOST + this.$url.unNumPlateUpdate,
+              this.UwMotorcadeInfoVO
+            )
+            .then(res => {
+              console.log(res);
+            });
         }
       });
       // this.outerVisible = true;
       // this.getcorrection(this.correction);
     },
-     goBack() {
+    goBack() {
       this.$router.go(-1);
     },
-     handleClose(done) {
+    handleClose(done) {
       console.log("确认");
     },
     acd() {},
@@ -138,11 +147,18 @@ export default {
     }
   },
   created() {
-    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.$route.query.motorcadeNo}})
-      .then(res=>{
-        this.UwMotorcadeInfoVO=res
-        console.log(res);
+    // console.log(this.$route.query.row,this.$route.query.motorcadeNo);
+    this.$fetch
+      .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
+        params: {
+          licenseNo: this.$route.query.row,
+          motorcadeNo: this.$route.query.motorcadeNo
+        }
       })
+      .then(res => {
+        this.UwMotorcadeInfoVO = res[0];
+        // console.log(res[0]);
+      });
   }
 };
 </script>

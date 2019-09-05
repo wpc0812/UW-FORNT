@@ -9,7 +9,7 @@ module.exports = {
     // proxy: 'http://192.168.43.119:8763' //手机
     // proxy: 'http://192.168.137.254:8763' //电脑
     // proxy: 'http://localhost:3000',//模拟数据
-    // 11.205.241.116 葛超印
+    // 11.205.241.44 葛超印
     //11.205.241.15 金生哥
     // 11.205.241.56 吕鑫
     // 11.205.241.53 天宇
@@ -24,7 +24,7 @@ module.exports = {
     // 查阅 参数描述 https://github.com/chimurai/http-proxy-middleware
     proxy: {
         '/apis': {
-            target: 'http://11.205.241.53:8082',
+            target: 'http://11.205.241.44:8082',
             pathRewrite: {
                 '^/apis': ''
             },

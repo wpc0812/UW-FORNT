@@ -136,8 +136,6 @@ export default {
     },
      // 查询列表
     query() {
-
-    
       this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
       .then(res=>{
         console.log(res)

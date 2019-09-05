@@ -42,7 +42,6 @@
                   <el-form-item label="控制关系人名称:" prop="insuredName">
                     <template>
                       <el-input v-model="UwMotorcadeMainVO.insuredName" :disabled="distorenewal">
-                        <el-button @click="selectName" slot="append" size="small" type="text">查询</el-button>
                       </el-input>
                     </template>
                   </el-form-item>
@@ -53,7 +52,6 @@
                   <el-form-item label="控制关系人代码:" prop="insuredCode">
                     <template>
                       <el-input v-model="UwMotorcadeMainVO.insuredCode" :disabled="distorenewal">
-                        <el-button @click="selectCode" slot="append" size="small" type="text">查询</el-button>
                       </el-input>
                     </template>
                   </el-form-item>
@@ -218,7 +216,7 @@
     <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
           <template>
                 <el-transfer 
-                v-model="UwMotorcadeMainVO.carCadastral"
+                v-model="UwMotorcadeMainVO.uppercartype"
                 :props="{key: 'id',label: 'name'}"
                 :data="datas"
                 :titles="['未选择', '已选择']"
@@ -252,7 +250,7 @@ export default {
         return datas;
       };
     return {
-      distorenewal:false,  
+      distorenewal:true,  
       val:[],
       aaaa:"",
       datas:generateData(),
@@ -267,7 +265,7 @@ export default {
         carcountAll: "",
         estimatedPremiumSize: "",
         uppercarcount: "",
-        uppercartype: [],
+        uppercartype: "",
         carmainmodel: "",
         carmainarea: "",
         finishdate: "",
@@ -312,7 +310,7 @@ export default {
           { required: true, message: "预估保费规模必填", trigger: ["blur"] }
         ],
         uppercarcount: [ 
-          { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
+          // { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
         ],
         uppercartype: [
           { required: true, message: "超分公司权限车辆种类", trigger: ["change"] }
@@ -344,13 +342,14 @@ export default {
       relations,
       flags: true,
       formData: {},
+      types:[]
     };
   },
   computed: {},
   methods: {
     transfer1(value, direction, movedKeys){
-      // console.log(this.datas)
-      this.UwMotorcadeMainVO.carCadastral=value;
+      console.log(typeof value)
+      // this.UwMotorcadeMainVO.uppercartype=value;
       // console.log(this.UwMotorcadeMainVO.carCadastral,movedKeys)
     },
     handleClose: function() {
@@ -360,18 +359,19 @@ export default {
           this.carCadastralVisible = false;
          let b=[];
       let c=[];
-      for(let i=0;i<this.UwMotorcadeMainVO.carCadastral.length+1;i++){
+      for(let i=0;i<this.UwMotorcadeMainVO.uppercartype.length+1;i++){
         for(let j=0;j<this.datas.length;j++){
-          if(this.UwMotorcadeMainVO.carCadastral[i]==this.datas[j].id){
+          if(this.UwMotorcadeMainVO.uppercartype[i]==this.datas[j].id){
               c.push(this.datas[j].name)
               b.push(this.datas[j].name.substring(this.datas[j].name.length-4,this.datas[j].name.length-8))
           }
           
         }
       }
-      console.log(b+"bbbbbbbb",c+"c")
+      // console.log(b+"bbbbbbbb",c+"c")
       this.aaaa=c.join();
-      this.UwMotorcadeMainVO.uppercartype=b
+      this.UwMotorcadeMainVO.uppercartype=b.join()
+      // console.log(this.aaaa,"-----------"+typeof this.UwMotorcadeMainVO.uppercartype)
     },
     // 点击弹出
     carCadastralflag(){
@@ -419,10 +419,21 @@ export default {
       //  this.$router.push({path: '/selectMSg',query:{row:this.UwMotorcadeMainVO.insuredName}})
       this.$router.push({path: '/selectMSg'})
     },
+     init() {
+             // 查询详情
+      this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
+        params:{motorcadeNo:this.$route.query.motorcadeNo || "YD450000001"}}
+        )
+      .then(res=>{
+        this.UwMotorcadeMainVO = res
+        // this.results = res.uwMotorcadeInfos
+        console.log(res);
+      })
+    }
   
   },
   created() {
-
+       this.init()
   }
 };
 </script>

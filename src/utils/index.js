@@ -23,7 +23,7 @@ export default {
     return array.join(',')
    },
    //校验维护期长度
-   checkMaxContractMonths(string:any){
+   checkMaxContractMonths(string){
        var numReg = new RegExp(/^[1-9]\d*$/)
        if(string != ''){
            if(numReg.test(string)){
