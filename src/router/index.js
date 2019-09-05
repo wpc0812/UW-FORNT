@@ -98,7 +98,7 @@ const router = new Router({
           component: _import('lossRatioManagement/lossRatioQuery'),
           hidden: true,
           meta: {
-            requireAuth: true,
+            requireAuth: false,
             keepAlive: false
           }
         },

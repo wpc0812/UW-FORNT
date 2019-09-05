@@ -48,26 +48,24 @@
               <el-col :span="15">
                 <el-form-item label="提交时间:">
                   <el-date-picker
-                    v-model="recommended.validityTime"
+                    v-model="recommended.inputDateStart"
                     value-format="yyyy-MM-dd HH:mm:ss"
-                    type="datetimerange"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    >
+                    type="datetime"
+                    placeholder="选择日期时间">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
-                <!-- <el-col :span="8">
-                <el-form-item label="提交时间:">
-                  
-                </el-form-item>
-              </el-col>
+               
                <el-col :span="8">
                 <el-form-item label="至:">
-                  
+                  <el-date-picker
+                    v-model="recommended.inputDateEnd"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    type="datetime"
+                    placeholder="选择日期时间">
+                  </el-date-picker>
                 </el-form-item>
-              </el-col> -->
+              </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
@@ -93,11 +91,11 @@
                   @current-change="handleCurrentChange"
                   :pager-count="5"
                   small
-                  :current-page="page.pageNo"
+                  :current-page="page.incompletePageNo"
                   :page-sizes="[10, 20, 50]"
-                  :page-size="page.pageSize"
+                  :page-size="page.incompletePageSize"
                   layout="total, sizes, prev, pager, next, jumper"
-                  :total="page.total"
+                  :total="page.incompleteTotal"
                 ></el-pagination>
               </el-row>
               <el-table
@@ -108,18 +106,18 @@
                   :header-cell-style="{'text-align': 'center'}"
                   :header-cell-class-name="'table-header-bg'"
                 >
-                  <el-table-column prop="businessType" label="业务状态"></el-table-column>
+                <el-table-column prop="businessState" label="业务状态"></el-table-column>
                   <el-table-column label="业务号">
                     <template slot-scope="scope">
                       <el-button type="text" size="mini" @click="goDetail(scope.row.businessNo)">{{scope.row.businessNo}}</el-button>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="businessType" label="险种"></el-table-column>
-                  <el-table-column prop="businessType" label="归属机构"></el-table-column>
-                  <el-table-column prop="businessType" label="提交时间"></el-table-column>
-                  <el-table-column prop="businessType" label="处理人"></el-table-column>
-                  <el-table-column prop="businessType" label="渠道名称"></el-table-column>
-                  <el-table-column prop="businessType" label="渠道码"></el-table-column>
+                  <el-table-column prop="riskCode" label="险种"></el-table-column>
+                  <el-table-column prop="comCode" label="归属机构"></el-table-column>
+                  <el-table-column prop="inputDate" label="提交时间"></el-table-column>
+                  <el-table-column prop="userCode" label="处理人"></el-table-column>
+                  <el-table-column prop="agentName" label="渠道名称"></el-table-column>
+                  <el-table-column prop="agentCode" label="渠道码"></el-table-column>
                 </el-table>
             </el-collapse-item>
         </el-collapse>
@@ -134,15 +132,15 @@
              <el-row class="text-left">
                 <el-pagination
                   class="mb10 mt10"
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
+                  @size-change="handleSizeChangeY"
+                  @current-change="handleCurrentChangeY"
                   :pager-count="5"
                   small
-                  :current-page="pageY.pageNo"
+                  :current-page="page.completePageNo"
                   :page-sizes="[10, 20, 50]"
-                  :page-size="pageY.pageSize"
+                  :page-size="page.completePageSize"
                   layout="total, sizes, prev, pager, next, jumper"
-                  :total="pageY.total"
+                  :total="page.completeTotal"
                 ></el-pagination>
               </el-row>
               <el-table
@@ -160,12 +158,12 @@
                       <el-button type="text" size="mini" @click="goDetail(scope.row.businessNo)">{{scope.row.businessNo}}</el-button>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="riskName" label="险种"></el-table-column>
+                  <el-table-column prop="riskCode" label="险种"></el-table-column>
                   <el-table-column prop="comCode" label="归属机构"></el-table-column>
-                  <el-table-column prop="subTime" label="提交时间"></el-table-column>
-                  <el-table-column prop="handler" label="处理人"></el-table-column>
-                  <el-table-column prop="channelName" label="渠道名称"></el-table-column>
-                  <el-table-column prop="channelCode" label="渠道码"></el-table-column>
+                  <el-table-column prop="inputDate" label="提交时间"></el-table-column>
+                  <el-table-column prop="userCode" label="处理人"></el-table-column>
+                  <el-table-column prop="agentName" label="渠道名称"></el-table-column>
+                  <el-table-column prop="agentCode" label="渠道码"></el-table-column>
               </el-table>
           </el-collapse-item>
         </el-collapse>
@@ -192,15 +190,14 @@ export default {
       businessList: [], // 未处理状态 列表
       businessListY:[], // 已处理状态 列表
       page: { //  处理状态分页
-        pageSize: 10,
-        total: 0,
-        pageNo: 1
+        incompletePageSize: 10,
+        incompletePageNo: 1,
+        incompleteTotal: 0,
+        completePageSize: 10,
+        completePageNo: 1,
+        completeTotal: 0
       },
-      pageY: { // 已处理状态分页
-        pageSize: 10,
-        total: 0,
-        pageNo: 1
-      }
+      
     
       
         
@@ -209,18 +206,48 @@ export default {
 
   methods: {
     // 条数查询
-    handleSizeChange(){
-
+    handleSizeChange(value){
+      this.page.incompletePageSize= value
+       this.quryBusiness()
     },
     // 分页查询
-    handleCurrentChange(){
-
+    handleCurrentChange(value){
+      this.page.incompletePageNo = value  
+       this.quryBusiness()
     },
+    // 条数查询
+    handleSizeChangeY(value){
+      this.page.completePageSize = value  
+       this.quryBusiness()
+    },
+    // 分页查询
+    handleCurrentChangeY(value){
+      this.page.completePageNo = value  
+      this.quryBusiness()
+    },
+
     quryBusiness(){
-      this.$fetch.post(this.HOST + this.$url.recommendedQury,{...this.recommended,...page}).then(data => {
+      if(!this.recommended.businessStates || this.recommended.businessStates.length ==0){
+        this.$message.error('请选择任务状态');
+        return
+      }
+      this.recommended.state = this.recommended.businessStates.join(',')
+      this.$fetch.post(this.HOST + this.$url.recommendedQury,{...this.recommended,...this.page}).then(data => {
         console.log(data)
+        if(data.incompleteList && data.incompleteList.length > 0) {
+          this.businessList = data.incompleteList
+          this.$set(this.page,'total',data.incompleteTotal)
+        }
+        if(data.completeList && data.completeList.length > 0){
+          this.businessListY =  data.completeList
+          this.$set(this.page,'total',data.completeTotal)
+        }
+      
+
+
       })
     },
+    
     // 跳转详情
     goDetail(row){
       this.$router.push({

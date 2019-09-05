@@ -209,31 +209,7 @@
       "reuireAuth": true
     }
   },
-  {
-    "id" : 17 ,
-    "path": "/home",
-    "iconCls": "fa fa-universal-access",
-    "name": "赔付率管理",
-    "component": "Home",
-    "children": [
-      {
-        "id": 18,
-        "path": "/lossRatioQuery",
-        "iconCls": "fa fa-expeditedssl",
-        "name": "赔付率查询",
-        "component": "lossRatioQuery",
-        "children": [],
-        "meta": {
-          "keepAlive": false,
-          "reuireAuth": true
-        }
-      }
-    ],
-    "meta": {
-      "keepAlive": false,
-      "reuireAuth": true
-    }
-  },
+
   {
     "id" : 19 ,
     "path": "/home",
