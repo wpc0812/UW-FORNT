@@ -404,14 +404,24 @@ export default {
     },
     //详情
     goDetail(row) {
-      debugger
-      this.$router.push({
-        path: '/underwritingDetails',
-        query: {
-          businessNo: row.businessNo,
-          type: row.businessType
-        }
-      })
+      if(row.title === '团单方案') {
+        this.$router.push({
+          path: '/underwritingTeamDetails',
+          query: {
+            businessNo: row.businessNo,
+            type: row.businessType
+          }
+        })
+      } else{
+        this.$router.push({
+          path: '/underwritingDetails',
+          query: {
+            businessNo: row.businessNo,
+            type: row.businessType
+          }
+        })
+      }
+      
     },
     datePickerChange( ){
       console.log(this.underwriting.flowDate)

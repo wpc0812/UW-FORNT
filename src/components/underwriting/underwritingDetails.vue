@@ -1696,7 +1696,9 @@ export default {
           }
           this.$fetch.get(this.HOST + this.$url.uwmainTeamquality, {params:key}).then(data => {
             console.log(data)
+            // window.open("http://www.baidu.com")
             window.open(data)
+
 
           })
 

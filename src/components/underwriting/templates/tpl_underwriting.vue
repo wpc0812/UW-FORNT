@@ -106,7 +106,12 @@ export default {
     },
     goDetail(row) {
       debugger
-      this.$emit('goDetail', row)
+      let key ={
+        title : this.title
+      }
+      this.$emit('goDetail', {
+        ...row,
+        ...key})
     }
   }
 };
