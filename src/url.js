@@ -21,11 +21,11 @@ module.exports  = {
     carAuditPageToInsured:'/motorcade/createMotorcadeInfoExcel', //超权限车队 异地详情导出接口
     carAuditPageaddfile:'/motorcade/uwmotorcadeinfoImport', //超权限车队 异地详情增加上传文件
     carAuditPageUpdatefile:'/motorcade/uwmotorcadeinfoUpdate', //超权限车队 异地详情修改上传文件 
-    carAuditPageSubmits:'/motorcade/submits', //超权限车队 异地详情提交审核
+    carAuditPageSubmits:'/submits', //超权限车队 异地详情提交审核
     deletebatchDel:'/motorcade/delectBatchByNo', //超权限车队 异地详情删除批次
     unNumPlateUpdate:'/motorcade/UpdateUwmotorcadeinfo', //超权限车队 异地详情 车辆详情修改页面
-    otAddSaves:'/motorcade/motorcadeMainSave',//超权限车队  其他新增
-    otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
+    // otAddSaves:'/motorcade/motorcadeMainSave',//超权限车队  其他新增
+    // otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
                                                          //--------------------顶部按钮----------------------
     carAuditPageDelete:'/motorcade/motorcadeMainDelete', //超权限车队 异地详情顶部 删除
     carAuditPageUpdate:'/motorcade/motorcadeRemoteAddOrUpdate', //超权限车队 异地详情顶部 修改
@@ -33,7 +33,9 @@ module.exports  = {
     carAuditPageTransferRecord:'/motorcade/findUwMotorcadeFlowRecord', //超权限车队 异地详情顶部 流转记录
     carAuditPageOuterRenewal:'/motorcade/motorcadeMainRenewal', //超权限车队 异地详情顶部 续保
     carAuditPageAuditOpinion:'/motorcade/findUwMotorcadeNotion', //超权限车队 异地详情顶部 审核意见
-    carAuditPageOuterBranch:'/motorcade/effectiveHandling', //超权限车队 异地详情顶部 分公司办结
+    carAuditPageOuterBranch:'/effectiveHandling', //超权限车队 异地详情顶部 生效办结
+    carAuditPageUploadECMs:'/uploadECMs', //超权限车队 异地详情顶部 影像上传
+    carAuditPageQueryECMs:'/queryECMs', //超权限车队 异地详情顶部 查看资料
  
     // -----核保处理 ---
     uwmainGetUwList: '/uwmain/getUwList',

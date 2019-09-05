@@ -233,9 +233,6 @@ export default {
           }
         ]
       },
-
-      UwctrlVO: {},
-
       relationsss: [
         { value1: "1_被保险人", label: "1" },
         { value1: "2_投保人", label: "2" }

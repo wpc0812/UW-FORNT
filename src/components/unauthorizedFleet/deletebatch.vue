@@ -85,7 +85,7 @@ export default {
 
     deletes() {
       
-      this.$fetch.post(this.HOST + this.$url.deletebatchDel,
+      this.$fetch.get(this.HOST + this.$url.deletebatchDel,
       {params:{motorcadeNo:this.$route.query.motorcadeNo,
       licenseNo:this.results[0].batchNo
       }})
@@ -114,7 +114,7 @@ export default {
   },
   created() {
     console.log(this.$route.query.row,this.$route.query.motorcadeNo);
-     this.$fetch.post(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.$route.query.motorcadeNo}})
+     this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.$route.query.motorcadeNo}})
       .then(res=>{
         this.results=res
         console.log(res);

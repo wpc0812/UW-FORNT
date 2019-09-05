@@ -137,7 +137,13 @@ export default {
       this.task.tab2 = val;
     }
   },
-  created() {}
+  created() {
+    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.$route.query.motorcadeNo}})
+      .then(res=>{
+        this.UwMotorcadeInfoVO=res
+        console.log(res);
+      })
+  }
 };
 </script>
 <style scoped>

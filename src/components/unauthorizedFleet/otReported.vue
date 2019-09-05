@@ -9,12 +9,12 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入查询条件</div>
           </template>
-          <el-form ref="form" :model="rtReported" label-width="140px">
+          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select v-model="rtReported.value" clearable placeholder="请选择">
+                    <el-select v-model="UwMotorcadeMainVO.insuredflag" clearable placeholder="请选择">
                       <el-option
                         v-for="relation in relations"
                         :key="relation.code"
@@ -26,26 +26,26 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人代码:">
-                    <el-input v-model="rtReported.memberName"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="关系人名称:">
-                    <el-input v-model="rtReported.vesselName"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.insuredName"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="业务号:">
-                    <el-input v-model="rtReported.vesselName"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.motorcadeNo"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="提交时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="rtReported.value1"
+                      v-model="UwMotorcadeMainVO.firstSubmitDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -54,7 +54,7 @@
               </el-row>
               <el-col :span="24" class="text-center">
                 <el-button @click="query()" size="mini" type="primary">查询</el-button>
-                <el-button @click="reset" size="mini">导出</el-button>
+                <el-button @click="rtReportedchu" size="mini">导出</el-button>
               </el-col>
             </el-row>
           </el-form>
@@ -72,21 +72,21 @@
         :header-cell-class-name="'table-header-bg'"
       >
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column prop="insuranceType" label="流转状态"></el-table-column>
-        <el-table-column prop="memberName" label="业务号" >
+        <el-table-column prop="state" label="流转状态"></el-table-column>
+        <el-table-column prop="motorcadeNo" label="业务号">
           <template slot-scope="scope"> 
-            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.memberName}}</el-button>
+            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.motorcadeNo}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="memberName" label="分公司"></el-table-column>
-        <el-table-column prop="memberName" label="关系人标志"></el-table-column>
-        <el-table-column prop="memberName" label="关系人名称"></el-table-column>
-        <el-table-column prop="memberName" label="业务来源"></el-table-column>
-        <el-table-column prop="memberName" width="115" label="历史满期赔付率"></el-table-column>
-        <el-table-column prop="memberName" label="控制结束日期"></el-table-column>
-        <el-table-column prop="memberName" label="是否续保"></el-table-column>
-        <el-table-column prop="memberName" label="提交时间"></el-table-column>
-        <el-table-column prop="memberName" label="分公司上报人"></el-table-column>
+        <el-table-column prop="comcode" label="分公司"></el-table-column>
+        <el-table-column prop="insuredflag" label="关系人标志"></el-table-column>
+        <el-table-column prop="insuredName" label="关系人名称"></el-table-column>
+        <el-table-column prop="businessNature" label="业务来源"></el-table-column>
+        <el-table-column prop="lastFourYearPayPercent" width="115" label="历史满期赔付率"></el-table-column>
+        <el-table-column prop="finishdate" label="控制结束日期"></el-table-column>
+        <el-table-column prop="isextendtime" label="是否续保"></el-table-column>
+        <el-table-column prop="firstSubmitDate" label="提交时间"></el-table-column>
+        <el-table-column prop="submitUser" label="分公司上报人"></el-table-column>
         <el-table-column prop="memberName" label="总公司审核人"></el-table-column>
       </el-table>
     </el-card>
@@ -97,20 +97,25 @@ import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
-
+import qs from "querystring";
 export default {
-  name: "rtReported",
+  name: "otReported",
   components:{
      LeftMenu, HeadMenu 
   },
   data() {
     return {
+      UwMotorcadeMainVO:{
+        insuredflag:"",
+        insuredCode:"",
+        insuredName:"",
+        motorcadeNo:"",
+        firstSubmitDate:""
+      },
       activeNames: ["1"],
       relations,
-      flag:false,
-      rtReported: {},
-      results: [{memberName: 111111111,insuranceType:"待审核"},{memberName: 111112111,insuranceType:"待审核"},{memberName: 111331111,insuranceType:"待审核"},{memberName: 111111111,insuranceType:"待审核"},
-      ]
+      flag:true,
+      results:[],
     };
   },
 
@@ -119,17 +124,31 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getrtReported"]),
-
-    reset() {},
+    // ...mapActions(["getUwMotorcadeMainVO"]),
+    //导出
+    rtReportedchu() {
+      let uwMotorcadeMainVO=this.UwMotorcadeMainVO 
+    this.$fetch.post(this.HOST + this.$url.rtReportedToInsured, uwMotorcadeMainVO)
+    .then(res=>{
+      console.log(res);
+    })
+      
+    },
 
     query() {
-      // this.getrtReported(this.rtReported);
-      this.flag=true
+      console.log(this.UwMotorcadeMainVO.motorcadeNo);
+    this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {params:{motorcadeNo:this.UwMotorcadeMainVO.motorcadeNo}})
+    .then(res=>{
+      console.log(res);
+      this.results=res;
+      // this.$set(this.results,res)
+    })
+      
     },
+
     BusinessNum(row){
-      // console.log(row)
-      this.$router.push({path: '/carAuditPage',query:{row:row.memberName}})
+      // console.log(row);
+      this.$router.push({path: '/carAuditPageother',query:{row:row.motorcadeNo}})
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -141,7 +160,14 @@ export default {
       this.task.tab2 = val;
     }
   },
-  created() {}
+  created() {
+    let uwMotorcadeMainVO=this.UwMotorcadeMainVO
+    this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
+    .then(res=>{
+      console.log(res)
+      this.results=res
+    })
+  }
 };
 </script>
 <style scoped>

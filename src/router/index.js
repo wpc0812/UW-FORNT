@@ -73,6 +73,26 @@ const router = new Router({
           }
         },
         {
+          path: '/topupdate',
+          name: '顶部修改',
+          component: _import('unauthorizedFleet/topupdate'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/torenewal',
+          name: '顶部续保',
+          component: _import('unauthorizedFleet/torenewal'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
           path: '/lossRatioQuery',
           name: '赔付率查询',
           component: _import('lossRatioManagement/lossRatioQuery'),
@@ -267,6 +287,16 @@ const router = new Router({
             path: '/carAuditPage',
             name: '车队审核页面',
             component: _import('unauthorizedFleet/carAuditPage'),
+            hidden: true,
+            meta: {
+              requireAuth: true,
+              keepAlive: false
+            },
+          },
+          {
+            path: '/carAuditPageother',
+            name: '车队详情页面',
+            component: _import('unauthorizedFleet/carAuditPageother'),
             hidden: true,
             meta: {
               requireAuth: true,

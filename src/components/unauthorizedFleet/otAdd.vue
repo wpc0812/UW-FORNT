@@ -99,28 +99,21 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="超分公司权限车辆总数:" prop="uppercarcount" class="text-left">
-                    <el-input v-model="UwMotorcadeMainVO.uppercarcount"></el-input>
+                  <el-form-item label="异地车数量:" prop="foreigncarcount" class="text-left">
+                    <el-input v-model="UwMotorcadeMainVO.foreigncarcount"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="超分公司权限车辆种类:" prop="uppercartype">
-                    <!-- <el-input v-model="UwMotorcadeMainVO.carCadastral" placeholder="点击选择" @focus='carCadastralflag'></el-input> -->
-                    <el-select
-                      v-model="UwMotorcadeMainVO.uppercartype"
-                      clearable
-                      placeholder="点击选择"
-                      :focus="carCadastralflag"
+                  <el-form-item label="涉及车籍地:" prop="carCadastral">
+                    <el-input 
+                    v-model="aaaa"
+                    placeholder="点击选择"
+                    @focus='carCadastralflag'
+                     class="labelmargin"
                     >
-                      <el-option
-                        v-for="item in UwMoto"
-                        :key="item.value1"
-                        :label="item.label"
-                        :value="item.value1"
-                      ></el-option>
-                    </el-select>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -190,7 +183,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="关系关联人名称:" class="text-left">
+                  <el-form-item label="关联关系人名称:" class="text-left">
                     <el-input type="textarea" :rows="1" v-model="UwMotorcadeMainVO.insuredNameSUB"></el-input>
                   </el-form-item>
                 </el-col>
@@ -208,50 +201,48 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <!-- <el-button @click="baocun"> -->
-    <!-- <router-link :to="{path:'/rtReported'}">保存</router-link> -->
-    <!-- 保存 -->
-    <!-- </el-button> -->
-         <el-dialog title="请选择" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
-                <template>
-                      <el-transfer v-model="value"  class="labelmargin" :data="data"></el-transfer>
-                </template>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="carCadastralVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="valLen()">确 定</el-button>
-                </span>
-            </el-dialog>
-
- 
+    <!-- 弹出框 -->
+    <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
+          <template>
+                <el-transfer 
+                v-model="UwMotorcadeMainVO.carCadastral"
+                :props="{key: 'id',label: 'name'}"
+                :data="datas"
+                :titles="['未选择', '已选择']"
+                @change ="transfer1"
+                ></el-transfer>
+          </template>
+          <span slot="footer" class="dialog-footer">
+              <el-button @click="carCadastralVisible = false">取 消</el-button>
+              <el-button type="primary" @click="valLen()">确 定</el-button>
+          </span>
+      </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
-let [blur, change] = [
-  { required: true, message: "请输入公司名称", trigger: "blur" },
-  { required: true, message: "请选择", trigger: "change" }
-];
+ 
 export default {
-  name: "rtAdd",
+  name: "otAdd",
   
   data() {
         const generateData = _ => {
         const datas = [];
-        const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-        const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+        const cities = ['北京11000000', '天津12000000', '河北13000000', '山西14000000', '內蒙15000000','辽宁21000000'];
         cities.forEach((city, index) => {
           datas.push({
-            label: city,
-            key: index,
-            pinyin: pinyin[index]
+            name: city,
+            id: index,
           });
         });
         return datas;
       };
     return {
-        data: generateData(),
-        value: [1, 4],
+      val:[],
+      aaaa:"",
+      datas:generateData(),
+        // datas: [{id:1,name:'北京11000000'}, {id:2,name:'天津12000000'},{id:3,name:'上海12100000'}],
       carCadastralVisible:false,
       UwMotorcadeMainVO: {
         comcode: "",
@@ -261,8 +252,8 @@ export default {
         businessNature: "",
         carcountAll: "",
         estimatedPremiumSize: "",
-        uppercarcount: "",
-        uppercartype: "",
+        foreigncarcount: "",
+        carCadastral: [],
         carmainmodel: "",
         carmainarea: "",
         finishdate: "",
@@ -306,11 +297,11 @@ export default {
         estimatedPremiumSize: [
           { required: true, message: "预估保费规模必填", trigger: ["blur"] }
         ],
-        uppercarcount: [
-          { required: true, message: "超分公司权限车辆总数必填", trigger: ["blur"] }
+        foreigncarcount: [
+          { required: true, message: "异地车辆数必填", trigger: ["blur"] }
         ],
-        uppercartype: [
-          { required: true, message: "超分公司权限车辆种类", trigger: ["change"] }
+        carCadastral: [
+          { required: true, message: "涉及车籍地必选", trigger: ["change"] }
         ],
         carmainmodel: [
           { required: true, message: "车队车辆主要车型必选", trigger: ["change"] }
@@ -343,11 +334,30 @@ export default {
   },
   computed: {},
   methods: {
+    transfer1(value, direction, movedKeys){
+      // console.log(this.datas)
+      this.UwMotorcadeMainVO.carCadastral=value;
+      // console.log(this.UwMotorcadeMainVO.carCadastral,movedKeys)
+    },
     handleClose: function() {
-        this.carCadastralVisible = false;
+    this.carCadastralVisible = false;
     },
     valLen(){
-    this.carCadastralVisible = false;
+          this.carCadastralVisible = false;
+         let b=[];
+      let c=[];
+      for(let i=0;i<this.UwMotorcadeMainVO.carCadastral.length+1;i++){
+        for(let j=0;j<this.datas.length;j++){
+          if(this.UwMotorcadeMainVO.carCadastral[i]==this.datas[j].id){
+              c.push(this.datas[j].name)
+              b.push(this.datas[j].name.substring(this.datas[j].name.length-4,this.datas[j].name.length-8))
+          }
+          
+        }
+      }
+      console.log(b+"bbbbbbbb",c+"c")
+      this.aaaa=c.join();
+      this.UwMotorcadeMainVO.carCadastral=b
     },
     // 点击弹出
     carCadastralflag(){
@@ -398,7 +408,10 @@ export default {
   
   },
   created() {
-    // console.log(this.$url.rtAddSaves)
+    let b="天津12000000"
+    let bbbbb=b.substring(b.length-4,b.length-8)
+    
+    console.log(bbbbb)
   }
 };
 </script>
@@ -439,13 +452,26 @@ export default {
 .UwMotorcadeMainVOupdate >>> .text-center {
   margin-top: 20px;
 }
+.checkboxmargin  >>> .el-checkbox {
+  display: inline;
+  text-align: left;
+}
+.checkboxmargin  >>> .el-transfer-panel__header .el-checkbox__label span {
+  display: none;
+}
+.checkboxmargin  >>> .el-transfer-panel__item{
+  display: block;
+}
+.checkboxmargin  >>>.el-transfer-panel{
+  width: 35%;
+}
+.checkboxmargin  >>>.el-transfer__buttons{
+  padding: 0 10px;
+}
 .acolor {
   color: #0066cc;
   text-decoration: none;
   margin-left: 13px;
 }
 
-/* .labelmargin .el-transfer-panel__item.el-checkbox .el-checkbox__label｛
-text-algin:left;
-｝ */
 </style>
