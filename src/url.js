@@ -44,14 +44,18 @@ module.exports  = {
     saveUwPayee:'/saveUwPayee',
     giveUpUwPayee: '/giveUpUwPayee',
     uwmainGetUwInfo: '/uwmain/getUwInfo',  // 核保详情查询
+    carDeviceInfo: '/uwmain/carDeviceInfo', // 核保-设备详情查询
+    telSaleInfo: '/uwmain/telSaleInfo', // 核保 --详细信息查询
+    riskTypeRateInfo: '/uwmain/riskTypeRateInfo', // 核保 -风险类占比
     undwrtrevokeUndwrt:'/undwrt/revokeUndwrt', // 撤回
     uwmainTeamquality: '/uwmain/teamquality', // 核保详情- 车队业务质量查询
     recommendedQury: '/monopoly/getUwmonopolyList', // 推荐送修码查询
     monopolyGetUwMonopolyAllInfo: '/monopoly/getUwMonopolyAllInfo' , // 推荐送修码 详细信息
     autoDistributeSelectTaskList: '/autoDistribute/selectTaskList', // 自动推送 查询
-    recommendedDetailQury: '/recommendedQury' , // 推荐送修码 详情查询
+
     undwrtFlowRecord: '/uwmain/flowRecords', // 核保详情处理 -流转记录,
     deviceDetails: '/deviceDetails', // 核保详情处理 -设备信息
+    payeeGetUwPayeeList: '/payee/getUwPayeeList' // 收款人 审核 查询
    
 
 }

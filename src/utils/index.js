@@ -169,5 +169,30 @@ export default {
             }
         });
       },
+   
+    downloadReport(dataUrl){
+        //   let date = item.plans[this.daysIndex[index]]
+        //   let url = '/Ecp.Export.exportXls.jdn?entityId='+item.FId+'&date='+date.FDeparture_date+'&token=' + sessionStorage.getItem("token")
+        axios({
+            method:'get',
+            url:dataUrl,
+            headers:[],
+            responseType:'blob',
+          })
+          .then((data) => {
+            if (!data) {
+                return
+            }
+            debugger
+            let url = window.URL.createObjectURL(data.data)
+            let link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = url
+            link.setAttribute('download', 'excel.xls')
+            document.body.appendChild(link)
+            link.click()
+          })
+    },
+      
     
 }

@@ -32,7 +32,6 @@
                         :key="state.code"
                       >{{state.value}}</el-checkbox>
                     </el-checkbox-group>
-
                   </el-form-item>
               </el-col>
 
@@ -45,7 +44,7 @@
                   
                   </el-form-item>
               </el-col>
-              <el-col :span="15">
+              <el-col :span="8">
                 <el-form-item label="提交时间:">
                   <el-date-picker
                     v-model="recommended.inputDateStart"
