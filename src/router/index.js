@@ -167,6 +167,11 @@ const router = new Router({
           name: '流转记录',
           component: _import('underwriting/flowLog')
         },
+        {
+          path: '/uwIDSVehicleViewQuery',
+          name: '赔付率查询',
+          component: _import('underwriting/uwIDSVehicleViewQuery')
+        },
         
         {
           path: '/underwriting',

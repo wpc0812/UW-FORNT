@@ -81,7 +81,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="godetail(scope.row.businessNo)"
+                  @click="godetail(scope.row)"
                 >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
@@ -202,12 +202,11 @@ export default {
         this.$forceUpdate() // 更新数据
       })
     },
-    godetail(riskname) {
+    godetail(row) {
+      debugger
       this.$router.push({
-        path: "/autoPushDetail",
-        query: {
-          riskname
-        }
+        path: "/underwritingDetails",
+        query: row
       });
     },
     reset() {},
