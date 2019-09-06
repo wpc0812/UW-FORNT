@@ -41,7 +41,12 @@ export default {
       flowlog: {
 
       },
-      deviceTable: []
+      deviceTable: [
+          {date:'luyouqi',name:'123',address:'1231,123'},
+          {date:'luyouqi',name:'123',address:'1231,123'},
+          {date:'luyouqi',name:'123',address:'1231,123'},
+
+      ]
     };
   },
 

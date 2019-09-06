@@ -98,7 +98,7 @@ const router = new Router({
           component: _import('lossRatioManagement/lossRatioQuery'),
           hidden: true,
           meta: {
-            requireAuth: false,
+            requireAuth: true,
             keepAlive: false
           }
         },
@@ -146,6 +146,16 @@ const router = new Router({
           path: '/underwritingDetails',
           name: '核保详情',
           component: _import('underwriting/underwritingDetails')
+        },
+        {
+          path: '/deviceView',
+          name: '设备信息',
+          component: _import('underwriting/deviceView')
+        },
+        {
+          path: '/underwriteRiskTypeRate',
+          name: '查看风险类别占比',
+          component: _import('underwriting/underwriteRiskTypeRate')
         },
         {
           path: '/underwritingTeamDetails',
