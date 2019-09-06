@@ -39,7 +39,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:">
-                  <el-input v-model="carAuditPage.basicInfo.businiessNO"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.businessNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="7">
@@ -50,7 +50,7 @@
               <el-col :span="9">
                 <el-form-item label="流转入间:">
                   <div class="block">
-                    <el-date-picker v-model="time1" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                    <el-date-picker v-model="carAuditPage.basicInfo.circulationTime" type="datetime" value-format="yyyy-MM-dd" placeholder="选择日期时间"></el-date-picker>
                   </div>
                 </el-form-item>
               </el-col>
@@ -58,7 +58,7 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="流转状态:">
-                  <el-input v-model="carAuditPage.basicInfo.xubao"></el-input>
+                  <el-input v-model="carAuditPage.basicInfo.circulationState"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -73,30 +73,34 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">历次审核意见</div>
             </template>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="序号:">
-                  <el-input v-model="carAuditPage.basicInfo.handleComCode"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="7">
-                <el-form-item label="处理部门:">
-                  <el-input v-model="carAuditPage.basicInfo.handleTime"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9">
-                <el-form-item label="审核人员:">
-                  <el-input v-model="carAuditPage.basicInfo.handleTime"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="审核意见:">
-                  <el-input v-model="carAuditPage.basicInfo.xubao"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
+            <div v-for="(recordOpinion,index) in carAuditPage.recordOpinions " :key="index" 
+              :class="(index + 1) == carAuditPage.recordOpinions? 'border-btm-gra' : ''">
+               <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="序号:">
+                        <el-input v-model="recordOpinion.serialNo"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                      <el-form-item label="处理部门:">
+                        <el-input v-model="recordOpinion.comCode"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="9">
+                      <el-form-item label="审核人员:">
+                        <el-input v-model="recordOpinion.reviewerName"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="24">
+                      <el-form-item label="审核意见:">
+                        <el-input v-model="recordOpinion.reviewOpinions"></el-input>
+                      </el-form-item>
+                    </el-col>
+                </el-row>
+            </div>
+           
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -110,22 +114,22 @@
               <div class="card-title">推荐送修码信息</div>
             </template>
             <el-table
-              :data="results"
+              :data="carAuditPage.recommendedModList"
               stripe
               tooltip-effect="dark"
               style="width: 100%"
               :header-cell-style="{background:'white'}"
             >
-              <el-table-column align="center" prop="kindCode" label="比对信息" ></el-table-column>
-              <el-table-column align="center" prop="kindName" label="推荐送修码"></el-table-column>
-              <el-table-column align="center" prop="flag" label="专管专营名称"></el-table-column>
-              <el-table-column align="center" prop="amount" label="业务号"></el-table-column>
-              <el-table-column align="center" prop="rate" label="保单号"></el-table-column>
-              <el-table-column align="center" prop="benchMarkPremium" label="批单申请号"></el-table-column>
-              <el-table-column align="center" prop="code1" label="批单号码"></el-table-column>
-              <el-table-column align="center" prop="code2" label="险种代码"></el-table-column>
-              <el-table-column align="center" prop="code3" label="渠道码"></el-table-column>
-              <el-table-column align="center" prop="code4" label="渠道名称"></el-table-column>
+              <el-table-column align="center" prop="comparisonInfo" label="比对信息" ></el-table-column>
+              <el-table-column align="center" prop="recommendedMod" label="推荐送修码"></el-table-column>
+              <el-table-column align="center" prop="monopolyName" label="专管专营名称"></el-table-column>
+              <el-table-column align="center" prop="businessNo" label="业务号"></el-table-column>
+              <el-table-column align="center" prop="policyNo" label="保单号"></el-table-column>
+              <el-table-column align="center" prop="endorseNo" label="批单申请号"></el-table-column>
+              <el-table-column align="center" prop="applyNo" label="批单号码"></el-table-column>
+              <el-table-column align="center" prop="riskCode" label="险种代码"></el-table-column>
+              <el-table-column align="center" prop="channelCode" label="渠道码"></el-table-column>
+              <el-table-column align="center" prop="channelName" label="渠道名称"></el-table-column>
             </el-table> 
           </el-collapse-item>
         </el-collapse>
@@ -234,7 +238,7 @@ export default {
       activeNames: [],
       carAuditPage: {
         basicInfo: { }, //  基本信息
-        recordOpinions: {}, // 历次审核意见
+        recordOpinions: [], // 历次审核意见
         recommendedModList: [] // 推荐送修码信息
       },
       time1: "",
@@ -284,16 +288,14 @@ export default {
       this.flagCode = true;
     },
     init() {
-      // this.$fetch.post(this.HOST + this.$url.recommendedDetailQury).then(data => {
-      //   console.log(data)
-      // })
+      debugger
+      this.$fetch.post(this.HOST + this.$url.monopolyGetUwMonopolyAllInfo,
+      {businessNo:this.parameter.row.businessNo}).then(data => {
+        console.log(data)
+        this.carAuditPage = data
+      })
 
-      // this.postRequest(`/fridayService02/queryobject1detail`, {
-      //   businessNo: this.parameter.businessNo
-      // }).then(res => {
-      //   this.carAuditPage = res.data.data;
-      //   console.log(res);
-      // });
+     
     }
   },
 
@@ -326,6 +328,7 @@ export default {
 .float-right {
   text-align: center;
 }
-</style>
-<style>
+.border-btm-gra{
+  border-bottom: solid 1px rgba(70, 90, 100, 0.6)
+}
 </style>

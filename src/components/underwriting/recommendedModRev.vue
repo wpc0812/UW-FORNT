@@ -79,7 +79,7 @@
       <!-- 基本信息 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
-          <el-collapse-item name="2">
+          <el-collapse-item name="1">
             <template slot="title">
               <div class="title-blue-bar"></div>
               <div class="card-title">未处理状态</div>
@@ -109,7 +109,7 @@
                 <el-table-column prop="businessState" label="业务状态"></el-table-column>
                   <el-table-column label="业务号">
                     <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="goDetail(scope.row.businessNo)">{{scope.row.businessNo}}</el-button>
+                      <el-button type="text" size="mini" @click="goDetail(scope.row)">{{scope.row.businessNo}}</el-button>
                     </template>
                   </el-table-column>
                   <el-table-column prop="riskCode" label="险种"></el-table-column>
@@ -124,7 +124,7 @@
       </el-card>
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
-          <el-collapse-item name="3">
+          <el-collapse-item name="2">
             <template slot="title">
               <div class="title-blue-bar"></div>
               <div class="card-title">已处理状态</div>
@@ -155,7 +155,7 @@
                   <el-table-column prop="businessState" label="业务状态"></el-table-column>
                   <el-table-column label="业务号">
                     <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="goDetail(scope.row.businessNo)">{{scope.row.businessNo}}</el-button>
+                      <el-button type="text" size="mini" @click="goDetail(scope.row)">{{scope.row.businessNo}}</el-button>
                     </template>
                   </el-table-column>
                   <el-table-column prop="riskCode" label="险种"></el-table-column>
@@ -182,7 +182,7 @@ export default {
   name: "carAuditPage",
   data() {
     return {
-      activeNames:'',
+      activeNames:[],
       recommended: {
         businessStates: [],
       },
@@ -237,10 +237,12 @@ export default {
         if(data.incompleteList && data.incompleteList.length > 0) {
           this.businessList = data.incompleteList
           this.$set(this.page,'total',data.incompleteTotal)
+          this.activeNames.push('1')
         }
         if(data.completeList && data.completeList.length > 0){
           this.businessListY =  data.completeList
           this.$set(this.page,'total',data.completeTotal)
+          this.activeNames.push('2')
         }
       
 

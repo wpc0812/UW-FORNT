@@ -47,10 +47,12 @@ module.exports  = {
     undwrtrevokeUndwrt:'/undwrt/revokeUndwrt', // 撤回
     uwmainTeamquality: '/uwmain/teamquality', // 核保详情- 车队业务质量查询
     recommendedQury: '/monopoly/getUwmonopolyList', // 推荐送修码查询
+    monopolyGetUwMonopolyAllInfo: '/monopoly/getUwMonopolyAllInfo' , // 推荐送修码 详细信息
     autoDistributeSelectTaskList: '/autoDistribute/selectTaskList', // 自动推送 查询
     recommendedDetailQury: '/recommendedQury' , // 推荐送修码 详情查询
-    undwrtFlowRecord: '/undwrt/FlowRecord', // 核保详情处理 -流转记录,
+    undwrtFlowRecord: '/uwmain/flowRecords', // 核保详情处理 -流转记录,
     deviceDetails: '/deviceDetails', // 核保详情处理 -设备信息
+   
 
 }
 
