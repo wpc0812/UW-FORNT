@@ -1,3 +1,4 @@
+import axios from "axios"
 export default {
     //字符串转数组
    stringToArray(string){
@@ -122,5 +123,51 @@ export default {
     getPass(d){
         return JSON.parse(window.decodeURIComponent(window.atob(d)))
 
-    }
+    },
+    /**
+     * axios post 请求 导出
+     * params1  url  地址
+     * params  data 参数
+     */
+    axiosDown(url,data){
+        axios({
+            // 用axios发送post请求
+            method: "post",
+            headers: {
+                token: window.localStorage["token"]
+                // 'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            url:url, // 请求地址
+            data: data, // 参数
+            responseType: "blob" // 表明返回服务器返回的数据类型
+        }).then(res => {
+            // 处理返回的文件流
+  
+            var tempfileName = window.decodeURI(res.headers['content-disposition'].split(';')[1])
+            var fileName =tempfileName.split('=')[1]
+            const content = res.data;
+            const blob = new Blob([content]);
+            //edge 浏览器需要进行特殊处理  if ("download")会把edge判断为非ie，造成无法下载
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            if(userAgent.indexOf("Edge") > -1) {
+                navigator.msSaveBlob(blob, fileName);
+                return
+            }
+            if ("download" in document.createElement("a")) {
+                // 非IE下载
+                const elink = document.createElement("a");
+                elink.download = fileName;
+                elink.style.display = "none";
+                elink.href = URL.createObjectURL(blob);
+                document.body.appendChild(elink);
+                elink.click();
+                URL.revokeObjectURL(elink.href); // 释放URL 对象
+                document.body.removeChild(elink);
+            } else {
+                // IE10+下载
+                navigator.msSaveBlob(blob, fileName);
+            }
+        });
+      },
+    
 }

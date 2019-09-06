@@ -13,7 +13,9 @@ import en from '@/assets/js/lang/en'
 // import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
 // import axios from 'axios'
 // Vue.prototype.$axios = axios;
-Vue.prototype.HOST = "/apis"
+// Vue.prototype.HOST = "/apis"
+
+Vue.prototype.HOST = ""
 import fetch from "./fetch";
 import Url from './url'
 Vue.config.productionTip = false
