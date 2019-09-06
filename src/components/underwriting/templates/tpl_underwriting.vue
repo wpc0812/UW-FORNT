@@ -105,7 +105,6 @@ export default {
       });
     },
     goDetail(row) {
-      debugger
       let key ={
         title : this.title
       }
