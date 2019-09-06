@@ -3,17 +3,17 @@
     <!-- 任务审核 -->
     <div style="margin: 5px 0">
       <el-row class="text-center buttons" >
-            <el-button size='mini'>详细信息</el-button>
+            <el-button size='mini' @click="goTolinks('details')">详细信息</el-button>
             <el-button size='mini' @click='goToFlowLog()' >流转记录</el-button>
             <el-button size='mini'>查看总公司资料</el-button>
             <el-button size='mini'>查看分公司资料</el-button>
 
             <el-button size='mini'>上传影像</el-button>
-            <el-button size='mini'>设备信息</el-button>
+            <el-button size='mini' @click="goToCarDeviceInfo">设备信息</el-button>
 
 
             <!-- <el-button size='mini'>手机影像</el-button> -->
-            <el-button size='mini'>查看风险类别占比</el-button>
+            <el-button size='mini' @click="goToUnderwriteRiskTypeRate">查看风险类别占比</el-button>
             <el-button size='mini' @click="goTolinks('teamquality')">车队业务质量统计查询</el-button>
             <el-button size='mini' @click="getBack()">撤回</el-button>
 
@@ -1768,10 +1768,22 @@ export default {
             console.log(data)
             // window.open("http://www.baidu.com")
             window.open(data)
-
-
           })
+          break
+          case 'details':
+            let details = {
+              "businessNo": this.routeDate.businessNo ||  "454654564564",
+              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "taskType": "sdsd",
+              "taskId": "123",
+              "comCode": "13000000"
+              }
 
+          this.$fetch.post(this.HOST + this.$url.telSaleInfo,details).then(data => {
+            console.log(data)
+            // window.open("http://www.baidu.com")
+            window.open(data)
+          })
           break
       }
 
@@ -1786,6 +1798,29 @@ export default {
       })
       window.open(routeUrl.href, '_blank')
     },
+    // 跳转设备信息
+    goToCarDeviceInfo(){
+      let routeUrl = this.$router.resolve({
+          path: "/deviceView",
+           query: {
+          businessNo:this.routeDate.businessNo || '123',
+          type: this.routeDate.type || 'H'
+        }
+      })
+      window.open(routeUrl.href, '_blank')
+    },
+    // 跳转 风险类占比
+    goToUnderwriteRiskTypeRate(){
+      let routeUrl = this.$router.resolve({
+          path: "/underwriteRiskTypeRate",
+           query: {
+          businessNo: '123',
+          type: 'H'
+        }
+      })
+      window.open(routeUrl.href, '_blank')
+    },
+
     // 打开保费折扣率弹框
     openAdjustRateDialog(row){
       this.adjustRateDialog = true

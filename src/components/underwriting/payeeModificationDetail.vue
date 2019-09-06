@@ -670,12 +670,12 @@ export default {
       this.flagCode = true;
     },
     init() {
-      this.postRequest(`/fridayService02/queryobject1detail`, {
-        businessNo: this.parameter.businessNo
-      }).then(res => {
-        this.carAuditPage = res.data.data;
-        console.log(res);
-      });
+      let key ={
+        
+      }
+      this.$$fetch.post(this.HOST + this.$url,key).then(data => {
+        console.log(data)
+      })
     }
   },
 

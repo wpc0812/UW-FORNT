@@ -52,10 +52,9 @@ module.exports  = {
     recommendedQury: '/monopoly/getUwmonopolyList', // 推荐送修码查询
     monopolyGetUwMonopolyAllInfo: '/monopoly/getUwMonopolyAllInfo' , // 推荐送修码 详细信息
     autoDistributeSelectTaskList: '/autoDistribute/selectTaskList', // 自动推送 查询
-
     undwrtFlowRecord: '/uwmain/flowRecords', // 核保详情处理 -流转记录,
-    deviceDetails: '/deviceDetails', // 核保详情处理 -设备信息
-    payeeGetUwPayeeList: '/payee/getUwPayeeList' // 收款人 审核 查询
+    payeeGetUwPayeeList: '/payee/getUwPayeeList' ,// 收款人 审核 查询
+    payeeGetUwPayeeAllInfo: '/payee/getUwPayeeAllInfo' // 收款人审核 -详细信息
    
 
 }

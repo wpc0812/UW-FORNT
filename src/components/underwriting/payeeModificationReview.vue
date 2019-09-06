@@ -233,10 +233,7 @@ export default {
     
       this.$router.push({
         path: "/payeeModificationDetail",
-        query: {
-          businessNo: row.businessNo,
-          businessType: 'A'
-        }
+        query: row
       });
     },
        // 条数查询
