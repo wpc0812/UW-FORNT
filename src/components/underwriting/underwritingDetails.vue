@@ -799,7 +799,13 @@
                 <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
                 <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
                 <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
-                <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
+                
+                <el-table-column align="center" prop="discount" label="保费折扣%">
+                <template slot-scope="scope">
+                  <span > {{scope.row.discount}}<el-button 
+                   class="button-uwprofit" @click="openAdjustRateDialog(scope.row)">*</el-button> </span>
+                </template>
+              </el-table-column>
                 <el-table-column align="center" prop="premium" label="续保调整比例%"></el-table-column>
                 <el-table-column align="center" prop="adjustRate" label="应交保费(元)"></el-table-column>
               </el-table>
@@ -830,11 +836,7 @@
               <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
               <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
               <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
-              <el-table-column align="center" prop="discount" label="保费折扣%">
-                <template slot-scope="scope">
-                  <span @click="openAdjustRateDialog(scope.row)"> {{scope.row.discount}}</span>
-                </template>
-              </el-table-column>
+              <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
               <el-table-column align="center" prop="adjustRate" label="续保调整比例%">
                 
               </el-table-column>
@@ -1433,6 +1435,55 @@
           </el-collapse-item>
         </el-collapse>
       </el-card>
+      <!-- 审核信息 -->
+       <el-card class="circular mt4 shadow" v-if="underwritingDetails.uwNotion">
+        <el-collapse v-model="activeNames">
+          <el-collapse-item name="2">
+            <template slot="title">
+              <div class="title-blue-bar"></div>
+              <div class="card-title">审核信息</div>
+            </template>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="业务动作:">
+                  <el-select v-model="underwritingDetails.uwNotion.flag" placeholder="请选择">
+                    <el-option
+                      v-for="item in uwNotionFlags"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="审批片语:">
+                   <el-select v-model="underwritingDetails.uwNotion.carCheckStatus" placeholder="请选择">
+                    <el-option
+                      v-for="item in uwNotionCarCheckStatus"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.label">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="签署审批意见:">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 4}"
+                    placeholder="请输入内容"
+                    v-model="underwritingDetails.uwNotion.handleText">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+           
+          </el-collapse-item>
+        </el-collapse>
+      </el-card>
     </el-form>
     <!-- 任务审核 -->
     <el-card class="circular mt4 shadow">
@@ -1540,37 +1591,37 @@
     <el-dialog
       class="el-dialog__body__update"
       width="60%"
-      title="核保任务提交"
+      title="显示优惠信息"
       :visible.sync="adjustRateDialog"
       >
         <el-table
-          ref="multipleTable"
-          :data="tableData"
+          :data="underwritingDetails.uwprofitdetails"
           tooltip-effect="dark"
           style="width: 100%"
-          @selection-change="handleSelectionChange">
+          >
           <el-table-column
             type="selection"
             width="55">
           </el-table-column>
           <el-table-column
             label="优惠代码"
+            prop="profitCode"
             width="120">
 
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="profitName"
             label="优惠原因"
             >
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="profitRate"
             label="优惠率"
             width="120"
             >
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="condition"
             label="优惠条件"
             >
           </el-table-column>
@@ -1611,8 +1662,25 @@ export default {
         uwengages: [], // 特别约定
         generalInformation: {}, // 一般信息
         otherInformation: {}, // 其他信息
-        uwitemkindCount: {} // 险别总计
+        uwitemkindCount: {}, // 险别总计
+        uwNotion: {}, // 审批信息
+        uwprofitdetails: [] // 主险 -- 优惠率弹框
       },
+          // 审核意见 ---审批动作
+      uwNotionFlags: [
+        { value: '1', label: '审核通过'},
+        { value: '2', label: '下发修改'},
+        { value: '3', label: '提交上级'},
+      ],
+      // 审核意见 ---审批片语
+      uwNotionCarCheckStatus:[
+        { value: '1', label: '同意'},
+        { value: '2', label: '拒绝承保'},
+        { value: '3', label: '请补充以下资料后重新提交'},
+        { value: '4', label: '请调整以下承保条件后重新提交'},
+        { value: '5', label: '超过本级权限，提交上级审核'},
+
+      ],
       tableList: [{}],
       value: "",
       form: {},
@@ -1672,10 +1740,12 @@ export default {
         businessType: this.routeDate.type, // businessType
         comCode: this.routeDate.businessNo, // 公司代码
         userCode: this.routeDate.businessNo, // 员工号
+        username: 'wpc'
       }
      this.$fetch.post(this.HOST + this.$url.uwmainGetUwInfo, keyWords).then(data =>{
        console.log(data)
        this.underwritingDetails = data
+       this.underwritingDetails.uwNotion = data.uwnotions[0]
        
 
      })
@@ -1772,5 +1842,12 @@ export default {
 }
 .border-btm-gra{
   border-bottom: solid 1px rgba(70, 90, 100, 0.6)
+}
+.button-uwprofit{
+  padding: 0px 2px; 
+  font-size: 20px;
+  height: 20px;
+  padding:2px 3px 0 3px;
+  line-height: 20px
 }
 </style>

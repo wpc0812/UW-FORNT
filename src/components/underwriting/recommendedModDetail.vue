@@ -74,7 +74,7 @@
               <div class="card-title">历次审核意见</div>
             </template>
             <div v-for="(recordOpinion,index) in carAuditPage.recordOpinions " :key="index" 
-              :class="(index + 1) == carAuditPage.recordOpinions? 'border-btm-gra' : ''">
+              :class="(index + 1) != carAuditPage.recordOpinions.length? 'border-btm-gra' : ''">
                <el-row>
                     <el-col :span="8">
                       <el-form-item label="序号:">
