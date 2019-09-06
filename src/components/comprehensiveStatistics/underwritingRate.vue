@@ -8,29 +8,37 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入查询条件</div>
           </template>
-          <el-form ref="form" :model="underwritingRate" label-width="140px">
+           <el-form ref="underwritingRate" :model="underwritingRate" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="提交时间:" class="text-left">
+                  <el-form-item label="起始日期:" class="text-left">
                     <el-date-picker
-                      :title="underwritingRate.checked"
-                      v-model="underwritingRate.checked"
-                      value-format="yyyy-MM-dd HH:mm:ss"
-                      type="datetimerange"
-                      time-arrow-control
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
+                      v-model="underwritingRate.startDate"
+                      value-format="yyyy-MM-dd"
+                      type="date"
+                      placeholder="选择日期"
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8" :offset="7">
+                  <el-form-item label="截至日期:" class="text-left">
+                    <el-date-picker
+                      v-model="underwritingRate.endDate"
+                      value-format="yyyy-MM-dd"
+                      type="date"
+                      placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-col :span="24" class="text-center">
-                <el-button size="mini" @click="query()" type="primary">查询</el-button>
+                <el-button @click="query" type="primary">查询</el-button>
+                <el-button @click="querychu">导出</el-button>
               </el-col>
             </el-row>
           </el-form>
+         
         </el-collapse-item>
       </el-collapse>
     </el-card>
@@ -59,32 +67,46 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { relations } from "@/assets/js/baseCode";
 
 export default {
-  name: "rtReported",
+  name: "underwritingRate",
 
   data() {
     return {
-      relations,
       activeNames: ["1", '2'],
       arrow: false,
-      underwritingRate: {},
+      underwritingRate: {
+        startDate:"",
+        endDate:"",
+      },
       results: []
     };
   },
 
   computed: {
-    ...mapGetters(["getList"])
+    // ...mapGetters(["getList"])
   },
 
   methods: {
-    ...mapActions(["getrtReported"]),
-
-    reset() {},
+    // ...mapActions(["getrtReported"]),
 
     query() {
-      this.getrtReported(this.rtReported);
+       this.$fetch
+        .post(this.HOST + this.$url.underwritingRateStatistics, this.underwritingRate)
+        .then(res => {
+          console.log(res);
+
+          this.results=res.split()
+        });
+    },
+     querychu() {
+      //  this.$fetch
+      //   .post(this.HOST + this.$url.underwritingRateStatistics, this.underwritingRate)
+      //   .then(res => {
+      //     console.log(res);
+
+      //     this.results=res
+      //   });
     },
 
     // 未处理展开关闭状态

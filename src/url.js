@@ -25,8 +25,6 @@ module.exports  = {
     deletebatchDel:'/motorcade/delectBatchByNo', //超权限车队 异地详情删除批次
     unNumPlateUpdate:'/motorcade/UpdateUwmotorcadeinfo', //超权限车队 异地详情 车辆详情修改页面  
     unNumPlateFindUwmotorcadeinfo:'/motorcade/findUwmotorcadeinfoBylicenseNo', //超权限车队 异地详情 号牌号码查询
-    // otAddSaves:'/motorcade/motorcadeMainSave',//超权限车队  其他新增
-    // otAddToInsured:'/motorcade/toInsuredList',//超权限车队  其他新增  表单查询按钮
                                                          //--------------------顶部按钮----------------------
     carAuditPageDelete:'/motorcade/motorcadeMainDelete', //超权限车队 异地详情顶部 删除
     carAuditPageUpdate:'/motorcade/motorcadeRemoteAddOrUpdate', //超权限车队 异地详情顶部 修改
@@ -37,7 +35,17 @@ module.exports  = {
     carAuditPageOuterBranch:'/motorcade/effectiveHandling', //超权限车队 异地详情顶部 生效办结
     carAuditPageUploadECMs:'/motorcade/uploadECMs', //超权限车队 异地详情顶部 影像上传
     carAuditPageQueryECMs:'/motorcade/queryECMs', //超权限车队 异地详情顶部 查看资料
- 
+    // -----综合统计 ---规则执行统计
+    underwritingRateStatistics:'comprehensiveStatistics/underwritingRateStatistics',//综合统计 核保率统计
+    ruleExecutionRule:'/comprehensiveStatistics/ruleImplementStatistics',// 综合统计 规则执行统计 查询
+    // ruleExecutionRule:'/comprehensiveStatistics/ruleImplementStatistics',// 综合统计 规则执行统计 导出
+
+
+
+
+
+
+
     // -----核保处理 ---
     uwmainGetUwList: '/uwmain/getUwList',
     getUwPayeeList: '/getUwPayeeList',

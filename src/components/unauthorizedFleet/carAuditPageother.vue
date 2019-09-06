@@ -200,9 +200,8 @@
                         accept=".xls, .txt"
                         :on-remove="addHandleRemove"
                         :on-success="addOnSuccess"
-                        :http-request="addExcel"
                         :on-change="addUploadname"
-                        :show-file-list="true"
+                        :show-file-list="false"
                         :file-list="fileList1"
                         :on-preview="addHandlePreview"
                         :before-remove="addBeforeRemove"
@@ -229,12 +228,11 @@
                         class="upload-demo"
                         ref="upload"
                         :multiple="true"
-                        action="url"
+                        action
                         :auto-upload="false"
                         accept=".xls, .txt"
                         :on-remove="upHandleRemove"
                         :on-success="upOnSuccess"
-                        :http-request="updateExcel"
                         :on-change="upUploadname"
                         :show-file-list="false"
                         :file-list="fileList2"
@@ -248,7 +246,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                <el-button size="small" @click="updatepici('motorcadeNoData')" type="primary">上传文件</el-button>
+                <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
@@ -378,8 +376,9 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import qs from "querystring";
-import utils from '../../utils';
+
+import utils from "../../utils/index";
+
 export default {
   name: "carAuditPage",
   data() {
@@ -449,8 +448,8 @@ export default {
       formDataUP: {}
     };
   },
-    computed: {
-   // 这里定义上传文件时携带的参数，即表单数据
+  computed: {
+    // 这里定义上传文件时携带的参数，即表单数据
     // upData: function() {
     //   return {
     //     motorcadeNoData: this.UwMotorcadeInfoVO.motorcadeN
@@ -458,98 +457,76 @@ export default {
     // }
   },
   methods: {
-    upHandleRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    upOnSuccess(file, fileList) {
-      // console.log(file, fileList);
-    },
-    upHandlePreview(file, fileList) {
-      // console.log(file, fileList);
-    },
-    upBeforeRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addHandleRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addOnSuccess(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addHandlePreview(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addBeforeRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
+    //新增文件选取
     addUploadname(file, fileList) {
-      // console.log(file, fileList);
-      this.UwMotorcadeInfoVO.appici = file.name;
-      let formData = new FormData();
-      if(file.raw){
-      formData.append("file", file.raw);
-      this.uploading = true;
-      this.formDataAdd = formData;
-        }
-    },
-    upUploadname(file, fileList) {
-      // console.log(file, fileList);
-      if(file){
-      this.UwMotorcadeInfoVO.uppici = file.name;
-      let formData = new FormData();
-      formData.append("file", file);
-      formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
-      this.uploading = true;
-      this.formDataUP = formData;
-        console.log(file, fileList,formData,this.formDataUP);
+        if (file) {
+        this.UwMotorcadeInfoVO.addpici = file.name;
+         console.log(file.name,this.UwMotorcadeInfoVO.addpici )
+        let formData = new FormData();
+        formData.append("file", file.raw);
+        formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
+        this.uploading = true;
+        this.formDataAdd = formData;
       }
     },
-
     // 新增文件上传
     addpici() {
-      this.addExcel();
-    },
-    addExcel() {
-      this.$fetch
-        .get(this.HOST + this.$url.carAuditPageaddfile, {
-          uwmotorcadeinfoImportExcel: this.formDataAdd,
-          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
-        })
+        this.$fetch({
+        url: this.HOST + this.$url.carAuditPageaddfile,
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        data: this.formDataAdd
+      })
         .then(res => {
-          console.log(res);
-        });
+       console.log(res)
+      //  this.UwMotorcadeInfoVO.uppici =""
+          // this.successtrue = res;
+        })
     },
-    updatepici(motorcadeNoData) {
-      this.updateExcel();
+    //修改文件选取
+    upUploadname(file, fileList) {
+      
+      if (file) {
+        this.UwMotorcadeInfoVO.uppici = file.name;
+         console.log(file.name,this.UwMotorcadeInfoVO.uppici )
+        let formData = new FormData();
+        formData.append("file", file.raw);
+        formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
+        this.uploading = true;
+        this.formDataUP = formData;
+        // console.log(formData, this.formDataUP);
+      }
     },
-
     //修改文件上传
-    updateExcel() {
-      this.$fetch
-        .get(this.HOST + this.$url.carAuditPageUpdatefile, {
-          uwmotorcadeinfoImportExcel: this.formDataUP,
-          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
-        })
+     updatepici() {
+        this.$fetch({
+        url: this.HOST + this.$url.carAuditPageUpdatefile,
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        data: this.formDataUP
+      })
         .then(res => {
-          console.log(res);
-        });
+       console.log(res)
+      //  this.UwMotorcadeInfoVO.uppici =""
+          // this.successtrue = res;
+        })
     },
-    //导出
+    //导出get
     carAuditPagechu() {
-      this.$fetch
-        .get(this.HOST + this.$url.carAuditPageToInsured, {
-          params: {
-            motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
-            licenseNo: this.UwMotorcadeInfoVO.licenseNo
-          }
-        })
-        .then(res => {
-          console.log(res);
-        });
+      let _url = "http://11.205.241.44:8082" + this.$url.carAuditPageToInsured;
+      let paramsFileData = {
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+        licenseNo: this.UwMotorcadeInfoVO.licenseNo
+      };
+      window.location.href =
+        _url + "?" + utils.encodeSearchParams(paramsFileData);
     },
     //号码号牌跳转
     BusinessNum(row) {
-      // console.log(row)
       this.$router.push({
         path: "/unNumPlate",
         query: {
@@ -567,7 +544,6 @@ export default {
 
     //删除批次
     deletebatch(row) {
-      // console.log(row)
       this.$router.push({
         path: "/deletebatch",
         query: {
@@ -712,12 +688,37 @@ export default {
           console.log(res);
         });
     },
+    upHandleRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    upOnSuccess(file, fileList) {
+      // console.log(file, fileList);
+    },
+    upHandlePreview(file, fileList) {
+      // console.log(file, fileList);
+    },
+    upBeforeRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addHandleRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addOnSuccess(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addHandlePreview(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addBeforeRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+
     init() {
       // 业务号查询详情
       this.$fetch
         .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
           params: {
-            motorcadeNo: this.$route.query.motorcadeNo || "YD450000001"
+            motorcadeNo: this.$route.query.row
           }
         })
         .then(res => {
@@ -730,6 +731,7 @@ export default {
 
   created() {
     //设置collapse全部展开
+     console.log(this.$route.query.row);
     this.setActiveNames();
     this.init();
     this.parameter = this.$route.query;

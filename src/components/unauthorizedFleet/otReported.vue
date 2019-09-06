@@ -97,7 +97,6 @@ import { mapActions, mapGetters } from "vuex";
 // import { relations } from "@/assets/js/baseCode";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
-import qs from "querystring";
 import utils from '../../utils/index'
 export default {
   name: "otReported",
@@ -129,7 +128,7 @@ export default {
 
   methods: {
     // ...mapActions(["getUwMotorcadeMainVO"]),
-    //导出
+    //导出post
     rtReportedchu() {
       let uwMotorcadeMainVO = this.UwMotorcadeMainVO 
     
