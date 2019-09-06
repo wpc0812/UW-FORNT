@@ -3,7 +3,7 @@
     <!-- 提交审核 -->
     <el-card class="circular">
       <el-row class="pt10">
-         <el-col :span="3">
+        <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerBranch" size="mini">生效办结</el-button>
         </el-col>
         <el-col :span="3">
@@ -31,7 +31,7 @@
           <el-button class="btn" type="primary" @click="transferRecord" size="mini">流转记录</el-button>
         </el-col>
       </el-row>
-      <hr>
+      <hr />
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1" class="el_collapse_padding">
           <template slot="title">
@@ -46,7 +46,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-form :model="UwMotorcadeInfoVO"   class="updatastyleinput" label-width="185px">
+    <el-form :model="UwMotorcadeInfoVO" class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
@@ -86,13 +86,13 @@
               <el-col :span="8">
                 <el-form-item label="业务来源:">
                   <el-select v-model="UwMotorcadeInfoVO.businessNature" clearable placeholder="请选择">
-                      <el-option
-                        v-for="item in categoryss"
-                        :key="item.label"
-                        :label="item.value"
-                        :value="item.label"
-                      ></el-option>
-                    </el-select>
+                    <el-option
+                      v-for="item in categoryss"
+                      :key="item.label"
+                      :label="item.value"
+                      :value="item.label"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -150,29 +150,25 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="监控方案:">
-                  <el-input 
-                  class="textareaheight"
-                  v-model="UwMotorcadeInfoVO.monitoringProgramme"
-                  type="textarea"
-                  :rows="1"
+                  <el-input
+                    class="textareaheight"
+                    v-model="UwMotorcadeInfoVO.monitoringProgramme"
+                    type="textarea"
+                    :rows="1"
                   ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="关联关系人姓名:">
-                  <el-input 
-                  v-model="UwMotorcadeInfoVO.insuredNameSUB"
-                  type="textarea"
-                  :rows="1"
-                  ></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.insuredNameSUB" type="textarea" :rows="1"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="承保条件:">
-                  <el-input 
-                  v-model="UwMotorcadeInfoVO.underWritingCondition"
-                  type="textarea"
-                  :rows="1"
+                  <el-input
+                    v-model="UwMotorcadeInfoVO.underWritingCondition"
+                    type="textarea"
+                    :rows="1"
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -180,21 +176,20 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="备注:">
-                  <el-input 
-                  v-model="UwMotorcadeInfoVO.remark"
-                  type="textarea"
-                  :rows="1"
-                  ></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.remark" type="textarea" :rows="1"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item v-model="UwMotorcadeInfoVO.finishdate" label="距离控制日期结束日期:">{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
+                <el-form-item
+                  v-model="UwMotorcadeInfoVO.finishdate"
+                  label="距离控制日期结束日期:"
+                >{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="10">
                 <el-form-item label="增加批次:">
-                    <el-input v-model="UwMotorcadeInfoVO.appici">
+                  <el-input v-model="UwMotorcadeInfoVO.appici">
                     <template slot="append">
                       <el-upload
                         class="upload-demo"
@@ -203,14 +198,14 @@
                         action
                         :auto-upload="false"
                         accept=".xls, .txt"
-                        :on-remove="handleRemove"
-                        :on-success="onSuccess"
+                        :on-remove="addHandleRemove"
+                        :on-success="addOnSuccess"
                         :http-request="addExcel"
-                        :on-change="uploadname"
+                        :on-change="addUploadname"
                         :show-file-list="true"
                         :file-list="fileList1"
-                        :on-preview="handlePreview"
-                        :before-remove="beforeRemove"
+                        :on-preview="addHandlePreview"
+                        :before-remove="addBeforeRemove"
                       >
                         <el-button slot="trigger" size="small" type="primary">浏览</el-button>
                       </el-upload>
@@ -219,41 +214,41 @@
                 </el-form-item>
               </el-col>
               <el-col :span="4">
-                   <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
+                <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
-              <el-row>
-              <!-- <el-col :span="10">
-                 <el-form-item label="修改批次:">
-                    <el-input v-model="UwMotorcadeInfoVO.uppici">
+            <el-row>
+              <el-col :span="10">
+                <el-form-item label="修改批次:">
+                  <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">
                       <el-upload
                         class="upload-demo"
                         ref="upload"
                         :multiple="true"
-                        action
+                        action="url"
                         :auto-upload="false"
                         accept=".xls, .txt"
-                        :on-remove="handleRemove"
-                        :on-success="onSuccess"
+                        :on-remove="upHandleRemove"
+                        :on-success="upOnSuccess"
                         :http-request="updateExcel"
-                        :on-change="uploadname"
+                        :on-change="upUploadname"
                         :show-file-list="false"
                         :file-list="fileList2"
-                        :on-preview="handlePreview"
-                        :before-remove="beforeRemove"
+                        :on-preview="upHandlePreview"
+                        :before-remove="upBeforeRemove"
                       >
                         <el-button slot="trigger" size="small" type="primary">浏览</el-button>
                       </el-upload>
                     </template>
                   </el-input>
                 </el-form-item>
-              </el-col> -->
+              </el-col>
               <el-col :span="4">
-                  <el-button size="small" @click="updatepici" type="primary">上传文件</el-button>
+                <el-button size="small" @click="updatepici('motorcadeNoData')" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="3">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
@@ -293,7 +288,6 @@
               style="width: 100%"
               :header-cell-style="{background:'white'}"
             >
-           
               <el-table-column align="center" prop="index" label="序号" type="index"></el-table-column>
               <el-table-column align="center" prop="batchNo" label="批次号"></el-table-column>
               <el-table-column align="center" prop="licenseNo" label="号牌号码">
@@ -313,12 +307,8 @@
                 label="自主核保系数*自助渠道系统下限(除nod系数)"
               ></el-table-column>
               <el-table-column align="center" prop="deductible" label="删除批次">
-                 <template slot-scope="scope">
-                  <el-button
-                    type="text"
-                    size="small"
-                    @click="deletebatch(scope.row)"
-                  >删除批次</el-button>
+                <template slot-scope="scope">
+                  <el-button type="text" size="small" @click="deletebatch(scope.row)">删除批次</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -326,9 +316,9 @@
         </el-collapse>
       </el-card>
     </el-form>
-   
+
     <!-- dialog弹出框 -->
-    <el-dialog title="核保任务提交"  :lock-scroll="false" class="text-left" :visible.sync="outerVisible">
+    <el-dialog title="核保任务提交" :lock-scroll="false" class="text-left" :visible.sync="outerVisible">
       <div id="form">
         <el-form ref="form" :model="form" label-width="180px" :rules="rules">
           <el-row>
@@ -393,41 +383,40 @@ export default {
   name: "carAuditPage",
   data() {
     return {
-      state:"666",
+      state: "666",
       httphref: "../../../../#/static/LicensenoAddModel.zip",
-      UwMotorcadeInfoVO:{
-        motorcadeNo:"",
-        licenseNo:"",
-        appici:"",
-        uppici:"",
-        comcode:"",
-        insuredflag:"",
-        insuredName:"",
-        insuredNCode:"",
-        carmainmodel:"",
-        businessNature:"",
-        carcountAll:"",
-        estimatedPremiumSize:"",
-        foreigncarcount:"",
-        carCadastral:"",
-        carmainmodel:"",
-        carmainarea:"",
-        finishdate:"",
-        costRateUpper:"", 
-        monitoringProgramme:"",
-        insuredNameSUB:"",
-        underWritingCondition:"", 
-        remark:"",
-        finishdate:"",
+      UwMotorcadeInfoVO: {
+        motorcadeNo: "",
+        licenseNo: "",
+        appici: "",
+        uppici: "",
+        comcode: "",
+        insuredflag: "",
+        insuredName: "",
+        insuredNCode: "",
+        carmainmodel: "",
+        businessNature: "",
+        carcountAll: "",
+        estimatedPremiumSize: "",
+        foreigncarcount: "",
+        carCadastral: "",
+        carmainmodel: "",
+        carmainarea: "",
+        finishdate: "",
+        costRateUpper: "",
+        monitoringProgramme: "",
+        insuredNameSUB: "",
+        underWritingCondition: "",
+        remark: "",
+        finishdate: ""
       },
-      outerVisible:false,
+      outerVisible: false,
       categoryss: [
         { value: "新车车队", label: "1" },
         { value: "转入车队", label: "2" },
         { value: "续保车队", label: "3" }
       ],
-      results: [
-      ],
+      results: [],
       correction: {},
       flagCode: false,
       fileList: [],
@@ -439,8 +428,8 @@ export default {
       form: {},
       rules: {},
       radio: 1,
-      fileList1:[],
-      fileList2:[],
+      fileList1: [],
+      fileList2: [],
       outerVisible: false,
       innerVisible: false,
       textarea1: "",
@@ -455,67 +444,118 @@ export default {
           label: "审核未通过"
         }
       ],
-      formDataAdd:{},
-      formDataUP:{}
+      formDataAdd: {},
+      formDataUP: {}
     };
   },
-
+    computed: {
+   // 这里定义上传文件时携带的参数，即表单数据
+    // upData: function() {
+    //   return {
+    //     motorcadeNoData: this.UwMotorcadeInfoVO.motorcadeN
+    //   }
+    // }
+  },
   methods: {
-    onSuccess(file, fileList){
-
-    },    
-    customUpload(file, fileList){
-
+    upHandleRemove(file, fileList) {
+      // console.log(file, fileList);
     },
-    uploadname(file, fileList){
-      // console.log(file,fileList)
+    upOnSuccess(file, fileList) {
+      // console.log(file, fileList);
+    },
+    upHandlePreview(file, fileList) {
+      // console.log(file, fileList);
+    },
+    upBeforeRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addHandleRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addOnSuccess(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addHandlePreview(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addBeforeRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    addUploadname(file, fileList) {
+      // console.log(file, fileList);
       this.UwMotorcadeInfoVO.appici = file.name;
       let formData = new FormData();
+      if(file.raw){
       formData.append("file", file.raw);
       this.uploading = true;
-      this.formDataAdd=formData
+      this.formDataAdd = formData;
+        }
     },
-    handlePreview(file, fileList){
+    upUploadname(file, fileList) {
+      // console.log(file, fileList);
+      if(file){
+      this.UwMotorcadeInfoVO.uppici = file.name;
+      let formData = new FormData();
+      formData.append("file", file);
+      formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
+      this.uploading = true;
+      this.formDataUP = formData;
+        console.log(file, fileList,formData,this.formDataUP);
+      }
+    },
 
-    },
-    beforeRemove(file, fileList){
-
-    },
-               
     // 新增文件上传
-    addpici(){
-      this.addExcel()
+    addpici() {
+      this.addExcel();
     },
-    addExcel(){
-      this.$fetch.post(this.HOST + this.$url.carAuditPageaddfile, {datas:this.formDataAdd,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
-    .then(res=>{
-      console.log(res);
-    })
+    addExcel() {
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageaddfile, {
+          uwmotorcadeinfoImportExcel: this.formDataAdd,
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+        })
+        .then(res => {
+          console.log(res);
+        });
     },
-    updatepici(){
-      this.updateExcel()
+    updatepici(motorcadeNoData) {
+      this.updateExcel();
     },
 
     //修改文件上传
-    updateExcel(file){
-      let formData = new FormData();
-      formData.append("file", file.raw);
-      this.uploading = true;
-      // console.log(file)
-      this.$fetch.post(this.HOST + this.$url.carAuditPageUpdatefile, {data:formData,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo})
-    .then(res=>{
-      console.log(res);
-    })
-
+    updateExcel() {
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageUpdatefile, {
+          uwmotorcadeinfoImportExcel: this.formDataUP,
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+        })
+        .then(res => {
+          console.log(res);
+        });
     },
     //导出
-    carAuditPagechu(){
-        this.$fetch.get(this.HOST + this.$url.carAuditPageToInsured, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
-        licenseNo:this.UwMotorcadeInfoVO.licenseNo
-        }})
-        .then(res=>{
-          console.log(res);
+    carAuditPagechu() {
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageToInsured, {
+          params: {
+            motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+            licenseNo: this.UwMotorcadeInfoVO.licenseNo
+          }
         })
+        .then(res => {
+          console.log(res);
+        });
+    },
+    //号码号牌跳转
+    BusinessNum(row) {
+      // console.log(row)
+      this.$router.push({
+        path: "/unNumPlate",
+        query: {
+          row: row.licenseNo,
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+        }
+      });
     },
     //设置collapse全部展开
     setActiveNames() {
@@ -523,154 +563,167 @@ export default {
         this.activeNames.push(JSON.stringify(i));
       }
     },
-  
-  //删除批次
-    deletebatch(row){
+
+    //删除批次
+    deletebatch(row) {
       // console.log(row)
-       this.$router.push({ path: "/deletebatch", query: { row: row.batchNo ,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo} });
-    },
-  //提交审核
-    submitaudit(){
-        let picc={
-            motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,
-            userCode:"userCode",
-            handleText:"yes",
-            userName:"userName"
+      this.$router.push({
+        path: "/deletebatch",
+        query: {
+          row: row.batchNo,
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
         }
-      this.$fetch.post(this.HOST + this.$url.carAuditPageSubmits,picc)
-      .then(res=>{
-        console.log(res);
-      })
+      });
+    },
+    //提交审核
+    submitaudit() {
+      let picc = {
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+        userCode: "userCode",
+        handleText: "yes",
+        userName: "userName"
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.carAuditPageSubmits, picc)
+        .then(res => {
+          console.log(res);
+        });
       // this.outerVisible=true;
-      
+
       // document.querySelector("div").style=" padding-right:0 !important;";
     },
 
-
-
-
     //生效办结
-    outerBranch(){
-        //  this.$router.push({ path: "/toUwmotorcadeinfoPage"});
-        let  picc={motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo,userCode:"userCode",handleText:"yes",userName:"userName"}
-        this.$fetch.post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
-        .then(res=>{
-        console.log(res);
-        })
+    outerBranch() {
+      //  this.$router.push({ path: "/toUwmotorcadeinfoPage"});
+      let picc = {
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+        userCode: "userCode",
+        handleText: "yes",
+        userName: "userName"
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
+        .then(res => {
+          console.log(res);
+        });
     },
     //续保
-    outerRenewal(){
-        // this.$router.push({ path: "/torenewal"});
-        this.$fetch.get(this.HOST + this.$url.carAuditPageOuterRenewal, {params:{id:1}})
-        .then(res=>{
-        console.log(res);
+    outerRenewal() {
+      // this.$router.push({ path: "/torenewal"});
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageOuterRenewal, {
+          params: { id: 1 }
         })
+        .then(res => {
+          console.log(res);
+        });
     },
     //修改
-    outerUpdate(){
-          this.$router.push({ path: "/topupdate"});
-      
+    outerUpdate() {
+      this.$router.push({ path: "/topupdate" });
     },
     //对比
-    outerRatio(){
-    //   this.$router.push({ path: "/carContrast"});
-     this.$fetch.get(this.HOST + this.$url.carAuditPageOuterRatio, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
-        .then(res=>{
-        console.log(res);
+    outerRatio() {
+      //   this.$router.push({ path: "/carContrast"});
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageOuterRatio, {
+          params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
         })
+        .then(res => {
+          console.log(res);
+        });
     },
     //删除
-    outerDelete(){
-        this.$fetch.get(this.HOST + this.$url.carAuditPageDelete, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
-        .then(res=>{
-        console.log(res);
+    outerDelete() {
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageDelete, {
+          params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
         })
+        .then(res => {
+          console.log(res);
+        });
     },
     // 影像上传
-    outerUpimg(){
-      let ImageRequestDTO ={
+    outerUpimg() {
+      let ImageRequestDTO = {
         businessNo: this.parameter.businessNo,
-        businessType:"oa",
-        userCode:"ob",
-        userName:"oc",
-        comCode:this.UwMotorcadeInfoVO.comcode
-      }
-        this.$fetch.post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
-        .then(res=>{
-        console.log(res);
-        })
+        businessType: "oa",
+        userCode: "ob",
+        userName: "oc",
+        comCode: this.UwMotorcadeInfoVO.comcode
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
+        .then(res => {
+          console.log(res);
+        });
     },
     //资料查看
-    outerDataview(){
-       let ImageRequestDTO ={
+    outerDataview() {
+      let ImageRequestDTO = {
         businessNo: this.parameter.businessNo,
-        businessType:"oa",
-        userCode:"ob",
-        userName:"oc",
-        comCode:this.UwMotorcadeInfoVO.comcode
-      }
-        this.$fetch.post(this.HOST + this.$url.carAuditPageQueryECMs,ImageRequestDTO)
-        .then(res=>{
-        console.log(res);
-        })
-
+        businessType: "oa",
+        userCode: "ob",
+        userName: "oc",
+        comCode: this.UwMotorcadeInfoVO.comcode
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.carAuditPageQueryECMs, ImageRequestDTO)
+        .then(res => {
+          console.log(res);
+        });
     },
     //查看审核意见
-    auditOpinion(){
-        this.$fetch.get(this.HOST + this.$url.carAuditPageAuditOpinion, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
-        .then(res=>{
-        console.log(res);
+    auditOpinion() {
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageAuditOpinion, {
+          params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
         })
-    //    this.$router.push({ path: "/auditOpinion"});
+        .then(res => {
+          console.log(res);
+        });
+      //    this.$router.push({ path: "/auditOpinion"});
     },
     //流转记录
-    transferRecord(){ 
-       this.$fetch.get(this.HOST + this.$url.carAuditPageTransferRecord, {params:{motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
-        .then(res=>{
-        console.log(res);
+    transferRecord() {
+      this.$fetch
+        .get(this.HOST + this.$url.carAuditPageTransferRecord, {
+          params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
         })
-    //   this.$router.push({ path: "/transferRecord"});
-    },
-
-
-
-    // deletedata(idx){
-    //   this.results.replace(idx,1)
-    // },
-    upload() {},
-    BusinessNum(row) {
-      // console.log(row)
-      this.$router.push({ path: "/unNumPlate", query: { row: row.licenseNo, motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo} });
-    },
-    submitUpload() {
-      // this.$refs.upload.submit();
-
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
+        .then(res => {
+          console.log(res);
+        });
+      //   this.$router.push({ path: "/transferRecord"});
     },
     //车牌号查询
     selectCode() {
       this.flagCode = true;
-      this.$fetch.get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {params:{licenseNo:this.UwMotorcadeInfoVO.licenseNo,motorcadeNo:this.UwMotorcadeInfoVO.motorcadeNo}})
-      .then(res=>{
-        this.results=res
-        console.log(res);
-      })
+      this.$fetch
+        .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
+          params: {
+            licenseNo: this.UwMotorcadeInfoVO.licenseNo,
+            motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+          }
+        })
+        .then(res => {
+          this.results = res;
+          console.log(res);
+        });
     },
     init() {
       // 业务号查询详情
-      this.$fetch.get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
-        params:{motorcadeNo:this.$route.query.motorcadeNo || "YD450000001"}}
-        )
-      .then(res=>{
-        this.UwMotorcadeInfoVO = res
-        this.results = res.uwMotorcadeInfos
-        console.log(res);
-      })
+      this.$fetch
+        .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
+          params: {
+            motorcadeNo: this.$route.query.motorcadeNo || "YD450000001"
+          }
+        })
+        .then(res => {
+          this.UwMotorcadeInfoVO = res;
+          this.results = res.uwMotorcadeInfos;
+          console.log(res);
+        });
     }
   },
 
@@ -701,15 +754,15 @@ export default {
 .float-right {
   text-align: center;
 }
-.updatastyleinput >>>.el-input__inner{
+.updatastyleinput >>> .el-input__inner {
   border-radius: 0px;
-    }
-.updatastyleinput >>> .el-form-item__label{
-   background: #E8F6F9;
- }   
-.updatastyleinput .el-form-item{
-   margin-bottom: 25px;
- }
+}
+.updatastyleinput >>> .el-form-item__label {
+  background: #e8f6f9;
+}
+.updatastyleinput .el-form-item {
+  margin-bottom: 25px;
+}
 .acolor {
   color: #0066cc;
   text-decoration: none;
