@@ -761,7 +761,7 @@ export default {
     this.routeDate = this.$route.query;
     setTimeout(()=> {
       this.setActiveNames();
-      // this.init();
+      this.init();
     }) 
    
     
