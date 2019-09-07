@@ -4,10 +4,11 @@
     <el-card class="circular">
       <el-row class="pt10">
         <el-col :span="3">
-          <el-button class="btn" type="primary" @click="outerVisible = true" size="mini">资料查看</el-button>
+
+          <el-button class="btn" type="primary" @click="goTolinks('getECM')" size="mini">资料查看</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button class="btn" type="primary" @click="outerVisible = true" size="mini">上传影像</el-button>
+          <el-button class="btn" type="primary"  @click="goTolinks('uploadECM')" size="mini">上传影像</el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -580,7 +581,7 @@
               ></el-input>
             </el-col>
             <el-col :span="24" class="mt10">
-              <el-button type="primary" size="mini" class="mt10" @click="innerVisible = true">提交任务</el-button>
+              <el-button type="primary" size="mini" class="mt10" @click="submitReview">提交任务</el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -594,7 +595,7 @@
     >
       <el-row>工作流提示：投保单：34412414214214退回到业务系统成功！</el-row>
       <el-button
-        @click="innerVisible = false;outerVisible = false"
+        @click="goback"
         size="mini"
         type="primary"
         class="mt10"
@@ -658,16 +659,28 @@ export default {
     },
     // 提交审核任务
     submitModification() {
-      // let key = {
-      //   businessNo: this.parameter.businessNo,
-      //   businessType: this.parameter.businessType,
-      //   usercode: "A000"
-      // };
-      // this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
-      //   console.log(data);
-      //   this.subOptions = data.selectPath;
+      let key = {
+        businessNo: this.parameter.businessNo,
+        businessType: this.parameter.businessType,
+        usercode: "A000"
+      };
+      this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
+        console.log(data);
+        this.subOptions = data.selectPath;
         this.outerVisible = true;
-      // });
+      });
+    },
+    goback(){
+        this.$router.go(-1)
+    },
+    // 提交审核
+    submitReview(){
+      let key ={
+        businessNo: this.parameter.businessNo || '123213'
+      }
+      this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview,key).then(data =>{
+        this.innerVisible = true
+      })
     },
     // 放弃
     giveUp() {
@@ -679,6 +692,9 @@ export default {
       this.$fetch.post(this.HOST + this.$url.giveUpUwPayee, key).then(data => {
         console.log(data);
         this.$message.success(data);
+        setTimeout(() => {
+          this.goback()
+        },1500)
       });
     },
     BusinessNum(row) {
@@ -696,6 +712,47 @@ export default {
     },
     selectCode() {
       this.flagCode = true;
+    },
+     // 获取跳转链接并打开新窗口
+    goTolinks(type){
+      let key ={}
+      switch(type){
+          // 影像上传
+          case 'uploadECM':
+             key = {
+              "businessNo": this.routeDate.businessNo ||  "454654564564",
+              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "taskId": "123",
+              "userName": "123",
+              'userCode': '123',
+              "comCode": "13000000"
+              }
+
+          this.$fetch.post(this.HOST + this.$url.uwmainUploadECM,key).then(data => {
+            console.log(data)
+            window.open(data)
+          })
+          break
+           // 影像查看
+          case 'getECM':
+             key = {
+              "businessNo": this.routeDate.businessNo ||  "454654564564",
+              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "taskId": "sdsd",
+              "userName": "123",
+              'userCode': '123',
+              "comCode": "13000000",
+              "SaleImgFlag": '123'
+              }
+
+          this.$fetch.post(this.HOST + this.$url.uwmainGetECM,key).then(data => {
+            console.log(data)
+            window.open(data)
+          })
+          break
+         
+      }
+
     },
     init() {
       let key = {

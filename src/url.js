@@ -47,10 +47,10 @@ module.exports  = {
 
 
     // -----核保处理 ---
-    uwmainGetUwList: '/uwmain/getUwList',
-    getUwPayeeList: '/getUwPayeeList',
-    saveUwPayee:'/saveUwPayee',
-    giveUpUwPayee: '/giveUpUwPayee',
+    uwmainGetUwList: '/payee/uwmain/getUwList',
+    getUwPayeeList: '/payee/getUwPayeeList',
+    saveUwPayee:'/payee/saveUwPayee', // 提交审核 -select options
+    giveUpUwPayee: '/payee/giveUpUwPayee', // 放弃
     uwmainGetUwInfo: '/uwmain/getUwInfo',  // 核保详情查询
     carDeviceInfo: '/uwmain/carDeviceInfo', // 核保-设备详情查询
     telSaleInfo: '/uwmain/telSaleInfo', // 核保 --详细信息查询
@@ -71,7 +71,8 @@ module.exports  = {
     autoDistributeBranchCompanyInfo: '/underwritingECM/branchCompanyInfo', // 查看分公司资料
     autoDistributeTraditionalChannels: '/autoDistribute/traditionalChannels', // 传统渠道
     autoDistributeElectricPinChannels: '/autoDistribute/electricPinChannels', // 电销渠道
-    autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo' // 批单
+    autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo', // 批单
+    undwrtSubmitReview: '/undwrt/submitReview', // 提交审核
 
 
 }

@@ -43,8 +43,8 @@
           <el-row class="pt11">
             <!-- <el-col :span="24" class="el-card__header text-left">任务审核</el-col> -->
             <el-col :span="24" class="pt11">
-              <el-button type="primary" @click="outerVisible = true" size="mini">提交审核</el-button>
-              <el-button size="mini">放弃</el-button>
+              <el-button type="primary" @click="submit" size="mini">提交审核</el-button>
+              <el-button size="mini" @click="giveUp">放弃</el-button>
 
 
             </el-col>
@@ -1527,8 +1527,8 @@
           </template>
           <el-row class="pt11">
             <el-col :span="24" class="pt11">
-              <el-button type="primary" size="mini" @click="outerVisible  = true">提交审核</el-button>
-              <el-button size="mini">放弃</el-button>
+              <el-button type="primary" @click="submit" size="mini">提交审核</el-button>
+              <el-button size="mini" @click="giveUp">放弃</el-button>
             </el-col>
           </el-row>
         </el-collapse-item>
@@ -1538,9 +1538,8 @@
     <el-dialog
       title="核保任务提交"
       class="text-left"
+      width="50%"
       :lock-scroll="false"
-      :append-to-body="true"
-      :modal-append-to-body="true"
       :visible.sync="outerVisible"
     >
       <div id="form">
@@ -1558,10 +1557,10 @@
               <el-form-item label="省公司一级核保:" prop="value">
                 <el-select v-model="form.value" placeholder="请选择">
                   <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="item in subOptions"
+                    :key="item.path"
+                    :label="item.pathName"
+                    :value="item.path"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -1570,10 +1569,10 @@
               <el-form-item label="审批片语:">
                 <el-select v-model="form.value" placeholder="请选择">
                   <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="item in uwNotionCarCheckStatus"
+                     :key="item.value"
+                      :label="item.label"
+                      :value="item.label"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -1598,12 +1597,13 @@
               type="primary"
               size="mini"
               class="float-right mt10"
-              @click="innerVisible = true"
+              @click=" submitReview"
             >提交任务</el-button>
           </el-row>
         </el-form>
       </div>
     </el-dialog>
+
     <el-dialog
       class="el-dialog__body__update"
       width="40%"
@@ -1612,7 +1612,7 @@
     >
       <el-row>工作流提示：投保单：34412414214214退回到业务系统成功！</el-row>
       <el-button
-        @click="innerVisible = false;outerVisible = false"
+        @click="goback()"
         size="mini"
         type="primary"
         class="mt10"
@@ -1714,7 +1714,7 @@ export default {
   name: "UnderwritingDetails",
   data() {
     return {
-      aaa: true,
+      subOptions: [],
       bussinessType: '',
       routeDate: '',
       activeNames: [],
@@ -1812,6 +1812,10 @@ export default {
         this.activeNames.push(JSON.stringify(i));
       }
     },
+    // 返回上一级
+    goback(){
+        this.$router.go(-1)
+    },
     // 撤回
     getBack(){
        let keyWords ={
@@ -1826,10 +1830,46 @@ export default {
        }
       this.$fetch.post(this.HOST + this.$url.undwrtrevokeUndwrt ,keyWords).then(data => {
         console.log(data)
-        this.$message.success(data.message)
+        this.$message.success(data)
       })
     },
-
+     // 放弃
+    giveUp() {
+      let key = {
+        businessNo: this.parameter.businessNo,
+        businessType: this.parameter.businessType,
+        usercode: "A000"
+      };
+      this.$fetch.post(this.HOST + this.$url.giveUpUwPayee, key).then(data => {
+        console.log(data);
+        this.$message.success(data);
+        this.goback()
+      });
+    },
+    // 提交审核
+    submit(){
+      debugger
+      let key = {
+        businessNo:  12321,
+        businessType: 'H',
+        usercode: "A000"
+      };
+      this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
+        console.log(data);
+        this.subOptions = data.selectPath;
+        this.outerVisible = true;
+      });
+      // this.outerVisible= true
+    },
+    // 提交审核
+    submitReview(){
+      let key ={
+        businessNo: this.routeDate.businessNo || '123213'
+      }
+      this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview,key).then(data =>{
+        this.innerVisible = true
+      })
+    },
     init() {
       
       let  keyWords ={
@@ -1846,6 +1886,7 @@ export default {
        console.log(data)
        this.underwritingDetails = data
        this.underwritingDetails.uwNotion = data.uwnotions[0]
+       this.underwritingDetails.displayFlag ={}
        
 
      })

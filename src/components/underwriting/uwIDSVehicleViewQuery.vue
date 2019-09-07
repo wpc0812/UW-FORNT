@@ -61,7 +61,7 @@
                 <el-collapse-item name="1">
                     <template slot="title">
                     <div class="title-blue-bar"></div>
-                    <div class="card-title">赔付率查询-客户</div>
+                    <div class="card-title">赔付率查询-车辆</div>
                     </template>
                     <el-table
                         :data="deviceTableYL"
@@ -87,7 +87,7 @@
                 <el-collapse-item name="1">
                     <template slot="title">
                     <div class="title-blue-bar"></div>
-                    <div class="card-title">赔付率查询-客户</div>
+                    <div class="card-title">赔付率查询-车辆</div>
                     </template>
                     <el-table
                         :data="deviceTable"
@@ -143,32 +143,14 @@ export default {
     
     this.parameter = this.$route.query; 
     let keyWords = {
-      "businessNo": this.parameter.businessNo || "454654564564",
-      "taskType": this.parameter.taskType ||"sdsd"
+        condition: this.parameter.condition || '0',
+        customerCodeT: 'asd',
+        paramFlag: 'asd',
+        ComCode: 'asd',
       }
 
     this.$fetch.post(this.HOST + this.$url.riskTypeRateInfo,keyWords).then(data => {
       console.log(data)
-      if (data && data.length > 0) {
-        for( let i =0; i < data.length ;i ++){
-          switch (data[i].rateType){
-            case "盈利目标占比":
-              this.deviceTableYL.push(data[i])
-            break
-             case "盈利实际占比":
-              this.deviceTableYL.push(data[i])
-            break
-             case "风险目标占比":
-              this.deviceTable.push(data[i])
-            break
-             case "风险实际占比":
-              this.deviceTable.push(data[i])
-            break
-            
-          }
-        }
-      }
-      
     })
   }
 };
