@@ -39,13 +39,8 @@ module.exports  = {
     underwritingRateStatistics:'comprehensiveStatistics/underwritingRateStatistics',//综合统计 核保率统计
     ruleExecutionRule:'/comprehensiveStatistics/ruleImplementStatistics',// 综合统计 规则执行统计 查询
     // ruleExecutionRule:'/comprehensiveStatistics/ruleImplementStatistics',// 综合统计 规则执行统计 导出
-
-
-
-
-
-
-
+    distributedMonitoringStatistics:'/comprehensiveStatistics/distributionMonitoringStatistics',// 综合统计 分发监控统计 查询
+    // distributedMonitoring:'/comprehensiveStatistics/distributionMonitoringStatistics',// 综合统计 规则执行统计 导出
     // -----核保处理 ---
     uwmainGetUwList: '/payee/uwmain/getUwList',
     getUwPayeeList: '/payee/getUwPayeeList',
@@ -63,6 +58,8 @@ module.exports  = {
     undwrtFlowRecord: '/uwmain/flowRecords', // 核保详情处理 -流转记录,
     payeeGetUwPayeeList: '/payee/getUwPayeeList' ,// 收款人 审核 查询
     payeeGetUwPayeeAllInfo: '/payee/getUwPayeeAllInfo', // 收款人审核 -详细信息
+<<<<<<< Updated upstream
+
     uwmainUploadECM:'/uwmain/uploadECM', // 主流程-影像上传
     uwmainMobileECM:'/uwmain/mobileECM', // 主流程-手机影像 
     uwmainStartECM :'/uwmain/startECM ', // 主流程-查看关联单影像
@@ -73,7 +70,11 @@ module.exports  = {
     autoDistributeElectricPinChannels: '/autoDistribute/electricPinChannels', // 电销渠道
     autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo', // 批单
     undwrtSubmitReview: '/undwrt/submitReview', // 提交审核
+    uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
 
+=======
+    uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
+>>>>>>> Stashed changes
 
 }
 

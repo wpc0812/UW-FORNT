@@ -94,9 +94,8 @@ export default {
        this.$fetch
         .post(this.HOST + this.$url.underwritingRateStatistics, this.underwritingRate)
         .then(res => {
-          console.log(res);
-
-          this.results=res.split()
+          // console.log(res);
+          this.results=res
         });
     },
      querychu() {

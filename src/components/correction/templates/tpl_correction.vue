@@ -199,8 +199,6 @@ export default {
       if (newVal.length && newVal.length < oldValue) {
         this.rules.businessNo.required = false;
       } else if (newVal) {
-        // this.rules = Object.assign(this.rules,{businessNo:this.businessNo})
-        // this.rules.businessNo = this.businessNo;
         this.rules.businessNo.required = true;
       }
     },
@@ -216,7 +214,7 @@ export default {
   data() {
     // 号码录入规则
     var validateTotalSupply = (rules, value, callback) => {
-      console.log(this.UwctrlVO);
+      // console.log(this.UwctrlVO);
       if (!value && !this.UwctrlVO.licenses) {
         callback(new Error("号码牌录入"));
       } else if (value && !this.UwctrlVO.licenses) {
@@ -225,7 +223,6 @@ export default {
         this.$refs["UwctrlVO"].clearValidate("licenses");
         callback();
       } else if (value && this.UwctrlVO.licenses) {
-        // this.$refs['UwctrlVO'].validateField('licenses')
         callback(new Error("请在号牌导入与录入两项中选择一项进行特批配置"));
       }
     };
@@ -239,7 +236,6 @@ export default {
         this.$refs["UwctrlVO"].clearValidate("licenseNo");
         callback();
       } else if (value && this.UwctrlVO.licenseNo) {
-        // this.$refs['UwctrlVO'].validateField('licenseNo')
         callback(new Error("请在号牌导入与录入两项中选择一项进行特批配置"));
       }
     };
@@ -382,14 +378,11 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.correctionSave, uwctrlVO)
         .then(res => {
-          console.log(res);
             if (res) {
             this.open2();
             setTimeout(() => {
-              this.pangduan = true;
               this.$router.push({
                 path: "/queryCorrection",
-                query: { pangduan: this.pangduan }
               });
             }, 2000);
           }

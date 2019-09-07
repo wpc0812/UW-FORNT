@@ -8,13 +8,13 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入统计条件</div>
           </template>
-          <el-form ref="form" :model="ruleExecution" label-width="140px">
+          <el-form ref="form" :model="distributedMonitoring" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="起始日期:" class="text-left">
                     <el-date-picker
-                      v-model="ruleExecution.value1"
+                      v-model="distributedMonitoring.startDate"
                       value-format="yyyy-MM-dd"
                       type="date"
                       placeholder="选择日期"
@@ -24,7 +24,7 @@
                 <el-col :span="8" :offset="7">
                   <el-form-item label="截至日期:" class="text-left">
                     <el-date-picker
-                      v-model="ruleExecution.value1"
+                      v-model="distributedMonitoring.endDate"
                       value-format="yyyy-MM-dd"
                       type="date"
                       placeholder="选择日期"
@@ -33,8 +33,8 @@
                 </el-col>
               </el-row>
               <el-col :span="24" class="text-center">
-                <el-button @click="query()" type="primary">查询</el-button>
-                <el-button @click="query()">导出分发按钮点击情况</el-button>
+                <el-button @click="query" type="primary">查询</el-button>
+                <el-button @click="queryfen">导出分发按钮点击情况</el-button>
               </el-col>
             </el-row>
           </el-form>
@@ -57,10 +57,10 @@
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
-            <el-table-column prop="year" label="员工姓名"></el-table-column>
-            <el-table-column prop="insuranceType" label="工号"></el-table-column>
-            <el-table-column prop="startTime" label="点击请求分发时间"></el-table-column>
-            <el-table-column prop="endTime" label="点击停止分发时间"></el-table-column>
+            <el-table-column prop="employeeName" label="员工姓名"></el-table-column>
+            <el-table-column prop="employeeNo" label="工号"></el-table-column>
+            <el-table-column prop="clickRequestDistributeTime" label="点击请求分发时间"></el-table-column>
+            <el-table-column prop="clickStopDistributeTime" label="点击停止分发时间"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -80,9 +80,9 @@
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
-            <el-table-column prop="year" label="员工姓名"></el-table-column>
-            <el-table-column prop="insuranceType" label="工号"></el-table-column>
-            <el-table-column prop="memberName" label="点击放弃按钮时间"></el-table-column>
+            <el-table-column prop="employeeName" label="员工姓名"></el-table-column>
+            <el-table-column prop="employeeNo" label="工号"></el-table-column>
+            <el-table-column prop="clickGiveUpButtonTime" label="点击放弃按钮时间"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -91,7 +91,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { relations } from "@/assets/js/baseCode";
 
 export default {
   name: "distributedMonitoring",
@@ -99,30 +98,38 @@ export default {
   data() {
     return {
       resultsStart:[
-        {year:"AAA",insuranceType:"AAA001",startTime:"2019-8-12 09:33:15",endTime:"2019-8-13 00:00:00"}
       ],
       resultsEnd:[],
-      relations,
       activeNames: ['1','2'],
       arrow: false,
-      ruleExecution: {},
-      results: []
+      distributedMonitoring: {
+        startDate:"",
+        endDate:""
+      },
     };
   },
 
   computed: {
-    ...mapGetters(["getList"])
   },
 
   methods: {
-    ...mapActions(["getrtReported"]),
 
-    reset() {},
-
+    //查询
     query() {
-      this.getrtReported(this.rtReported);
-    },
 
+      this.$fetch
+        .post(this.HOST + this.$url.distributedMonitoringStatistics, this.distributedMonitoring)
+        .then(res => {
+          console.log(res);
+          this.resultsEnd=res.giveUpButtonSituation
+          this.resultsStart=res.distributeButtonSituation
+        });
+
+    },
+    //导出分发按钮点击情况
+    queryfen(){
+
+    },
     // 未处理展开关闭状态
     untreated(val) {
       this.task.tab1 = val;

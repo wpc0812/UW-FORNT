@@ -209,7 +209,6 @@ export default {
   },
   created() {
     this.$fetch.get(this.HOST + this.$url.correctionShow,{params:{id:this.$route.query.row}}).then(res=>{
-         console.log(res)
          if (res) {
             this.UwctrlVO=res
           }

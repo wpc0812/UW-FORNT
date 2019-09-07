@@ -13,12 +13,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select
-                      v-model="UwctrlVO.insuredFlag"
-                      @change="currentSel"
-                      clearable
-                      placeholder="请选择"
-                    >
+                    <el-select v-model="UwctrlVO.insuredFlag" clearable placeholder="请选择">
                       <el-option
                         v-for="item in relationss"
                         :key="item.label"
@@ -134,15 +129,15 @@
     <el-card class="circular mt4 shadow">
       <el-row class="text-left">
         <el-pagination
-        small
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[20, 40, 80, 160]"
-        :page-size="20"
-        layout="sizes, prev, pager, next"
-        :total="totalnum">
-      </el-pagination>
+          small
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[20, 40, 80, 160]"
+          :page-size="20"
+          layout="sizes, prev, pager, next"
+          :total="totalnum"
+        ></el-pagination>
       </el-row>
       <el-table
         :data="results"
@@ -175,12 +170,20 @@
         <el-table-column prop="handlerUser" label="特批操作员"></el-table-column>
         <el-table-column label="修改">
           <template slot-scope="scope">
-            <el-button type="text"  :disabled="scope.row.valid=='0'" @click="acd('c', scope.row.id)">修改</el-button>
+            <el-button
+              type="text"
+              :disabled="scope.row.valid=='0'"
+              @click="acd('c', scope.row.id)"
+            >修改</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="index" label="注销">
           <template slot-scope="scope">
-            <el-button type="text" :disabled="scope.row.valid=='0'" @click="acDelete(scope.row.id,results)">注销</el-button>
+            <el-button
+              type="text"
+              :disabled="scope.row.valid=='0'"
+              @click="acDelete(scope.row.id,results)"
+            >注销</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -191,13 +194,14 @@
 import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
 import qs from "querystring";
+import { setTimeout } from 'timers';
 export default {
   name: "queryCorrection",
 
   data() {
     return {
-        currentPage:4,
-      totalnum:1,
+      currentPage: 4,
+      totalnum: 1,
       dochoose: false,
       handleCurrentChange: {},
       categorys: [
@@ -226,7 +230,7 @@ export default {
         { value: "0_无效", label: "0" },
         { value: "1_有效", label: "1" }
       ],
-      results:[],
+      results: [],
       relationss: [
         { value: "全部", label: "" },
         { value: "1_被保险人", label: "1" },
@@ -237,20 +241,14 @@ export default {
       relations: {}
     };
   },
-  computed: {
-    ...mapGetters(["getList"])
-  },
+  computed: {},
   mounted() {},
   methods: {
-    ...mapActions(["getform"]),
-
-    currentSel() {
-      // console.log(this.UwctrlVO.insuredFlag);
-    },
-      // 页数显示
+    // 页数显示
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`);
     },
+    //增加修改
     acd(flag, row) {
       if (flag == "a") {
         this.$router.push({
@@ -272,34 +270,42 @@ export default {
     },
     //点击序号到详情页
     BusinessNum(idx, row) {
-       this.$router.push({path: '/detailCorrection',query:{row:row}})
+      this.$router.push({ path: "/detailCorrection", query: { row: row } });
     },
     //注销
     acDelete(id, row) {
-           let uwctrlVO = this.UwctrlVO;
-      this.$fetch.get(this.HOST + this.$url.correctionDelete,{params:{id:id}}).then(res=>{
+      let uwctrlVO = this.UwctrlVO;
+      this.$fetch
+        .get(this.HOST + this.$url.correctionDelete, { params: { id: id } })
+        .then(res => {
           if (res == true) {
-            this.query()
+            setTimeout(()=>{
+              this.query();
+            },2000)
           }
-        })
+        });
     },
-    //保存
+    //查询
     query() {
       let uwctrlVO = this.UwctrlVO;
-      this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(res=>{
-          if(res.length>0){
-          this.results = res;
+      this.$fetch
+        .post(this.HOST + this.$url.correctionQury, uwctrlVO)
+        .then(res => {
+          if (res.length > 0) {
+            this.results = res;
           }
-        })
+        });
     }
   },
   created() {
-     let uwctrlVO = this.UwctrlVO;
-      this.$fetch.post(this.HOST + this.$url.correctionQury,uwctrlVO).then(res=>{
-          if(res){
+    let uwctrlVO = this.UwctrlVO;
+    this.$fetch
+      .post(this.HOST + this.$url.correctionQury, uwctrlVO)
+      .then(res => {
+        if (res) {
           this.results = res;
-          }
-        })
+        }
+      });
   }
 };
 </script>

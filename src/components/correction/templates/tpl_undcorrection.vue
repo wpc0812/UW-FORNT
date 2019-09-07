@@ -149,9 +149,9 @@
       class="dialog-footer-parent"
       :before-close="handleClose"
     >
-      <span class="fontSizeTrue">确定保存吗？</span>
+      <span class="fontSizeTrue">确定修改吗？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="outerVisible = false">确 定</el-button>
+        <el-button type="primary" @click="updateyes">确 定</el-button>
         <el-button @click="outerVisible = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -259,7 +259,6 @@ export default {
   },
 
   computed: {},
-
   methods: {
     //返回
     goBack() {
@@ -268,18 +267,33 @@ export default {
     handleClose(done) {
       console.log("确认");
     },
-    acd() {},
-    // 修改保存
-    save() {
+    // 修改成功
+    open2() {
+      this.$message({
+        message: "恭喜你修改成功",
+        type: "success"
+      });
+    },
+    //确定按钮
+    updateyes() {
+      this.outerVisible = false;
       this.$refs.UwctrlVO.validate(valids => {
-        console.log(valids);
         let uwctrlVO = this.UwctrlVO;
         this.$fetch
           .post(this.HOST + this.$url.correctionUpdate, uwctrlVO)
           .then(res => {
-            // console.log(res)
-          })
+            setTimeout(() => {
+              this.open2();
+              this.$router.push({
+                path: "/queryCorrection"
+              });
+            }, 2000);
+          });
       });
+    },
+    // 修改保存
+    save() {
+      this.outerVisible = true;
     }
   },
   created() {
@@ -290,7 +304,7 @@ export default {
       })
       .then(res => {
         this.UwctrlVO = res;
-      })
+      });
   }
 };
 </script>

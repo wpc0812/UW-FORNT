@@ -63,16 +63,6 @@ const router = new Router({
           }
         },
         {
-          path: '/peifulv',
-          name: '赔付率详情',
-          component: _import('unauthorizedFleet/peifulv'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
-        {
           path: '/changewriterInfor',
           name: '修改核保员信息',
           component: _import('personnelManagement/changewriterInfor'),
@@ -181,6 +171,11 @@ const router = new Router({
           path: '/uwIDSVehicleViewQuery',
           name: '赔付率查询',
           component: _import('underwriting/uwIDSVehicleViewQuery')
+        },
+        {
+          path: '/uwIDSVehicleViewQueryDetails',
+          name: '赔付率查询跳转页',
+          component: _import('underwriting/uwIDSVehicleViewQueryDetails')
         },
         
         {
