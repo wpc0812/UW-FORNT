@@ -658,16 +658,16 @@ export default {
     },
     // 提交审核任务
     submitModification() {
-      let key = {
-        businessNo: this.parameter.businessNo,
-        businessType: this.parameter.businessType,
-        usercode: "A000"
-      };
-      this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
-        console.log(data);
-        this.subOptions = data.selectPath;
+      // let key = {
+      //   businessNo: this.parameter.businessNo,
+      //   businessType: this.parameter.businessType,
+      //   usercode: "A000"
+      // };
+      // this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
+      //   console.log(data);
+      //   this.subOptions = data.selectPath;
         this.outerVisible = true;
-      });
+      // });
     },
     // 放弃
     giveUp() {

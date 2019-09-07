@@ -1,10 +1,18 @@
 <template>
   <div class="titlestyle" style="margin-top:30px">
     <!-- 任务审核 -->
-    <div style="margin: 5px 0">
-      <el-row class="text-center buttons" >
-            <el-button size='mini'>详细信息</el-button>
-            <el-button size='mini'>上传影像</el-button>
+    <div style="margin: 5px 0;padding:0 5px">
+      <el-row class="text-left  buttons" >
+            <el-button size='mini' @click="goTolinks('details')" v-if="underwritingDetails.displayFlag.browseFlag == '1'">详细信息</el-button>
+            <el-button size='mini' @click='goToFlowLog()' v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">流转记录</el-button>
+            
+            <el-button size='mini' @click="goTolinks('getECM')" v-if="underwritingDetails.displayFlag.infoFlag == '1'">资料查看</el-button>
+
+            <el-button size='mini' @click="goTolinks('uploadECM')" v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
+            <el-button size='mini' @click="goTolinks('mobileECM')" v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'">手机影像</el-button>
+            <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.possessTaskFlag == '1'">任务审核</el-button>
+            <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.approvalInfoFlag == '1'">审批信息</el-button>
+            <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">撤回</el-button>
       </el-row>
     </div>
     
@@ -550,7 +558,19 @@ export default {
         underwriteOpinions:[], // 历次审核意见	
 	      batchMain: {}, // 团单基本信息
         batchVehicles: [], // 车辆维护信息
-        uwNotion: {} // 审批意见
+        uwNotion: {}, // 审批意见
+        displayFlag:{ 
+          browseFlag: '0', // 详细信息
+          flowRecordFlag: '0', //	流转记录
+          ClaimFlag: '0', //	出险信息
+          infoFlag: '0', //	资料查看
+          uploadImageFlag: '0', //	上传影像
+          revokeFlag: '0', //	撤回
+          possessTaskFlag: '0',	// 任务审核
+          approvalInfoFlag: '0', //	审批信息
+
+
+        },
       },
       value: "",
       // 审核意见 ---审批动作
@@ -608,28 +628,67 @@ export default {
        this.underwritingDetails = data
      })
     },
-    // 设备信息
-    goToDeviceInfo(){
-
+    // 撤回
+    getBack(){
+       let keyWords ={
+          businessNo: this.routeDate.businessNo || 'AST12312312',
+          ComCode: this.routeDate.businessNo || 'BJ233',
+          UserCode: this.routeDate.businessNo || 'WPC212',
+          UserName: this.routeDate.businessNo || '宛平城',
+          revokeType: this.routeDate.type || 'EH', // 撤回类型 1：省级从承保撤回  2：省级从总公司撤回  3：总公司从省级撤回
+          taskId: this.routeDate.businessNo || 'id12312', // 任务id
+          businessType: this.routeDate.type || 'ST',
+          batchNo: this.routeDate.type || 12312312,
+       }
+      this.$fetch.post(this.HOST + this.$url.undwrtrevokeUndwrt ,keyWords).then(data => {
+        console.log(data)
+        this.$message.success(data.message)
+      })
+    },
+   // 流转记录
+    goToFlowLog(){
+      let routeUrl = this.$router.resolve({
+          path: "/flowLog",
+           query: {
+          businessNo: '123'
+        }
+      })
+      window.open(routeUrl.href, '_blank')
     },
     // 获取跳转链接并打开新窗口
-    goTolinks(type){
+     goTolinks(type){
       switch(type){
-        case 'teamquality' :
-          let key = { 
-            'reportFormsType': 'teamquality',
-            'comcode': '12322312',
-            'businessNo': this.routeDate.businessNo || '123', // 业务号
-            'taskType': this.routeDate.type || 'T'// 业务类型
-          }
-          this.$fetch.get(this.HOST + this.$url.uwmainTeamquality, {params:key}).then(data => {
+
+        case 'uploadECM':
+            let key = {
+              "businessNo": this.routeDate.businessNo ||  "454654564564",
+              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "taskId": "123",
+              "userName": "123",
+              'userCode': '123',
+              "comCode": "13000000"
+              }
+
+          this.$fetch.post(this.HOST + this.$url.uwmainUploadECM,key).then(data => {
+            console.log(data)
+            window.open(data)
+          })
+          break
+          // 详细信息
+          case 'details':
+            let details = {
+              "businessNo": this.routeDate.businessNo ||  "454654564564",
+              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "taskType": "sdsd",
+              "taskId": "123",
+              "comCode": "13000000"
+              }
+
+          this.$fetch.post(this.HOST + this.$url.telSaleInfo,details).then(data => {
             console.log(data)
             // window.open("http://www.baidu.com")
             window.open(data)
-
-
           })
-
           break
       }
 

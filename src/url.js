@@ -62,8 +62,17 @@ module.exports  = {
     autoDistributeSelectTaskList: '/autoDistribute/selectTaskList', // 自动推送 查询
     undwrtFlowRecord: '/uwmain/flowRecords', // 核保详情处理 -流转记录,
     payeeGetUwPayeeList: '/payee/getUwPayeeList' ,// 收款人 审核 查询
-    payeeGetUwPayeeAllInfo: '/payee/getUwPayeeAllInfo' // 收款人审核 -详细信息
-   
+    payeeGetUwPayeeAllInfo: '/payee/getUwPayeeAllInfo', // 收款人审核 -详细信息
+    uwmainUploadECM:'/uwmain/uploadECM', // 主流程-影像上传
+    uwmainMobileECM:'/uwmain/mobileECM', // 主流程-手机影像 
+    uwmainStartECM :'/uwmain/startECM ', // 主流程-查看关联单影像
+    uwmainGetECM:'/uwmain/getECM', // 主流程-影像查看
+    autoDistributeHeadCompanyInfo: '/underwritingECM/headCompanyInfo', // 查看总公司资料
+    autoDistributeBranchCompanyInfo: '/underwritingECM/branchCompanyInfo', // 查看分公司资料
+    autoDistributeTraditionalChannels: '/autoDistribute/traditionalChannels', // 传统渠道
+    autoDistributeElectricPinChannels: '/autoDistribute/electricPinChannels', // 电销渠道
+    autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo' // 批单
+
 
 }
 
