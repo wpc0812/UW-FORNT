@@ -62,6 +62,7 @@ module.exports  = {
     uwmainMobileECM:'/uwmain/mobileECM', // 主流程-手机影像 
     uwmainStartECM :'/uwmain/startECM ', // 主流程-查看关联单影像
     uwmainGetECM:'/uwmain/getECM', // 主流程-影像查看
+    uwmainGetLastYearPolicyInfo: '/uwmain/getLastYearPolicyInfo', // 主流程 -查看上年度保单
     autoDistributeHeadCompanyInfo: '/underwritingECM/headCompanyInfo', // 查看总公司资料
     autoDistributeBranchCompanyInfo: '/underwritingECM/branchCompanyInfo', // 查看分公司资料
     autoDistributeTraditionalChannels: '/autoDistribute/traditionalChannels', // 传统渠道

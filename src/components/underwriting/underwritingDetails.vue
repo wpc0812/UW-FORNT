@@ -2,30 +2,30 @@
   <div class="titlestyle" style="margin-top:30px">
     <!-- 任务审核 -->
     <div style="margin: 5px 0;padding-left: 5px">
-      <el-row class="text-left buttons" >
-            <el-button size='mini' @click="goTolinks('details')" v-if="underwritingDetails.displayFlag.browseFlag == '1'">详细信息</el-button>
-            <el-button size='mini' @click='goToFlowLog()' v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">流转记录</el-button>
+      <el-row class="text-left " >
+            <el-button size='mini' type="primary" @click="goTolinks('details')" v-if="underwritingDetails.displayFlag.browseFlag == '1'">详细信息</el-button>
+            <el-button size='mini' type="primary" @click='goToFlowLog()' v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">流转记录</el-button>
 
             <!-- <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.lastPolicyClaimFlag == '1'" >上年保单理赔信息</el-button> -->
 
-            <el-button size='mini' @click="goTolinks('headCompany')" v-if="underwritingDetails.displayFlag.headOfficeInfoFlag == '1'">查看总公司资料</el-button>
-            <el-button size='mini' @click="goTolinks('branchCompany')" v-if="underwritingDetails.displayFlag.branchOfficeInfoFlag == '1'">查看分公司资料</el-button>
-            <el-button size='mini' @click="goTolinks('startECM')" v-if="underwritingDetails.displayFlag.relationImageFlag == '1'">查看关联单影像</el-button>
-            <el-button size='mini' @click="goTolinks('getECM')" v-if="underwritingDetails.displayFlag.infoFlag == '1'">资料查看</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('headCompany')" v-if="underwritingDetails.displayFlag.headOfficeInfoFlag == '1'">查看总公司资料</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('branchCompany')" v-if="underwritingDetails.displayFlag.branchOfficeInfoFlag == '1'">查看分公司资料</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('startECM')" v-if="underwritingDetails.displayFlag.relationImageFlag == '1'">查看关联单影像</el-button>
+            <el-button size='mini' type="primary"  @click="goTolinks('getECM')" v-if="underwritingDetails.displayFlag.infoFlag == '1'">资料查看</el-button>
 
-            <el-button size='mini' @click="goTolinks('uploadECM')" v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
-            <el-button size='mini' @click="goTolinks('mobileECM')" v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'">手机影像</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('uploadECM')" v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('mobileECM')" v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'">手机影像</el-button>
 
-            <el-button size='mini' @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.deviceInfoFlag == '1'">设备信息</el-button>
+            <el-button size='mini' type="primary" @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.deviceInfoFlag == '1'">设备信息</el-button>
 
-            <!-- <el-button size='mini' @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.lastPolicyInfoFlag == '1'">查看上年保单信息</el-button> -->
-
-
-            <el-button size='mini' @click="goToUnderwriteRiskTypeRate" v-if="underwritingDetails.displayFlag.riskTypeRateFlag == '1'">查看风险类别占比</el-button>
-            <el-button size='mini' @click="goTolinks('teamquality')" v-if="underwritingDetails.displayFlag.reportFormsFlag == '1'">车队业务质量统计查询</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('lastYearPolicyInfo')" v-if="underwritingDetails.displayFlag.lastPolicyInfoFlag == '1'" >查看上年保单信息</el-button>
 
 
-            <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">撤回</el-button>
+            <el-button size='mini' type="primary" @click="goToUnderwriteRiskTypeRate" v-if="underwritingDetails.displayFlag.riskTypeRateFlag == '1'">查看风险类别占比</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('teamquality')" v-if="underwritingDetails.displayFlag.reportFormsFlag == '1'">车队业务质量统计查询</el-button>
+
+
+            <el-button size='mini' type="primary" @click="getBack()" v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">撤回</el-button>
 
 
       </el-row>
@@ -2061,6 +2061,16 @@ export default {
             console.log(data)
             window.open(data)
           })
+          break
+          case 'lastYearPolicyInfo':
+            key = {
+              lastPolicyNo: '123',
+              riskCode: '122'
+
+            }
+            this.$fetch.get(this.HOST + this.$url.uwmainGetLastYearPolicyInfo, {params:key}).then( data => {
+              window.open(data)
+            })
           break
       }
 
