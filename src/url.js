@@ -58,8 +58,6 @@ module.exports  = {
     undwrtFlowRecord: '/uwmain/flowRecords', // 核保详情处理 -流转记录,
     payeeGetUwPayeeList: '/payee/getUwPayeeList' ,// 收款人 审核 查询
     payeeGetUwPayeeAllInfo: '/payee/getUwPayeeAllInfo', // 收款人审核 -详细信息
-<<<<<<< Updated upstream
-
     uwmainUploadECM:'/uwmain/uploadECM', // 主流程-影像上传
     uwmainMobileECM:'/uwmain/mobileECM', // 主流程-手机影像 
     uwmainStartECM :'/uwmain/startECM ', // 主流程-查看关联单影像
@@ -71,10 +69,6 @@ module.exports  = {
     autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo', // 批单
     undwrtSubmitReview: '/undwrt/submitReview', // 提交审核
     uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
-
-=======
-    uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
->>>>>>> Stashed changes
 
 }
 

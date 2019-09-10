@@ -5,9 +5,9 @@
       <el-row class="text-left buttons" >
             <el-button size='mini' @click="goTolinks('details')" v-if="underwritingDetails.displayFlag.browseFlag == '1'">详细信息</el-button>
             <el-button size='mini' @click='goToFlowLog()' v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">流转记录</el-button>
-            <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.ClaimFlag == '1'" >出险信息</el-button>
-            <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.lastPolicyClaimFlag == '1'" >上年保单理赔信息</el-button>
-            <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.coverFacEnquiryFlag == '1'" >预约协议临分意向</el-button>
+
+            <!-- <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.lastPolicyClaimFlag == '1'" >上年保单理赔信息</el-button> -->
+
             <el-button size='mini' @click="goTolinks('headCompany')" v-if="underwritingDetails.displayFlag.headOfficeInfoFlag == '1'">查看总公司资料</el-button>
             <el-button size='mini' @click="goTolinks('branchCompany')" v-if="underwritingDetails.displayFlag.branchOfficeInfoFlag == '1'">查看分公司资料</el-button>
             <el-button size='mini' @click="goTolinks('startECM')" v-if="underwritingDetails.displayFlag.relationImageFlag == '1'">查看关联单影像</el-button>
@@ -15,16 +15,16 @@
 
             <el-button size='mini' @click="goTolinks('uploadECM')" v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
             <el-button size='mini' @click="goTolinks('mobileECM')" v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'">手机影像</el-button>
-            <!-- <el-button size='mini' @click="goTolinks('getECM')" v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">影像查看</el-button> -->
+
             <el-button size='mini' @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.deviceInfoFlag == '1'">设备信息</el-button>
-            <el-button size='mini' @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.shipInfoFlag == '1'">船舶信息</el-button>
-            <el-button size='mini' @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.lastPolicyInfoFlag == '1'">查看上年保单信息</el-button>
+
+            <!-- <el-button size='mini' @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.lastPolicyInfoFlag == '1'">查看上年保单信息</el-button> -->
 
 
             <el-button size='mini' @click="goToUnderwriteRiskTypeRate" v-if="underwritingDetails.displayFlag.riskTypeRateFlag == '1'">查看风险类别占比</el-button>
             <el-button size='mini' @click="goTolinks('teamquality')" v-if="underwritingDetails.displayFlag.reportFormsFlag == '1'">车队业务质量统计查询</el-button>
-            <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.possessTaskFlag == '1'">任务审核</el-button>
-            <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.approvalInfoFlag == '1'">审批信息</el-button>
+
+
             <el-button size='mini' @click="getBack()" v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">撤回</el-button>
 
 
@@ -1843,7 +1843,10 @@ export default {
       this.$fetch.post(this.HOST + this.$url.giveUpUwPayee, key).then(data => {
         console.log(data);
         this.$message.success(data);
-        this.goback()
+        setTimeout(() => {
+           this.goback()
+        }, 1500);
+       
       });
     },
     // 提交审核
@@ -1886,7 +1889,7 @@ export default {
        console.log(data)
        this.underwritingDetails = data
        this.underwritingDetails.uwNotion = data.uwnotions[0]
-       this.underwritingDetails.displayFlag ={}
+      //  this.underwritingDetails.displayFlag ={}
        
 
      })

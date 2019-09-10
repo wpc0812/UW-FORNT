@@ -332,8 +332,8 @@ export default {
           // 影像上传
           case 'uploadECM':
              key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "businessNo": this.parameter.businessNo ||  "454654564564",
+              "businessType": this.parameter.type  || "sfsdfsdf",
               "taskId": "123",
               "userName": "123",
               'userCode': '123',
@@ -348,8 +348,8 @@ export default {
            // 影像查看
           case 'getECM':
              key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
+              "businessNo": this.parameter.businessNo ||  "454654564564",
+              "businessType": this.parameter.type  || "sfsdfsdf",
               "taskId": "sdsd",
               "userName": "123",
               'userCode': '123',
