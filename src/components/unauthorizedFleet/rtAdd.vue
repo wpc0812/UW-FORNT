@@ -118,30 +118,24 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="车队车辆主要车型:" prop="carmainmodel" class="text-left">
-                    <el-select
-                      v-model="UwMotorcadeMainVO.carmainmodel"
-                      clearable
+                    <el-input 
+                      v-model="carmainmodelLabel"
                       placeholder="点击选择"
+                      @focus='openTransfer(carTypeCodes,UwMotorcadeMainVO.carmainmodel,"carmainmodel")'
+                      class="labelmargin"
                     >
-                      <el-option
-                        v-for="item in UwMoto"
-                        :key="item.value1"
-                        :label="item.label"
-                        :value="item.value1"
-                      ></el-option>
-                    </el-select>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="车辆主要使用地:" prop="carmainarea" class="text-left">
-                    <el-select v-model="UwMotorcadeMainVO.carmainarea" clearable placeholder="点击选择">
-                      <el-option
-                        v-for="item in UwMoto"
-                        :key="item.value1"
-                        :label="item.label"
-                        :value="item.value1"
-                      ></el-option>
-                    </el-select>
+                    <el-input 
+                      v-model="carmainareaLabel"
+                      placeholder="点击选择"
+                      @focus='openTransfer(carTypeCodes,UwMotorcadeMainVO.carmainarea,"carmainarea")'
+                      class="labelmargin"
+                    >
+                    </el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -244,14 +238,14 @@ export default {
       val:[],
       aaaa:"",
       datas:generateData(),
-        // datas: [{id:1,name:'北京11000000'}, {id:2,name:'天津12000000'},{id:3,name:'上海12100000'}],
-
       transferItems: [], // 穿梭框 数据
       transferItem: [], // 穿梭框 绑定数据
       transfetTitle:['已选择','为选择'],
       carTypeCodes,  // 车型代码
       provinceCodes , // 省份代码
-      carCadastralLabel: '', // 显示 label
+      carCadastralLabel: '', // input显示 label
+      carmainmodelLabel:'',// input显示 label
+      carmainareaLabel:'',
       transferDialog: false,
       transferType: '',
       UwMotorcadeMainVO: {
@@ -264,8 +258,8 @@ export default {
         estimatedPremiumSize: "",
         foreigncarcount: "",
         carCadastral: [], // 入参
-        carmainmodel: "",
-        carmainarea: "",
+        carmainmodel: [],
+        carmainarea: [],
         finishdate: "",
         costRateUpper: "",
         underWritingCondition: ""
@@ -353,27 +347,35 @@ export default {
     handleClose: function() {
     this.transferDialog = false;
     },
-    // 获取 页面显示的 label
+    // 获取 页面显示的 label  (源数据，改变的数据)
     getShowlabel(items,options){
       let label =[]
       for(let i = 0; i < items.length; i++){
         for(let j = 0; j < options.length; j++){
-          console.log(items[i].value,options[j])
+          // console.log(items[i].value,options[j])
           if(items[i].value === options[j]){
             label.push(items[i].label)
           }
         }
       }
-      return label
+      return utils.arrayToString(label)
     },
 
     valLen(){
-      
-     
      switch ( this.transferType ) {
        case 'carCadastral':
          this.UwMotorcadeMainVO.carCadastral = this.transferItem
-         this.carCadastralLabel = utils.arrayToString(this.getShowlabel(this.transferItems,this.transferItem)) 
+         this.carCadastralLabel = this.getShowlabel(this.transferItems,this.transferItem) 
+       
+         break;
+         case 'carmainmodel':
+         this.UwMotorcadeMainVO.carmainmodel = this.transferItem
+         this.carmainmodelLabel = this.getShowlabel(this.transferItems,this.transferItem)
+       
+         break;
+         case 'carmainarea':
+         this.UwMotorcadeMainVO.carmainarea = this.transferItem
+         this.carmainareaLabel = this.getShowlabel(this.transferItems,this.transferItem)
        
          break;
      
@@ -384,9 +386,9 @@ export default {
     // 点击弹出
     openTransfer(items, item,type){
       
-      this.transferItems = items
-      this.transferItem = item
-      this.transferType = type
+      this.transferItems = items //总数据data
+      this.transferItem = item  //返回或者传入的数据
+      this.transferType = type  //类型（省份/车型）
       this.transferDialog =true
     },
     //保存
@@ -394,8 +396,14 @@ export default {
       this.$refs.UwMotorcadeMainVO.validate(valid => {
         
         if (valid) {
-          let uwMotorcadeMainVO=this.UwMotorcadeMainVO
-          console.log(this.UwMotorcadeMainVO,valid)
+          let uwMotorcadeMainVO = JSON.parse(JSON.stringify(this.UwMotorcadeMainVO)) 
+          uwMotorcadeMainVO.carCadastral = utils.arrayToString(uwMotorcadeMainVO.carCadastral), // 入参
+
+          uwMotorcadeMainVO.carmainmodel = utils.arrayToString(uwMotorcadeMainVO.carmainmodel), // 入参
+          uwMotorcadeMainVO.carmainarea = utils.arrayToString(uwMotorcadeMainVO.carmainarea), // 入参
+
+        
+          // console.log(this.uwMotorcadeMainVO)
           this.$confirm("确认是否保存该信息~", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",

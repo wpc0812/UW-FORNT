@@ -94,7 +94,7 @@ export const provinceCodes =[
   { value: 'B02', label: 'B02--半挂牵引车'},
   { value: 'B11', label: 'B11--三轮汽车'},
   { value: 'B12', label: 'B12--低速货车'},
-  { value: 'B13', label: 'B13--'},
+  { value: 'B13', label: 'B13--客货两用车'},
   { value: 'B21', label: 'B21--自卸货车'},
   { value: 'B91', label: 'B91--货车挂车'},
   { value: 'C01', label: 'C01--油罐车'},

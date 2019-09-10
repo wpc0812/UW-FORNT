@@ -8,12 +8,12 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">超权限车队审核意见</div>
           </template>
-          <el-form ref="form" :model="underwriterInfor" label-width="140px">
+          <el-form ref="form" :model="underwriterInfor" :disabled="trues" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="序号:">
-                    <el-input v-model="underwriterInfor.vesselName"></el-input>
+                    <el-input v-model="underwriterInfor.id"></el-input>
                   </el-form-item>
                 </el-col>
                   <el-col :span="8">
@@ -23,7 +23,7 @@
                 </el-col>
                   <el-col :span="8">
                   <el-form-item label="处理人:">
-                    <el-input v-model="underwriterInfor.vesselName"></el-input>
+                    <el-input v-model="underwriterInfor.processingUser"></el-input>
                   </el-form-item>
                 </el-col>
                 
@@ -51,13 +51,13 @@ export default {
 
   data() {
     return {
+      trues:true,
         underwriterInfor:{},
       centerDialogVisible:false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
       valueidx:"",
-      underwriterInfor: {},
     };
   },
 
@@ -75,6 +75,16 @@ export default {
       this.task.tab2 = val;
     }
   },
-  created() {}
+  created() {
+    console.log(this.$route.query.motorcadeNo,this.$url.carAuditPageAuditOpinion);
+       this.$fetch
+        .get(this.HOST + this.$url.carAuditPageAuditOpinion, {
+          params: { motorcadeNo: this.$route.query.motorcadeNo}
+        })
+        .then(res => {
+          console.log(res);
+          this.underwriterInfor=res
+        });
+  }
 };
 </script>

@@ -312,7 +312,7 @@ export default {
           { required: true, message: "预估保费规模必填", trigger: ["blur"] }
         ],
         uppercarcount: [ 
-          { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
+          // { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
         ],
         uppercartype: [
           { required: true, message: "超分公司权限车辆种类", trigger: ["change"] }
@@ -419,10 +419,24 @@ export default {
       //  this.$router.push({path: '/selectMSg',query:{row:this.UwMotorcadeMainVO.insuredName}})
       this.$router.push({path: '/selectMSg'})
     },
+    //初始化
+      init() {
+      // 业务号查询详情
+      this.$fetch
+        .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
+          params: {
+            motorcadeNo: this.$route.query.motorcadeNo
+          }
+        })
+        .then(res => {
+          this.UwMotorcadeMainVO = res;
+          console.log(res);
+        });
+    }
   
   },
   created() {
-  
+     this.init();
   }
 };
 </script>

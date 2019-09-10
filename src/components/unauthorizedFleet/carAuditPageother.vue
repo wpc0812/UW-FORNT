@@ -122,12 +122,13 @@
               <el-col :span="8">
                 <el-form-item label="超分公司权限车辆种类:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.uppercartype" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showkuang">查看</div>
+                  <div class="showdiv" @click="showCarSpecies">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车队车辆主要车型:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.carmainmodel" :disabled="flagdisabled"></el-input>
+                  <div class="showdiv" @click="showCarModels">点击查看</div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -463,11 +464,19 @@ export default {
         }
       ],
       formDataAdd: {},
-      formDataUP: {}
+      formDataUP: {},
+      messages:"",
     };
   },
   computed: {},
   methods: {
+    //信息提示
+      open2() {
+      this.$message({
+        message: this.messages,
+        type: "success"
+      });
+    },
     //新增文件选取
     addUploadname(file, fileList) {
       if (file) {
@@ -578,13 +587,16 @@ export default {
           }
         });
     },
-    showkuang(){
+    showCarSpecies(){
+      console.log("弹窗")
+    },
+    showCarModels(){
       console.log("弹窗")
     },
 
     //生效办结
     outerBranch() {
-      this.$router.push({ path: "/toUwmotorcadeinfoPage" });
+      this.$router.push({ path: "/toUwmotorcadeinfoPage",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
       // let picc = {
       //   motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
       //   userCode: "userCode",
@@ -599,18 +611,25 @@ export default {
     },
     //续保
     outerRenewal() {
-      this.$router.push({ path: "/torenewal" });
-      // this.$fetch
-      //   .get(this.HOST + this.$url.carAuditPageOuterRenewal, {
-      //     params: { id: 1 }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   });
+        this.$fetch
+        .get(this.HOST + this.$url.carAuditPageOuterRenewal, {
+          params: { id: 1 }
+        })
+        .then(res => {
+          // console.log(res);
+          if(res>60){
+            this.messages=res
+          }else{
+            this.$router.push({ path: "/torenewal",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
+          }
+         
+        });
+      
     },
     //修改
     outerUpdate() {
-      this.$router.push({ path: "/topupdate" });
+        this.$router.push({ path: "/topupdate" ,query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }});
+      
     },
     //对比
     outerRatio() {
@@ -618,13 +637,7 @@ export default {
         path: "/carContrast",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
-      // this.$fetch
-      //   .get(this.HOST + this.$url.carAuditPageOuterRatio, {
-      //     params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   });
+ 
     },
     //删除
     outerDelete() {
@@ -649,6 +662,7 @@ export default {
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
         .then(res => {
           console.log(res);
+          window.open(res)
         });
     },
     //资料查看
@@ -664,31 +678,22 @@ export default {
         .post(this.HOST + this.$url.carAuditPageQueryECMs, ImageRequestDTO)
         .then(res => {
           console.log(res);
+          window.open(res)
         });
     },
     //查看审核意见
     auditOpinion() {
-      // this.$fetch
-      //   .get(this.HOST + this.$url.carAuditPageAuditOpinion, {
-      //     params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   });
+   
       this.$router.push({
         path: "/auditOpinion",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
+      // console.log(this.UwMotorcadeInfoVO.motorcadeNo,this.$url.carAuditPageAuditOpinion)
+      
     },
     //流转记录
     transferRecord() {
-      // this.$fetch
-      //   .get(this.HOST + this.$url.carAuditPageTransferRecord, {
-      //     params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   });
+   
       this.$router.push({
         path: "/transferRecord",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
@@ -807,7 +812,7 @@ export default {
 }
 .showdiv{
   position: absolute;
-  bottom: 0px;
+  bottom: -6px;
   left:2px;
 }
 /* .textareaheight{

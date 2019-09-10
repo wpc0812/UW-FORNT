@@ -86,6 +86,15 @@ export default {
   created() {
     //设置collapse全部展开
     // this.setActiveNames();
+         this.$fetch
+        .get(this.HOST + this.$url.carAuditPageOuterRatio, {
+          params: { motorcadeNo: this.$route.query.motorcadeNo}
+        })
+        .then(res => {
+          this.results.push( res.uwMotorcadeMain)
+          this.results1.push(res.uwMotorcadeMainTmp)
+          this.$forceUpdate()
+        });
     this.parameter = this.$route.query;
   }
 };
