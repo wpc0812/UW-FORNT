@@ -4,7 +4,7 @@
       <el-menu
         class="el-menu-vertical-demo scrollbar text-left left-bar"
         :unique-opened="false"
-        text-color="#A875AD"
+        text-color="#4C4C4C"
         :default-active="active"
         background-color="#ffffff"
         :collapse-transition="false"
@@ -98,7 +98,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .color-blue {
-  color: #A875AD;
+  color: #409EFF;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 250px;
@@ -120,8 +120,8 @@ export default {
 .menu-arrow-bar {
   background-color: #ffffff;
   color: #ccc;
-  height:50px;
-  line-height: 50px;
+  height:40px;
+  line-height: 40px;
   width: 15px;
   border-radius: 0 8px 8px 0;
   &:hover {
@@ -130,8 +130,7 @@ export default {
   }
 }
 .el-menu-item.is-active{
-  background-color: #68EE68  !important;
-  // color: #00FFFF;
+  background-color: #409EFF  !important;
   color: #ffffff;
 }
 </style>

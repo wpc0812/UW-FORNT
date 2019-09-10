@@ -39,7 +39,7 @@ export default {
 .header-bg {
   color: #ffffff;
   // background: url("../../assets/imgs/background-img.jpg");
-  background: #A875AD;
+  background: #409EFF;
   margin: 0 10px;
   background-size: cover;
   border-radius: 5px;

@@ -12,12 +12,12 @@ const service = axios.create(config);
 let loadService = "";
 service.interceptors.request.use(
   request => {
-    loadService = Loading.service({
-      lock: true,
-      text: 'Loading',
-      spinner: 'el-icon-loading',
-      background:'rgba(0, 0, 0, 0.7)'
-    })
+    // loadService = Loading.service({
+    //   lock: true,
+    //   text: 'Loading',
+    //   spinner: 'el-icon-loading',
+    //   background:'rgba(0, 0, 0, 0.7)'
+    // })
     return request;
   },
   err => {

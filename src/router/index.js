@@ -159,7 +159,7 @@ const router = new Router({
         },
         {
           path: '/underwritingTeamDetails',
-          name: '核保详情', // 团单
+          name: '核保详情团单', // 团单
           component: _import('underwriting/underwritingTeamDetails')
         },
         {
@@ -169,7 +169,7 @@ const router = new Router({
         },
         {
           path: '/uwIDSVehicleViewQuery',
-          name: '赔付率查询',
+          name: '核保赔付率查询',
           component: _import('underwriting/uwIDSVehicleViewQuery')
         },
         {

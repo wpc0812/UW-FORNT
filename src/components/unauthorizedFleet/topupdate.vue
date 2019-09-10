@@ -109,7 +109,7 @@
                     <el-input 
                     v-model="aaaa"
                     placeholder="点击选择"
-                    @focus='carCadastralflag'
+                    @focus='carCadastralflag1'
                      class="labelmargin"
                     >
                     </el-input>
@@ -117,36 +117,30 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="车队车辆主要车型:" prop="carmainmodel" class="text-left">
-                    <el-select
-                      v-model="UwMotorcadeMainVO.carmainmodel"
-                      clearable
-                      placeholder="点击选择"
+                    <el-input 
+                    v-model="bbbb"
+                    placeholder="点击选择"
+                    @focus='carCadastralflag2'
+                     class="labelmargin"
                     >
-                      <el-option
-                        v-for="item in UwMoto"
-                        :key="item.value1"
-                        :label="item.label"
-                        :value="item.value1"
-                      ></el-option>
-                    </el-select>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="车辆主要使用地:" prop="carmainarea" class="text-left">
-                    <el-select v-model="UwMotorcadeMainVO.carmainarea" clearable placeholder="点击选择">
-                      <el-option
-                        v-for="item in UwMoto"
-                        :key="item.value1"
-                        :label="item.label"
-                        :value="item.value1"
-                      ></el-option>
-                    </el-select>
+                    <el-input 
+                    v-model="cccc"
+                    placeholder="点击选择"
+                    @focus='carCadastralflag3'
+                     class="labelmargin"
+                    >
+                    </el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="控制结束日期:" prop="finishdate" :disabled="distorenewal">
+                  <el-form-item label="控制结束日期:" prop="finishdate" class="labelheight" :disabled="distorenewal">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
                       v-model="UwMotorcadeMainVO.finishdate"
@@ -156,13 +150,13 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="text-left">
+                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight">
                     <el-input v-model="UwMotorcadeMainVO.costRateUpper"></el-input>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item label="监控方案:" class="text-left">
+                  <el-form-item label="监控方案:"  class="labelheight">
                     <el-input
                       type="textarea"
                       :autosize="{ minRows: 2, maxRows: 4}"
@@ -174,7 +168,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="承保条件:" prop="underWritingCondition">
+                  <el-form-item label="承保条件:" class="labelheight" prop="underWritingCondition">
                      <el-input
                       type="textarea"
                       :autosize="{ minRows: 2, maxRows: 4}"
@@ -184,7 +178,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="关联关系人名称:" class="text-left">
+                  <el-form-item label="关联关系人名称:" class="labelheight">
                        <el-input
                       type="textarea"
                       :autosize="{ minRows: 2, maxRows: 4}"
@@ -194,7 +188,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="备注:" class="text-left">
+                  <el-form-item label="备注:" class="labelheight">
                        <el-input
                       type="textarea"
                       :autosize="{ minRows: 2, maxRows: 4}"
@@ -213,19 +207,49 @@
       </el-collapse>
     </el-card>
     <!-- 弹出框 -->
-    <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
+    <el-dialog title="请选择"  class="checkboxmargin" :lock-scroll="false" :visible.sync="carCadastralVisible1" width="40%" :before-close="handleClose1">
           <template>
                 <el-transfer 
-                v-model="UwMotorcadeMainVO.uppercartype"
+                v-model="arrays1"
                 :props="{key: 'id',label: 'name'}"
-                :data="datas"
+                :data="datas1"
                 :titles="['未选择', '已选择']"
                 @change ="transfer1"
                 ></el-transfer>
           </template>
           <span slot="footer" class="dialog-footer">
-              <el-button @click="carCadastralVisible = false">取 消</el-button>
-              <el-button type="primary" @click="valLen()">确 定</el-button>
+              <el-button @click="carCadastralVisible1 = false">取 消</el-button>
+              <el-button type="primary" @click="valLen1()">确 定</el-button>
+          </span>
+      </el-dialog>
+       <el-dialog title="请选择"  class="checkboxmargin" :lock-scroll="false" :visible.sync="carCadastralVisible2" width="40%" :before-close="handleClose2">
+          <template>
+                <el-transfer 
+                v-model="arrays2"
+                :props="{key: 'id',label: 'name'}"
+                :data="datas2"
+                :titles="['未选择', '已选择']"
+                @change ="transfer2"
+                ></el-transfer>
+          </template>
+          <span slot="footer" class="dialog-footer">
+              <el-button @click="carCadastralVisible2 = false">取 消</el-button>
+              <el-button type="primary" @click="valLen2()">确 定</el-button>
+          </span>
+      </el-dialog>
+       <el-dialog title="请选择"  class="checkboxmargin" :lock-scroll="false" :visible.sync="carCadastralVisible3" width="40%" :before-close="handleClose3">
+          <template>
+                <el-transfer 
+                v-model="arrays3"
+                :props="{key: 'id',label: 'name'}"
+                :data="datas3"
+                :titles="['未选择', '已选择']"
+                @change ="transfer3"
+                ></el-transfer>
+          </template>
+          <span slot="footer" class="dialog-footer">
+              <el-button @click="carCadastralVisible3 = false">取 消</el-button>
+              <el-button type="primary" @click="valLen3()">确 定</el-button>
           </span>
       </el-dialog>
   </div>
@@ -238,24 +262,53 @@ export default {
   name: "torenewal",
   
   data() {
-        const generateData = _ => {
-        const datas = [];
-        const cities = ['北京11000000', '天津12000000', '河北13000000', '山西14000000', '內蒙15000000','辽宁21000000'];
-        cities.forEach((city, index) => {
-          datas.push({
+        const generateData1 = _ => {
+        const datas1 = [];
+        const cars =  ['A01--客车', 'B01--货车', 'B02--半挂牵引车', 'B11--三轮汽车', 'B12--低速货车','B13--自卸货车','A01--客车', 'B01--货车', 'B02--半挂牵引车', 'B11--三轮汽车', 'B12--低速货车','B13--客货两用车','B21--自卸货车', 'B91--货车挂车', 'C01--油罐车', 'C02--气罐车', 'C03--液罐车','C04--冷藏车','C11--罐车挂车', 'C02--推土车', 'C22--清障车', 'C23--清扫车', 'C24--清洁车','C25--起重车','C26--装卸车', 'C27--升降车', 'C28--混凝土搅拌车', 'C29--挖掘车', 'C30--专业拖车','C31--特种车二挂车','C39--特种车二类其他', 'C41--电视转播车', 'C42--消防车', 'C43--医疗车', 'C44--油气田操作用车','C45--压路车','C46--矿山车', 'C47--运钞车', 'C48--救护车', 'C49--检测车', 'C50--雷达车','C51--X光检查车','C52--电信抢修车-电信工程车', 'C53--电信抢修车-电力工程车', 'C54--专业净水车', 'C55--保温车', 'C56--邮电车','C57--警用特种车', 'C58--混凝土泵车', 'C61--特种车三类挂车','C69--特种车三类其他','C90--集装箱拖头', 'D01--摩托车', 'D02--正三轮摩托车', 'E01--拖拉机', 'E11--联合收割机','E12--变型拖拉机-其他','Z99--其他车辆'];
+        cars.forEach((car, index) => {
+          datas1.push({
+            name: car,
+            id: index,
+          });
+        });
+        return datas1;
+      };
+      const generateData2 = _ => {
+        const datas2 = [];
+        const carModels = ['A01--客车', 'B01--货车', 'B02--半挂牵引车', 'B11--三轮汽车', 'B12--低速货车','B13--自卸货车','A01--客车', 'B01--货车', 'B02--半挂牵引车', 'B11--三轮汽车', 'B12--低速货车','B13--客货两用车','B21--自卸货车', 'B91--货车挂车', 'C01--油罐车', 'C02--气罐车', 'C03--液罐车','C04--冷藏车','C11--罐车挂车', 'C02--推土车', 'C22--清障车', 'C23--清扫车', 'C24--清洁车','C25--起重车','C26--装卸车', 'C27--升降车', 'C28--混凝土搅拌车', 'C29--挖掘车', 'C30--专业拖车','C31--特种车二挂车','C39--特种车二类其他', 'C41--电视转播车', 'C42--消防车', 'C43--医疗车', 'C44--油气田操作用车','C45--压路车','C46--矿山车', 'C47--运钞车', 'C48--救护车', 'C49--检测车', 'C50--雷达车','C51--X光检查车','C52--电信抢修车-电信工程车', 'C53--电信抢修车-电力工程车', 'C54--专业净水车', 'C55--保温车', 'C56--邮电车','C57--警用特种车', 'C58--混凝土泵车', 'C61--特种车三类挂车','C69--特种车三类其他','C90--集装箱拖头', 'D01--摩托车', 'D02--正三轮摩托车', 'E01--拖拉机', 'E11--联合收割机','E12--变型拖拉机-其他','Z99--其他车辆'];
+        carModels.forEach((city, index) => {
+          datas2.push({
             name: city,
             id: index,
           });
         });
-        return datas;
+        return datas2;
+      };
+      const generateData3 = _ => {
+        const datas3 = [];
+        const cities = ['北京11000000', '天津12000000', '河北13000000', '山西14000000', '內蒙15000000','辽宁21000000','大连21020000', '吉林22000000', '广西45000000', '海南46000000', '上海31000000','上海自贸区分公司31100000','江苏32000000', '浙江33000000', '宁波3302000000','安徽34000000','福建35000000', '厦门35020000', '江西36000000', '山东37000000', '青岛37020000','河南41000000','湖北42000000', '湖南43000000', '广东44000000', '深圳44030000', '重庆50000000','四川51000000','贵州52000000', '云南53000000', '西藏54000000', '陕西61000000', '甘肃62000000','青海63000000','宁夏64000000', '新疆65000000', '黑龙江2300000000','总公司00000000'];
+        cities.forEach((city, index) => {
+          datas3.push({
+            name: city,
+            id: index,
+          });
+        });
+        return datas3;
       };
     return {
-      distorenewal:true,  
-      val:[],
+      arrays1:[],
+      arrays2:[],
+      arrays3:[],
       aaaa:"",
-      datas:generateData(),
-        // datas: [{id:1,name:'北京11000000'}, {id:2,name:'天津12000000'},{id:3,name:'上海12100000'}],
-      carCadastralVisible:false,
+      bbbb:"",
+      cccc:"",
+      datas1:generateData1(),
+      datas2:generateData2(),
+      datas3:generateData3(),
+      carCadastralVisible1:false,
+      carCadastralVisible2:false,
+      carCadastralVisible3:false,
+      distorenewal:true,  
       UwMotorcadeMainVO: {
         comcode: "",
         insuredflag: "",
@@ -310,7 +363,7 @@ export default {
           { required: true, message: "预估保费规模必填", trigger: ["blur"] }
         ],
         uppercarcount: [ 
-          // { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
+          { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
         ],
         uppercartype: [
           { required: true, message: "超分公司权限车辆种类", trigger: ["change"] }
@@ -348,34 +401,86 @@ export default {
   computed: {},
   methods: {
     transfer1(value, direction, movedKeys){
-      console.log(typeof value)
-      // this.UwMotorcadeMainVO.uppercartype=value;
-      // console.log(this.UwMotorcadeMainVO.carCadastral,movedKeys)
+      // console.log( value ,movedKeys)
     },
-    handleClose: function() {
+     transfer2(value, direction, movedKeys){
+      // console.log( value ,movedKeys)
+    },
+     transfer3(value, direction, movedKeys){
+      // console.log( value ,movedKeys)
+    },
+    handleClose1: function() {
     this.carCadastralVisible = false;
     },
-    valLen(){
-          this.carCadastralVisible = false;
+    handleClose2: function() {
+    this.carCadastralVisible = false;
+    },
+    handleClose3: function() {
+    this.carCadastralVisible = false;
+    },
+    valLen1(){
+      this.carCadastralVisible1 = false;
          let b=[];
       let c=[];
-      for(let i=0;i<this.UwMotorcadeMainVO.uppercartype.length+1;i++){
-        for(let j=0;j<this.datas.length;j++){
-          if(this.UwMotorcadeMainVO.uppercartype[i]==this.datas[j].id){
-              c.push(this.datas[j].name)
-              b.push(this.datas[j].name.substring(this.datas[j].name.length-4,this.datas[j].name.length-8))
+      for(let i=0;i<this.arrays1.length+1;i++){
+        for(let j=0;j<this.datas1.length;j++){
+          if(this.arrays1[i]==this.datas1[j].id){
+              c.push(this.datas1[j].name)
+              b.push(this.datas1[j].name.substring(0,3))
+          }   
+        }
+      }
+      this.aaaa=c.join();
+      this.arrays1=b
+      this.UwMotorcadeMainVO.uppercartype=this.arrays1.join()
+      // console.log(b,c,this.aaaa,this.arrays1,this.UwMotorcadeMainVO.uppercartype)
+    },
+      valLen2(){
+      this.carCadastralVisible2 = false;
+         let b=[];
+      let c=[];
+      for(let i=0;i<this.arrays2.length+1;i++){
+        for(let j=0;j<this.datas2.length;j++){
+          if(this.arrays2[i]==this.datas2[j].id){
+              c.push(this.datas2[j].name)
+              b.push(this.datas2[j].name.substring(0,3))
+          }
+        }
+      }
+      this.bbbb=c.join();
+      this.arrays2=b
+      this.UwMotorcadeMainVO.carmainmodel=this.arrays2.join()
+      // console.log(b,c,this.bbbb,this.arrays2,this.UwMotorcadeMainVO.carmainmodel)
+    },
+      valLen3(){
+      this.carCadastralVisible3 = false;
+         let b=[];
+      let c=[];
+      for(let i=0;i<this.arrays3.length+1;i++){
+        for(let j=0;j<this.datas3.length;j++){
+          if(this.arrays3[i]==this.datas3[j].id){
+              c.push(this.datas3[j].name)
+              b.push(this.datas3[j].name.substring(this.datas3[j].name.length-4,this.datas3[j].name.length-8))
           }
           
         }
       }
-      // console.log(b+"bbbbbbbb",c+"c")
-      this.aaaa=c.join();
-      this.UwMotorcadeMainVO.uppercartype=b.join()
-      // console.log(this.aaaa,"-----------"+typeof this.UwMotorcadeMainVO.uppercartype)
+      this.cccc=c.join();
+      this.arrays3=b
+      this.UwMotorcadeMainVO.carmainarea=this.arrays3.join()
+      // console.log(b,c,this.bbbb,this.arrays2,this.UwMotorcadeMainVO.carmainarea)
     },
     // 点击弹出
-    carCadastralflag(){
-      this.carCadastralVisible=true
+    carCadastralflag1(){
+      this.carCadastralVisible1=true
+    },
+    // 点击弹出
+    carCadastralflag2(){
+      this.carCadastralVisible2=true
+    },
+    // 点击弹出
+    carCadastralflag3(){
+      this.carCadastralVisible3=true
     },
     //保存
     save() {
@@ -390,7 +495,6 @@ export default {
             type: "warning"
           })
             .then(() => {
-              // console.log(this.$url.rtAddSaves)
               this.$fetch.post(this.HOST + this.$url.carAuditPageUpdate, uwMotorcadeMainVO)
                 .then(data => {
                   console.log(data);
@@ -425,15 +529,40 @@ export default {
         params:{motorcadeNo:this.$route.query.motorcadeNo || "YD450000001"}}
         )
       .then(res=>{
-        this.UwMotorcadeMainVO = res
+        // this.UwMotorcadeMainVO = res
         // this.results = res.uwMotorcadeInfos
         console.log(res);
+
+        // res.uppercartype.
+        
+
       })
     }
   
   },
   created() {
        this.init()
+
+
+      // let str="1200,1300"
+      //   let arr=str.split(",")
+      //   //input框显示的名字
+      //   let aaas=[]
+      //   //初始化页面的值
+      //   let bbbs=[]
+      //   for(let i=0;i<arr.length;i++){
+      //     for(let j=0;j<this.datas1.length;j++){
+      //       if(arr[i]==this.datas1[j].name.substring(this.datas1[j].name.length-4,this.datas1[j].name.length-8)){
+      //           aaas.push(this.datas1[j].name)
+      //         this.aaaa=aaas.join()
+      //         bbbs.push(j)
+      //         this.arrays = bbbs
+      //         //刷新重新渲染（内部函数）
+      //         this.$forceUpdate()
+      //       }
+      //     }
+      //   }
+      //   console.log(this.Initialize,aaas,this.datas1,this.arrays1)
   }
 };
 </script>
@@ -480,9 +609,17 @@ export default {
 }
 .checkboxmargin  >>> .el-transfer-panel__header .el-checkbox__label span {
   display: none;
+  font-size: 12px;
+}
+.checkboxmargin  >>> .el-icon-close:before{
+    display: none;
 }
 .checkboxmargin  >>> .el-transfer-panel__item{
   display: block;
+}
+.labelheight >>> .el-form-item__label,.labelheight >>> .el-input__inner{
+  line-height: 50px;
+  height: 50px;
 }
 .checkboxmargin  >>>.el-transfer-panel{
   width: 35%;
