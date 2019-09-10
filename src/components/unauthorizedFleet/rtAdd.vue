@@ -108,10 +108,10 @@
                 <el-col :span="8">
                   <el-form-item label="涉及车籍地:" prop="carCadastral">
                     <el-input 
-                    v-model="aaaa"
-                    placeholder="点击选择"
-                    @focus='carCadastralflag'
-                     class="labelmargin"
+                      v-model="carCadastralLabel"
+                      placeholder="点击选择"
+                      @focus='openTransfer(provinceCodes,UwMotorcadeMainVO.carCadastral,"carCadastral")'
+                      class="labelmargin"
                     >
                     </el-input>
                   </el-form-item>
@@ -202,30 +202,32 @@
       </el-collapse>
     </el-card>
     <!-- 弹出框 -->
-    <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="carCadastralVisible" width="40%" :before-close="handleClose">
-          <template>
-                <el-transfer 
-                v-model="UwMotorcadeMainVO.carCadastral"
-                :props="{key: 'id',label: 'name'}"
-                :data="datas"
-                :titles="['未选择', '已选择']"
-                @change ="transfer1"
-                ></el-transfer>
-          </template>
+    <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="transferDialog" width="40%" :before-close="handleClose">
+          <div>
+            <el-transfer 
+              v-model="transferItem" 
+              :data="transferItems" 
+              :titles="['未选择', '已选择']" 
+              @change="transferChange"
+              :props="{key: 'value',label: 'label'}">
+            </el-transfer>
+            
+          </div>
           <span slot="footer" class="dialog-footer">
-              <el-button @click="carCadastralVisible = false">取 消</el-button>
+              <el-button @click="transferDialog = false">取 消</el-button>
               <el-button type="primary" @click="valLen()">确 定</el-button>
           </span>
       </el-dialog>
+
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { relations } from "@/assets/js/baseCode";
- 
+import { relations, carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
+import utils from "../../utils/index";
+
 export default {
   name: "rtAdd",
-  
   data() {
         const generateData = _ => {
         const datas = [];
@@ -243,7 +245,15 @@ export default {
       aaaa:"",
       datas:generateData(),
         // datas: [{id:1,name:'北京11000000'}, {id:2,name:'天津12000000'},{id:3,name:'上海12100000'}],
-      carCadastralVisible:false,
+
+      transferItems: [], // 穿梭框 数据
+      transferItem: [], // 穿梭框 绑定数据
+      transfetTitle:['已选择','为选择'],
+      carTypeCodes,  // 车型代码
+      provinceCodes , // 省份代码
+      carCadastralLabel: '', // 显示 label
+      transferDialog: false,
+      transferType: '',
       UwMotorcadeMainVO: {
         comcode: "",
         insuredflag: "",
@@ -253,7 +263,7 @@ export default {
         carcountAll: "",
         estimatedPremiumSize: "",
         foreigncarcount: "",
-        carCadastral: [],
+        carCadastral: [], // 入参
         carmainmodel: "",
         carmainarea: "",
         finishdate: "",
@@ -334,34 +344,50 @@ export default {
   },
   computed: {},
   methods: {
-    transfer1(value, direction, movedKeys){
+    // 穿梭框 change 事件
+    transferChange(value, direction, movedKeys){
       // console.log(this.datas)
-      this.UwMotorcadeMainVO.carCadastral=value;
-      // console.log(this.UwMotorcadeMainVO.carCadastral,movedKeys)
+      // this.UwMotorcadeMainVO.carCadastral=value;
+      console.log(value, direction, movedKeys)
     },
     handleClose: function() {
-    this.carCadastralVisible = false;
+    this.transferDialog = false;
     },
-    valLen(){
-          this.carCadastralVisible = false;
-         let b=[];
-      let c=[];
-      for(let i=0;i<this.UwMotorcadeMainVO.carCadastral.length+1;i++){
-        for(let j=0;j<this.datas.length;j++){
-          if(this.UwMotorcadeMainVO.carCadastral[i]==this.datas[j].id){
-              c.push(this.datas[j].name)
-              b.push(this.datas[j].name.substring(this.datas[j].name.length-4,this.datas[j].name.length-8))
+    // 获取 页面显示的 label
+    getShowlabel(items,options){
+      let label =[]
+      for(let i = 0; i < items.length; i++){
+        for(let j = 0; j < options.length; j++){
+          console.log(items[i].value,options[j])
+          if(items[i].value === options[j]){
+            label.push(items[i].label)
           }
-          
         }
       }
-      console.log(b+"bbbbbbbb",c+"c")
-      this.aaaa=c.join();
-      this.UwMotorcadeMainVO.carCadastral=b
+      return label
+    },
+
+    valLen(){
+      
+     
+     switch ( this.transferType ) {
+       case 'carCadastral':
+         this.UwMotorcadeMainVO.carCadastral = this.transferItem
+         this.carCadastralLabel = utils.arrayToString(this.getShowlabel(this.transferItems,this.transferItem)) 
+       
+         break;
+     
+     }
+     this.transferDialog = false;
+      
     },
     // 点击弹出
-    carCadastralflag(){
-      this.carCadastralVisible=true
+    openTransfer(items, item,type){
+      
+      this.transferItems = items
+      this.transferItem = item
+      this.transferType = type
+      this.transferDialog =true
     },
     //保存
     save() {
@@ -407,11 +433,12 @@ export default {
     },
   
   },
+  
   created() {
-    let b="天津12000000"
-    let bbbbb=b.substring(b.length-4,b.length-8)
+    // let b="天津12000000"
+    // let bbbbb=b.substring(b.length-4,b.length-8)
     
-    console.log(bbbbb)
+   
   }
 };
 </script>
