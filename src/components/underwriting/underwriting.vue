@@ -145,7 +145,7 @@
     </el-card>
     <!-- 查询结果 -->
   
-    <el-card class="circular mt4 shadow" v-if=" list0['ST']||list0['GT'] ||  list0['E']||  list0['H'] ||underwriting.stateList|| list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
+    <el-card class="circular mt4 shadow" v-if=" list0['ST']||list0['GT'] ||  list0['E']||  list0['H'] ||underwriting.stateList.length > 0|| list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
       <el-collapse v-model="activeNames">
         
         <el-collapse-item name="2" v-if="underwriting.stateList.indexOf('0') > -1|| list0['ST']||list0['GT'] ||  list0['E']||  list0['H']">
@@ -200,16 +200,16 @@
             ></tpl-underwriting>
           </el-collapse>
         </el-collapse-item>
-        <el-collapse-item name="3" v-if="underwriting.stateList.indexOf('1') > -1|| list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
+        <el-collapse-item name="3" v-if="underwriting.stateList.indexOf('1') > -1 || list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
           <template slot="title">
             <div class="title-blue-bar"></div>
-            <div class="card-title">已处理任务</div>
+            <div class="card-title">已处理任务  {{underwriting.taskTypeList.indexOf('H') > -1 }}</div>
           </template>
           <el-collapse v-model="task.tab2" @change="processed">
             <tpl-underwriting
               class="collapse-no-background"
               title="散单投保单"
-              v-if="list1['ST']"
+              v-if="underwriting.taskTypeList.indexOf('ST') > -1 ||list1['ST']"
               :results="list1['ST']"
               @paging="paging"
               @goDetail="goDetail"
@@ -220,7 +220,7 @@
             <tpl-underwriting
               class="collapse-no-background"
               title="团单投保单"
-              v-if="list1['GT']"
+              v-if="underwriting.taskTypeList.indexOf('GT') > -1 ||list1['GT']"
               @paging="paging"
               @goDetail="goDetail"
               :results="list1['GT']"
@@ -232,7 +232,7 @@
               class="collapse-no-background"
               title="批单"
               @paging="paging"
-              v-if="list1['E']"
+              v-if="underwriting.taskTypeList.indexOf('E') > -1 ||list1['E']"
               @goDetail="goDetail"
               mark="treated"
               :results="list1['E']"
@@ -242,7 +242,7 @@
             <tpl-underwriting
               title="团单方案"
               mark="treated"
-              v-if="list1['H']"
+              v-if="underwriting.taskTypeList.indexOf('H') > -1 ||list1['H']"
               @paging="paging"
               @goDetail="goDetail"
               class="collapse-no-background"
