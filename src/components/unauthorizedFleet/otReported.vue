@@ -75,7 +75,7 @@
         <el-table-column prop="state" label="流转状态"></el-table-column>
         <el-table-column prop="motorcadeNo" label="业务号">
           <template slot-scope="scope"> 
-            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.motorcadeNo}}</el-button>
+            <el-button type="text" size="small" @click="BusinessNum(scope.row,scope.row.state)">{{scope.row.motorcadeNo}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="comcode" label="分公司"></el-table-column>
@@ -105,12 +105,14 @@ export default {
   },
   data() {
     return {
+      state:[{label:"0",value:"初始化（未录入车辆）"},{label:"1",value:"待审核（已录入车辆）"},{label:"2",value:"已打回"},{label:"3",value:"审核中（已提交总部）"},{label:"4",value:"已审核通过（总部下发）"},{label:"5",value:"已办结"},{label:"6",value:"已注销"}],
       UwMotorcadeMainVO:{
         insuredflag:"",
         insuredCode:"",
         insuredName:"",
         motorcadeNo:"",
-        firstSubmitDate:""
+        firstSubmitDate:"",
+        tpye:"2,3"
       },
       activeNames: ["1"],
       relations:[
@@ -118,7 +120,9 @@ export default {
         { value: "2_投保人", label: "2" }
       ],
       flag:true,
-      results:[],
+      results:[
+        
+      ],
     };
   },
 
@@ -148,10 +152,10 @@ export default {
       })
       
     },
-
-    BusinessNum(row){
-      // console.log(row);
-      this.$router.push({path: '/carAuditPageother',query:{row:row.motorcadeNo}})
+    //业务号
+    BusinessNum(row,state){
+      // console.log(row,state);
+      this.$router.push({path: '/carAuditPageother',query:{row:row.motorcadeNo,state}})
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -164,13 +168,20 @@ export default {
     }
   },
   created() {
-    // this.UwMotorcadeMainVO.insuredflag="全部"
     let uwMotorcadeMainVO=this.UwMotorcadeMainVO
     this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
     .then(res=>{
       console.log(res)
+      for(let i=0;i<res.length;i++){
+        for(let j=0;j<this.state.length;j++){
+          if(res[i].state==this.state[j].label)
+          res[i].state=this.state[j].value
+        }
+      }
       this.results=res
     })
+
+
   }
 };
 </script>

@@ -1,24 +1,24 @@
 <template>
   <div>
-    <!-- 提交审核 -->
+    <!-- 超权限详情 -->
     <el-card class="circular">
       <el-row class="pt10">
-        <el-col :span="3">
+        <el-col :span="3" v-if="state=='已审核通过（总部下发）'">
           <el-button class="btn" type="primary" @click="outerBranch" size="mini">生效办结</el-button>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" v-if="state=='已办结'">
           <el-button class="btn" type="primary" @click="outerRenewal" size="mini">续保</el-button>
         </el-col>
-        <el-col :span="3" v-if="state==666">
+        <el-col :span="3" v-if="state=='已打回 '||'已审核通过（总部下发）'||'已办结'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
         <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
           <el-button class="btn" type="primary" @click="outerDelete" size="mini">删除</el-button>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
           <el-button class="btn" type="primary" @click="outerUpimg" size="mini">影像上传</el-button>
         </el-col>
         <el-col :span="3">
@@ -32,13 +32,13 @@
         </el-col>
       </el-row>
       <hr />
-      <el-collapse v-model="activeNames">
+      <el-collapse v-model="activeNames" v-if="state=='待审核（已录入车辆）'">
         <el-collapse-item name="1" class="el_collapse_padding">
           <template slot="title">
             <div class="title-blue-bar"></div>
             <div class="card-title">任务审核</div>
           </template>
-          <el-row >
+          <el-row>
             <el-col :span="24">
               <el-button type="primary" @click="submitaudit" size="mini">提交审核</el-button>
             </el-col>
@@ -58,12 +58,12 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.motorcadeNo"  :disabled="flagdisabled"></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.motorcadeNo" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="分公司" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.comcode" :disabled="flagdisabled" ></el-input>
+                  <el-input v-model="UwMotorcadeInfoVO.comcode" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -85,7 +85,12 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="业务来源:">
-                  <el-select v-model="UwMotorcadeInfoVO.businessNature" :disabled="flagdisabled" clearable placeholder="请选择">
+                  <el-select
+                    v-model="UwMotorcadeInfoVO.businessNature"
+                    :disabled="flagdisabled"
+                    clearable
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="item in categoryss"
                       :key="item.label"
@@ -99,7 +104,11 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="历史年度满期赔付率(%):">
-                  <a href class="acolor" target="_blank">查询</a>
+                  <el-button
+                    @click="selectHistory"
+                    size="small"
+                    text="primary"
+                  >查询</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -109,7 +118,10 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="预估保费规模(单位:万元):">
-                  <el-input v-model="UwMotorcadeInfoVO.estimatedPremiumSize" :disabled="flagdisabled"></el-input>
+                  <el-input
+                    v-model="UwMotorcadeInfoVO.estimatedPremiumSize"
+                    :disabled="flagdisabled"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -153,21 +165,19 @@
               <el-col :span="8">
                 <el-form-item label="监控方案:" class="labelheight1">
                   <el-input
-                  :disabled="flagdisabled"
+                    :disabled="flagdisabled"
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}"
-                    placeholder="请输入内容"
                     v-model="UwMotorcadeInfoVO.monitoringProgramme"
                   ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="承保条件:" class="labelheight1"  prop="underWritingCondition">
+                <el-form-item label="承保条件:" class="labelheight1" prop="underWritingCondition">
                   <el-input
-                  :disabled="flagdisabled"
+                    :disabled="flagdisabled"
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}"
-                    placeholder="请输入内容"
                     v-model="UwMotorcadeInfoVO.underWritingCondition"
                   ></el-input>
                 </el-form-item>
@@ -175,10 +185,9 @@
               <el-col :span="8">
                 <el-form-item label="关联关系人名称:" class="labelheight1">
                   <el-input
-                  :disabled="flagdisabled"
+                    :disabled="flagdisabled"
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}"
-                    placeholder="请输入内容"
                     v-model="UwMotorcadeInfoVO.insuredNameSUB"
                   ></el-input>
                 </el-form-item>
@@ -188,23 +197,22 @@
               <el-col :span="8">
                 <el-form-item label="备注:" class="labelheight1">
                   <el-input
-                  :disabled="flagdisabled"
+                    :disabled="flagdisabled"
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}"
-                    placeholder="请输入内容"
                     v-model="UwMotorcadeInfoVO.remark"
                   ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item
-                class="labelheight1"
+                  class="labelheight1"
                   v-model="UwMotorcadeInfoVO.finishdate"
                   label="距离控制日期结束日期:"
                 >{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="state==1">
+            <el-row v-if="state=='初始化（未录入车辆）'||'已办结'">
               <el-col :span="10">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
@@ -230,15 +238,15 @@
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="3">
                 <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
-              <el-col :span="3">
+              <el-col :span="4">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="10">
+            <el-row v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已办结'||'已审核通过（总部下发）'">
+              <el-col :span="10" >
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">
@@ -263,10 +271,10 @@
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="3">
                 <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
-              <el-col :span="3">
+              <el-col :span="4">
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
@@ -290,10 +298,10 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="12">
+              <el-col :span="12" class="selectMargin">
                 <el-button @click="selectCode">查询</el-button>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="12" class="selectMargin">
                 <el-button @click="carAuditPagechu">导出</el-button>
               </el-col>
             </el-row>
@@ -357,6 +365,7 @@
                     :key="item.label"
                     :label="item.value"
                     :value="item.label"
+                    :disabled="item.disabled"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -402,8 +411,8 @@ export default {
   name: "carAuditPage",
   data() {
     return {
-      flagdisabled:true,
-      state: "666",
+      state: "",
+      flagdisabled: true,
       httphref: "../../../../#/static/LicensenoAddModel.zip",
       UwMotorcadeInfoVO: {
         motorcadeNo: "",
@@ -451,7 +460,6 @@ export default {
       fileList2: [],
       outerVisible: false,
       innerVisible: false,
-      textarea1: "",
       textarea2: "",
       options: [
         {
@@ -460,18 +468,19 @@ export default {
         },
         {
           value: "审核未通过",
-          label: "2"
+          label: "2",
+          disabled: true
         }
       ],
       formDataAdd: {},
       formDataUP: {},
-      messages:"",
+      messages: ""
     };
   },
   computed: {},
   methods: {
     //信息提示
-      open2() {
+    open2() {
       this.$message({
         message: this.messages,
         type: "success"
@@ -573,7 +582,7 @@ export default {
       let picc = {
         motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
         userCode: "userCode",
-        handleText: "yes",
+        handleText: this.textarea2,
         userName: "userName"
       };
       this.$fetch
@@ -587,49 +596,52 @@ export default {
           }
         });
     },
-    showCarSpecies(){
-      console.log("弹窗")
+    showCarSpecies() {
+      console.log("弹窗");
     },
-    showCarModels(){
-      console.log("弹窗")
+    showCarModels() {
+      console.log("弹窗");
     },
 
     //生效办结
     outerBranch() {
-      this.$router.push({ path: "/toUwmotorcadeinfoPage",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
-      // let picc = {
-      //   motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
-      //   userCode: "userCode",
-      //   handleText: "yes",
-      //   userName: "userName"
-      // };
-      // this.$fetch
-      //   .post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
-      //   .then(res => {
-      //     console.log(res);
-      //   });
+      // this.$router.push({ path: "/toUwmotorcadeinfoPage",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
+      let picc = {
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+        userCode: "userCode",
+        handleText: "yes",
+        userName: "userName"
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
+        .then(res => {
+          window.open(res);
+        });
     },
     //续保
     outerRenewal() {
-        this.$fetch
+      this.$fetch
         .get(this.HOST + this.$url.carAuditPageOuterRenewal, {
           params: { id: 1 }
         })
         .then(res => {
           // console.log(res);
-          if(res>60){
-            this.messages=res
-          }else{
-            this.$router.push({ path: "/torenewal",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
+          if (res > 60) {
+            this.messages = res;
+          } else {
+            this.$router.push({
+              path: "/torenewal",
+              query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
+            });
           }
-         
         });
-      
     },
     //修改
     outerUpdate() {
-        this.$router.push({ path: "/topupdate" ,query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }});
-      
+      this.$router.push({
+        path: "/topupdate",
+        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
+      });
     },
     //对比
     outerRatio() {
@@ -637,7 +649,6 @@ export default {
         path: "/carContrast",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
- 
     },
     //删除
     outerDelete() {
@@ -662,7 +673,7 @@ export default {
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
         .then(res => {
           console.log(res);
-          window.open(res)
+          window.open(res);
         });
     },
     //资料查看
@@ -678,22 +689,18 @@ export default {
         .post(this.HOST + this.$url.carAuditPageQueryECMs, ImageRequestDTO)
         .then(res => {
           console.log(res);
-          window.open(res)
+          window.open(res);
         });
     },
     //查看审核意见
     auditOpinion() {
-   
       this.$router.push({
         path: "/auditOpinion",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
-      // console.log(this.UwMotorcadeInfoVO.motorcadeNo,this.$url.carAuditPageAuditOpinion)
-      
     },
     //流转记录
     transferRecord() {
-   
       this.$router.push({
         path: "/transferRecord",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
@@ -714,31 +721,32 @@ export default {
           console.log(res);
         });
     },
-    upHandleRemove(file, fileList) {
-      // console.log(file, fileList);
+    //历史赔付率
+    selectHistory() {
+      let key = {
+        reportFormsType: "teamquality",
+        comcode: this.UwMotorcadeInfoVO.comcode,
+        businessNo: this.UwMotorcadeInfoVO.businessNo || "123", // 业务号
+        taskType: "" // 业务类型
+      };
+      this.$fetch
+        .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
+        .then(data => {
+          console.log(typeof data);
+          // window.open("http://www.baidu.com")
+          window.open(data);
+        });
     },
-    upOnSuccess(file, fileList) {
-      // console.log(file, fileList);
-    },
-    upHandlePreview(file, fileList) {
-      // console.log(file, fileList);
-    },
-    upBeforeRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addHandleRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addOnSuccess(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addHandlePreview(file, fileList) {
-      // console.log(file, fileList);
-    },
-    addBeforeRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-
+    //文件上传的方法
+    upHandleRemove(file, fileList) {},
+    upOnSuccess(file, fileList) {},
+    upHandlePreview(file, fileList) {},
+    upBeforeRemove(file, fileList) {},
+    addHandleRemove(file, fileList) {},
+    addOnSuccess(file, fileList) {},
+    addHandlePreview(file, fileList) {},
+    addBeforeRemove(file, fileList) {},
+    //初始化
     init() {
       // 业务号查询详情
       this.$fetch
@@ -760,6 +768,7 @@ export default {
     this.setActiveNames();
     this.init();
     this.parameter = this.$route.query;
+    this.state = this.$route.query.state;
   }
 };
 </script>
@@ -788,11 +797,13 @@ export default {
 .updatastyleinput >>> .el-form-item__label {
   background: #e8f6f9;
 }
-.labelheight >>> .el-form-item__label,.labelheight >>> .el-input__inner{
+.labelheight >>> .el-form-item__label,
+.labelheight >>> .el-input__inner {
   line-height: 48px;
   height: 48px;
 }
-.labelheight1 >>> .el-form-item__label,.labelheight1 >>> .el-input__inner{
+.labelheight1 >>> .el-form-item__label,
+.labelheight1 >>> .el-input__inner {
   line-height: 50px;
   height: 50px;
 }
@@ -810,10 +821,13 @@ export default {
   position: relative;
   top: 6px;
 }
-.showdiv{
+.showdiv {
   position: absolute;
   bottom: -6px;
-  left:2px;
+  left: 2px;
+}
+.selectMargin {
+  margin-top: 10px;
 }
 /* .textareaheight{
   min-height: 62px;

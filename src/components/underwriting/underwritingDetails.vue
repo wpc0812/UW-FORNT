@@ -1759,8 +1759,6 @@ export default {
           reportFormsFlag: '0',//	车队业务质量统计查询
           possessTaskFlag: '0',	// 任务审核
           approvalInfoFlag: '0', //	审批信息
-
-
         },
         uwprofitdetails: [] // 主险 -- 优惠率弹框
       },

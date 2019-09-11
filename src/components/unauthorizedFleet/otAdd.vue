@@ -78,7 +78,11 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <el-button v-model="UwMotorcadeMainVO.lastFourYearPayPercent" @click="selectHistory" size="small" text="primary">查询</el-button>
+                    <el-button
+                      @click="selectHistory"
+                      size="small"
+                      text="primary"
+                    >查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -100,42 +104,39 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="超分公司权限车辆总数:" prop="uppercarcount" class="text-left">
-                    <el-input v-model="UwMotorcadeMainVO.uppercarcount" ></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.uppercarcount"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="超分公司权限车辆种类:" prop="uppercartype">
-                    <el-input 
+                    <el-input
                       v-model="uppercartypeLabel"
                       placeholder="点击选择"
-                      @focus='openTransfer(carTypeCodes,UwMotorcadeMainVO.uppercartype,"uppercartype")'
+                      @focus="openTransfer(carTypeCodes,UwMotorcadeMainVO.uppercartype,'uppercartype')"
                       class="labelmargin"
-                    >
-                    </el-input>
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="车队车辆主要车型:" prop="carmainmodel" class="text-left">
-                    <el-input 
+                    <el-input
                       v-model="carmainmodelLabel"
                       placeholder="点击选择"
-                      @focus='openTransfer(carTypeCodes,UwMotorcadeMainVO.carmainmodel,"carmainmodel")'
+                      @focus="openTransfer(carTypeCodes,UwMotorcadeMainVO.carmainmodel,'carmainmodel')"
                       class="labelmargin"
-                    >
-                    </el-input>
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="车辆主要使用地:" prop="carmainarea" class="text-left">
-                    <el-input 
+                    <el-input
                       v-model="carmainareaLabel"
                       placeholder="点击选择"
-                      @focus='openTransfer(provinceCodes,UwMotorcadeMainVO.carmainarea,"carmainarea")'
+                      @focus="openTransfer(provinceCodes,UwMotorcadeMainVO.carmainarea,'carmainarea')"
                       class="labelmargin"
-                    >
-                    </el-input>
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -196,46 +197,50 @@
       </el-collapse>
     </el-card>
     <!-- 弹出框 -->
-    <el-dialog title="请选择"  class="checkboxmargin" :visible.sync="transferDialog" width="40%" :before-close="handleClose">
-          <div>
-            <el-transfer 
-              v-model="transferItem" 
-              :data="transferItems" 
-              :titles="['未选择', '已选择']" 
-              @change="transferChange"
-              :props="{key: 'value',label: 'label'}">
-            </el-transfer>
-            
-          </div>
-          <span slot="footer" class="dialog-footer">
-              <el-button @click="transferDialog = false">取 消</el-button>
-              <el-button type="primary" @click="valLen()">确 定</el-button>
-          </span>
-      </el-dialog>
+    <el-dialog
+      title="请选择"
+      class="checkboxmargin"
+      :visible.sync="transferDialog"
+      width="40%"
+      :before-close="handleClose"
+    >
+      <div>
+        <el-transfer
+          v-model="transferItem"
+          :data="transferItems"
+          :titles="['未选择', '已选择']"
+          @change="transferChange"
+          :props="{key: 'value',label: 'label'}"
+        ></el-transfer>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="transferDialog = false">取 消</el-button>
+        <el-button type="primary" @click="valLen()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import {carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
+import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
 
 export default {
   name: "otAdd",
 
   data() {
-
     return {
       val: [],
       transferItems: [], // 穿梭框 数据
       transferItem: [], // 穿梭框 绑定数据
-      transfetTitle:['已选择','为选择'],
-      carTypeCodes,  // 车型代码
-      provinceCodes , // 省份代码
-      uppercartypeLabel: '', // input显示 label
-      carmainmodelLabel:'',// input显示 label
-      carmainareaLabel:'',
+      transfetTitle: ["已选择", "为选择"],
+      carTypeCodes, // 车型代码
+      provinceCodes, // 省份代码
+      uppercartypeLabel: "", // input显示 label
+      carmainmodelLabel: "", // input显示 label
+      carmainareaLabel: "",
       transferDialog: false,
-      transferType: '',
+      transferType: "",
       carCadastralVisible: false,
       UwMotorcadeMainVO: {
         comcode: "",
@@ -244,10 +249,10 @@ export default {
         insuredCode: "",
         businessNature: "",
         carcountAll: "",
-        estimatedPremiumSize: "", 
+        estimatedPremiumSize: "",
         uppercarcount: "",
         uppercartype: [],
-        carmainmodel:[],
+        carmainmodel: [],
         carmainarea: [],
         finishdate: "",
         costRateUpper: "",
@@ -291,10 +296,14 @@ export default {
           { required: true, message: "预估保费规模必填", trigger: ["blur"] }
         ],
         uppercarcount: [
-          { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] } 
+          { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
         ],
         uppercartype: [
-          { required: true, message: "超分公司权限车辆种类", trigger: ["change"] }
+          {
+            required: true,
+            message: "超分公司权限车辆种类",
+            trigger: ["change"]
+          }
         ],
         carmainmodel: [
           {
@@ -318,98 +327,110 @@ export default {
       },
       activeNames: ["1"],
       flags: true,
-      formData: {},
+      formData: {}
     };
   },
   computed: {},
   methods: {
-      // 穿梭框 change 事件
-    transferChange(value, direction, movedKeys){
+    // 穿梭框 change 事件
+    transferChange(value, direction, movedKeys) {
       // console.log(this.datas)
       // this.UwMotorcadeMainVO.carCadastral=value;
       // console.log(value, direction, movedKeys)
     },
     handleClose: function() {
-    this.transferDialog = false;
+      this.transferDialog = false;
     },
     // 获取 页面显示的 label  (源数据，改变的数据)
-    getShowlabel(items,options){
-      let label =[]
-      for(let i = 0; i < items.length; i++){
-        for(let j = 0; j < options.length; j++){
+    getShowlabel(items, options) {
+      let label = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = 0; j < options.length; j++) {
           // console.log(items[i].value,options[j])
-          if(items[i].value === options[j]){
-            label.push(items[i].label)
+          if (items[i].value === options[j]) {
+            label.push(items[i].label);
           }
         }
       }
-      return utils.arrayToString(label)
+      return utils.arrayToString(label);
     },
     //点击弹出框确定
-    valLen(){
-     switch ( this.transferType ) {
-       case 'uppercartype':
-         this.UwMotorcadeMainVO.uppercartype = this.transferItem
-         this.uppercartypeLabel = this.getShowlabel(this.transferItems,this.transferItem) 
-       
-         break;
-         case 'carmainmodel':
-         this.UwMotorcadeMainVO.carmainmodel = this.transferItem
-         this.carmainmodelLabel = this.getShowlabel(this.transferItems,this.transferItem)
-       
-         break;
-         case 'carmainarea':
-         this.UwMotorcadeMainVO.carmainarea = this.transferItem
-         this.carmainareaLabel = this.getShowlabel(this.transferItems,this.transferItem)
-       
-         break;
-     
-     }
-     this.transferDialog = false;
-      
+    valLen() {
+      switch (this.transferType) {
+        case "uppercartype":
+          this.UwMotorcadeMainVO.uppercartype = this.transferItem;
+          this.uppercartypeLabel = this.getShowlabel(
+            this.transferItems,
+            this.transferItem
+          );
+
+          break;
+        case "carmainmodel":
+          this.UwMotorcadeMainVO.carmainmodel = this.transferItem;
+          this.carmainmodelLabel = this.getShowlabel(
+            this.transferItems,
+            this.transferItem
+          );
+
+          break;
+        case "carmainarea":
+          this.UwMotorcadeMainVO.carmainarea = this.transferItem;
+          this.carmainareaLabel = this.getShowlabel(
+            this.transferItems,
+            this.transferItem
+          );
+
+          break;
+      }
+      this.transferDialog = false;
     },
     // 点击弹出
-    openTransfer(items, item,type){
-     
-      this.transferItems = items //总数据data
-      this.transferItem = item  //返回或者传入的数据
-      this.transferType = type  //类型（省份/车型）
-      this.transferDialog =true
+    openTransfer(items, item, type) {
+      this.transferItems = items; //总数据data
+      this.transferItem = item; //返回或者传入的数据
+      this.transferType = type; //类型（省份/车型）
+      this.transferDialog = true;
     },
 
     //保存
     save() {
       this.$refs.UwMotorcadeMainVO.validate(valid => {
-
         if (valid) {
-            let uwMotorcadeMainVO = JSON.parse(JSON.stringify(this.UwMotorcadeMainVO)) 
-          uwMotorcadeMainVO.uppercartype = utils.arrayToString(uwMotorcadeMainVO.uppercartype), // 入参
-
-          uwMotorcadeMainVO.carmainmodel = utils.arrayToString(uwMotorcadeMainVO.carmainmodel), // 入参
-          uwMotorcadeMainVO.carmainarea = utils.arrayToString(uwMotorcadeMainVO.carmainarea), // 入参
-          this.$confirm("确认是否保存该信息~", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-            .then(() => {
-              // console.log(this.$url.rtAddSaves)
-              this.$fetch
-                .post(this.HOST + this.$url.rtAddSaves, uwMotorcadeMainVO)
-                .then(data => {
-                  console.log(data);
-                  this.$message({
-                    type: "success",
-                    message: "保存成功!"
-                  });
-                });
+          let uwMotorcadeMainVO = JSON.parse(
+            JSON.stringify(this.UwMotorcadeMainVO)
+          );
+          (uwMotorcadeMainVO.uppercartype = utils.arrayToString(
+            uwMotorcadeMainVO.uppercartype
+          )), // 入参
+            (uwMotorcadeMainVO.carmainmodel = utils.arrayToString(
+              uwMotorcadeMainVO.carmainmodel
+            )), // 入参
+            (uwMotorcadeMainVO.carmainarea = utils.arrayToString(
+              uwMotorcadeMainVO.carmainarea
+            )), // 入参
+            this.$confirm("确认是否保存该信息~", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
             })
-            .catch(() => {
-              this.$message({
-                type: "info",
-                message: "已取消保存"
+              .then(() => {
+                // console.log(this.$url.rtAddSaves)
+                this.$fetch
+                  .post(this.HOST + this.$url.rtAddSaves, uwMotorcadeMainVO)
+                  .then(data => {
+                    console.log(data);
+                    this.$message({
+                      type: "success",
+                      message: "保存成功!"
+                    });
+                  });
+              })
+              .catch(() => {
+                this.$message({
+                  type: "info",
+                  message: "已取消保存"
+                });
               });
-            });
         }
       });
     },
@@ -422,25 +443,25 @@ export default {
     selectName() {
       //  this.$router.push({path: '/selectMSg',query:{row:this.UwMotorcadeMainVO.insuredName}})
       this.$router.push({ path: "/selectMSg" });
-      
     },
     //历史赔付率
-    selectHistory(){
-     let  key = { 
-            'reportFormsType': 'teamquality',
-            'comcode': this.UwMotorcadeMainVO.comcode,
-            'businessNo': this.UwMotorcadeMainVO.businessNo || '123', // 业务号
-            'taskType': ''// 业务类型
-          }
-           this.$fetch.get(this.HOST + this.$url.uwmainTeamquality, {params:key}).then(data => {
-            console.log(typeof data)
-            // window.open("http://www.baidu.com")
-            window.open(data)
-          })
-    },
+    selectHistory() {
+      let key = {
+        reportFormsType: "teamquality",
+        comcode: this.UwMotorcadeMainVO.comcode,
+        businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
+        taskType: "" // 业务类型
+      };
+      this.$fetch
+        .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
+        .then(data => {
+          console.log(typeof data);
+          // window.open("http://www.baidu.com")
+          window.open(data);
+        });
+    }
   },
-  created() {
-  }
+  created() {}
 };
 </script>
 <style scoped>

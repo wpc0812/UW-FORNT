@@ -80,8 +80,11 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <a href class="acolor" target="_blank">查询</a>
-                    <!-- <el-input v-model="UwMotorcadeMainVO.lastFourYearPayPercent" placeholder="查询"></el-input> -->
+                    <el-button
+                      @click="selectHistory"
+                      size="small"
+                      text="primary"
+                    >查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -441,6 +444,22 @@ export default {
             });
         }
       });
+    },
+    //历史赔付率
+    selectHistory() {
+      let key = {
+        reportFormsType: "teamquality",
+        comcode: this.UwMotorcadeMainVO.comcode,
+        businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
+        taskType: "" // 业务类型
+      };
+      this.$fetch
+        .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
+        .then(data => {
+          console.log(typeof data);
+          // window.open("http://www.baidu.com")
+          window.open(data);
+        });
     },
     //通过关系人代码
     selectCode() {

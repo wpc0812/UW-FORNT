@@ -8,38 +8,38 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">超权限车队审核意见</div>
           </template>
-          <el-form ref="form" :model="underwriterInfor" :disabled="trues" label-width="140px">
+          <div v-for="(val,key,index) in underwriterInfor" :key="index">
+          <el-form ref="form" :model="underwriterInfor" :disabled="trues" class="updatastyleinput" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="序号:">
-                    <el-input v-model="underwriterInfor.id"></el-input>
+                    <el-input v-model="val.id"></el-input>
                   </el-form-item>
                 </el-col>
                   <el-col :span="8">
                   <el-form-item label="处理机构:">
-                    <el-input v-model="underwriterInfor.vesselName"></el-input>
+                    <!-- 标志（0：总公司 1：分公司） -->
+                    <el-input v-model="val.flag"></el-input>
                   </el-form-item>
                 </el-col>
                   <el-col :span="8">
                   <el-form-item label="处理人:">
-                    <el-input v-model="underwriterInfor.processingUser"></el-input>
+                    <el-input v-model="val.userCode"></el-input>
                   </el-form-item>
                 </el-col>
-                
                 <el-col :span="24">
                   <el-form-item label="审批意见:">
-                    <el-input v-model="underwriterInfor.vesselName"></el-input>
+                    <el-input v-model="val.handleText"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
-            
             </el-row>
           </el-form>
+          </div>
         </el-collapse-item>
       </el-collapse>
     </el-card>
-   
   </div>
 </template>
 <script>
@@ -77,14 +77,29 @@ export default {
   },
   created() {
     console.log(this.$route.query.motorcadeNo,this.$url.carAuditPageAuditOpinion);
-       this.$fetch
+        this.$fetch
         .get(this.HOST + this.$url.carAuditPageAuditOpinion, {
-          params: { motorcadeNo: this.$route.query.motorcadeNo}
+          params: { motorcadeNo: "YD450000004"||this.$route.query.motorcadeNo }
         })
         .then(res => {
           console.log(res);
-          this.underwriterInfor=res
+          for(let i=0;i<res.length;i++){
+            let objs={}
+            this.underwriterInfor[i]=res[i]
+          }
         });
+   
   }
 };
 </script>
+<style scoped>
+.updatastyleinput >>> .el-form-item {
+  margin-bottom: 0;
+}
+.updatastyleinput >>> .el-form-item__label {
+  background: #e8f6f9;
+}
+.updatastyleinput >>> .el-input__inner {
+  border-radius: 0px;
+}
+</style>
