@@ -94,7 +94,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-// import { relations } from "@/assets/js/baseCode";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
 import utils from '../../utils/index'

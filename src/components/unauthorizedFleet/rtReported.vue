@@ -16,10 +16,10 @@
                   <el-form-item label="关系人标志:">
                     <el-select v-model="UwMotorcadeMainVO.insuredflag" clearable placeholder="请选择">
                       <el-option
-                        v-for="relation in relations"
-                        :key="relation.code"
-                        :label="relation.value"
-                        :value="relation.code"
+                        v-for="item in relations"
+                        :key="item.label"
+                        :label="item.value"
+                        :value="item.label"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -75,7 +75,7 @@
         <el-table-column prop="state" label="流转状态"></el-table-column>
         <el-table-column prop="motorcadeNo" label="业务号">
           <template slot-scope="scope"> 
-            <el-button type="text" size="small" @click="BusinessNum(scope.row)">{{scope.row.motorcadeNo}}</el-button>
+            <el-button type="text" size="small" @click="BusinessNum(scope.row,scope.row.state)">{{scope.row.motorcadeNo}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="comcode" label="分公司"></el-table-column>
@@ -94,28 +94,34 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { relations } from "@/assets/js/baseCode";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
-
+import utils from '../../utils/index'
 export default {
-  name: "rtReported",
+  name: "otReported",
   components:{
      LeftMenu, HeadMenu 
   },
   data() {
     return {
+      state:[{label:"0",value:"初始化（未录入车辆）"},{label:"1",value:"待审核（已录入车辆）"},{label:"2",value:"已打回"},{label:"3",value:"审核中（已提交总部）"},{label:"4",value:"已审核通过（总部下发）"},{label:"5",value:"已办结"},{label:"6",value:"已注销"}],
       UwMotorcadeMainVO:{
         insuredflag:"",
         insuredCode:"",
         insuredName:"",
         motorcadeNo:"",
-        firstSubmitDate:""
+        firstSubmitDate:"",
+        tpye:"1"
       },
       activeNames: ["1"],
-      relations,
+      relations:[
+        { value: "1_被保险人", label: "1" },
+        { value: "2_投保人", label: "2" }
+      ],
       flag:true,
-      results:[],
+      results:[
+        
+      ],
     };
   },
 
@@ -125,28 +131,30 @@ export default {
 
   methods: {
     // ...mapActions(["getUwMotorcadeMainVO"]),
-    //导出
+    //导出post
     rtReportedchu() {
-      let uwMotorcadeMainVO=this.UwMotorcadeMainVO 
-    this.$fetch.post(this.HOST + this.$url.rtReportedToInsured, uwMotorcadeMainVO)
-    .then(res=>{
-      console.log(res);
-    })
-      
+      let uwMotorcadeMainVO = this.UwMotorcadeMainVO 
+    
+    let _url = this.HOST + this.$url.rtReportedToInsured
+    /**
+     * params1  url  地址
+     * params  data 参数
+     */
+      utils.axiosDown(_url,uwMotorcadeMainVO)
     },
-     // 查询列表
+    //查询
     query() {
-      this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
+       this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
       .then(res=>{
         console.log(res)
         this.results = res
       })
       
     },
-
-    BusinessNum(row){
-      // console.log(row);
-      this.$router.push({path: '/carAuditPage',query:{ motorcadeNo:row.motorcadeNo}})
+    //业务号
+    BusinessNum(row,state){
+      // console.log(row,state);
+      this.$router.push({path: '/carAuditPageother',query:{row:row.motorcadeNo,state}})
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -160,7 +168,19 @@ export default {
   },
   created() {
     let uwMotorcadeMainVO=this.UwMotorcadeMainVO
-    this.query()
+    this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
+    .then(res=>{
+      console.log(res)
+      for(let i=0;i<res.length;i++){
+        for(let j=0;j<this.state.length;j++){
+          if(res[i].state==this.state[j].label)
+          res[i].state=this.state[j].value
+        }
+      }
+      this.results=res
+    })
+
+
   }
 };
 </script>

@@ -134,13 +134,13 @@
               <el-col :span="8">
                 <el-form-item label="超分公司权限车辆种类:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.uppercartype" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showCarSpecies">点击查看</div>
+                  <div class="showdiv" @click="showCarSpecies(carTypeCodes,'uppercartype')">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车队车辆主要车型:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.carmainmodel" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showCarModels">点击查看</div>
+                  <div class="showdiv" @click="showCarSpecies(carTypeCodes,'carmainmodel')">点击查看</div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -148,6 +148,7 @@
               <el-col :span="8">
                 <el-form-item label="车辆主要使用地:">
                   <el-input v-model="UwMotorcadeInfoVO.carmainarea" :disabled="flagdisabled"></el-input>
+                   <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -391,7 +392,7 @@
       title="核保任务提交"
       :visible.sync="innerVisible"
     >
-      <el-row>工作流提示：投保单：34412414214214退回到业务系统成功！</el-row>
+      <el-row>工作流提示：提交成功！</el-row>
       <el-button
         @click="innerVisible = false;outerVisible = false"
         size="mini"
@@ -399,11 +400,22 @@
         class="mt10"
       >关闭当前窗口</el-button>
     </el-dialog>
+    <el-dialog
+    :lock-scroll="false"
+      title="展示"
+      class="tanchuang"
+      :visible.sync="dialogVisibleMore"
+      width="15%">
+      <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
+import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
 import { setTimeout } from "timers";
 
@@ -411,6 +423,7 @@ export default {
   name: "carAuditPage",
   data() {
     return {
+      dialogVisibleMore:false,
       state: "",
       flagdisabled: true,
       httphref: "../../../../#/static/LicensenoAddModel.zip",
@@ -437,8 +450,14 @@ export default {
         insuredNameSUB: "",
         underWritingCondition: "",
         remark: "",
-        finishdate: ""
+        finishdate: "",
+        uppercartypedata:[],
+        carmainmodeldata:[],
+        carmainareadata:[],
       },
+      arrays:[],
+      carTypeCodes,
+      provinceCodes,
       categoryss: [
         { value: "新车车队", label: "1" },
         { value: "转入车队", label: "2" },
@@ -596,13 +615,6 @@ export default {
           }
         });
     },
-    showCarSpecies() {
-      console.log("弹窗");
-    },
-    showCarModels() {
-      console.log("弹窗");
-    },
-
     //生效办结
     outerBranch() {
       // this.$router.push({ path: "/toUwmotorcadeinfoPage",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
@@ -760,13 +772,81 @@ export default {
           this.results = res.uwMotorcadeInfos;
           console.log(res);
         });
+    },
+     showCarSpecies(items,types) {
+      let arrs = ["A01", "B01", "B02","C22", "C23","C24","C25","C26","C27","C28","C29","C01","C02","C03",];
+      let arra=["1100","1200","1300","1400","1500"]
+      
+      switch (types) {
+        case "uppercartype":
+          this.uppercartypedata=this.getShowlabels(this.carTypeCodes,arrs)
+          this.arrays=this.uppercartypedata
+          break;
+        case "carmainmodel":
+          this.carmainmodeldata=this.getShowlabels(this.carTypeCodes,arrs)
+          this.arrays=this.carmainmodeldata
+          break;
+        case "carmainarea":
+          this.carmainareadata=this.getShowlabels(this.provinceCodes,arra)
+          this.arrays=this.carmainareadata
+          break;
+      }
+      console.log(this.uppercartypedata,this.carmainmodeldata,this.carmainareadata)
+      this.dialogVisibleMore=true; 
+    },
+    //弹框展示
+    getShowlabels(items, options) {
+    let label = [];
+    for (let i = 0; i < items.length; i++) {
+      for (let j = 0; j < options.length; j++) {
+        // console.log(items[i].value,options[j])
+        if (items[i].value === options[j]) {
+          label.push(items[i].label);
+        }
+      }
     }
+    return label;
+    },
+    //input展示
+    getShowlabel(items, options) {
+    let label = [];
+    for (let i = 0; i < items.length; i++) {
+      for (let j = 0; j < options.length; j++) {
+        // console.log(items[i].value,options[j])
+        if (items[i].value === options[j]) {
+          label.push(items[i].label);
+        }
+      }
+    }
+    return utils.arrayToString(label);
+    },
+    inited(){
+       let arrs = ["A01", "B01", "B02"];
+    let arra=["1100","1200","1300","1400","1500"]
+
+      this.UwMotorcadeInfoVO.uppercartype = this.getShowlabel(
+        this.carTypeCodes,
+        arrs
+      );
+
+      this.UwMotorcadeInfoVO.carmainmodel = this.getShowlabel(
+        this.carTypeCodes,
+        arrs
+      );
+
+      this.UwMotorcadeInfoVO.carmainarea = this.getShowlabel(
+        this.provinceCodes,
+        arra
+      );
+    },
   },
 
   created() {
+   
     //设置collapse全部展开
     this.setActiveNames();
     this.init();
+    this.inited();
     this.parameter = this.$route.query;
     this.state = this.$route.query.state;
   }
@@ -833,6 +913,13 @@ export default {
   min-height: 62px;
   height: 62px;
 } */
-</style>
-<style>
+.ulli{
+   text-align: center;
+}
+.ulli li{
+  list-style-type:none;
+}
+.tanchuang >>> .el-dialog__footer{
+  text-align: center;
+}
 </style>
