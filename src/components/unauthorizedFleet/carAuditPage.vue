@@ -494,7 +494,12 @@ export default {
       ],
       formDataAdd: {},
       formDataUP: {},
-      messages: ""
+      messages: "",
+       allData:{
+        carCadastral:[],
+        carmainmodel:[],
+        carmainarea:[]
+      },
     };
   },
   computed: {},
@@ -759,42 +764,6 @@ export default {
     addOnSuccess(file, fileList) {},
     addHandlePreview(file, fileList) {},
     addBeforeRemove(file, fileList) {},
-    //初始化
-    init() {
-      // 业务号查询详情
-      this.$fetch
-        .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
-          params: {
-            motorcadeNo: this.$route.query.row
-          }
-        })
-        .then(res => {
-          this.UwMotorcadeInfoVO = res;
-          this.results = res.uwMotorcadeInfos;
-          console.log(res);
-        });
-    },
-     showCarSpecies(items,types) {
-      let arrs = ["A01", "B01", "B02","C22", "C23","C24","C25","C26","C27","C28","C29","C01","C02","C03",];
-      let arra=["1100","1200","1300","1400","1500"]
-      
-      switch (types) {
-        case "carCadastral":
-          this.carCadastraldata=this.getShowlabels(this.carTypeCodes,arrs)
-          this.arrays=this.carCadastraldata
-          break;
-        case "carmainmodel":
-          this.carmainmodeldata=this.getShowlabels(this.carTypeCodes,arrs)
-          this.arrays=this.carmainmodeldata
-          break;
-        case "carmainarea":
-          this.carmainareadata=this.getShowlabels(this.provinceCodes,arra)
-          this.arrays=this.carmainareadata
-          break;
-      }
-      console.log(this.carCadastraldata,this.carmainmodeldata,this.carmainareadata)
-      this.dialogVisibleMore=true; 
-    },
     //弹框展示
     getShowlabels(items, options) {
     let label = [];
@@ -821,33 +790,62 @@ export default {
     }
     return utils.arrayToString(label);
     },
-    inited(){
-       let arrs = ["A01", "B01", "B02"];
-    let arra=["1100","1200","1300","1400","1500"]
-
-      this.UwMotorcadeInfoVO.carCadastral = this.getShowlabel(
-        this.carTypeCodes,
-        arrs
-      );
-
-      this.UwMotorcadeInfoVO.carmainmodel = this.getShowlabel(
-        this.carTypeCodes,
-        arrs
-      );
-
-      this.UwMotorcadeInfoVO.carmainarea = this.getShowlabel(
-        this.provinceCodes,
-        arra
-      );
+    //点击查看
+    showCarSpecies(items,types) {
+      
+      switch (types) {
+        case "carCadastral":
+          this.carCadastraldata=this.getShowlabels(this.carTypeCodes,this.allData.carCadastral)
+          this.arrays=this.carCadastraldata
+          break;
+        case "carmainmodel":
+          this.carmainmodeldata=this.getShowlabels(this.carTypeCodes,this.allData.carmainmodel)
+          this.arrays=this.carmainmodeldata
+          break;
+        case "carmainarea":
+          this.carmainareadata=this.getShowlabels(this.provinceCodes,this.allData.carmainarea)
+          this.arrays=this.carmainareadata
+          break;
+      }
+      this.dialogVisibleMore=true; 
+    },
+      //初始化
+    init() {
+      // 业务号查询详情
+      this.$fetch
+        .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
+          params: {
+            motorcadeNo: this.$route.query.row
+          }
+        })
+        .then(res => {
+          this.results = res.uwMotorcadeInfos;
+          if(res.carCadastral){
+            this.allData.carCadastral= res.carCadastral.split(",")
+            res.carCadastral = this.getShowlabel(this.carTypeCodes,res.carCadastral.split(","));
+            
+          }
+           if(res.carmainmodel){
+             this.allData.carmainmodel= res.carmainmodel.split(",")
+            res.carmainmodel = this.getShowlabel(
+              this.carTypeCodes,
+              res.carmainmodel.split(","))
+          }
+           if(res.carmainarea){
+             this.allData.carmainarea= res.carmainarea.split(",")
+            res.carmainarea = this.getShowlabel(
+              this.provinceCodes,
+              res.carmainarea.split(","))
+          }
+          this.UwMotorcadeInfoVO = res;
+        });
     },
   },
 
   created() {
-   
     //设置collapse全部展开
     this.setActiveNames();
     this.init();
-    this.inited();
     this.parameter = this.$route.query;
     this.state = this.$route.query.state;
   }

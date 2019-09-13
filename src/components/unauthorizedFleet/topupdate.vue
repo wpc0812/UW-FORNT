@@ -478,60 +478,42 @@ export default {
           params: { motorcadeNo: this.$route.query.motorcadeNo }
         })
         .then(res => {
-          this.UwMotorcadeMainVO = res;
-          // this.results = res.uwMotorcadeInfos
-          console.log(res);
+          if(res.uppercartype){
+            res.uppercartype = res.uppercartype.split(",")
+            this.uppercartypeLabel = this.getShowlabel(this.carTypeCodes, res.uppercartype);
+          }
+          if(res.carmainmodel){
+            res.carmainmodel = res.carmainmodel.split(",")
+            this.carmainmodelLabel = this.getShowlabel(this.carTypeCodes,res.carmainmodel)
 
-          // res.uppercartype.
+          }
+          if(res.carmainarea){
+            res.carmainarea =  res.carmainarea.split(",")
+            this.carmainareaLabel = this.getShowlabel(this.provinceCodes,res.carmainarea)
+          } 
+          this.UwMotorcadeMainVO = res;
+
         });
     },
-    inited() {
-      let arrs = ["A01", "B01", "B02"];
-
-      this.UwMotorcadeMainVO.uppercartype = arrs;
-      this.uppercartypeLabel = this.getShowlabel(this.carTypeCodes, arrs);
-
-      //      this.UwMotorcadeMainVO.carmainmodel = this.transferItem
-      //      this.carmainmodelLabel = this.getShowlabel(this.transferItems,this.transferItem)
-
-      //      this.UwMotorcadeMainVO.carmainarea = this.transferItem
-      //      this.carmainareaLabel = this.getShowlabel(this.transferItems,this.transferItem)
-    }
   },
   created() {
     this.init();
-    this.inited();
   }
 };
 </script>
 <style scoped>
-/* .el-input--small >>> .el-input__inner {
-  height: 25px;
-  line-height: 25px;
-} */
 .peoCode {
   width: 150px;
   float: left;
 }
-/* .selectCode {
-  display: inline-block;
-  width: 40px;
-  height: 25px;
-  margin-top: 3px;
-  padding: 2px 2px 0 2px;
-} */
 .selectCode {
   position: relative;
   left: -22px;
   top: 0px;
 }
-
 .el-form >>> label {
   font-size: 12px;
 }
-/* .UwMotorcadeMainVOupdate >>>.el-input__inner{
-  border-radius: 0px;
-    } */
 .UwMotorcadeMainVOupdate >>> .el-form-item__label {
   background: #e8f6f9;
 }

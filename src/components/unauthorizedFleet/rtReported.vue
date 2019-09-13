@@ -97,8 +97,9 @@ import { mapActions, mapGetters } from "vuex";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
 import utils from '../../utils/index'
+
 export default {
-  name: "otReported",
+  name: "rtReported",
   components:{
      LeftMenu, HeadMenu 
   },
@@ -106,22 +107,15 @@ export default {
     return {
       state:[{label:"0",value:"初始化（未录入车辆）"},{label:"1",value:"待审核（已录入车辆）"},{label:"2",value:"已打回"},{label:"3",value:"审核中（已提交总部）"},{label:"4",value:"已审核通过（总部下发）"},{label:"5",value:"已办结"},{label:"6",value:"已注销"}],
       UwMotorcadeMainVO:{
-        insuredflag:"",
-        insuredCode:"",
-        insuredName:"",
-        motorcadeNo:"",
-        firstSubmitDate:"",
-        tpye:"1"
+       type:"1"
       },
-      activeNames: ["1"],
-      relations:[
+       relations:[
         { value: "1_被保险人", label: "1" },
         { value: "2_投保人", label: "2" }
       ],
+      activeNames: ["1"],
       flag:true,
-      results:[
-        
-      ],
+      results:[],
     };
   },
 
@@ -131,9 +125,9 @@ export default {
 
   methods: {
     // ...mapActions(["getUwMotorcadeMainVO"]),
-    //导出post
+    //导出
     rtReportedchu() {
-      let uwMotorcadeMainVO = this.UwMotorcadeMainVO 
+     let uwMotorcadeMainVO = this.UwMotorcadeMainVO 
     
     let _url = this.HOST + this.$url.rtReportedToInsured
     /**
@@ -141,20 +135,19 @@ export default {
      * params  data 参数
      */
       utils.axiosDown(_url,uwMotorcadeMainVO)
+      
     },
-    //查询
+     // 查询列表
     query() {
-       this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
+      this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
       .then(res=>{
-        console.log(res)
         this.results = res
       })
       
     },
-    //业务号
+
     BusinessNum(row,state){
-      // console.log(row,state);
-      this.$router.push({path: '/carAuditPageother',query:{row:row.motorcadeNo,state}})
+      this.$router.push({path: '/carAuditPage',query:{ row:row.motorcadeNo,state}})
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -167,10 +160,9 @@ export default {
     }
   },
   created() {
-    let uwMotorcadeMainVO=this.UwMotorcadeMainVO
+      let uwMotorcadeMainVO=this.UwMotorcadeMainVO
     this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
     .then(res=>{
-      console.log(res)
       for(let i=0;i<res.length;i++){
         for(let j=0;j<this.state.length;j++){
           if(res[i].state==this.state[j].label)
@@ -179,8 +171,6 @@ export default {
       }
       this.results=res
     })
-
-
   }
 };
 </script>

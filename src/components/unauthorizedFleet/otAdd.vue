@@ -256,7 +256,8 @@ export default {
         carmainarea: [],
         finishdate: "",
         costRateUpper: "",
-        underWritingCondition: ""
+        underWritingCondition: "",
+        type:"2"
       },
       relationss: [
         { value: "1_被保险人", label: "1" },

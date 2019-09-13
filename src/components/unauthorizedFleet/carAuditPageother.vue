@@ -104,11 +104,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="历史年度满期赔付率(%):">
-                  <el-button
-                    @click="selectHistory"
-                    size="small"
-                    text="primary"
-                  >查询</el-button>
+                  <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -148,7 +144,7 @@
               <el-col :span="8">
                 <el-form-item label="车辆主要使用地:">
                   <el-input v-model="UwMotorcadeInfoVO.carmainarea" :disabled="flagdisabled"></el-input>
-                   <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
+                  <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -247,7 +243,7 @@
               </el-col>
             </el-row>
             <el-row v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已办结'||'已审核通过（总部下发）'">
-              <el-col :span="10" >
+              <el-col :span="10">
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">
@@ -401,11 +397,12 @@
       >关闭当前窗口</el-button>
     </el-dialog>
     <el-dialog
-    :lock-scroll="false"
+      :lock-scroll="false"
       title="展示"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%">
+      width="15%"
+    >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
@@ -423,7 +420,7 @@ export default {
   name: "carAuditPage",
   data() {
     return {
-      dialogVisibleMore:false,
+      dialogVisibleMore: false,
       state: "",
       flagdisabled: true,
       httphref: "../../../../#/static/LicensenoAddModel.zip",
@@ -451,11 +448,11 @@ export default {
         underWritingCondition: "",
         remark: "",
         finishdate: "",
-        uppercartypedata:[],
-        carmainmodeldata:[],
-        carmainareadata:[],
+        uppercartypedata: [],
+        carmainmodeldata: [],
+        carmainareadata: []
       },
-      arrays:[],
+      arrays: [],
       carTypeCodes,
       provinceCodes,
       categoryss: [
@@ -493,7 +490,12 @@ export default {
       ],
       formDataAdd: {},
       formDataUP: {},
-      messages: ""
+      messages: "",
+      allData: {
+        uppercartype: [],
+        carmainmodel: [],
+        carmainarea: []
+      }
     };
   },
   computed: {},
@@ -768,85 +770,89 @@ export default {
           }
         })
         .then(res => {
-          this.UwMotorcadeInfoVO = res;
           this.results = res.uwMotorcadeInfos;
-          console.log(res);
+          if (res.uppercartype) {
+            this.allData.uppercartype = res.uppercartype.split(",");
+            res.uppercartype = this.getShowlabel(
+              this.carTypeCodes,
+              res.uppercartype.split(",")
+            );
+          }
+          if (res.carmainmodel) {
+            this.allData.carmainmodel = res.carmainmodel.split(",");
+            res.carmainmodel = this.getShowlabel(
+              this.carTypeCodes,
+              res.carmainmodel.split(",")
+            );
+          }
+          if (res.carmainarea) {
+            this.allData.carmainarea = res.carmainarea.split(",");
+            res.carmainarea = this.getShowlabel(
+              this.provinceCodes,
+              res.carmainarea.split(",")
+            );
+          }
+          this.UwMotorcadeInfoVO = res;
         });
     },
-     showCarSpecies(items,types) {
-      let arrs = ["A01", "B01", "B02","C22", "C23","C24","C25","C26","C27","C28","C29","C01","C02","C03",];
-      let arra=["1100","1200","1300","1400","1500"]
-      
+    //点击查看
+    showCarSpecies(items, types) {
       switch (types) {
         case "uppercartype":
-          this.uppercartypedata=this.getShowlabels(this.carTypeCodes,arrs)
-          this.arrays=this.uppercartypedata
+          this.uppercartypedata = this.getShowlabels(
+            this.carTypeCodes,
+            this.allData.uppercartype
+          );
+          this.arrays = this.uppercartypedata;
           break;
         case "carmainmodel":
-          this.carmainmodeldata=this.getShowlabels(this.carTypeCodes,arrs)
-          this.arrays=this.carmainmodeldata
+          this.carmainmodeldata = this.getShowlabels(
+            this.carTypeCodes,
+            this.allData.carmainmodel
+          );
+          this.arrays = this.carmainmodeldata;
           break;
         case "carmainarea":
-          this.carmainareadata=this.getShowlabels(this.provinceCodes,arra)
-          this.arrays=this.carmainareadata
+          this.carmainareadata = this.getShowlabels(
+            this.provinceCodes,
+            this.allData.carmainarea
+          );
+          this.arrays = this.carmainareadata;
           break;
       }
-      console.log(this.uppercartypedata,this.carmainmodeldata,this.carmainareadata)
-      this.dialogVisibleMore=true; 
+      this.dialogVisibleMore = true;
     },
     //弹框展示
     getShowlabels(items, options) {
-    let label = [];
-    for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < options.length; j++) {
-        // console.log(items[i].value,options[j])
-        if (items[i].value === options[j]) {
-          label.push(items[i].label);
+      let label = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = 0; j < options.length; j++) {
+          // console.log(items[i].value,options[j])
+          if (items[i].value === options[j]) {
+            label.push(items[i].label);
+          }
         }
       }
-    }
-    return label;
+      return label;
     },
     //input展示
     getShowlabel(items, options) {
-    let label = [];
-    for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < options.length; j++) {
-        // console.log(items[i].value,options[j])
-        if (items[i].value === options[j]) {
-          label.push(items[i].label);
+      let label = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = 0; j < options.length; j++) {
+          // console.log(items[i].value,options[j])
+          if (items[i].value === options[j]) {
+            label.push(items[i].label);
+          }
         }
       }
+      return utils.arrayToString(label);
     }
-    return utils.arrayToString(label);
-    },
-    inited(){
-       let arrs = ["A01", "B01", "B02"];
-    let arra=["1100","1200","1300","1400","1500"]
-
-      this.UwMotorcadeInfoVO.uppercartype = this.getShowlabel(
-        this.carTypeCodes,
-        arrs
-      );
-
-      this.UwMotorcadeInfoVO.carmainmodel = this.getShowlabel(
-        this.carTypeCodes,
-        arrs
-      );
-
-      this.UwMotorcadeInfoVO.carmainarea = this.getShowlabel(
-        this.provinceCodes,
-        arra
-      );
-    },
   },
-
   created() {
-   
     //设置collapse全部展开
     this.setActiveNames();
     this.init();
-    this.inited();
     this.parameter = this.$route.query;
     this.state = this.$route.query.state;
   }
@@ -913,13 +919,13 @@ export default {
   min-height: 62px;
   height: 62px;
 } */
-.ulli{
-   text-align: center;
+.ulli {
+  text-align: center;
 }
-.ulli li{
-  list-style-type:none;
+.ulli li {
+  list-style-type: none;
 }
-.tanchuang >>> .el-dialog__footer{
+.tanchuang >>> .el-dialog__footer {
   text-align: center;
 }
 </style>
