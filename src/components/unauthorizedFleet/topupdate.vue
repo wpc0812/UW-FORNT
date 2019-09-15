@@ -5,7 +5,7 @@
         <el-collapse-item name="1">
           <template slot="title">
             <div class="title-blue-bar"></div>
-            <div class="card-title">修改其他车队信息</div>
+            <div class="card-title">{{titletype}}</div>
           </template>
           <el-form
             label-width="170px"
@@ -80,11 +80,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <el-button
-                      @click="selectHistory"
-                      size="small"
-                      text="primary"
-                    >查询</el-button>
+                    <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -104,14 +100,30 @@
                     <el-input v-model="UwMotorcadeMainVO.estimatedPremiumSize"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="this.$route.query.nametype=='1'">
+                  <el-form-item label="异地车辆数:" prop="foreigncarcount">
+                    <el-input v-model="UwMotorcadeMainVO.foreigncarcount" :disabled="distorenewal"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8" v-if="this.$route.query.nametype=='2'">
                   <el-form-item label="超分公司权限车辆总数:" prop="uppercarcount" class="text-left">
                     <el-input v-model="UwMotorcadeMainVO.uppercarcount" :disabled="distorenewal"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="8">
+                <el-col :span="8" v-if="this.$route.query.nametype=='1'">
+                  <el-form-item label="涉及车籍地:" prop="carCadastral">
+                    <el-input
+                      v-model="carCadastralLabel"
+                      placeholder="点击选择"
+                      @focus="openTransfer(provinceCodes,UwMotorcadeMainVO.carCadastral,'carCadastral')"
+                      class="labelmargin"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8" v-if="this.$route.query.nametype=='2'">
                   <el-form-item label="超分公司权限车辆种类:" prop="uppercartype">
                     <el-input
                       v-model="uppercartypeLabel"
@@ -257,10 +269,12 @@ export default {
       uppercartypeLabel: "", // input显示 label
       carmainmodelLabel: "", // input显示 label
       carmainareaLabel: "",
+      carCadastralLabel: "",
       transferDialog: false,
       transferType: "",
       carCadastralVisible: false,
       distorenewal: true,
+      titletype: "",
       UwMotorcadeMainVO: {
         comcode: "",
         insuredflag: "",
@@ -269,7 +283,9 @@ export default {
         businessNature: "",
         carcountAll: "",
         estimatedPremiumSize: "",
+        foreigncarcount: "",
         uppercarcount: "",
+        carCadastral: [],
         uppercartype: [],
         carmainmodel: [],
         carmainarea: [],
@@ -315,7 +331,17 @@ export default {
           { required: true, message: "预估保费规模必填", trigger: ["blur"] }
         ],
         uppercarcount: [
-          // { required: true, message: "超分公司权限车辆总数", trigger: ["blur"] }
+          {
+            required: true,
+            message: "超分公司权限车辆总数必填",
+            trigger: ["blur"]
+          }
+        ],
+        foreigncarcount: [
+          { required: true, message: "车辆总数必填", trigger: ["blur"] }
+        ],
+        carCadastral: [
+          { required: true, message: "设计车籍地必选", trigger: ["blur"] }
         ],
         uppercartype: [
           {
@@ -354,7 +380,6 @@ export default {
     // 穿梭框 change 事件
     transferChange(value, direction, movedKeys) {
       // console.log(this.datas)
-      // this.UwMotorcadeMainVO.carCadastral=value;
       // console.log(value, direction, movedKeys)
     },
     handleClose: function() {
@@ -376,6 +401,15 @@ export default {
     //点击弹出框确定
     valLen() {
       switch (this.transferType) {
+        case "carCadastral":
+          this.UwMotorcadeMainVO.carCadastral = this.transferItem;
+          this.carCadastralLabel = this.getShowlabel(
+            this.transferItems,
+            this.transferItem
+          );
+
+          break;
+
         case "uppercartype":
           this.UwMotorcadeMainVO.uppercartype = this.transferItem;
           this.uppercartypeLabel = this.getShowlabel(
@@ -478,25 +512,44 @@ export default {
           params: { motorcadeNo: this.$route.query.motorcadeNo }
         })
         .then(res => {
-          if(res.uppercartype){
-            res.uppercartype = res.uppercartype.split(",")
-            this.uppercartypeLabel = this.getShowlabel(this.carTypeCodes, res.uppercartype);
+          if (res.carCadastral) {
+            res.carCadastral = res.carCadastral.split(",");
+            this.carCadastralLabel = this.getShowlabel(
+              this.carTypeCodes,
+              res.carCadastral
+            );
           }
-          if(res.carmainmodel){
-            res.carmainmodel = res.carmainmodel.split(",")
-            this.carmainmodelLabel = this.getShowlabel(this.carTypeCodes,res.carmainmodel)
-
+          if (res.uppercartype) {
+            res.uppercartype = res.uppercartype.split(",");
+            this.uppercartypeLabel = this.getShowlabel(
+              this.carTypeCodes,
+              res.uppercartype
+            );
           }
-          if(res.carmainarea){
-            res.carmainarea =  res.carmainarea.split(",")
-            this.carmainareaLabel = this.getShowlabel(this.provinceCodes,res.carmainarea)
-          } 
+          if (res.carmainmodel) {
+            res.carmainmodel = res.carmainmodel.split(",");
+            this.carmainmodelLabel = this.getShowlabel(
+              this.carTypeCodes,
+              res.carmainmodel
+            );
+          }
+          if (res.carmainarea) {
+            res.carmainarea = res.carmainarea.split(",");
+            this.carmainareaLabel = this.getShowlabel(
+              this.provinceCodes,
+              res.carmainarea
+            );
+          }
           this.UwMotorcadeMainVO = res;
-
         });
-    },
+    }
   },
   created() {
+    if (this.$route.query.nametype == "1") {
+      this.titletype = "修改异地车队信息";
+    } else if (this.$route.query.nametype == "2") {
+      this.titletype = "修改其他车队信息";
+    }
     this.init();
   }
 };

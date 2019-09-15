@@ -645,7 +645,7 @@ export default {
           } else {
             this.$router.push({
               path: "/torenewal",
-              query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
+              query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ,nametype:"2"}
             });
           }
         });
@@ -654,7 +654,7 @@ export default {
     outerUpdate() {
       this.$router.push({
         path: "/topupdate",
-        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
+        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,nametype:"2" }
       });
     },
     //对比
