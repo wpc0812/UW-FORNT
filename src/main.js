@@ -46,121 +46,82 @@ Vue.prototype.$url = Url;
 
 // 单点登录拦截
 router.beforeEach((to, from, next) =>{
-  console.log(to)
-  console.log(from)
-  // 判断是否有token,包括url携带参数或者本地存储token
-  const token = to.query.token || window.sessionStorage.token ||utils.getUrlToken('token')
-  const whiteList = ['/login'] // no redirect whitelist
+
+  // // 判断是否有token,包括url携带参数或者本地存储token
+  // const token = to.query.token || window.sessionStorage.token ||utils.getUrlToken('token')
+  // const whiteList = ['/login'] // no redirect whitelist
 
 
-  let isSSO
-  //调用isSSOLogin接口
-      axios({
-        method: 'post',
-        url: '/getIsSsoLogin',
-        data: {}
-      })
-      .then(data =>{
-        if(data.data.status == 0){
-          // 判断是否为单点登录
-          isSSO = data.data.data.isSsoLogin
+  // let isSSO
+  // //调用isSSOLogin接口
+  //     axios({
+  //       method: 'post',
+  //       url: '/getIsSsoLogin',
+  //       data: {}
+  //     })
+  //     .then(data =>{
+  //       debugger
+  //       if(data.data.status == 0){
+  //         // 判断是否为单点登录
+  //         isSSO = data.data.data.isSsoLogin
 
-          window.sessionStorage.setItem('isSSO', isSSO)
-          axios({
-                  method: 'post',
-                  url: 'getRedirectUrl',
-                  data: {}
-                }).then(data => {
-                  if (data.data.status === 0) {
-                    window.sessionStorage.setItem('redirectUrl', data.data.data.redirectUrl)
-                    if (token && isSSO) {
-                          // 如果是通过单点系统跳进来的页面 to.query.token肯定存在
-                          if (to.query.token || utils.getUrlToken('token')) {
-                            window.sessionStorage.setItem('token', token)
+  //         window.sessionStorage.setItem('isSSO', isSSO)
+  //         axios({
+  //                 method: 'post',
+  //                 url: 'getRedirectUrl',
+  //                 data: {}
+  //               }).then(data => {
+  //                 if (data.data.status === 0) {
+  //                   window.sessionStorage.setItem('redirectUrl', data.data.data.redirectUrl)
+  //                   if (token && isSSO) {
+  //                         // 如果是通过单点系统跳进来的页面 to.query.token肯定存在
+  //                         if (to.query.token || utils.getUrlToken('token')) {
+  //                           window.sessionStorage.setItem('token', token)
                           
-                            next(to.path)
-                            // to.query.token不存在，子系统路由跳转
-                          }  
-                          else {
-                              if (to.path === '/login' && from.path === '/dashboard') {                
-                                next(false)
-                              } 
-                              else {
-                                next()
-                            }
-                          }                     
-                      } else{
-                        if (isSSO) {
-                              window.location.href = window.sessionStorage.redirectUrl
-                            } else {
-                              //非单点登陆的操作
+  //                           next()
+  //                           // to.query.token不存在，子系统路由跳转
+  //                         }  
+  //                         else {
+  //                             if (to.path === '/login' && from.path === '/dashboard') {                
+  //                               next(false)
+  //                             } 
+  //                             else {
+  //                               next()
+  //                           }
+  //                         }                     
+  //                     } else{
+  //                       if (isSSO) {
+  //                             window.location.href = window.sessionStorage.redirectUrl
+  //                           } else {
+  //                             //非单点登陆的操作
                               
-                                /* has no token*/
-                                if (whiteList.indexOf(to.path) !== -1) {
-                                  // in the free login whitelist, go directly
-                                  next()
-                                } else {
-                                  // other pages that do not have permission to access are redirected to the login page.
-                                  next(`/login?redirect=${to.path}`)
+  //                               /* has no token*/
+  //                               if (whiteList.indexOf(to.path) !== -1) {
+  //                                 // in the free login whitelist, go directly
+  //                                 next()
+  //                               } else {
+  //                                 // other pages that do not have permission to access are redirected to the login page.
+  //                                 next(`/login?redirect=${to.path}`)
                                 
-                                }
+  //                               }
                               
-                            }
-                      }
-                  } 
-                  else {
+  //                           }
+  //                     }
+  //                 } 
+  //                 else {
                   
-                    Message.error(data.data.statusText || 'Error')
-                  }
-              })
+  //                   Message.error(data.data.statusText || 'Error')
+  //                 }
+  //             })
       
-        }else {
-          Message.error(data.data.statusText || 'Error')
-        }
-    })
+  //       }else {
+  //         Message.error(data.data.statusText || 'Error')
+  //       }
+  //   })
 
   
-
+next()
   
-    // if (token && isSSO) {
-    //     // 如果是通过单点系统跳进来的页面 to.query.token肯定存在
-    //     if (to.query.token || utils.getUrlToken('token')) {
-    //       window.sessionStorage.setItem('token', token)
-        
-    //       next(to.path)
-    //       // to.query.token不存在，子系统路由跳转
-    //     }  
-    //     else {
-    //         if (to.path === '/login' && from.path === '/dashboard') {
-
-    //           next(false)
-    //         } 
-    //         else {
-    //           next()
-    //       }
-    //     }
-        
-    // } else{
-    //   if (isSSO) {
-    //         window.location.href = window.sessionStorage.redirectUrl
-    //       } else {
-    //         //非单点登陆的操作
-    //         if (hasToken) {
-              
-    //         } else {
-    //           /* has no token*/
-    //           if (whiteList.indexOf(to.path) !== -1) {
-    //             // in the free login whitelist, go directly
-    //             next()
-    //           } else {
-    //             // other pages that do not have permission to access are redirected to the login page.
-    //             next(`/login?redirect=${to.path}`)
-              
-    //           }
-    //         }
-    //       }
-    // }
-    // next()
   
 })
 

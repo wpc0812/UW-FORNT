@@ -18,7 +18,7 @@
           <el-col :span="23" class="head pt10">
             <span class="pt5">您当前的位置：{{this.$route.name}}</span>
             <span>
-              <el-button class="white" type="text">重新登录</el-button>
+              <el-button class="white" type="text" >重新登录</el-button>
               <el-button class="white" type="text">[意见反馈]</el-button>
               <el-button class="white" type="text">[文档下载]</el-button>
               <el-button class="white" type="text">[操作手册]</el-button>
@@ -31,8 +31,24 @@
 </template>
 <script>
 import Screenfull from "@/components/templates/Screenfull";
+import utils from '../../utils'
+
 export default {
-  components: { Screenfull }
+  components: { Screenfull },
+  methods:{
+    // logOut() {
+    //   this.$fetch.post(this.HOST + this.$url.userLoginLogout,{}).then(data =>{
+    //     if (window.sessionStorage.isSSO == 'true') {
+		// 				utils.removeToken()
+		// 				window.location.href = window.sessionStorage.redirectUrl
+		// 			} else {
+    //           utils.removeToken()
+    //           this.$router.push('/login')
+    //       }
+						
+    //   })
+    // }
+  }
 };
 </script>
 <style lang="scss" scoped>
