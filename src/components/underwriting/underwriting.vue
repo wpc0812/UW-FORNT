@@ -564,13 +564,7 @@ export default {
   background: none;
   height: 40px;
 }
-/* .circular{
-  background-color: #212224;
-} */
 .circular /deep/ .collapseBack{
   background-color: #212224;
 }
-/* .circular /deep/ .rowBackColor{
-  background-color: #212224;
-} */
 </style>

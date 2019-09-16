@@ -10,10 +10,10 @@
 
             <el-button size='mini' type="primary" @click="goTolinks('headCompany')" v-if="underwritingDetails.displayFlag.headOfficeInfoFlag == '1'">查看总公司资料</el-button>
             <el-button size='mini' type="primary" @click="goTolinks('branchCompany')" v-if="underwritingDetails.displayFlag.branchOfficeInfoFlag == '1'">查看分公司资料</el-button>
-            <el-button size='mini' type="primary" @click="goTolinks('startECM')" v-if="underwritingDetails.displayFlag.relationImageFlag == '1'">查看关联单影像</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('startECM')"  v-if="underwritingDetails.displayFlag.relationImageFlag == '1'">查看关联单影像</el-button>
             <el-button size='mini' type="primary"  @click="goTolinks('getECM')" v-if="underwritingDetails.displayFlag.infoFlag == '1'">资料查看</el-button>
 
-            <el-button size='mini' type="primary" @click="goTolinks('uploadECM')" v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
+            <el-button size='mini' type="primary" @click="goTolinks('uploadECM')"  v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
             <el-button size='mini' type="primary" @click="goTolinks('mobileECM')" v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'">手机影像</el-button>
 
             <el-button size='mini' type="primary" @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.deviceInfoFlag == '1'">设备信息</el-button>
@@ -1931,14 +1931,13 @@ export default {
           // 影像上传
           case 'uploadECM':
              key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
-              "taskId": "123",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000"
+              "businessNo": this.routeDate.businessNo || "TDAA201923060000081619",
+              "businessType": this.routeDate.type  || "T",
+              "taskId": "1",
+              "userName": "江苏用户",
+              'userCode': 'A320000003',
+              "comCode": "32010200"
               }
-
           this.$fetch.post(this.HOST + this.$url.uwmainUploadECM,key).then(data => {
             console.log(data)
             window.open(data)

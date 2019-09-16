@@ -154,12 +154,194 @@
         }
       },
       {
+        "id" : 33 ,
+        "path":"/",
+        "iconCls": "el-icon-tickets",
+        "name": "统计",
+        "component": "",
+        "children":[
+          {
+            "id": 34,
+            "path":"/underwritingStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "核保统计",
+            "component": "UnderwritingStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 35,
+            "path":"/underwritingAmount",
+            "iconCls": "el-icon-tickets",
+            "name": "核保量统计",
+            "component": "UnderwritingAmount",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 36,
+            "path":"/underwritingSimple",
+            "iconCls": "el-icon-tickets",
+            "name": "简单核保统计",
+            "component": "UnderwritingSimple",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 37,
+            "path":"/reportedBike",
+            "iconCls": "el-icon-tickets",
+            "name": "单车报备统计",
+            "component": "ReportedBike",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          }
+        ],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
         "id": 14,
         "path": "/recommendedModRev",
         "iconCls": "fa fa-hand-stop-o",
         "name": "推荐送修码修改审核",
         "component": "RecommendedModRev",
         "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id" : 38 ,
+        "path":"/",
+        "iconCls": "el-icon-tickets",
+        "name": "汇总统计",
+        "component": "",
+        "children":[
+          {
+            "id": 39,
+            "path":"/underwritingAmountStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "人工核保量汇总统计",
+            "component": "UnderwritingAmountStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 40,
+            "path":"/underwritingMonthlyStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "人工核保业务量月统计",
+            "component": "UnderwritingMonthlyStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 41,
+            "path":"/underwritingGroupStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "团单信息维护统计",
+            "component": "UnderwritingGroupStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 42,
+            "path":"/underwritingDifferentStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "异地号牌业务统计",
+            "component": "UnderwritingDifferentStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 43,
+            "path":"/underwritingRenewalStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "续保报备业务统计",
+            "component": "UnderwritingRenewalStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 44,
+            "path":"/underwritingConfigurationStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "人工审批配置统计",
+            "component": "UnderwritingConfigurationStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 45,
+            "path":"/underwritingSpecialMaintenanceStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "特批业务维护统计",
+            "component": "UnderwritingSpecialMaintenanceStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 46,
+            "path":"/underwritingSummaryForm",
+            "iconCls": "el-icon-tickets",
+            "name": "业务量汇总统计报表",
+            "component": "UnderwritingSummaryForm",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          },
+          {
+            "id": 47,
+            "path":"/underwritingReturnStatistics",
+            "iconCls": "el-icon-tickets",
+            "name": "人工退回业务统计",
+            "component": "UnderwritingReturnStatistics",
+            "children":[],
+            "meta": {
+              "keepAlive": false,
+              "reuireAuth": true
+            }
+          }
+        ],
         "meta": {
           "keepAlive": false,
           "reuireAuth": true

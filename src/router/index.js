@@ -209,6 +209,136 @@ const router = new Router({
           }
         },
         {
+          path: '/underwritingStatistics',
+          name: '核保统计',
+          component: _import('underwriting/underwritingStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingAmount',
+          name: '核保量统计',
+          component: _import('underwriting/underwritingAmount'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingSimple',
+          name: '简单核保统计',
+          component: _import('underwriting/underwritingSimple'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/reportedBike',
+          name: '单车报备统计',
+          component: _import('underwriting/reportedBike'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingAmountStatistics',
+          name: '人工核保量汇总统计',
+          component: _import('underwriting/underwritingAmountStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingMonthlyStatistics',
+          name: '人工核保业务量月统计',
+          component: _import('underwriting/underwritingMonthlyStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingGroupStatistics',
+          name: '团单信息维护统计',
+          component: _import('underwriting/underwritingGroupStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingDifferentStatistics',
+          name: '异地号牌业务统计',
+          component: _import('underwriting/underwritingDifferentStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingRenewalStatistics',
+          name: '续保报备业务统计',
+          component: _import('underwriting/underwritingRenewalStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingConfigurationStatistics',
+          name: '人工审批配置统计',
+          component: _import('underwriting/underwritingConfigurationStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingSpecialMaintenanceStatistics',
+          name: '特批业务维护统计',
+          component: _import('underwriting/underwritingSpecialMaintenanceStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingSummaryForm',
+          name: '业务量汇总统计报表',
+          component: _import('underwriting/underwritingSummaryForm'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/underwritingReturnStatistics',
+          name: '人工退回业务统计',
+          component: _import('underwriting/underwritingReturnStatistics'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        {
           path: '/rtReported',
           name: '已上报车队',
           component: _import('unauthorizedFleet/rtReported'),

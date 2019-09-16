@@ -3,22 +3,22 @@
     <!-- 超权限详情 -->
     <el-card class="circular">
       <el-row class="pt10">
-        <el-col :span="3" v-if="state=='已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='已审核通过（总部下发）'">
           <el-button class="btn" type="primary" @click="outerBranch" size="mini">生效办结</el-button>
         </el-col>
-        <el-col :span="3" v-if="state=='已办结'">
+        <el-col :span="3" v-if="states=='已办结'">
           <el-button class="btn" type="primary" @click="outerRenewal" size="mini">续保</el-button>
         </el-col>
-        <el-col :span="3" v-if="state=='已打回 '||'已审核通过（总部下发）'||'已办结'">
+        <el-col :span="3" v-if="states=='已打回 '||'已审核通过（总部下发）'||'已办结'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
         <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
-        <el-col :span="3" v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
           <el-button class="btn" type="primary" @click="outerDelete" size="mini">删除</el-button>
         </el-col>
-        <el-col :span="3" v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
           <el-button class="btn" type="primary" @click="outerUpimg" size="mini">影像上传</el-button>
         </el-col>
         <el-col :span="3">
@@ -32,7 +32,7 @@
         </el-col>
       </el-row>
       <hr />
-      <el-collapse v-model="activeNames" v-if="state=='待审核（已录入车辆）'">
+      <el-collapse v-model="activeNames" v-if="states=='待审核（已录入车辆）'">
         <el-collapse-item name="1" class="el_collapse_padding">
           <template slot="title">
             <div class="title-blue-bar"></div>
@@ -142,18 +142,18 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="车辆主要使用地:">
+                <el-form-item label="车辆主要使用地:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.carmainarea" :disabled="flagdisabled"></el-input>
                   <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="控制结束日期:">
+                <el-form-item label="控制结束日期:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.finishdate" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="商业险手续费上限(%):">
+                <el-form-item label="商业险手续费上限(%):" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.costRateUpper" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
@@ -209,7 +209,7 @@
                 >{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="state=='初始化（未录入车辆）'||'已办结'">
+            <el-row v-if="states=='初始化（未录入车辆）'||'已办结'">
               <el-col :span="10">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
@@ -242,7 +242,7 @@
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
-            <el-row v-if="state=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已办结'||'已审核通过（总部下发）'">
+            <el-row v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已办结'||'已审核通过（总部下发）'">
               <el-col :span="10">
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
@@ -421,7 +421,7 @@ export default {
   data() {
     return {
       dialogVisibleMore: false,
-      state: "",
+      states: "",
       flagdisabled: true,
       httphref: "../../../../#/static/LicensenoAddModel.zip",
       UwMotorcadeInfoVO: {
@@ -661,7 +661,7 @@ export default {
     outerRatio() {
       this.$router.push({
         path: "/carContrast",
-        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
+        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ,nametype:"2" }
       });
     },
     //删除
@@ -677,7 +677,7 @@ export default {
     // 影像上传
     outerUpimg() {
       let ImageRequestDTO = {
-        businessNo: this.parameter.businessNo,
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
@@ -693,7 +693,7 @@ export default {
     //资料查看
     outerDataview() {
       let ImageRequestDTO = {
-        businessNo: this.parameter.businessNo,
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
@@ -854,7 +854,7 @@ export default {
     this.setActiveNames();
     this.init();
     this.parameter = this.$route.query;
-    this.state = this.$route.query.state;
+    this.states = this.$route.query.state;
   }
 };
 </script>

@@ -62,7 +62,7 @@
       </el-collapse>
     </el-card>
     <!-- 查询结果 -->
-    <el-card class="circular mt4 shadow" v-if="flag">
+    <el-card class="circular mt4 shadow">
       <el-table
         stripe
         :data="results"
@@ -117,7 +117,6 @@ export default {
         { value: "1_被保险人", label: "1" },
         { value: "2_投保人", label: "2" }
       ],
-      flag:true,
       results:[
         
       ],
@@ -153,6 +152,12 @@ export default {
     //业务号
     BusinessNum(row,state){
       // console.log(row,state);
+      // for(let i=0;i<this.state.length;i++){
+      //     if(state==this.state[i].value){
+      //       state=this.state[i].label
+      //     }
+      // }
+      // console.log(state)
       this.$router.push({path: '/carAuditPageother',query:{row:row.motorcadeNo,state}})
     },
     // 未处理展开关闭状态

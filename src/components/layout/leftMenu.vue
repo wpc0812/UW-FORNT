@@ -3,7 +3,7 @@
     <div class="left-menu" v-show="!isCollapse">
       <el-menu
         class="el-menu-vertical-demo scrollbar text-left left-bar"
-        :unique-opened="false"
+        :unique-opened="true"
         text-color="#4C4C4C"
         :default-active="active"
         background-color="#ffffff"
