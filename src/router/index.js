@@ -11,16 +11,10 @@ Vue.use(Router)
 const router = new Router({
   linkActiveClass:'active',
   routes: [
-    {
-      path: '/login',
-      name: 'Login',
-      component: _import('Login'),
-    },
+   
     {
       path: '/',
-      redirect: {
-        name: '核保处理'
-      },
+      redirect: '/underwriting',
     },
     {
       path: '/layout2',

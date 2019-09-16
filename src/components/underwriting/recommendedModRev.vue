@@ -233,12 +233,12 @@ export default {
       this.recommended.state = this.recommended.businessStates.join(',')
       this.$fetch.post(this.HOST + this.$url.recommendedQury,{...this.recommended,...this.page}).then(data => {
         console.log(data)
-        if(data.incompleteList && data.incompleteList.length > 0) {
+        if( data && data.incompleteList && data.incompleteList.length > 0) {
           this.businessList = data.incompleteList
           this.$set(this.page,'total',data.incompleteTotal)
           this.activeNames.push('1')
         }
-        if(data.completeList && data.completeList.length > 0){
+        if(data && data.completeList && data.completeList.length > 0){
           this.businessListY =  data.completeList
           this.$set(this.page,'total',data.completeTotal)
           this.activeNames.push('2')
