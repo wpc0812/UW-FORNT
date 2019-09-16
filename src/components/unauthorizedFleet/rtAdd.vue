@@ -203,6 +203,7 @@
       :visible.sync="transferDialog"
       width="40%"
       :before-close="handleClose"
+      :lock-scroll="false"
     >
       <div>
         <el-transfer
@@ -254,7 +255,8 @@ export default {
         carmainarea: [],
         finishdate: "",
         costRateUpper: "",
-        underWritingCondition: ""
+        underWritingCondition: "",
+        type:"1"
       },
       relationss: [
         { value: "1_被保险人", label: "1" },
@@ -456,23 +458,9 @@ export default {
           window.open(data);
         });
     },
-    //初始化反向入参
-    init() {
-      let arrs = ["1100", "1200", "1300", "1400", "1500"];
-
-      this.UwMotorcadeMainVO.carCadastral = arrs;
-      this.carCadastralLabel = this.getShowlabel(this.provinceCodes, arrs);
-
-      //      this.UwMotorcadeMainVO.carmainmodel = this.transferItem
-      //      this.carmainmodelLabel = this.getShowlabel(this.transferItems,this.transferItem)
-
-      //      this.UwMotorcadeMainVO.carmainarea = this.transferItem
-      //      this.carmainareaLabel = this.getShowlabel(this.transferItems,this.transferItem)
-    }
   },
 
   created() {
-    this.init();
   }
 };
 </script>

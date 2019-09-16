@@ -110,8 +110,7 @@ export default {
         insuredCode:"",
         insuredName:"",
         motorcadeNo:"",
-        firstSubmitDate:"",
-        tpye:"2,3"
+        type:"2"
       },
       activeNames: ["1"],
       relations:[
@@ -170,7 +169,6 @@ export default {
     let uwMotorcadeMainVO=this.UwMotorcadeMainVO
     this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
     .then(res=>{
-      console.log(res)
       for(let i=0;i<res.length;i++){
         for(let j=0;j<this.state.length;j++){
           if(res[i].state==this.state[j].label)
