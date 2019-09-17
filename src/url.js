@@ -71,7 +71,9 @@ module.exports  = {
     undwrtSubmitReview: '/undwrt/submitReview', // 提交审核
     uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
 
-    userLoginLogout: '/userLogin/logout' // 注销
+    userLoginLogout: '/userLogin/logout' ,// 注销
+    comprehensiveStatisticsCarReportStatistics: '/comprehensiveStatistics/carReportStatistics', // 统计 -单车报备统计查询
+    exportCarReportStatistics:'/export/exportCarReportStatistics',// 统计 -单车报备统计 导出
 
 }
 

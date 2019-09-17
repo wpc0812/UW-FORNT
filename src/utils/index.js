@@ -34,17 +34,7 @@ export default {
            }
        }
    },
-   //校验汇率
-   checkExchRate(string){
-    var strReg = new RegExp(/^(\d|[1-9][0-9]|100|\d\.\d{0,6}|[1-9][0-9]\.\d{0,6})$/)
-    if(string != ''){
-        if(strReg.test(string.toString())){
-            return string
-        } else {
-            return ""
-        }
-    }
-   },
+ 
    // 批改类型集合
    endorTypes:['01','02','08','09','15','16','19','65','60'],
    //付款人类型规则
