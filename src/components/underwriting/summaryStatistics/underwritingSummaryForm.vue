@@ -2,7 +2,79 @@
   <div>
     <!-- 查询条件 -->
     <el-card class="circular">
-      <el-collapse v-model="activeNames">
+      <div slot="header" class="clearfix">
+          <div class="title-blue-bar"></div>
+          <div class="card-title">请输入核保特批业务维护情况统计条件</div>
+          <div class="header-btn" >
+            <el-button size="mini" type="primary" @click="rtReportedchu" >导出</el-button>
+          </div>
+          
+      </div>
+      <el-form  label-width="140px">
+            <el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="起始时间:" class="text-left">
+                    <el-date-picker
+                      value-format="yyyy-MM-dd"
+                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      type="date"
+                      placeholder="选择日期"
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="截止时间:" class="text-left">
+                    <el-date-picker
+                      value-format="yyyy-MM-dd"
+                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      type="date"
+                      placeholder="选择日期"
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="核保状态:" class="text-left">
+                    <el-radio-group v-model="UwMotorcadeMainVO.radio" @change="changeRadioHandler">
+                      <el-radio label="1">按分公司</el-radio>
+                      <el-radio label="2">按核保员</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-form-item label="一级业务类型:" class="text-left">
+                  <el-checkbox-group
+                    v-model="UwMotorcadeMainVO.businessType1"
+                    @change="changecheckbox1"
+                  >
+                    <el-checkbox
+                      v-for="state in status1"
+                      :label="state.code"
+                      :key="state.code"
+                    >{{state.value}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item label="二级业务类型:" class="text-left">
+                  <el-checkbox-group
+                    v-model="UwMotorcadeMainVO.businessType2"
+                    @change="changecheckbox2"
+                  >
+                    <el-checkbox
+                      v-for="state in status2"
+                      :label="state.code"
+                      :key="state.code"
+                    >{{state.value}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-row>
+              
+            </el-row>
+          </el-form>
+
+      <!-- <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title">
             <div class="title-blue-bar"></div>
@@ -76,7 +148,7 @@
             </el-row>
           </el-form>
         </el-collapse-item>
-      </el-collapse>
+      </el-collapse> -->
     </el-card>
   </div>
 </template>
@@ -164,17 +236,11 @@ export default {
 };
 </script>
 <style scoped>
-.el-collapse {
-  border: 0;
-}
-.el-collapse >>> .el-collapse-item__wrap,
-.el-collapse >>> .el-collapse-item__header {
-  border: 0;
-}
 .card-title {
   color: #717385;
   font-size: 15px;
   font-weight: 700;
+  text-align: left
 }
 .el-card >>> .el-card__body {
   padding: 10px 20px;
@@ -185,8 +251,17 @@ export default {
   background-color: #409eff;
   border-radius: 8px;
   margin-right: 10px;
+  float: left
 }
 .circular {
   border-radius: 8px;
+}
+.header-btn{
+  position: absolute;
+  right: 35px;
+  top: 10px;
+}
+.el-card >>> .el-card__header{
+  border: none
 }
 </style>
