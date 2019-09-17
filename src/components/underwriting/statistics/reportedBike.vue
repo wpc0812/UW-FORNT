@@ -277,4 +277,7 @@ export default {
 .circular {
   border-radius: 8px;
 }
+.el-card >>> .el-card__header{
+  border: none
+}
 </style>
