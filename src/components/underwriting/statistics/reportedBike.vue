@@ -3,14 +3,13 @@
     <!-- <LeftMenu/> -->
     <!-- 查询条件 -->
     <el-card class="circular">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item name="1">
-          <template slot="title">
-            <div class="title-blue-bar"></div>
-            <div class="card-title">请输入自动核保统计查询条件</div>
-          </template>
-          <el-form label-width="140px">
-            <el-row>
+
+       <div slot="header" class="clearfix">
+          <div class="title-blue-bar"></div>
+          <div class="card-title">请输入自动核保统计查询条件</div>
+        </div>
+          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
+            <el-row>      
                 <el-col :span="8">
                   <el-form-item label="机构代码:">
                     <el-input v-model="reportedBike.comCode"></el-input>
@@ -46,8 +45,6 @@
             
             </el-row>
           </el-form>
-        </el-collapse-item>
-      </el-collapse>
     </el-card>
     <!-- 查询结果 -->
     <el-card class="circular mt4 shadow" v-if="flag">
@@ -256,12 +253,26 @@ export default {
 .el-card >>> .el-card__body {
   padding: 10px 20px;
 }
+
 .title-blue-bar {
   width: 10px;
   height: 20px;
   background-color: #409eff;
   border-radius: 8px;
   margin-right: 10px;
+  float: left
+}
+.card-title {
+  color: #717385;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left
+}
+.header-btn{
+  padding: 3px 0px;
+  position: absolute;
+  right: 35px;
+  top: 10px;
 }
 .circular {
   border-radius: 8px;

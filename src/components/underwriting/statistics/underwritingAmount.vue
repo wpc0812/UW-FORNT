@@ -14,15 +14,15 @@
               <el-row>
                 <el-col :span="10">
                   <el-form-item label="核保人员:">
-                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.personNo"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
                   <el-form-item label="查询级别:">
-                    <template>
-                      <el-radio v-model="radio" label="1">本级</el-radio>
-                      <el-radio v-model="radio" label="2">下级</el-radio>
-                    </template>
+                    <el-radio-group v-model="UwMotorcadeMainVO.level" >
+                      <el-radio label="1">本级</el-radio>
+                      <el-radio label="2">下级</el-radio>
+                    </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -31,7 +31,7 @@
                   <el-form-item label="起始时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="UwMotorcadeMainVO.startDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -41,7 +41,7 @@
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="UwMotorcadeMainVO.endDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -62,18 +62,18 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
-
+import utils from "../../../utils/index";
 export default {
   name: "rtReported",
-  components: {
-  },
+  components: {},
   data() {
     return {
-      status: [{ code: "1", value: "通过" }, { code: "0", value: "未通过" }],
       radio: "1",
       UwMotorcadeMainVO: {
-        businessStates: []
+        personNo:"",
+        level: "1",
+        startDate:"",
+        endDate:"",
       },
       activeNames: ["1"],
       flag: true,
@@ -88,13 +88,10 @@ export default {
   methods: {
     //导出
     rtReportedchu() {
-      //   let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      //   let _url = this.HOST + this.$url.rtReportedToInsured;
-      /**
-       * params1  url  地址
-       * params  data 参数
-       */
-      //   utils.axiosDown(_url, uwMotorcadeMainVO);
+      let uwMotorcadeMainVO=this.UwMotorcadeMainVO
+      console.log(uwMotorcadeMainVO)
+      let _url = this.HOST + this.$url.underwritingAmountSExport;
+      utils.axiosDown(_url, uwMotorcadeMainVO);
     }
   },
   created() {}

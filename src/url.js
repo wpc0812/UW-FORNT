@@ -70,8 +70,9 @@ module.exports  = {
     autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo', // 批单
     undwrtSubmitReview: '/undwrt/submitReview', // 提交审核
     uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
+    userLoginLogout: '/userLogin/logout', // 注销
 
-    userLoginLogout: '/userLogin/logout' ,// 注销
+
 
 
     comprehensiveStatisticsCarReportStatistics: '/comprehensiveStatistics/carReportStatistics', // 统计 -单车报备统计查询
@@ -95,6 +96,11 @@ module.exports  = {
 
 
 
+    underwritingStatistics:"/comprehensiveStatistics/UnderwritingStatisticsSelect",//核保 统计 核保统计查询
+    underwritingStatisticsResult:"/comprehensiveStatistics/UnderwritingStatisticalResultsSelect",//核保 统计 核保统计 统计结果
+    underwritingStatisticsExport:"/export/UnderwritingStatisticsExport",//核保 统计 核保统计 导出
+    underwritingAmountSExport:"/export/UnderwritingAmountStatisticsExport",//核保 统计 核保量统计 导出
+    underwritingSimpleSelect:"/comprehensiveStatistics/SimpleUnderwritingStatisticsSelect",//核保 统计 简单核保统计 查询
+    underwritingSimpleExport:"/export/SimpleUnderwritingStatisticsExport",//核保 统计 简单核保统计 导出
 
 }
-

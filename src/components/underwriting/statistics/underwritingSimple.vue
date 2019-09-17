@@ -14,15 +14,15 @@
               <el-row>
                 <el-col :span="10">
                   <el-form-item label="核保人员:">
-                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.personNo"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
                   <el-form-item label="查询级别:">
-                    <template>
-                      <el-radio v-model="radio" label="1">本级</el-radio>
-                      <el-radio v-model="radio" label="2">下级</el-radio>
-                    </template>
+                    <el-radio-group v-model="UwMotorcadeMainVO.level">
+                      <el-radio label="1">本级</el-radio>
+                      <el-radio label="2">下级</el-radio>
+                    </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -31,7 +31,7 @@
                   <el-form-item label="起始时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="UwMotorcadeMainVO.startDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -41,7 +41,7 @@
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="UwMotorcadeMainVO.endDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -61,7 +61,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-      <!-- 查询结果 -->
+    <!-- 查询结果 -->
     <el-card class="circular mt4 shadow" v-if="flag">
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
@@ -69,30 +69,40 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">投保单</div>
           </template>
+          <el-row class="text-left">
+            <el-pagination
+              small
+              :current-page.sync="currentPage1"
+              :page-sizes="[20, 40, 80, 160]"
+              :page-size="20"
+              layout="sizes, prev, pager, next"
+              :total="totalnum1"
+            ></el-pagination>
+          </el-row>
           <el-table
             stripe
-            :data="results"
+            :data="results1"
             tooltip-effect="dark"
             :cell-style="{'text-align': 'center'}"
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
-            <el-table-column prop="motorcadeNo" label="业务号">
+            <el-table-column prop="businessNo" label="业务号">
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   size="small"
                   @click="BusinessNum(scope.row,scope.row.state)"
-                >{{scope.row.motorcadeNo}}</el-button>
+                >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
-            <el-table-column prop="comcode" label="分公司"></el-table-column>
-            <el-table-column prop="insuredflag" label="保险期限"></el-table-column>
+            <el-table-column prop="branchOffice" label="分公司"></el-table-column>
+            <el-table-column prop="insurancePeriod" label="保险期限"></el-table-column>
             <el-table-column prop="insuredName" label="被保险人名称"></el-table-column>
-            <el-table-column prop="businessNature" label="初登日期"></el-table-column>
-            <el-table-column prop="lastFourYearPayPercent" width="115" label="核保人员"></el-table-column>
-            <el-table-column prop="finishdate" label="批改类型"></el-table-column>
-            <el-table-column prop="isextendtime" label="核保状态"></el-table-column>
+            <el-table-column prop="initialDate" label="初登日期"></el-table-column>
+            <el-table-column prop="underwriteUser" width="115" label="核保人员"></el-table-column>
+            <el-table-column prop="correctionType" label="批改类型"></el-table-column>
+            <el-table-column prop="underwriteState" label="核保状态"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -104,30 +114,40 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">保单</div>
           </template>
+          <el-row class="text-left">
+            <el-pagination
+              small
+              :current-page.sync="currentPage2"
+              :page-sizes="[20, 40, 80, 160]"
+              :page-size="20"
+              layout="sizes, prev, pager, next"
+              :total="totalnum2"
+            ></el-pagination>
+          </el-row>
           <el-table
             stripe
-            :data="results"
+            :data="results2"
             tooltip-effect="dark"
             :cell-style="{'text-align': 'center'}"
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
-            <el-table-column prop="motorcadeNo" label="业务号">
+            <el-table-column prop="businessNo" label="业务号">
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   size="small"
                   @click="BusinessNum(scope.row,scope.row.state)"
-                >{{scope.row.motorcadeNo}}</el-button>
+                >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
-            <el-table-column prop="comcode" label="分公司"></el-table-column>
-            <el-table-column prop="insuredflag" label="保险期限"></el-table-column>
+            <el-table-column prop="branchOffice" label="分公司"></el-table-column>
+            <el-table-column prop="insurancePeriod" label="保险期限"></el-table-column>
             <el-table-column prop="insuredName" label="被保险人名称"></el-table-column>
-            <el-table-column prop="businessNature" label="初登日期"></el-table-column>
-            <el-table-column prop="lastFourYearPayPercent" width="115" label="核保人员"></el-table-column>
-            <el-table-column prop="finishdate" label="批改类型"></el-table-column>
-            <el-table-column prop="isextendtime" label="核保状态"></el-table-column>
+            <el-table-column prop="initialDate" label="初登日期"></el-table-column>
+            <el-table-column prop="underwriteUser" width="115" label="核保人员"></el-table-column>
+            <el-table-column prop="correctionType" label="批改类型"></el-table-column>
+            <el-table-column prop="underwriteState" label="核保状态"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -139,30 +159,40 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">批单</div>
           </template>
+          <el-row class="text-left">
+            <el-pagination
+              small
+              :current-page.sync="currentPage3"
+              :page-sizes="[20, 40, 80, 160]"
+              :page-size="20"
+              layout="sizes, prev, pager, next"
+              :total="totalnum3"
+            ></el-pagination>
+          </el-row>
           <el-table
             stripe
-            :data="results"
+            :data="results3"
             tooltip-effect="dark"
             :cell-style="{'text-align': 'center'}"
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
-            <el-table-column prop="motorcadeNo" label="业务号">
+            <el-table-column prop="businessNo" label="业务号">
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   size="small"
                   @click="BusinessNum(scope.row,scope.row.state)"
-                >{{scope.row.motorcadeNo}}</el-button>
+                >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
-            <el-table-column prop="comcode" label="分公司"></el-table-column>
-            <el-table-column prop="insuredflag" label="保险期限"></el-table-column>
+            <el-table-column prop="branchOffice" label="分公司"></el-table-column>
+            <el-table-column prop="insurancePeriod" label="保险期限"></el-table-column>
             <el-table-column prop="insuredName" label="被保险人名称"></el-table-column>
-            <el-table-column prop="businessNature" label="初登日期"></el-table-column>
-            <el-table-column prop="lastFourYearPayPercent" width="115" label="核保人员"></el-table-column>
-            <el-table-column prop="finishdate" label="批改类型"></el-table-column>
-            <el-table-column prop="isextendtime" label="核保状态"></el-table-column>
+            <el-table-column prop="initialDate" label="初登日期"></el-table-column>
+            <el-table-column prop="underwriteUser" width="115" label="核保人员"></el-table-column>
+            <el-table-column prop="correctionType" label="批改类型"></el-table-column>
+            <el-table-column prop="underwriteState" label="核保状态"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -171,21 +201,30 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
-
+import utils from "../../../utils/index";
 export default {
   name: "rtReported",
-  components: {
-  },
+  components: {},
   data() {
     return {
+      currentPage1: 1,
+      totalnum1: 10,
+      currentPage2: 1,
+      totalnum2: 10,
+      currentPage3: 1,
+      totalnum3: 10,
       radio: "1",
       UwMotorcadeMainVO: {
-        businessStates: []
+        personNo: "",
+        level: "",
+        startDate: "",
+        endDate: ""
       },
       activeNames: ["1"],
       flag: true,
-      results: []
+      results1: [],
+      results2: [],
+      results3: []
     };
   },
 
@@ -196,19 +235,35 @@ export default {
   methods: {
     //导出
     rtReportedchu() {
-      //   let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      //   let _url = this.HOST + this.$url.rtReportedToInsured;
-      /**
-       * params1  url  地址
-       * params  data 参数
-       */
-      //   utils.axiosDown(_url, uwMotorcadeMainVO);
+      let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
+      console.log(uwMotorcadeMainVO);
+      let _url = this.HOST + this.$url.underwritingSimpleExport;
+      utils.axiosDown(_url, uwMotorcadeMainVO);
     },
     // 查询
-    query() {},
+    query() {
+      let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
+      console.log(uwMotorcadeMainVO);
+      this.$fetch
+        .post(this.HOST + this.$url.underwritingSimpleSelect, uwMotorcadeMainVO)
+        .then(res => {
+          console.log(res);
+          if (res) {
+            this.flag = true;
+            this.results1 = res.proposalList;
+            this.results2 = res.policyList;
+            this.results3 = res.endorsementList;
+            this.totalnum1 = res.proposalTotal;
+            this.totalnum2 = res.policyTotal;
+            this.totalnum3 = res.endorsementTotal;
+          }
+        });
+    },
     BusinessNum(row) {}
   },
-  created() {}
+  created() {
+    this.flag = false;
+  }
 };
 </script>
 <style scoped>
