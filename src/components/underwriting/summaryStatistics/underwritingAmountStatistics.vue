@@ -130,13 +130,8 @@ export default {
 };
 </script>
 <style scoped>
-.el-collapse {
-  border: 0;
-}
-.el-collapse >>> .el-collapse-item__wrap,
-.el-collapse >>> .el-collapse-item__header {
-  border: 0;
-}
+
+
 .card-title {
   color: #717385;
   font-size: 15px;
