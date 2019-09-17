@@ -6,7 +6,7 @@
           <div class="title-blue-bar"></div>
           <div class="card-title">请输入人工核保量汇总统计查询条件</div>
           <div class="header-btn" >
-            <el-button type="text" @click="rtReportedchu" >导出</el-button>
+            <el-button size="mini" type="primary" @click="rtReportedchu" >导出</el-button>
           </div>
           
         </div>
@@ -158,7 +158,6 @@ export default {
   border-radius: 8px;
 }
 .header-btn{
-  padding: 3px 0px;
   position: absolute;
   right: 35px;
   top: 10px;
