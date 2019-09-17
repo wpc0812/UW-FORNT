@@ -133,6 +133,14 @@ export default {
   background-color: #409EFF  !important;
   color: #ffffff;
 }
+.el-submenu  /deep/  .el-submenu__title{
+  height: 45px ;
+  line-height: 45px
+}
+.el-submenu .el-menu-item{
+  height: 35px;
+  line-height: 35px
+}
 </style>
 
 
