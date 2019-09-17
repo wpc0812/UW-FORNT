@@ -6,13 +6,13 @@
         <el-collapse-item name="1">
           <template slot="title">
             <div class="title-blue-bar"></div>
-            <div class="card-title">请输入异地号牌业务统计查询条件</div>
+            <div class="card-title">请输入人工核保量汇总统计查询条件</div>
           </template>
           <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
             <el-row>
-              <el-row>
+                  <el-row>
                 <el-col :span="10">
-                  <el-form-item label="团单号:">
+                  <el-form-item label="核保人员代码:">
                     <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
                   </el-form-item>
                 </el-col>
@@ -53,15 +53,12 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import HeadMenu from "@/components/layout/headMenu";
-import LeftMenu from "@/components/layout/leftMenu";
-import utils from "../../utils/index";
+
 
 export default {
   name: "rtReported",
   components: {
-    LeftMenu,
-    HeadMenu
+
   },
   data() {
     return {

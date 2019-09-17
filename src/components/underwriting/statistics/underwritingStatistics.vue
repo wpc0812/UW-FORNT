@@ -7,14 +7,22 @@
         <el-collapse-item name="1">
           <template slot="title">
             <div class="title-blue-bar"></div>
-            <div class="card-title">请输入自动核保统计查询条件</div>
+            <div class="card-title">请输入核保任务查询条件</div>
           </template>
           <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
             <el-row>
               <el-row>
                 <el-col :span="10">
-                  <el-form-item label="机构代码:">
+                  <el-form-item label="核保人员:">
                     <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="查询级别:">
+                    <template>
+                      <el-radio v-model="radio" label="1">本级</el-radio>
+                      <el-radio v-model="radio" label="2">下级</el-radio>
+                    </template>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -41,10 +49,29 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="12">
+                <el-col :span="10">
+                  <el-form-item label="核保状态:" class="text-left">
+                    <el-checkbox-group
+                      v-model="UwMotorcadeMainVO.businessStates"
+                      @change="changecheckbox"
+                    >
+                      <el-checkbox
+                        v-for="state in status"
+                        :label="state.code"
+                        :key="state.code"
+                      >{{state.value}}</el-checkbox>
+                    </el-checkbox-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
                   <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
+                  <el-button @click="statisticalResults" size="mini" type="primary">统计结果</el-button>
+                </el-col>
+                <el-col :span="8">
                   <el-button @click="query" size="mini" type="primary">查询</el-button>
                 </el-col>
               </el-row>
@@ -78,10 +105,12 @@
                 >{{scope.row.motorcadeNo}}</el-button>
               </template>
             </el-table-column>
+            <el-table-column prop="comcode" label="分公司"></el-table-column>
             <el-table-column prop="insuredflag" label="保险期限"></el-table-column>
             <el-table-column prop="insuredName" label="被保险人名称"></el-table-column>
             <el-table-column prop="businessNature" label="初登日期"></el-table-column>
-            <el-table-column prop="lastFourYearPayPercent" width="115" label="承保险别"></el-table-column>
+            <el-table-column prop="lastFourYearPayPercent" width="115" label="核保人员"></el-table-column>
+            <el-table-column prop="finishdate" label="批改类型"></el-table-column>
             <el-table-column prop="isextendtime" label="核保状态"></el-table-column>
           </el-table>
         </el-collapse-item>
@@ -111,11 +140,73 @@
                 >{{scope.row.motorcadeNo}}</el-button>
               </template>
             </el-table-column>
+            <el-table-column prop="comcode" label="分公司"></el-table-column>
             <el-table-column prop="insuredflag" label="保险期限"></el-table-column>
             <el-table-column prop="insuredName" label="被保险人名称"></el-table-column>
             <el-table-column prop="businessNature" label="初登日期"></el-table-column>
-            <el-table-column prop="lastFourYearPayPercent" width="115" label="承保险别"></el-table-column>
+            <el-table-column prop="lastFourYearPayPercent" width="115" label="核保人员"></el-table-column>
+            <el-table-column prop="finishdate" label="批改类型"></el-table-column>
             <el-table-column prop="isextendtime" label="核保状态"></el-table-column>
+          </el-table>
+        </el-collapse-item>
+      </el-collapse>
+    </el-card>
+    <el-card class="circular mt4 shadow" v-if="flag">
+      <el-collapse v-model="activeNames">
+        <el-collapse-item name="1">
+          <template slot="title">
+            <div class="title-blue-bar"></div>
+            <div class="card-title">批单</div>
+          </template>
+          <el-table
+            stripe
+            :data="results"
+            tooltip-effect="dark"
+            :cell-style="{'text-align': 'center'}"
+            :header-cell-style="{'text-align': 'center'}"
+            :header-cell-class-name="'table-header-bg'"
+          >
+            <el-table-column prop="motorcadeNo" label="业务号">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="BusinessNum(scope.row,scope.row.state)"
+                >{{scope.row.motorcadeNo}}</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column prop="comcode" label="分公司"></el-table-column>
+            <el-table-column prop="insuredflag" label="保险期限"></el-table-column>
+            <el-table-column prop="insuredName" label="被保险人名称"></el-table-column>
+            <el-table-column prop="businessNature" label="初登日期"></el-table-column>
+            <el-table-column prop="lastFourYearPayPercent" width="115" label="核保人员"></el-table-column>
+            <el-table-column prop="finishdate" label="批改类型"></el-table-column>
+            <el-table-column prop="isextendtime" label="核保状态"></el-table-column>
+          </el-table>
+        </el-collapse-item>
+      </el-collapse>
+    </el-card>
+    <el-card class="circular mt4 shadow" v-if="flag">
+      <el-collapse v-model="activeNames">
+        <el-collapse-item name="1">
+          <template slot="title">
+            <div class="title-blue-bar"></div>
+            <div class="card-title">统计结果</div>
+          </template>
+          <el-table
+            stripe
+            :data="results"
+            tooltip-effect="dark"
+            :cell-style="{'text-align': 'center'}"
+            :header-cell-style="{'text-align': 'center'}"
+            :header-cell-class-name="'table-header-bg'"
+          >
+            <el-table-column prop="comcode" label="核保提交数量"></el-table-column>
+            <el-table-column prop="insuredflag" label="人工核保通过数量"></el-table-column>
+            <el-table-column prop="insuredName" label="自动核保通过数量"></el-table-column>
+            <el-table-column prop="businessNature" label="人工核保通过率%"></el-table-column>
+            <el-table-column prop="lastFourYearPayPercent" label="自动核保通过率%"></el-table-column>
+            <el-table-column prop="finishdate" label="总核保通过率%"></el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -124,18 +215,14 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import HeadMenu from "@/components/layout/headMenu";
-import LeftMenu from "@/components/layout/leftMenu";
-import utils from "../../utils/index";
 
 export default {
   name: "rtReported",
   components: {
-    LeftMenu,
-    HeadMenu
   },
   data() {
     return {
+      status: [{ code: "1", value: "通过" }, { code: "0", value: "未通过" }],
       radio: "1",
       UwMotorcadeMainVO: {
         businessStates: []
@@ -151,6 +238,10 @@ export default {
   },
 
   methods: {
+    //多选框
+    changecheckbox() {
+      console.log(this.UwMotorcadeMainVO.businessStates);
+    },
     //导出
     rtReportedchu() {
       //   let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
@@ -163,6 +254,8 @@ export default {
     },
     // 查询
     query() {},
+    //统计结果
+    statisticalResults() {},
     BusinessNum(row) {}
   },
   created() {}

@@ -205,7 +205,7 @@ const router = new Router({
         {
           path: '/underwritingStatistics',
           name: '核保统计',
-          component: _import('underwriting/underwritingStatistics'),
+          component: _import('underwriting/statistics/underwritingStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -215,7 +215,7 @@ const router = new Router({
         {
           path: '/underwritingAmount',
           name: '核保量统计',
-          component: _import('underwriting/underwritingAmount'),
+          component: _import('underwriting/statistics/underwritingAmount'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -225,7 +225,7 @@ const router = new Router({
         {
           path: '/underwritingSimple',
           name: '简单核保统计',
-          component: _import('underwriting/underwritingSimple'),
+          component: _import('underwriting/statistics/underwritingSimple'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -235,7 +235,7 @@ const router = new Router({
         {
           path: '/reportedBike',
           name: '单车报备统计',
-          component: _import('underwriting/reportedBike'),
+          component: _import('underwriting/statistics/reportedBike'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -245,7 +245,7 @@ const router = new Router({
         {
           path: '/underwritingAmountStatistics',
           name: '人工核保量汇总统计',
-          component: _import('underwriting/underwritingAmountStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingAmountStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -255,7 +255,7 @@ const router = new Router({
         {
           path: '/underwritingMonthlyStatistics',
           name: '人工核保业务量月统计',
-          component: _import('underwriting/underwritingMonthlyStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingMonthlyStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -265,7 +265,7 @@ const router = new Router({
         {
           path: '/underwritingGroupStatistics',
           name: '团单信息维护统计',
-          component: _import('underwriting/underwritingGroupStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingGroupStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -275,7 +275,7 @@ const router = new Router({
         {
           path: '/underwritingDifferentStatistics',
           name: '异地号牌业务统计',
-          component: _import('underwriting/underwritingDifferentStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingDifferentStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -285,7 +285,7 @@ const router = new Router({
         {
           path: '/underwritingRenewalStatistics',
           name: '续保报备业务统计',
-          component: _import('underwriting/underwritingRenewalStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingRenewalStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -295,7 +295,7 @@ const router = new Router({
         {
           path: '/underwritingConfigurationStatistics',
           name: '人工审批配置统计',
-          component: _import('underwriting/underwritingConfigurationStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingConfigurationStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -305,7 +305,7 @@ const router = new Router({
         {
           path: '/underwritingSpecialMaintenanceStatistics',
           name: '特批业务维护统计',
-          component: _import('underwriting/underwritingSpecialMaintenanceStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingSpecialMaintenanceStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -315,7 +315,7 @@ const router = new Router({
         {
           path: '/underwritingSummaryForm',
           name: '业务量汇总统计报表',
-          component: _import('underwriting/underwritingSummaryForm'),
+          component: _import('underwriting/summaryStatistics/underwritingSummaryForm'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -325,7 +325,7 @@ const router = new Router({
         {
           path: '/underwritingReturnStatistics',
           name: '人工退回业务统计',
-          component: _import('underwriting/underwritingReturnStatistics'),
+          component: _import('underwriting/summaryStatistics/underwritingReturnStatistics'),
           hidden: true,
           meta: {
             requireAuth: true,

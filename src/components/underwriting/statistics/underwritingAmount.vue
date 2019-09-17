@@ -1,19 +1,28 @@
 <template>
   <div>
+    <!-- <LeftMenu/> -->
     <!-- 查询条件 -->
     <el-card class="circular">
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title">
             <div class="title-blue-bar"></div>
-            <div class="card-title">请输入人工核保量汇总统计查询条件</div>
+            <div class="card-title">请输入核保任务查询条件</div>
           </template>
           <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
             <el-row>
-                  <el-row>
+              <el-row>
                 <el-col :span="10">
-                  <el-form-item label="核保人员代码:">
+                  <el-form-item label="核保人员:">
                     <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="查询级别:">
+                    <template>
+                      <el-radio v-model="radio" label="1">本级</el-radio>
+                      <el-radio v-model="radio" label="2">下级</el-radio>
+                    </template>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -53,18 +62,15 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import HeadMenu from "@/components/layout/headMenu";
-import LeftMenu from "@/components/layout/leftMenu";
-import utils from "../../utils/index";
+
 
 export default {
   name: "rtReported",
   components: {
-    LeftMenu,
-    HeadMenu
   },
   data() {
     return {
+      status: [{ code: "1", value: "通过" }, { code: "0", value: "未通过" }],
       radio: "1",
       UwMotorcadeMainVO: {
         businessStates: []
@@ -89,7 +95,7 @@ export default {
        * params  data 参数
        */
       //   utils.axiosDown(_url, uwMotorcadeMainVO);
-    },
+    }
   },
   created() {}
 };
