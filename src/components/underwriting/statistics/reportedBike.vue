@@ -11,15 +11,12 @@
           </template>
           <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
             <el-row>
-              <el-row>
-                <el-col :span="10">
+                <el-col :span="8">
                   <el-form-item label="机构代码:">
                     <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="10">
+                <el-col :span="8">
                   <el-form-item label="起始时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
@@ -29,7 +26,7 @@
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10">
+                <el-col :span="8">
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
@@ -39,7 +36,6 @@
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
-              </el-row>
               <el-row>
                 <el-col :span="12">
                   <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
