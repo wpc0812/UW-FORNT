@@ -6,21 +6,21 @@
           <div class="title-blue-bar"></div>
           <div class="card-title">请输入人工核保量汇总统计查询条件</div>
           <div class="header-btn" >
-            <el-button  size="mini" type="primary" @click="rtReportedchu" >导出</el-button>
+            <el-button  size="mini" type="primary" @click="exportFile" >导出</el-button>
           </div>
         </div>
-          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
+          <el-form ref="form" :model="returnStatistics" label-width="140px">
                   <el-row>
                 <el-col :span="8">
                   <el-form-item label="核保人员代码:">
-                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
+                    <el-input v-model="returnStatistics.personNo"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="起始时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="returnStatistics.startDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -30,7 +30,7 @@
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="returnStatistics.endDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -43,6 +43,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import utils from '../../../utils'
 
 
 export default {
@@ -52,13 +53,7 @@ export default {
   },
   data() {
     return {
-      radio: "1",
-      UwMotorcadeMainVO: {
-        businessStates: []
-      },
-      activeNames: ["1"],
-      flag: true,
-      results: []
+     returnStatistics:{}
     };
   },
 
@@ -68,15 +63,10 @@ export default {
 
   methods: {
     //导出
-    rtReportedchu() {
-      //   let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      //   let _url = this.HOST + this.$url.rtReportedToInsured;
-      /**
-       * params1  url  地址
-       * params  data 参数
-       */
-      //   utils.axiosDown(_url, uwMotorcadeMainVO);
-    },
+    exportFile() {
+      let url = this.HOST + this.$url.exportArtificialReturn
+      utils.axiosDown(url,this.returnStatistics)
+    }
   },
   created() {}
 };

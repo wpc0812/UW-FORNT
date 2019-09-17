@@ -6,7 +6,7 @@
           <div class="title-blue-bar"></div>
           <div class="card-title">请输入核保特批业务维护情况统计条件</div>
           <div class="header-btn" >
-            <el-button size="mini" type="primary" @click="rtReportedchu" >导出</el-button>
+            <el-button size="mini" type="primary" @click="exportFile" >导出</el-button>
           </div>
           
       </div>
@@ -17,7 +17,7 @@
                   <el-form-item label="起始时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="summaryForm.startDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -27,7 +27,7 @@
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="summaryForm.endDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -35,7 +35,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="核保状态:" class="text-left">
-                    <el-radio-group v-model="UwMotorcadeMainVO.radio" @change="changeRadioHandler">
+                    <el-radio-group v-model="summaryForm.state" @change="changeRadioHandler">
                       <el-radio label="1">按分公司</el-radio>
                       <el-radio label="2">按核保员</el-radio>
                     </el-radio-group>
@@ -45,8 +45,7 @@
               <el-row>
                 <el-form-item label="一级业务类型:" class="text-left">
                   <el-checkbox-group
-                    v-model="UwMotorcadeMainVO.businessType1"
-                    @change="changecheckbox1"
+                    v-model="summaryForm.levelOneBusinessType"
                   >
                     <el-checkbox
                       v-for="state in status1"
@@ -59,8 +58,7 @@
               <el-row>
                 <el-form-item label="二级业务类型:" class="text-left">
                   <el-checkbox-group
-                    v-model="UwMotorcadeMainVO.businessType2"
-                    @change="changecheckbox2"
+                    v-model="summaryForm.levelTwoBusinessType"
                   >
                     <el-checkbox
                       v-for="state in status2"
@@ -74,86 +72,12 @@
             </el-row>
           </el-form>
 
-      <!-- <el-collapse v-model="activeNames">
-        <el-collapse-item name="1">
-          <template slot="title">
-            <div class="title-blue-bar"></div>
-            <div class="card-title">请输入核保全业务汇总统计查询条件</div>
-          </template>
-          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
-            <el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label="起始时间:" class="text-left">
-                    <el-date-picker
-                      value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
-                      type="date"
-                      placeholder="选择日期"
-                    ></el-date-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="截止时间:" class="text-left">
-                    <el-date-picker
-                      value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
-                      type="date"
-                      placeholder="选择日期"
-                    ></el-date-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="核保状态:" class="text-left">
-                    <el-radio-group v-model="UwMotorcadeMainVO.radio" @change="changeRadioHandler">
-                      <el-radio label="1">按分公司</el-radio>
-                      <el-radio label="2">按核保员</el-radio>
-                    </el-radio-group>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-form-item label="一级业务类型:" class="text-left">
-                  <el-checkbox-group
-                    v-model="UwMotorcadeMainVO.businessType1"
-                    @change="changecheckbox1"
-                  >
-                    <el-checkbox
-                      v-for="state in status1"
-                      :label="state.code"
-                      :key="state.code"
-                    >{{state.value}}</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </el-row>
-              <el-row>
-                <el-form-item label="二级业务类型:" class="text-left">
-                  <el-checkbox-group
-                    v-model="UwMotorcadeMainVO.businessType2"
-                    @change="changecheckbox2"
-                  >
-                    <el-checkbox
-                      v-for="state in status2"
-                      :label="state.code"
-                      :key="state.code"
-                    >{{state.value}}</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
-                </el-col>
-              </el-row>
-            </el-row>
-          </el-form>
-        </el-collapse-item>
-      </el-collapse> -->
     </el-card>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import utils from '../../../utils'
 
 
 export default {
@@ -187,15 +111,13 @@ export default {
         { code: "4", value: "货车类中非营业货车" },
         { code: "5", value: "货车类中挂车" }
       ],
-      UwMotorcadeMainVO: {
-        radio: "1",
+      summaryForm: {
+        state: "1",
         businessStates: [],
-        businessType1: [],
-        businessType2: [],
+        levelOneBusinessType: [],
+        levelTwoBusinessType: [],
       },
-      activeNames: ["1"],
-      flag: true,
-      results: []
+      
     };
   },
 
@@ -204,33 +126,20 @@ export default {
   },
 
   methods: {
-    //导出
-    rtReportedchu() {
-      //   let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      //   let _url = this.HOST + this.$url.rtReportedToInsured;
-      /**
-       * params1  url  地址
-       * params  data 参数
-       */
-      //   utils.axiosDown(_url, uwMotorcadeMainVO);
+    exportFile() {
+      let url = this.HOST + this.$url.exportSpeciallyApprovedMaintain
+      utils.axiosDown(url,this.summaryForm)
     },
     // 单选框改变
     changeRadioHandler(){
-        console.log(this.UwMotorcadeMainVO.radio,typeof this.UwMotorcadeMainVO.radio)
-        if(this.UwMotorcadeMainVO.radio==1){
+        console.log(this.summaryForm.state,typeof this.summaryForm.state)
+        if(this.summaryForm.state == 1){
             this.status1.push({ code: "12", value: "续保报备"})
-        }else if(this.UwMotorcadeMainVO.radio==2){
+        }else if(this.summaryForm.state == 2){
            this.status1.pop({ code: "12", value: "续保报备"})
         }
     },
-    //一级业务
-    changecheckbox1() {
-      console.log(this.UwMotorcadeMainVO.businessType1);
-    },
-    // 二级业务
-    changecheckbox2() {
-      console.log(this.UwMotorcadeMainVO.businessType2);
-    }
+   
   },
   created() {}
 };

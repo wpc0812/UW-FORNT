@@ -72,8 +72,29 @@ module.exports  = {
     uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
 
     userLoginLogout: '/userLogin/logout' ,// 注销
+
+
     comprehensiveStatisticsCarReportStatistics: '/comprehensiveStatistics/carReportStatistics', // 统计 -单车报备统计查询
     exportCarReportStatistics:'/export/exportCarReportStatistics',// 统计 -单车报备统计 导出
+    exportArtificialUnderwriteAggregate: '/export/exportArtificialUnderwriteAggregate' , //汇总统计 --人工核保量汇总统计
+    exportArtificialUnderwriteTraffic: '/export/exportArtificialUnderwriteTraffic' , //汇总统计 --人工核保业务量月统计导出
+
+    exportBatchMaintain: '/export/exportBatchMaintain' , //汇总统计 --团单信息维护统计导出
+    exportDifferentPlacesNumberPlate: '/export/exportDifferentPlacesNumberPlate' , //汇总统计 --异地号牌业务统计
+    exportRenewalReport: '/export/exportRenewalReport' , //汇总统计 --续保报备业务统计
+    exportArtificialApprovalConfigure: '/export/exportArtificialApprovalConfigure' , //汇总统计 --人工审批配置统计
+
+    exportSpeciallyApprovedMaintain: '/export/exportSpeciallyApprovedMaintain' , //汇总统计 --特批业务维护统计
+    exportTrafficVolumeReportForm: '/export/exportTrafficVolumeReportForm' , //汇总统计 --业务量汇总统计报表
+    exportArtificialReturn: '/export/exportArtificialReturn' , //汇总统计 --人工退回业务统计
+
+
+    exportRuleImplementStatistics: '/export/exportRuleImplementStatistics' , // 综合统计---规则执行统计
+    exportUnderwriteRate: '/export/exportUnderwriteRate' , // 综合统计---核保率统计导出
+    exportDistributionMonitoringStatistics: '/export/exportDistributionMonitoringStatistics' , // 综合统计---分发监控统计导出
+
+
+
 
 }
 

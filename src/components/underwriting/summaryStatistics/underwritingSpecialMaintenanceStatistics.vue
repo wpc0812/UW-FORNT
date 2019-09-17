@@ -6,16 +6,16 @@
           <div class="title-blue-bar"></div>
           <div class="card-title">请输入核保特批业务维护情况统计条件</div>
           <div class="header-btn" >
-            <el-button size="mini" type="primary" @click="rtReportedchu" >导出</el-button>
+            <el-button size="mini" type="primary" @click="exportFile" >导出</el-button>
           </div>
           
         </div>
-        <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
+        <el-form  label-width="140px">
             <el-row>
                   
                 <el-col :span="8">
                   <el-form-item label="配置人员:">
-                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
+                    <el-input v-model="specialNaintenance.configurator"></el-input>
                   </el-form-item>
                 </el-col>
               
@@ -23,7 +23,7 @@
                   <el-form-item label="起始时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="specialNaintenance.startDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -33,7 +33,7 @@
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
+                      v-model="specialNaintenance.endDate"
                       type="date"
                       placeholder="选择日期"
                     ></el-date-picker>
@@ -43,57 +43,13 @@
             </el-row>
           </el-form>
 
-      <!-- <el-collapse v-model="activeNames">
-        <el-collapse-item name="1">
-          <template slot="title">
-            <div class="title-blue-bar"></div>
-            <div class="card-title">请输入核保特批业务维护情况统计条件</div>
-          </template>
-          <el-form ref="form" :model="UwMotorcadeMainVO" label-width="140px">
-            <el-row>
-                  <el-row>
-                <el-col :span="10">
-                  <el-form-item label="配置人员:">
-                    <el-input v-model="UwMotorcadeMainVO.insuredCode"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="10">
-                  <el-form-item label="起始时间:" class="text-left">
-                    <el-date-picker
-                      value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
-                      type="date"
-                      placeholder="选择日期"
-                    ></el-date-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="10">
-                  <el-form-item label="截止时间:" class="text-left">
-                    <el-date-picker
-                      value-format="yyyy-MM-dd"
-                      v-model="UwMotorcadeMainVO.firstSubmitDate"
-                      type="date"
-                      placeholder="选择日期"
-                    ></el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
-                </el-col>
-              </el-row>
-            </el-row>
-          </el-form>
-        </el-collapse-item>
-      </el-collapse> -->
+
     </el-card>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import utils from '../../../utils'
 
 
 export default {
@@ -103,31 +59,20 @@ export default {
   },
   data() {
     return {
-      radio: "1",
-      UwMotorcadeMainVO: {
-        businessStates: []
-      },
-      activeNames: ["1"],
-      flag: true,
-      results: []
+      specialNaintenance:{}
     };
   },
 
   computed: {
-    ...mapGetters(["getList"])
+   
   },
 
   methods: {
-    //导出
-    rtReportedchu() {
-      //   let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      //   let _url = this.HOST + this.$url.rtReportedToInsured;
-      /**
-       * params1  url  地址
-       * params  data 参数
-       */
-      //   utils.axiosDown(_url, uwMotorcadeMainVO);
-    },
+   // 导出
+    exportFile() {
+      let url = this.HOST + this.$url.exportSpeciallyApprovedMaintain
+      utils.axiosDown(url,this.specialNaintenance)
+    }
   },
   created() {}
 };

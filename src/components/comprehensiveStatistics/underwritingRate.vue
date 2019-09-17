@@ -34,7 +34,7 @@
               </el-row>
               <el-col :span="24" class="text-center">
                 <el-button @click="query" type="primary">查询</el-button>
-                <el-button @click="querychu">导出</el-button>
+                <el-button @click="exportFile">导出</el-button>
               </el-col>
             </el-row>
           </el-form>
@@ -67,6 +67,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import utils from '../../utils'
 
 export default {
   name: "underwritingRate",
@@ -98,14 +99,10 @@ export default {
           this.results=res
         });
     },
-     querychu() {
-      //  this.$fetch
-      //   .post(this.HOST + this.$url.underwritingRateStatistics, this.underwritingRate)
-      //   .then(res => {
-      //     console.log(res);
-
-      //     this.results=res
-      //   });
+    // 导出 
+    exportFile() {
+      let url = this.HOST + this.$url.exportUnderwriteRate
+      utils.axiosDown(url,this.underwritingRate)
     },
 
     // 未处理展开关闭状态

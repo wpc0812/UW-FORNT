@@ -34,7 +34,7 @@
               </el-row>
               <el-col :span="24" class="text-center">
                 <el-button @click="query" type="primary">查询</el-button>
-                <el-button @click="queryfen">导出分发按钮点击情况</el-button>
+                <el-button @click="exportFile">导出分发按钮点击情况</el-button>
               </el-col>
             </el-row>
           </el-form>
@@ -91,6 +91,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import utils from '../../utils'
 
 export default {
   name: "distributedMonitoring",
@@ -127,8 +128,9 @@ export default {
 
     },
     //导出分发按钮点击情况
-    queryfen(){
-
+    exportFile(){
+      let url = this.HOST + this.$url.exportDistributionMonitoringStatistics
+      utils.axiosDown(url,this.distributedMonitoring)
     },
     // 未处理展开关闭状态
     untreated(val) {
