@@ -3,22 +3,22 @@
     <!-- 超权限详情 -->
     <el-card class="circular">
       <el-row class="pt10">
-        <el-col :span="3" v-if="states=='已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='4'">
           <el-button class="btn" type="primary" @click="outerBranch" size="mini">生效办结</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='已办结'">
+        <el-col :span="3" v-if="states=='5'">
           <el-button class="btn" type="primary" @click="outerRenewal" size="mini">续保</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='已打回 '||'已审核通过（总部下发）'||'已办结'">
+        <el-col :span="3" v-if="states=='2 '||states=='4'||states=='5'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
         <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2 '||states=='4'">
           <el-button class="btn" type="primary" @click="outerDelete" size="mini">删除</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2 '||states=='4'">
           <el-button class="btn" type="primary" @click="outerUpimg" size="mini">影像上传</el-button>
         </el-col>
         <el-col :span="3">
@@ -32,7 +32,7 @@
         </el-col>
       </el-row>
       <hr />
-      <el-collapse v-model="activeNames" v-if="states=='待审核（已录入车辆）'">
+      <el-collapse v-model="activeNames" v-if="states=='1'">
         <el-collapse-item name="1" class="el_collapse_padding">
           <template slot="title">
             <div class="title-blue-bar"></div>
@@ -209,7 +209,7 @@
                 >{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="states=='初始化（未录入车辆）'||'已办结'">
+            <el-row v-if="states=='0'||states=='5'">
               <el-col :span="10">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
@@ -242,7 +242,7 @@
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
-            <el-row v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已办结'||'已审核通过（总部下发）'">
+            <el-row v-if="states=='0'||states=='1'||states=='2 '||states=='5'||states=='4'">
               <el-col :span="10">
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
@@ -645,7 +645,10 @@ export default {
           } else {
             this.$router.push({
               path: "/torenewal",
-              query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ,nametype:"2"}
+              query: {
+                motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+                nametype: "2"
+              }
             });
           }
         });
@@ -654,14 +657,20 @@ export default {
     outerUpdate() {
       this.$router.push({
         path: "/topupdate",
-        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,nametype:"2" }
+        query: {
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+          nametype: "2"
+        }
       });
     },
     //对比
     outerRatio() {
       this.$router.push({
         path: "/carContrast",
-        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ,nametype:"2" }
+        query: {
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+          nametype: "2"
+        }
       });
     },
     //删除
@@ -840,12 +849,18 @@ export default {
       let label = [];
       for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < options.length; j++) {
-          // console.log(items[i].value,options[j])
           if (items[i].value === options[j]) {
-            label.push(items[i].label);
+            if (/^[A-Z]/.test(tems[i].value)) {
+              label.push(items[i].value.substring(5, items[i].value.length));
+            } else if (/\d$/.test(tems[i].value)) {
+              label.push(
+                items[i].value.substring(0, items[i].value.length - 8)
+              );
+            }
           }
         }
       }
+      console.log(label)
       return utils.arrayToString(label);
     }
   },
@@ -927,5 +942,8 @@ export default {
 }
 .tanchuang >>> .el-dialog__footer {
   text-align: center;
+}
+.updatastyleinput >>> .el-input.is-disabled .el-input__inner{
+  background-color: #ffffff;
 }
 </style>

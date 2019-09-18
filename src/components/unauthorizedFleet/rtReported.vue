@@ -74,8 +74,12 @@
         <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="state" label="流转状态"></el-table-column>
         <el-table-column prop="motorcadeNo" label="业务号">
-          <template slot-scope="scope"> 
-            <el-button type="text" size="small" @click="BusinessNum(scope.row,scope.row.state)">{{scope.row.motorcadeNo}}</el-button>
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              size="small"
+              @click="BusinessNum(scope.row,scope.row.state)"
+            >{{scope.row.motorcadeNo}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="comcode" label="分公司"></el-table-column>
@@ -96,26 +100,35 @@
 import { mapActions, mapGetters } from "vuex";
 import HeadMenu from "@/components/layout/headMenu";
 import LeftMenu from "@/components/layout/leftMenu";
-import utils from '../../utils/index'
+import utils from "../../utils/index";
 
 export default {
   name: "rtReported",
-  components:{
-     LeftMenu, HeadMenu 
+  components: {
+    LeftMenu,
+    HeadMenu
   },
   data() {
     return {
-      state:[{label:"0",value:"初始化（未录入车辆）"},{label:"1",value:"待审核（已录入车辆）"},{label:"2",value:"已打回"},{label:"3",value:"审核中（已提交总部）"},{label:"4",value:"已审核通过（总部下发）"},{label:"5",value:"已办结"},{label:"6",value:"已注销"}],
-      UwMotorcadeMainVO:{
-       type:"1"
+      state: [
+        { label: "0", value: "初始化（未录入车辆）" },
+        { label: "1", value: "待审核（已录入车辆）" },
+        { label: "2", value: "已打回" },
+        { label: "3", value: "审核中（已提交总部）" },
+        { label: "4", value: "已审核通过（总部下发）" },
+        { label: "5", value: "已办结" },
+        { label: "6", value: "已注销" }
+      ],
+      UwMotorcadeMainVO: {
+        type: "1"
       },
-       relations:[
+      relations: [
         { value: "1_被保险人", label: "1" },
         { value: "2_投保人", label: "2" }
       ],
       activeNames: ["1"],
-      flag:true,
-      results:[],
+      flag: true,
+      results: []
     };
   },
 
@@ -127,27 +140,34 @@ export default {
     // ...mapActions(["getUwMotorcadeMainVO"]),
     //导出
     rtReportedchu() {
-     let uwMotorcadeMainVO = this.UwMotorcadeMainVO 
-    
-    let _url = this.HOST + this.$url.rtReportedToInsured
-    /**
-     * params1  url  地址
-     * params  data 参数
-     */
-      utils.axiosDown(_url,uwMotorcadeMainVO)
-      
+      let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
+
+      let _url = this.HOST + this.$url.rtReportedToInsured;
+      /**
+       * params1  url  地址
+       * params  data 参数
+       */
+      utils.axiosDown(_url, uwMotorcadeMainVO);
     },
-     // 查询列表
+    // 查询列表
     query() {
-      this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
-      .then(res=>{
-        this.results = res
-      })
-      
+      this.$fetch
+        .post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
+        .then(res => {
+          this.results = res;
+        });
     },
 
-    BusinessNum(row,state){
-      this.$router.push({path: '/carAuditPage',query:{ row:row.motorcadeNo,state}})
+    BusinessNum(row, state) {
+      for (let i = 0; i < this.state.length; i++) {
+        if (state == this.state[i].value) {
+          state = this.state[i].label;
+        }
+      }
+      this.$router.push({
+        path: "/carAuditPage",
+        query: { row: row.motorcadeNo, state }
+      });
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -160,17 +180,18 @@ export default {
     }
   },
   created() {
-      let uwMotorcadeMainVO=this.UwMotorcadeMainVO
-    this.$fetch.post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
-    .then(res=>{
-      for(let i=0;i<res.length;i++){
-        for(let j=0;j<this.state.length;j++){
-          if(res[i].state==this.state[j].label)
-          res[i].state=this.state[j].value
+    let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
+    this.$fetch
+      .post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
+      .then(res => {
+        for (let i = 0; i < res.length; i++) {
+          for (let j = 0; j < this.state.length; j++) {
+            if (res[i].state == this.state[j].label)
+              res[i].state = this.state[j].value;
+          }
         }
-      }
-      this.results=res
-    })
+        this.results = res;
+      });
   }
 };
 </script>
@@ -178,7 +199,8 @@ export default {
 .el-collapse {
   border: 0;
 }
-.el-collapse >>> .el-collapse-item__wrap, .el-collapse >>> .el-collapse-item__header {
+.el-collapse >>> .el-collapse-item__wrap,
+.el-collapse >>> .el-collapse-item__header {
   border: 0;
 }
 .card-title {

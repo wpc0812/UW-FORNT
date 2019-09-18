@@ -3,22 +3,22 @@
     <!-- 超权限详情 -->
     <el-card class="circular">
       <el-row class="pt10">
-        <el-col :span="3" v-if="states=='已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='4'">
           <el-button class="btn" type="primary" @click="outerBranch" size="mini">生效办结</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='已办结'">
+        <el-col :span="3" v-if="states=='5'">
           <el-button class="btn" type="primary" @click="outerRenewal" size="mini">续保</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='已打回 '||'已审核通过（总部下发）'||'已办结'">
+        <el-col :span="3" v-if="states=='2 '||states=='4'||states=='5'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
         <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2 '||states=='4'">
           <el-button class="btn" type="primary" @click="outerDelete" size="mini">删除</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已审核通过（总部下发）'">
+        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2 '||states=='4'">
           <el-button class="btn" type="primary" @click="outerUpimg" size="mini">影像上传</el-button>
         </el-col>
         <el-col :span="3">
@@ -32,7 +32,7 @@
         </el-col>
       </el-row>
       <hr />
-      <el-collapse v-model="activeNames" v-if="states=='待审核（已录入车辆）'">
+      <el-collapse v-model="activeNames" v-if="states=='1'">
         <el-collapse-item name="1" class="el_collapse_padding">
           <template slot="title">
             <div class="title-blue-bar"></div>
@@ -104,11 +104,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="历史年度满期赔付率(%):">
-                  <el-button
-                    @click="selectHistory"
-                    size="small"
-                    text="primary"
-                  >查询</el-button>
+                  <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -148,7 +144,7 @@
               <el-col :span="8">
                 <el-form-item label="车辆主要使用地:" class="labelheight1">
                   <el-input v-model="UwMotorcadeInfoVO.carmainarea" :disabled="flagdisabled"></el-input>
-                   <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
+                  <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -213,7 +209,7 @@
                 >{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="states=='初始化（未录入车辆）'||'已办结'">
+            <el-row v-if="states=='0'||states=='5'">
               <el-col :span="10">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
@@ -246,8 +242,8 @@
                 <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
-            <el-row v-if="states=='初始化（未录入车辆）'||'待审核（已录入车辆）'||'已打回 '||'已办结'||'已审核通过（总部下发）'">
-              <el-col :span="10" >
+            <el-row v-if="states=='0'|| states== '1'|| states=='2 '|| states=='5'|| states=='4'">
+              <el-col :span="10">
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">
@@ -401,11 +397,12 @@
       >关闭当前窗口</el-button>
     </el-dialog>
     <el-dialog
-    :lock-scroll="false"
+      :lock-scroll="false"
       title="展示"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%">
+      width="15%"
+    >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
@@ -423,7 +420,7 @@ export default {
   name: "carAuditPage",
   data() {
     return {
-      dialogVisibleMore:false,
+      dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
       httphref: "../../../../#/static/LicensenoAddModel.zip",
@@ -451,12 +448,11 @@ export default {
         underWritingCondition: "",
         remark: "",
         finishdate: "",
-        carCadastraldata:[],
-        carmainmodeldata:[],
-        carmainareadata:[],
-        
+        carCadastraldata: [],
+        carmainmodeldata: [],
+        carmainareadata: []
       },
-      arrays:[],
+      arrays: [],
       carTypeCodes,
       provinceCodes,
       categoryss: [
@@ -495,11 +491,11 @@ export default {
       formDataAdd: {},
       formDataUP: {},
       messages: "",
-       allData:{
-        carCadastral:[],
-        carmainmodel:[],
-        carmainarea:[]
-      },
+      allData: {
+        carCadastral: [],
+        carmainmodel: [],
+        carmainarea: []
+      }
     };
   },
   computed: {},
@@ -649,7 +645,10 @@ export default {
           } else {
             this.$router.push({
               path: "/torenewal",
-              query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo, nametype:"1"}
+              query: {
+                motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+                nametype: "1"
+              }
             });
           }
         });
@@ -658,14 +657,20 @@ export default {
     outerUpdate() {
       this.$router.push({
         path: "/topupdate",
-        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ,nametype:"1" }
+        query: {
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+          nametype: "1"
+        }
       });
     },
     //对比
     outerRatio() {
       this.$router.push({
         path: "/carContrast",
-        query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,nametype:"1" }
+        query: {
+          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+          nametype: "1"
+        }
       });
     },
     //删除
@@ -681,11 +686,11 @@ export default {
     // 影像上传
     outerUpimg() {
       let ImageRequestDTO = {
-        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ||"YD450000005",
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo || "YD450000005",
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode ||"45000000"
+        comCode: this.UwMotorcadeInfoVO.comcode || "45000000"
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
@@ -697,11 +702,11 @@ export default {
     //资料查看
     outerDataview() {
       let ImageRequestDTO = {
-        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo ||"YD450000005",
+        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo || "YD450000005",
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode ||"45000000"
+        comCode: this.UwMotorcadeInfoVO.comcode || "45000000"
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageQueryECMs, ImageRequestDTO)
@@ -766,50 +771,64 @@ export default {
     addBeforeRemove(file, fileList) {},
     //弹框展示
     getShowlabels(items, options) {
-    let label = [];
-    for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < options.length; j++) {
-        // console.log(items[i].value,options[j])
-        if (items[i].value === options[j]) {
-          label.push(items[i].label);
+      let label = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = 0; j < options.length; j++) {
+          // console.log(items[i].value,options[j])
+          if (items[i].value === options[j]) {
+            label.push(items[i].label);
+          }
         }
       }
-    }
-    return label;
+      return label;
     },
     //input展示
     getShowlabel(items, options) {
-    let label = [];
-    for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < options.length; j++) {
-        // console.log(items[i].value,options[j])
-        if (items[i].value === options[j]) {
-          label.push(items[i].label);
+      let label = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = 0; j < options.length; j++) {
+          if (items[i].value === options[j]) {
+            if (/^[A-Z]/.test(tems[i].value)) {
+              label.push(items[i].value.substring(5, items[i].value.length));
+            } else if (/\d$/.test(tems[i].value)) {
+              label.push(
+                items[i].value.substring(0, items[i].value.length - 8)
+              );
+            }
+          }
         }
       }
-    }
-    return utils.arrayToString(label);
+      console.log(label);
+      return utils.arrayToString(label);
     },
     //点击查看
-    showCarSpecies(items,types) {
-      
+    showCarSpecies(items, types) {
       switch (types) {
         case "carCadastral":
-          this.carCadastraldata=this.getShowlabels(this.carTypeCodes,this.allData.carCadastral)
-          this.arrays=this.carCadastraldata
+          this.carCadastraldata = this.getShowlabels(
+            this.carTypeCodes,
+            this.allData.carCadastral
+          );
+          this.arrays = this.carCadastraldata;
           break;
         case "carmainmodel":
-          this.carmainmodeldata=this.getShowlabels(this.carTypeCodes,this.allData.carmainmodel)
-          this.arrays=this.carmainmodeldata
+          this.carmainmodeldata = this.getShowlabels(
+            this.carTypeCodes,
+            this.allData.carmainmodel
+          );
+          this.arrays = this.carmainmodeldata;
           break;
         case "carmainarea":
-          this.carmainareadata=this.getShowlabels(this.provinceCodes,this.allData.carmainarea)
-          this.arrays=this.carmainareadata
+          this.carmainareadata = this.getShowlabels(
+            this.provinceCodes,
+            this.allData.carmainarea
+          );
+          this.arrays = this.carmainareadata;
           break;
       }
-      this.dialogVisibleMore=true; 
+      this.dialogVisibleMore = true;
     },
-      //初始化
+    //初始化
     init() {
       // 业务号查询详情
       this.$fetch
@@ -820,26 +839,30 @@ export default {
         })
         .then(res => {
           this.results = res.uwMotorcadeInfos;
-          if(res.carCadastral){
-            this.allData.carCadastral= res.carCadastral.split(",")
-            res.carCadastral = this.getShowlabel(this.carTypeCodes,res.carCadastral.split(","));
-            
+          if (res.carCadastral) {
+            this.allData.carCadastral = res.carCadastral.split(",");
+            res.carCadastral = this.getShowlabel(
+              this.carTypeCodes,
+              res.carCadastral.split(",")
+            );
           }
-           if(res.carmainmodel){
-             this.allData.carmainmodel= res.carmainmodel.split(",")
+          if (res.carmainmodel) {
+            this.allData.carmainmodel = res.carmainmodel.split(",");
             res.carmainmodel = this.getShowlabel(
               this.carTypeCodes,
-              res.carmainmodel.split(","))
+              res.carmainmodel.split(",")
+            );
           }
-           if(res.carmainarea){
-             this.allData.carmainarea= res.carmainarea.split(",")
+          if (res.carmainarea) {
+            this.allData.carmainarea = res.carmainarea.split(",");
             res.carmainarea = this.getShowlabel(
               this.provinceCodes,
-              res.carmainarea.split(","))
+              res.carmainarea.split(",")
+            );
           }
           this.UwMotorcadeInfoVO = res;
         });
-    },
+    }
   },
 
   created() {
@@ -912,13 +935,16 @@ export default {
   min-height: 62px;
   height: 62px;
 } */
-.ulli{
-   text-align: center;
-}
-.ulli li{
-  list-style-type:none;
-}
-.tanchuang >>> .el-dialog__footer{
+.ulli {
   text-align: center;
+}
+.ulli li {
+  list-style-type: none;
+}
+.tanchuang >>> .el-dialog__footer {
+  text-align: center;
+}
+.updatastyleinput >>> .el-input.is-disabled .el-input__inner{
+  background-color: #ffffff;
 }
 </style>
