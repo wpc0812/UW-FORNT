@@ -17,9 +17,9 @@ const router = new Router({
       redirect: '/underwriting',
     },
     {
-      path: '/layout2',
-      name: 'layout2',
-      component: _import('layout2'),
+      path: '/layout',
+      name: 'layout',
+      component: _import('layout'),
       hidden: true,
       meta: {
         requireAuth: true,
@@ -59,6 +59,8 @@ const router = new Router({
             keepAlive: false
           }
         },
+
+        // 收款人账户修改审核 -- 查询
         {
           path: '/payeeModificationReview',
           name: '收款人账户修改审核',
@@ -69,6 +71,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 收款人账户修改审核 -- 详情页
         {
           path: '/payeeModificationDetail',
           name: '收款人账户修改审核详情页',
@@ -79,6 +82,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //推荐送修码修改审核 -- 查询
         {
           path: '/recommendedModRev',
           name: '推荐送修码修改审核',
@@ -89,6 +93,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 推荐送修审核详情页
         {
           path: '/recommendedModDetail',
           name: '推荐送修审核详情页',
@@ -99,42 +104,7 @@ const router = new Router({
             keepAlive: false
           }
         },
-        {
-          path: '/underwritingDetails',
-          name: '核保详情',
-          component: _import('underwriting/underwritingDetails')
-        },
-        {
-          path: '/deviceView',
-          name: '设备信息',
-          component: _import('underwriting/deviceView')
-        },
-        {
-          path: '/underwriteRiskTypeRate',
-          name: '查看风险类别占比',
-          component: _import('underwriting/underwriteRiskTypeRate')
-        },
-        {
-          path: '/underwritingTeamDetails',
-          name: '核保详情团单', // 团单
-          component: _import('underwriting/underwritingTeamDetails')
-        },
-        {
-          path: '/flowLog',
-          name: '流转记录',
-          component: _import('underwriting/flowLog')
-        },
-        {
-          path: '/uwIDSVehicleViewQuery',
-          name: '核保赔付率查询',
-          component: _import('underwriting/uwIDSVehicleViewQuery')
-        },
-        {
-          path: '/uwIDSVehicleViewQueryDetails',
-          name: '赔付率查询跳转页',
-          component: _import('underwriting/uwIDSVehicleViewQueryDetails')
-        },
-        
+         // 核保管理 --核保处理
         {
           path: '/underwriting',
           name: '核保处理',
@@ -145,6 +115,49 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 --核保详情
+        {
+          path: '/underwritingDetails',
+          name: '核保详情',
+          component: _import('underwriting/underwritingDetails')
+        },
+        // 核保管理 --核保详情 --设备信息
+        {
+          path: '/deviceView',
+          name: '设备信息',
+          component: _import('underwriting/deviceView')
+        },
+         // 核保管理 --核保详情 --查看风险类别占比
+        {
+          path: '/underwriteRiskTypeRate',
+          name: '查看风险类别占比',
+          component: _import('underwriting/underwriteRiskTypeRate')
+        },
+         // 核保管理 --团单核保详情
+        {
+          path: '/underwritingTeamDetails',
+          name: '核保详情团单', // 团单
+          component: _import('underwriting/underwritingTeamDetails')
+        },
+        // 核保管理 --核保详情 --流转记录
+        {
+          path: '/flowLog',
+          name: '流转记录',
+          component: _import('underwriting/flowLog')
+        },
+        // 核保管理 --核保详情 --核保赔付率查询
+        {
+          path: '/uwIDSVehicleViewQuery',
+          name: '核保赔付率查询',
+          component: _import('underwriting/uwIDSVehicleViewQuery')
+        },
+        // 核保管理 --核保详情 --赔付率查询跳转页
+        {
+          path: '/uwIDSVehicleViewQueryDetails',
+          name: '赔付率查询跳转页',
+          component: _import('underwriting/uwIDSVehicleViewQueryDetails')
+        },
+       // 核保管理 --自动推送
         {
           path: '/autoPush',
           name: '自动推送',
@@ -155,16 +168,17 @@ const router = new Router({
             keepAlive: false
           }
         },
-        {
-          path: '/autoPushDetail',
-          name: '自动推送详情页',
-          component: _import('underwriting/autoPushDetail'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
+        // {
+        //   path: '/autoPushDetail',
+        //   name: '自动推送详情页',
+        //   component: _import('underwriting/autoPushDetail'),
+        //   hidden: true,
+        //   meta: {
+        //     requireAuth: true,
+        //     keepAlive: false
+        //   }
+        // },
+         // 核保管理 -- 统计---核保统计
         {
           path: '/underwritingStatistics',
           name: '核保统计',
@@ -175,6 +189,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 统计---核保量统计
         {
           path: '/underwritingAmount',
           name: '核保量统计',
@@ -185,6 +200,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+         // 核保管理 -- 统计---简单核保统计
         {
           path: '/underwritingSimple',
           name: '简单核保统计',
@@ -195,6 +211,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+         // 核保管理 -- 统计---单车报备统计
         {
           path: '/reportedBike',
           name: '单车报备统计',
@@ -205,6 +222,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---人工核保量汇总统计
         {
           path: '/underwritingAmountStatistics',
           name: '人工核保量汇总统计',
@@ -215,6 +233,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---人工核保业务量月统计
         {
           path: '/underwritingMonthlyStatistics',
           name: '人工核保业务量月统计',
@@ -225,6 +244,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---团单信息维护统计
         {
           path: '/underwritingGroupStatistics',
           name: '团单信息维护统计',
@@ -235,6 +255,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---异地号牌业务统计
         {
           path: '/underwritingDifferentStatistics',
           name: '异地号牌业务统计',
@@ -245,6 +266,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---续保报备业务统计
         {
           path: '/underwritingRenewalStatistics',
           name: '续保报备业务统计',
@@ -255,6 +277,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+           // 核保管理 -- 汇总统计---人工审批配置统计
         {
           path: '/underwritingConfigurationStatistics',
           name: '人工审批配置统计',
@@ -265,6 +288,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---特批业务维护统计
         {
           path: '/underwritingSpecialMaintenanceStatistics',
           name: '特批业务维护统计',
@@ -275,6 +299,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        // 核保管理 -- 汇总统计---业务量汇总统计报表
         {
           path: '/underwritingSummaryForm',
           name: '业务量汇总统计报表',
@@ -285,6 +310,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+         // 核保管理 -- 汇总统计---人工退回业务统计
         {
           path: '/underwritingReturnStatistics',
           name: '人工退回业务统计',
@@ -543,20 +569,7 @@ const router = new Router({
         } 
       ]
     },
-    {
-      path: '/layout',
-      name: 'layout',
-      component: _import('layout'),
-      hidden: true,
-      meta: {
-        requireAuth: true,
-        keepAlive: false
-      },
-      children: [
-      
-      
-      ]
-    },
+    
   ]
 })
 
