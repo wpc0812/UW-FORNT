@@ -26,16 +26,7 @@ const router = new Router({
         keepAlive: false
       },
       children: [
-        {
-          path: '/rtReported2',
-          name: '超权限车队维护',
-          component: _import('unauthorizedFleet/rtReported2'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
+        // 人员信息管理 -信息管理查询
         {
           path: '/underwriterInfor',
           name: '核保员信息管理',
