@@ -37,6 +37,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //人员信息管理 -增加页
         {
           path: '/addwriteInfor',
           name: '增加核保员信息',
@@ -47,40 +48,11 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //人员信息管理 -修改页
         {
           path: '/changewriterInfor',
           name: '修改核保员信息',
           component: _import('personnelManagement/changewriterInfor'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
-        {
-          path: '/topupdate',
-          name: '顶部修改',
-          component: _import('unauthorizedFleet/topupdate'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
-        {
-          path: '/torenewal',
-          name: '顶部续保',
-          component: _import('unauthorizedFleet/torenewal'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
-        {
-          path: '/lossRatioQuery',
-          name: '赔付率查询',
-          component: _import('lossRatioManagement/lossRatioQuery'),
           hidden: true,
           meta: {
             requireAuth: true,
@@ -323,6 +295,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //超权限车队维护 -异地已上报车队
         {
           path: '/rtReported',
           name: '已上报车队',
@@ -333,6 +306,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //超权限车队维护 -异地新增车队
         {
           path: '/rtAdd',
           name: '新增车队',
@@ -343,6 +317,29 @@ const router = new Router({
             keepAlive: false
           }
         }, 
+        //超权限车队维护 -异地（其他）详情页面顶部修改按钮
+        {
+          path: '/topupdate',
+          name: '顶部修改',
+          component: _import('unauthorizedFleet/topupdate'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        //超权限车队维护 -异地（其他）详情页面顶部修改按钮
+        {
+          path: '/torenewal',
+          name: '顶部续保',
+          component: _import('unauthorizedFleet/torenewal'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        //超权限车队维护 其他已上报车队
         {
           path: '/otReported',
           name: 'qt已上报车队',
@@ -353,6 +350,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //超权限车队维护 其他新增车队
         {
           path: '/otAdd',
           name: 'qt新增车队',
@@ -363,6 +361,7 @@ const router = new Router({
             keepAlive: false
           }
         }, 
+        //超权限车队维护 其他（异地）新增页面查询
           {
             path: '/selectMSg',
             name: '查询页面',
@@ -373,6 +372,7 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 其他（异地）详情页-业务号详情列表删除
           {
             path: '/deletebatch',
             name: '删除批次',
@@ -383,6 +383,7 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 其他（异地）详情页顶部按钮
           {
             path: '/auditOpinion',
             name: '审核意见',
@@ -393,6 +394,7 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 其他（异地）详情页顶部按钮
           {
             path: '/transferRecord',
             name: '超权限车队流转记录',
@@ -403,9 +405,10 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 其他（异地）详情页-业务号详情列表号牌号码修改
           {
             path: '/unNumPlate',
-            name: '号码单车修改',
+            name: '修改车辆信息页面',
             component: _import('unauthorizedFleet/unNumPlate'),
             hidden: true,
             meta: {
@@ -413,9 +416,10 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 其他（异地）详情页顶部按钮
           {
             path: '/carContrast',
-            name: '异地车对信息对比',
+            name: '车对信息对比',
             component: _import('unauthorizedFleet/carContrast'),
             hidden: true,
             meta: {
@@ -423,9 +427,10 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 异地详情页
           {
             path: '/carAuditPage',
-            name: '车队审核页面',
+            name: '异地车队详情页面',
             component: _import('unauthorizedFleet/carAuditPage'),
             hidden: true,
             meta: {
@@ -433,9 +438,10 @@ const router = new Router({
               keepAlive: false
             },
           },
+          //超权限车队维护 其他详情页
           {
             path: '/carAuditPageother',
-            name: '车队详情页面',
+            name: '其他车队详情页面',
             component: _import('unauthorizedFleet/carAuditPageother'),
             hidden: true,
             meta: {
@@ -443,6 +449,7 @@ const router = new Router({
               keepAlive: false
             },
           },
+        //核保特批管理- 核保特批配置
         {
           path: '/queryCorrection',
           name: '核保特批配置',
@@ -453,6 +460,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //核保特批管理- 增加页面
         {
           path: '/addCorrection',
           name: '增加核保特批页面',
@@ -463,6 +471,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //核保特批管理- 查询列表修改页面
         {
           path: '/changeCorrection',
           name: '修改核保特批页面',
@@ -473,6 +482,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //核保特批管理- 查询列表展示页面（根据序号）
         {
           path: '/detailCorrection',
           name: '核保特批详情页面',
@@ -483,26 +493,7 @@ const router = new Router({
             keepAlive: false
           }
         },
-        {
-          path: '/toUwmotorcadeinfoPage',
-          name: '车队下车辆信息',
-          component: _import('unauthorizedFleet/toUwmotorcadeinfoPage'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
-        {
-          path: '/toUpdateUwmotorcadeinfo',
-          name: '修改车辆信息页面',
-          component: _import('unauthorizedFleet/toUpdateUwmotorcadeinfo'),
-          hidden: true,
-          meta: {
-            requireAuth: true,
-            keepAlive: false
-          }
-        },
+        //综合统计 -核保率统计
         {
           path: '/underwritingRate',
           name: '核保率统计',
@@ -513,6 +504,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //综合统计 -规则执行统计
         {
           path: '/ruleExecution',
           name: '规则执行统计',
@@ -523,6 +515,7 @@ const router = new Router({
             keepAlive: false
           }
         },
+        //综合统计 -分发监控统计
         {
           path: '/distributedMonitoring',
           name: '分发监控统计',
@@ -547,18 +540,7 @@ const router = new Router({
           path: '/viewDemo',
           name: 'ViewDemo',
           component: _import('templates/demo/viewDemo'),
-        },
-        {
-          path: '/PlaceTeam',
-          name: '异地车队修改前后信息对比',
-          component: _import('place/PlaceTeam'),
-        },
-        {
-          path: '/LimitCheck',
-          name: '超权限车队审核意见',
-          component: _import('unauthorizedFleet/LimitCheck'),
-        },
-        
+        } 
       ]
     },
     {

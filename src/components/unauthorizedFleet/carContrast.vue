@@ -16,6 +16,7 @@
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
+            <el-table-column prop="nothas" label></el-table-column>
             <el-table-column prop="contractNo" label="业务号"></el-table-column>
             <el-table-column prop="comcode" label="分公司"></el-table-column>
             <el-table-column prop="insuredflag" label="控制关系人标志"></el-table-column>
@@ -42,6 +43,7 @@
             :header-cell-style="{'text-align': 'center'}"
             :header-cell-class-name="'table-header-bg'"
           >
+            <el-table-column prop="nothas" label></el-table-column>
             <el-table-column
               v-if="this.$route.query.nametype=='1'"
               prop="carCadastral"

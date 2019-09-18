@@ -22,7 +22,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="14">
-                  <el-form-item label="商业险手续费上限:">
+                  <el-form-item label="商业险手续费上限:" prop="costRatemax">
                     <el-input class="peoCode" v-model="UwMotorcadeInfoVO.costRatemax" :disabled="flags"></el-input>
                   </el-form-item>
                 </el-col>
@@ -85,13 +85,14 @@ export default {
             required: true,
             message: "号码牌不能和修改前相同",
             trigger: ["change", "blur"]
-          },
-          // {
-          //   min: 7,
-          //   max: 7,
-          //   message: "长度为7个字符",
-          //   trigger: ["change", "blur"]
-          // }
+          } 
+        ],
+          costRatemax: [
+          {
+            required: true,
+            message: "商业险手续费上限必填",
+            trigger: ["blur"]
+          } 
         ]
       }
     };
