@@ -117,7 +117,14 @@ export default {
     return {
       titletype: "",
       activeNames: "1",
-      results: [],
+      results: [
+        {
+          nothas:"原始值："
+        },
+        {
+          nothas:"改后值："
+        }
+      ],
       dialogVisibleMore: false,
       allData: {
         uppercartype: [],

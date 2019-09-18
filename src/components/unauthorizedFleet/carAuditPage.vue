@@ -690,7 +690,7 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode || "45000000"
+        comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
@@ -706,7 +706,7 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode || "45000000"
+        comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageQueryECMs, ImageRequestDTO)

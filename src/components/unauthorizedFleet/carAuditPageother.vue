@@ -619,7 +619,6 @@ export default {
     },
     //生效办结
     outerBranch() {
-      // this.$router.push({ path: "/toUwmotorcadeinfoPage",query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo } });
       let picc = {
         motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
         userCode: "userCode",
@@ -690,7 +689,7 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode
+        comCode: this.UwMotorcadeInfoVO.comcode 
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)

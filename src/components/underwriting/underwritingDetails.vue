@@ -1936,7 +1936,7 @@ export default {
               "taskId": "1",
               "userName": "江苏用户",
               'userCode': 'A320000003',
-              "comCode": "32010200"
+              "comCode": "33000000"
               }
           this.$fetch.post(this.HOST + this.$url.uwmainUploadECM,key).then(data => {
             console.log(data)
@@ -1951,7 +1951,7 @@ export default {
               "taskId": "sdsd",
               "userName": "123",
               'userCode': '123',
-              "comCode": "13000000",
+              "comCode": "33000000",
               "SaleImgFlag": '123'
               }
 

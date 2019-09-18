@@ -120,6 +120,10 @@ export default {
         { label: "6", value: "已注销" }
       ],
       UwMotorcadeMainVO: {
+        insuredflag: "",
+        insuredCode: "",
+        insuredName: "",
+        motorcadeNo: "",
         type: "1"
       },
       relations: [
