@@ -17,7 +17,7 @@ import { from } from 'rxjs'
 import axios from 'axios'
 import { Message } from 'element-ui';
 // import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
-// import axios from 'axios'
+
 // Vue.prototype.$axios = axios;
 // Vue.prototype.HOST = "/apis"
 

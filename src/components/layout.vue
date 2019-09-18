@@ -1,9 +1,10 @@
 <template>
   <div>
-    <img src="../assets/imgs/logo_corner.png" class="background-logo" />
+  
     <!-- <img src="../assets/imgs/background-img.jpg" class="background-img" /> -->
     <el-container>
       <el-header>
+          <img src="../assets/imgs/logo_corner.png" class="background-logo" />
         <head-menu></head-menu>
       </el-header>
       <el-container class="index-bg">
@@ -69,16 +70,17 @@ img {
 }
 .background-logo {
   z-index: 11;
+  margin-left: 10px;
   height: 60px;
 }
 .index-bg {
-  margin-top: 67px;
+  margin-top: 80px;
 }
 .el-header {
   z-index: 10;
   padding: 0;
   width: 100%;
   position: fixed;
-  height: 66px;
+  height: 72px;
 }
 </style>
