@@ -1,7 +1,7 @@
 <template>
   <div class="titlestyle">
     <!-- 任务审核 -->
-    <div style="margin: 5px 0;padding-left: 5px">
+    <div style="margin: 5px 0;padding-left: 5px" v-if="this.$route.query.name=='h1'">
       <el-row class="text-left">
         <el-button size="mini" type="primary" @click="goTolinks()">核保辅助业务类别信息</el-button>
         <el-button size="mini" type="primary" @click="goToFlowLog()">查看上年保单信息</el-button>
@@ -9,7 +9,7 @@
     </div>
     <el-form :model="underwritingDetails" class="updatastyleinput" label-width="120px">
       <!-- 摘要信息 -->
-      <el-card class="circular mt4 shadow">
+      <el-card class="circular mt4 shadow" v-if="this.$route.query.name=='h3'">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="2">
             <template slot="title">
@@ -79,7 +79,7 @@
         </el-collapse>
       </el-card>
       <!-- 显示批文 -->
-      <el-card class="circular mt4 shadow">
+      <el-card class="circular mt4 shadow" v-if="this.$route.query.name=='h3'">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="23">
             <template slot="title">
@@ -108,13 +108,13 @@
               <div class="card-title">概要信息</div>
             </template>
             <el-row :gutter="20">
-              <el-col :span="8" v-if="bussinessType ==='E' ">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item label="批单号:">
                   <el-input v-model="underwritingDetails.summaryInfo.endorseno"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="投保单号:">
+                <el-form-item label="投保单号:" v-if="this.$route.query.name=='h1'">
                   <el-input v-model="underwritingDetails.summaryInfo.proposalNo"></el-input>
                 </el-form-item>
               </el-col>
@@ -123,7 +123,7 @@
                 <el-form-item label="保单号:">
                   <el-input v-model="underwritingDetails.summaryInfo.policyNo">
                     <el-button
-                      v-if="bussinessType ==='E' "
+                      v-if="this.$route.query.name=='h3'"
                       size="mini"
                       slot="append"
                       type="primary"
@@ -144,17 +144,17 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="8" v-if="bussinessType === 'E' ">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item label="退保原因:">
                   <el-input v-model="underwritingDetails.summaryInfo.cancelReason"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if="bussinessType === 'E' ">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item label="投保单号:">
                   <el-input v-model="underwritingDetails.summaryInfo.cancelReason"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if="bussinessType === 'E' ">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item label="批改类型:">
                   <el-input v-model="underwritingDetails.summaryInfo.endorType"></el-input>
                 </el-form-item>
@@ -179,12 +179,12 @@
                   <el-input v-model="underwritingDetails.summaryInfo.endHour"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if="bussinessType ==='E' ">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item label="生效日期:">
                   <el-input v-model="underwritingDetails.summaryInfo.validDate"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if="bussinessType ==='E' ">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item label="时:">
                   <el-input v-model="underwritingDetails.summaryInfo.validhour"></el-input>
                 </el-form-item>
@@ -426,7 +426,7 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">投保车辆信息</div>
             </template>
-            <el-row>
+            <el-row v-if="this.$route.query.name=='h1'">
               <el-col :span="8">
                 <el-form-item label="投保单号:">
                   <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
@@ -443,24 +443,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="固定停放地点:">
-                  <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="条款类型:">
-                  <el-input v-model="underwritingDetails.uwitemCar.licenseType"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="折 扣:">
-                  <el-input v-model="underwritingDetails.uwitemCar.brandName"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
+            <el-row v-if="this.$route.query.name=='h1'">
               <el-col :span="8">
                 <el-form-item label="归属机构名称:">
                   <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
@@ -477,7 +460,6 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <!-- --------------------------------------------- -->
             <el-row>
               <el-col :span="8">
                 <el-form-item>
@@ -660,24 +642,22 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="固定停车位:">
-                  <el-input v-model="underwritingDetails.uwitemCar.isCriterion"></el-input>
-                </el-form-item>
-              </el-col>
-              <!-- ----------------------------------------------- -->
+            <el-row v-if="this.$route.query.name=='h1'">
               <el-col :span="8">
                 <el-form-item label="总保险费:">
                   <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="归属机构代码:">
+                <el-form-item label="条款类型:">
                   <el-input v-model="underwritingDetails.uwitemCar.licenseType"></el-input>
                 </el-form-item>
               </el-col>
-              <!-- ------------------------------------------------------- -->
+              <el-col :span="8">
+                <el-form-item label="折 扣:">
+                  <el-input v-model="underwritingDetails.uwitemCar.brandName"></el-input>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
@@ -685,6 +665,23 @@
                   <el-input v-model="underwritingDetails.uwitemCar.cylinderCount"></el-input>
                 </el-form-item>
               </el-col>
+              <el-col :span="8">
+                <el-form-item label="固定停车位:" v-if="this.$route.query.name=='h3'">
+                  <el-input v-model="underwritingDetails.uwitemCar.isCriterion"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="固定停放地点:" v-if="this.$route.query.name=='h1'">
+                  <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" v-if="this.$route.query.name=='h1'">
+                <el-form-item label="归属机构代码:">
+                  <el-input v-model="underwritingDetails.uwitemCar.licenseType"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="8">
                 <el-form-item>
                   <div slot="label" style="line-height: 16px">
@@ -820,11 +817,11 @@
                   <el-input v-model="underwritingDetails.uwcarmodel.dirrisk"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <!-- <el-col :span="8">
                 <el-form-item label="车型别名:">
                   <el-input v-model="underwritingDetails.uwcarmodel.nickname"></el-input>
                 </el-form-item>
-              </el-col>
+              </el-col>-->
               <el-col :span="8">
                 <el-form-item label="备注:">
                   <el-input v-model="underwritingDetails.uwcarmodel.nickname"></el-input>
@@ -1442,7 +1439,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item>
-                    <div slot="label" style="line-height: 16px">
+                  <div slot="label" style="line-height: 16px">
                     是否指定汽车
                     <br />专修点:
                   </div>
@@ -1518,7 +1515,7 @@
               <div class="card-title">其他信息</div>
             </template>
             <el-row>
-              <el-col :span="8">
+              <el-col :span="8" v-if="this.$route.query.name=='h1'">
                 <el-form-item>
                   <div slot="label" style="line-height:16px;">
                     保险合同争议解
@@ -1527,7 +1524,7 @@
                   <el-input v-model="underwritingDetails.otherInformation.argueSolution"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" v-if="this.$route.query.name=='h3'">
                 <el-form-item>
                   <div slot="label" style="line-height:16px;">
                     保险合同争
@@ -1597,12 +1594,12 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="共保标志:">
+                <el-form-item label="共保标志:" v-if="this.$route.query.name=='h1'">
                   <el-input v-model="underwritingDetails.otherInformation.coinsFlag"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="签单日期:">
+                <el-form-item label="签单日期:" v-if="this.$route.query.name=='h3'">
                   <el-input v-model="underwritingDetails.otherInformation.handlerCodeCName"></el-input>
                 </el-form-item>
               </el-col>
@@ -1809,7 +1806,7 @@ export default {
   },
 
   methods: {
-      //设置collapse全部展开
+    //设置collapse全部展开
     setActiveNames() {
       for (let i = 1; i <= 23; i++) {
         this.activeNames.push(JSON.stringify(i));
@@ -1948,7 +1945,6 @@ export default {
   height: 25px;
   line-height: 25px;
 }
-
 
 .border-btm-gra {
   border-bottom: solid 1px rgba(70, 90, 100, 0.6);

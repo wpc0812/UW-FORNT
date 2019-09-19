@@ -92,7 +92,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  @click="BusinessNum(scope.row,scope.row.state)"
+                  @click="BusinessNum1(scope.row)"
                 >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
@@ -137,7 +137,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  @click="BusinessNum(scope.row,scope.row.state)"
+                  @click="BusinessNum2(scope.row)"
                 >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
@@ -182,7 +182,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  @click="BusinessNum(scope.row,scope.row.state)"
+                  @click="BusinessNum3(scope.row)"
                 >{{scope.row.businessNo}}</el-button>
               </template>
             </el-table-column>
@@ -259,7 +259,32 @@ export default {
           }
         });
     },
-    BusinessNum(row) {}
+      //投保单
+    BusinessNum1(row) {
+      let name="h1";
+       this.$router.push({
+        path: "/detailedInformation",
+        query: { row: row.businessNo, name }
+      });
+      // console.log(row.businessNo,name)
+
+    },
+    //保单
+    BusinessNum2(row) {
+      let name="h1";
+       this.$router.push({
+        path: "/detailedInformation",
+        query: { row: row.businessNo, name }
+      });
+    },
+    //批单
+    BusinessNum3(row) {
+      let name="h3";
+       this.$router.push({
+        path: "/detailedInformation",
+        query: { row: row.businessNo, name }
+      });
+    },
   },
   created() {
     this.flag = false;

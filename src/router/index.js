@@ -236,7 +236,7 @@ const router = new Router({
          // 核保管理 -- 统计---所有查询投保单列表业务号的详细信息页面-核保辅助业务类别信息顶部按钮
          {
           path: '/underwritingBusinessInformation',
-          name: '详细信息',
+          name: '核保辅助业务类别信息',
           component: _import('underwriting/statistics/underwritingBusinessInformation'),
           hidden: true,
           meta: {
@@ -247,7 +247,7 @@ const router = new Router({
          // 核保管理 -- 统计---所有查询投保单列表业务号的详细信息页面-查看上年保单信息顶部按钮
          {
           path: '/LastYearPolicyInformation',
-          name: '详细信息',
+          name: '查看上年保单信息',
           component: _import('underwriting/statistics/LastYearPolicyInformation'),
           hidden: true,
           meta: {
