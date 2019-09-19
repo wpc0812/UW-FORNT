@@ -222,6 +222,17 @@ const router = new Router({
             keepAlive: false
           }
         },
+         // 核保管理 -- 统计---所有查询列表业务号的详细信息页面
+         {
+          path: '/detailedInformation',
+          name: '详细信息',
+          component: _import('underwriting/statistics/detailedInformation'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
         // 核保管理 -- 汇总统计---人工核保量汇总统计
         {
           path: '/underwritingAmountStatistics',
