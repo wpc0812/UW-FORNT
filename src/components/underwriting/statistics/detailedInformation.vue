@@ -1809,7 +1809,7 @@ export default {
   },
 
   methods: {
-    //设置collapse全部展开
+      //设置collapse全部展开
     setActiveNames() {
       for (let i = 1; i <= 23; i++) {
         this.activeNames.push(JSON.stringify(i));
@@ -1818,40 +1818,6 @@ export default {
     // 返回上一级
     goback() {
       this.$router.go(-1);
-    },
-    // 撤回
-    getBack() {
-      let keyWords = {
-        businessNo: this.routeDate.businessNo || "AST12312312",
-        ComCode: this.routeDate.businessNo || "BJ233",
-        UserCode: this.routeDate.businessNo || "WPC212",
-        UserName: this.routeDate.businessNo || "宛平城",
-        revokeType: this.routeDate.type || "EH", // 撤回类型 1：省级从承保撤回  2：省级从总公司撤回  3：总公司从省级撤回
-        taskId: this.routeDate.businessNo || "id12312", // 任务id
-        businessType: this.routeDate.type || "ST",
-        batchNo: this.routeDate.type || 12312312
-      };
-      this.$fetch
-        .post(this.HOST + this.$url.undwrtrevokeUndwrt, keyWords)
-        .then(data => {
-          console.log(data);
-          this.$message.success(data);
-        });
-    },
-    // 放弃
-    giveUp() {
-      let key = {
-        businessNo: this.parameter.businessNo,
-        businessType: this.parameter.businessType,
-        usercode: "A000"
-      };
-      this.$fetch.post(this.HOST + this.$url.giveUpUwPayee, key).then(data => {
-        console.log(data);
-        this.$message.success(data);
-        setTimeout(() => {
-          this.goback();
-        }, 1500);
-      });
     },
 
     init() {
@@ -1874,8 +1840,6 @@ export default {
           //  this.underwritingDetails.displayFlag ={}
         });
     },
-    // 设备信息
-    goToDeviceInfo() {},
     // 获取跳转链接并打开新窗口
     goTolinks(type) {
       let key = {};
@@ -1943,54 +1907,11 @@ export default {
           break;
       }
     },
-    // 流转记录
-    goToFlowLog() {
-      let routeUrl = this.$router.resolve({
-        path: "/flowLog",
-        query: {
-          businessNo: "123"
-        }
-      });
-      window.open(routeUrl.href, "_blank");
-    },
-    // 跳转设备信息
-    goToCarDeviceInfo() {
-      let routeUrl = this.$router.resolve({
-        path: "/deviceView",
-        query: {
-          businessNo: this.routeDate.businessNo || "123",
-          type: this.routeDate.type || "H"
-        }
-      });
-      window.open(routeUrl.href, "_blank");
-    },
-    // 跳转 风险类占比
-    goToUnderwriteRiskTypeRate() {
-      let routeUrl = this.$router.resolve({
-        path: "/underwriteRiskTypeRate",
-        query: {
-          businessNo: "123",
-          type: "H"
-        }
-      });
-      window.open(routeUrl.href, "_blank");
-    },
 
     // 打开保费折扣率弹框
     openAdjustRateDialog(row) {
       this.adjustRateDialog = true;
-    },
-    // 赔付率查询
-    goToIdsQuery() {
-      let routeUrl = this.$router.resolve({
-        path: "/uwIDSVehicleViewQuery",
-        query: {
-          condition: this.condition
-        }
-      });
-      window.open(routeUrl.href, "_blank");
-    },
-    handleSelectionChange() {}
+    }
   },
   created() {
     //设置collapse全部展开

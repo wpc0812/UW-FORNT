@@ -233,6 +233,28 @@ const router = new Router({
             keepAlive: false
           }
         },
+         // 核保管理 -- 统计---所有查询投保单列表业务号的详细信息页面-核保辅助业务类别信息顶部按钮
+         {
+          path: '/underwritingBusinessInformation',
+          name: '详细信息',
+          component: _import('underwriting/statistics/underwritingBusinessInformation'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+         // 核保管理 -- 统计---所有查询投保单列表业务号的详细信息页面-查看上年保单信息顶部按钮
+         {
+          path: '/LastYearPolicyInformation',
+          name: '详细信息',
+          component: _import('underwriting/statistics/LastYearPolicyInformation'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
         // 核保管理 -- 汇总统计---人工核保量汇总统计
         {
           path: '/underwritingAmountStatistics',
