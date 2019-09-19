@@ -2006,12 +2006,7 @@ export default {
 .el-dialog__body__update >>> .el-dialog__body {
   padding-top: 0;
 }
-.text-left {
-  overflow: hidden;
-}
-.text-left {
-  width: 1388px;
-}
+
 .link-input {
   height: 32px;
   line-height: 32px;
@@ -2032,15 +2027,8 @@ export default {
   height: 25px;
   line-height: 25px;
 }
-.pt11 {
-  padding-top: 0px;
-}
-.el-collapse-item__wrap /deep/ .el-collapse-item__content {
-  padding-bottom: 0px;
-}
-.el-collapse-item__wrap >>> .el-form-item {
-  margin-bottom: 20px;
-}
+
+
 .border-btm-gra {
   border-bottom: solid 1px rgba(70, 90, 100, 0.6);
 }
@@ -2058,5 +2046,5 @@ export default {
   line-height: 20px;
 }
 </style>
-<style>
-</style>
+
+
