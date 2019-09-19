@@ -1,8 +1,8 @@
 <template>
   <div class="titlestyle" >
     <!-- 任务审核 -->
-    <div style="margin: 5px 0;padding-left: 5px">
-      <el-row class="text-left " >
+    <div style="padding-left: 5px" >
+      <el-row class="text-lef " >
             <el-button size='mini' type="primary" @click="goTolinks('details')" v-if="underwritingDetails.displayFlag.browseFlag == '1'">详细信息</el-button>
             <el-button size='mini' type="primary" @click='goToFlowLog()' v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">流转记录</el-button>
 
