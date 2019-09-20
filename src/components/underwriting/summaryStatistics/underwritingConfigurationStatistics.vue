@@ -43,7 +43,7 @@ import { mapActions, mapGetters } from "vuex";
 import utils from '../../../utils'
 
 export default {
-  name: "rtReported",
+  name: "underwritingConfigurationStatistics",
   components: {
   },
   data() {

@@ -159,7 +159,7 @@ let [inputValidator, selectValidator] = [
 ];
 
 export default {
-  name: "tpl_detailUwctrlVO",
+  name: "tpl_detailcorrection",
 
   props: {
     flag: {

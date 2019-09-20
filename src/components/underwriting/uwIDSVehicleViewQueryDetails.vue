@@ -32,7 +32,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "flowLogView",
+  name: "uwIDSVehicleViewQueryDetails",
   data() {
     return {
         activeNames: ["1"],

@@ -81,7 +81,7 @@ import utils from '../../../utils'
 
 
 export default {
-  name: "rtReported",
+  name: "underwritingSummaryForm",
   components: {
     
   },

@@ -46,7 +46,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "flowLogView",
+  name: "deviceView",
   data() {
     return {
       flowlog: {

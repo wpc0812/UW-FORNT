@@ -109,7 +109,7 @@ let [inputValidator, selectValidator] = [
 ];
 
 export default {
-  name: "correction",
+  name: "autoPush",
 
   props: {
     flag: {

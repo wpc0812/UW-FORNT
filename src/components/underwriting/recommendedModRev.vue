@@ -178,7 +178,7 @@ import {
   underwritingTypes
 } from "@/assets/js/baseCode";
 export default {
-  name: "carAuditPage",
+  name: "recommendedModRev",
   data() {
     return {
       activeNames:[],

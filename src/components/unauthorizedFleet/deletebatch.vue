@@ -52,7 +52,7 @@ import { relations } from "@/assets/js/baseCode";
 import { setTimeout } from 'timers';
 
 export default {
-  name: "underwriterInfor",
+  name: "deletebatch",
 
   data() {
     return {

@@ -191,7 +191,7 @@ let [inputValidator, selectValidator] = [
 ];
 
 export default {
-  name: "UwctrlVO",
+  name: "tpl_correction",
   props: {},
   watch: {
     "UwctrlVO.businessNo": function(newVal, oldVal) {

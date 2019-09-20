@@ -1579,7 +1579,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "UnderwritingDetails",
+  name: "autoPushDetail",
   data() {
     return {
         data:{},

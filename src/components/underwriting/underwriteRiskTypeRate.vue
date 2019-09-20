@@ -48,7 +48,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "flowLogView",
+  name: "underwriteRiskTypeRate",
   data() {
     return {
       flowlog: {

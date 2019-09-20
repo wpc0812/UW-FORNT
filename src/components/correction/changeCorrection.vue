@@ -9,7 +9,7 @@ import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
 
 export default {
-  name: "addCorrection",
+  name: "changeCorrection",
 
   components: { TplUndCorrection },
 

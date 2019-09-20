@@ -257,7 +257,7 @@ import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
 
 export default {
-  name: "torenewal",
+  name: "topupdate",
 
   data() {
     return {

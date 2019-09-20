@@ -241,7 +241,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "flowLogView",
+  name: "uwIDSVehicleViewQuery",
   data() {
     return {
       rules: {

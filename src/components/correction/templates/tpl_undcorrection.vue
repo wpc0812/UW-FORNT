@@ -160,7 +160,7 @@
 <script>
 import { relations } from "@/assets/js/baseCode";
 export default {
-  name: "undUwctrlVO",
+  name: "tpl_undcorrection",
   watch: {
     "UwctrlVO.businessNo": function(newVal, oldVal) {
       let oldValue = oldVal ? oldVal.length : 0;

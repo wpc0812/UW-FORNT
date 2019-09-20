@@ -66,8 +66,8 @@ service.interceptors.response.use(
             window.location.href = window.sessionStorage.redirectUrl
           }
         } else {
-            Message.error(response.data.statusText)
-            throw new Error();
+            Message.error(response.data.statusText ||response.data.message)
+            // throw new Error();
       }
        
     }

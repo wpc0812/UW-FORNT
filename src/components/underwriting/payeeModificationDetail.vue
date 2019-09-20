@@ -608,7 +608,7 @@ import { mapActions, mapGetters } from "vuex";
 import { setTimeout } from "timers";
 
 export default {
-  name: "carAuditPage",
+  name: "payeeModificationDetail",
   data() {
     return {
       results: [

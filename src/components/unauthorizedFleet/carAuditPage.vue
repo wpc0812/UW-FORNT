@@ -329,7 +329,9 @@
               ></el-table-column>
               <el-table-column align="center" prop="deductible" label="删除批次">
                 <template slot-scope="scope">
-                  <el-button type="text" size="small" @click="deletebatch(scope.row)">删除批次</el-button>
+                  <el-button type="text" size="small" @click="deletebatch(scope.row)" v-if="states=='0'||states=='1'">删除批次</el-button>
+                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='3'">审核中</el-button>
+                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='5'">已生效办结</el-button>
                 </template>
               </el-table-column>
             </el-table>

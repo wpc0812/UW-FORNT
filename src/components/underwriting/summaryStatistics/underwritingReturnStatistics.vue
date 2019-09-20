@@ -47,7 +47,7 @@ import utils from '../../../utils'
 
 
 export default {
-  name: "rtReported",
+  name: "underwritingReturnStatistics",
   components: {
 
   },

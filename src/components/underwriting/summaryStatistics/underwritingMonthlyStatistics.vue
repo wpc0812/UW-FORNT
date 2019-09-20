@@ -49,7 +49,7 @@ import utils from '../../../utils'
 
 
 export default {
-  name: "rtReported",
+  name: "underwritingMonthlyStatistics",
   components: {
   },
   data() {
