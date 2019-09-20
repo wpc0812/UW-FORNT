@@ -4,8 +4,8 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: '/marketing',     //设置静态资源的访问路径
-  outputDir: 'dist/marketing',   //设置编译后代码的存放路径
+  publicPath: '/undwrt',     //设置静态资源的访问路径
+  outputDir: 'dist/undwrt',   //设置编译后代码的存放路径
   assetsDir: 'static',
 
   
