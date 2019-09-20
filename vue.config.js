@@ -4,6 +4,10 @@ function resolve(dir) {
 }
 
 module.exports = {
+  publicPath: '/marketing',     //设置静态资源的访问路径
+  outputDir: 'dist/marketing',   //设置编译后代码的存放路径
+  assetsDir: 'static',
+
   
   devServer: {
     // proxy: 'http://192.168.43.119:8763' //手机
