@@ -220,7 +220,7 @@
                         :multiple="true"
                         action
                         :auto-upload="false"
-                        accept=".xls, .txt"
+                        accept=".xls"
                         :on-remove="addHandleRemove"
                         :on-success="addOnSuccess"
                         :on-change="addUploadname"
@@ -239,7 +239,7 @@
                 <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
+                <a class="dec" :href="httphref" download="UwMotorcadeMainModel.xls">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
             <el-row v-if="states=='0'|| states== '1'|| states=='2 '|| states=='5'|| states=='4'">
@@ -253,7 +253,7 @@
                         :multiple="true"
                         action
                         :auto-upload="false"
-                        accept=".xls, .txt"
+                        accept=".xls"
                         :on-remove="upHandleRemove"
                         :on-success="upOnSuccess"
                         :on-change="upUploadname"
@@ -272,7 +272,7 @@
                 <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
+                <a class="dec" :href="httphref" download="UwMotorcadeMainModel.xls">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
           </el-collapse-item>
@@ -425,7 +425,7 @@ export default {
       dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
-      httphref: "../../../../#/static/LicensenoAddModel.zip",
+      httphref: "../../../../#/static/UwMotorcadeMainModel.xls",
       UwMotorcadeInfoVO: {
         motorcadeNo: "",
         licenseNo: "",
