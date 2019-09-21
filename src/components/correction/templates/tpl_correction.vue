@@ -141,7 +141,7 @@
                         :show-file-list="false"
                         :file-list="fileList"
                         :auto-upload="false"
-                        accept=".xls, .txt"
+                        accept=".xls"
                         :on-preview="handlePreview"
                         :before-remove="beforeRemove"
                       >
@@ -152,7 +152,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="3">
-                <a class="dec" :href="httphref" download="LicensenoAddModel.zip">号牌号码导入模板下载</a>
+                <a class="dec" :href="httphref" download="LicensenoAddModel.xls">号牌号码导入模板下载</a>
               </el-col>
               <el-col :span="5">
                 <div class="reminder">请在号牌导入与录入两项中选择一项进行特批配置</div>
@@ -243,7 +243,7 @@ export default {
       msg: "",
       successtrue: false,
       licenseNoImportExcel: "",
-      httphref: "../../../../#/static/LicensenoAddModel.zip",
+      httphref: "../../../../#/static/LicensenoAddModel.xls",
       UwctrlVO: {
         insuredFlag: "",
         applicCode: "",
