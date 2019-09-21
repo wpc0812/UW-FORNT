@@ -14,12 +14,12 @@ const service = axios.create(config);
 let loadService = "";
 service.interceptors.request.use(
   request => {
-    // loadService = Loading.service({
-    //   lock: true,
-    //   text: 'Loading',
-    //   spinner: 'el-icon-loading',
-    //   background:'rgba(0, 0, 0, 0.7)'
-    // })
+    loadService = Loading.service({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background:'rgba(0, 0, 0, 0.7)'
+    })
     const token =  window.sessionStorage.token ||utils.getUrlToken('token')
     if (token) {
       // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
