@@ -206,7 +206,7 @@
                   class="labelheight1"
                   v-model="UwMotorcadeInfoVO.finishdate"
                   label="距离控制日期结束日期:"
-                >{{UwMotorcadeInfoVO.finishdate}}天</el-form-item>
+                ><div class="textcontent"> {{UwMotorcadeInfoVO.finishdate}}天</div></el-form-item>
               </el-col>
             </el-row>
             <el-row v-if="states=='0'||states=='5'">
@@ -272,7 +272,7 @@
                 <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                <a class="dec" :href="httphref" download="UwMotorcadeMainModel.xls">号牌号码导入模板下载</a>
+                <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
           </el-collapse-item>
@@ -425,7 +425,6 @@ export default {
       dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
-      httphref: "../../../../#/static/UwMotorcadeMainModel.xls",
       UwMotorcadeInfoVO: {
         motorcadeNo: "",
         licenseNo: "",
@@ -479,6 +478,7 @@ export default {
       outerVisible: false,
       innerVisible: false,
       textarea2: "",
+      uwmotorcademainids:"",
       options: [
         {
           value: "提交总公司",
@@ -516,7 +516,7 @@ export default {
         console.log(file.name, this.UwMotorcadeInfoVO.addpici);
         let formData = new FormData();
         formData.append("file", file.raw);
-        formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
+        formData.append("id", this.uwmotorcademainids);
         this.uploading = true;
         this.formDataAdd = formData;
       }
@@ -564,7 +564,7 @@ export default {
     carAuditPagechu() {
       let _url = "http://11.205.241.44:8082" + this.$url.carAuditPageToInsured;
       let paramsFileData = {
-        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+        uwmotorcademainid:this.uwmotorcademainids,
         licenseNo: this.UwMotorcadeInfoVO.licenseNo
       };
       window.location.href =
@@ -576,7 +576,7 @@ export default {
         path: "/unNumPlate",
         query: {
           row: row.licenseNo,
-          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+          uwmotorcademainid:this.uwmotorcademainids,
         }
       });
     },
@@ -593,7 +593,7 @@ export default {
         path: "/deletebatch",
         query: {
           row: row.batchNo,
-          motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+          uwmotorcademainid:this.uwmotorcademainids
         }
       });
     },
@@ -776,33 +776,35 @@ export default {
       this.$fetch
         .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
           params: {
-            motorcadeNo: this.$route.query.row
+            motorcadeNo: this.$route.query.row,
+            uwmotorcademainid:this.$route.query.id
           }
         })
         .then(res => {
-          this.results = res.uwMotorcadeInfos;
-          if (res.uppercartype) {
-            this.allData.uppercartype = res.uppercartype.split(",");
-            res.uppercartype = this.getShowlabel(
+          this.uwmotorcademainids=res.uwMotorcadeMain.id;
+          this.results = res.uwMotorcadeMain.uwMotorcadeInfos;
+          if (res.uwMotorcadeMain.uppercartype) {
+            this.allData.uppercartype = res.uwMotorcadeMain.uppercartype.split(",");
+            res.uwMotorcadeMain.uppercartype = this.getShowlabel(
               this.carTypeCodes,
-              res.uppercartype.split(",")
+              res.uwMotorcadeMain.uppercartype.split(",")
             );
           }
-          if (res.carmainmodel) {
-            this.allData.carmainmodel = res.carmainmodel.split(",");
-            res.carmainmodel = this.getShowlabel(
+          if (res.uwMotorcadeMain.carmainmodel) {
+            this.allData.carmainmodel = res.uwMotorcadeMain.carmainmodel.split(",");
+            res.uwMotorcadeMain.carmainmodel = this.getShowlabel(
               this.carTypeCodes,
-              res.carmainmodel.split(",")
+              res.uwMotorcadeMain.carmainmodel.split(",")
             );
           }
-          if (res.carmainarea) {
-            this.allData.carmainarea = res.carmainarea.split(",");
-            res.carmainarea = this.getShowlabel(
+          if (res.uwMotorcadeMain.carmainarea) {
+            this.allData.carmainarea = res.uwMotorcadeMain.carmainarea.split(",");
+            res.uwMotorcadeMain.carmainarea = this.getShowlabel(
               this.provinceCodes,
-              res.carmainarea.split(",")
+              res.uwMotorcadeMain.carmainarea.split(",")
             );
           }
-          this.UwMotorcadeInfoVO = res;
+          this.UwMotorcadeInfoVO = res.uwMotorcadeMain;
         });
     },
     //点击查看
@@ -851,17 +853,17 @@ export default {
       for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < options.length; j++) {
           if (items[i].value === options[j]) {
-            if (/^[A-Z]/.test(tems[i].value)) {
-              label.push(items[i].value.substring(5, items[i].value.length));
-            } else if (/\d$/.test(tems[i].value)) {
+            if (/^[A-Z]/.test(items[i].value)) {
+              label.push(items[i].label.substring(5, items[i].label.length));
+            } else if (/\d$/.test(items[i].value)) {
               label.push(
-                items[i].value.substring(0, items[i].value.length - 8)
+                items[i].label.substring(0, items[i].label.length - 8)
               );
             }
           }
         }
       }
-      console.log(label)
+      // console.log(label)
       return utils.arrayToString(label);
     }
   },
@@ -947,4 +949,9 @@ export default {
 .updatastyleinput >>> .el-input.is-disabled .el-input__inner{
   background-color: #ffffff;
 }
+.labelheight1 .textcontent{
+  text-align: center; 
+  line-height: 50px;
+  height: 50px;  
+} 
 </style>

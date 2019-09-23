@@ -417,10 +417,12 @@ export default {
                   .post(this.HOST + this.$url.rtAddSaves, uwMotorcadeMainVO)
                   .then(data => {
                     console.log(data);
+
                     this.$message({
                       type: "success",
                       message: "保存成功!"
                     });
+                    this.$router.go(-1)
                   });
               })
               .catch(() => {

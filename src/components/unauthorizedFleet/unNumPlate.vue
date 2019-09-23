@@ -153,7 +153,7 @@ export default {
       .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
         params: {
           licenseNo: this.$route.query.row,
-          motorcadeNo: this.$route.query.motorcadeNo
+          uwmotorcademainid: this.$route.query.uwmotorcademainid
         }
       })
       .then(res => {

@@ -73,7 +73,7 @@
       >
         <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="state" label="流转状态"></el-table-column>
-        <el-table-column prop="motorcadeNo" label="业务号">
+        <el-table-column prop="motorcadeNo" width="110px" label="业务号">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -170,7 +170,7 @@ export default {
       }
       this.$router.push({
         path: "/carAuditPage",
-        query: { row: row.motorcadeNo, state }
+        query: { row: row.motorcadeNo, id:row.id,state }
       });
     },
     // 未处理展开关闭状态

@@ -73,7 +73,7 @@
       >
         <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="state" label="流转状态"></el-table-column>
-        <el-table-column prop="motorcadeNo" label="业务号">
+        <el-table-column prop="motorcadeNo" width="110px" label="业务号">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -157,7 +157,6 @@ export default {
     },
     //业务号
     BusinessNum(row, state) {
-      // console.log(row,state);
       for (let i = 0; i < this.state.length; i++) {
         if (state == this.state[i].value) {
           state = this.state[i].label;
@@ -165,7 +164,7 @@ export default {
       }
       this.$router.push({
         path: "/carAuditPageother",
-        query: { row: row.motorcadeNo, state }
+        query: { row: row.motorcadeNo,id:row.id, state }
       });
     },
     // 未处理展开关闭状态
@@ -191,6 +190,7 @@ export default {
           this.results = res;
         });
     }
+
   },
   created() {
     this.init();
