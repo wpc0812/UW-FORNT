@@ -48,9 +48,7 @@ service.interceptors.response.use(
 
       // 1、接口响应结果为“登录过期”（状态码为16），则清除sessionstorage中的token，
       // 并携带当前业务系统前端的url，跳转单点登录，结果为“非登录过期”（状态码为16），
-      // 且响应头中包含新的token，则将新的token（key为newjwt）存入sessionstorage。
-      
-      
+      // 且响应头中包含新的token，则将新的token（key为newjwt）存入sessionstorage 
       if (response.headers.newjwt) {
         window.sessionStorage.token = response.headers.newjwt
       }
