@@ -68,7 +68,9 @@ module.exports  = {
     autoDistributeTraditionalChannels: '/autoDistribute/traditionalChannels', // 传统渠道
     autoDistributeElectricPinChannels: '/autoDistribute/electricPinChannels', // 电销渠道
     autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo', // 批单
-    undwrtSubmitReview: '/undwrt/submitReview', // 提交审核
+    undwrtSubmitReview: '/undwrt/submitReview', // 提交审核新按钮
+    undwrtSubmitToExamine: '/undwrt/submitToExamine', // 提交审核新弹窗
+    
     uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
     userLoginLogout: '/userLogin/logout', // 注销
 

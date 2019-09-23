@@ -45,6 +45,7 @@
             <!-- <el-col :span="24" class="el-card__header text-left">任务审核</el-col> -->
             <el-col :span="24" class="pt11">
               <el-button type="primary" @click="submit" size="mini">提交审核</el-button>
+              <!-- <el-button type="primary" @click="submit1" size="mini">提交审核</el-button> -->
               <el-button size="mini" @click="giveUp">放弃</el-button>
 
 
@@ -1598,7 +1599,7 @@
               type="primary"
               size="mini"
               class="float-right mt10"
-              @click=" submitReview"
+              @click="submitReview"
             >提交任务</el-button>
           </el-row>
         </el-form>
@@ -1850,28 +1851,47 @@ export default {
     },
     // 提交审核
     submit(){
-      debugger
-      let key = {
-        businessNo:  12321,
-        businessType: 'H',
-        usercode: "A000"
-      };
-      this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
+      // debugger
+      // let key = {
+      //   businessNo:  12321,
+      //   businessType: 'H',
+      //   usercode: "A000"
+      // };
+      // this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
+      //   console.log(data);
+      //   this.subOptions = data.selectPath;
+      //   this.outerVisible = true;
+      // });
+
+    let key={
+        businessType:"1",
+        businessNo:"1",
+        userCode:"1",
+      }
+      this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview, key).then(data => {
         console.log(data);
-        this.subOptions = data.selectPath;
         this.outerVisible = true;
       });
-      // this.outerVisible= true
     },
     // 提交审核
     submitReview(){
-      let key ={
-        businessNo: this.routeDate.businessNo || '123213'
+      // let key ={
+      //   businessNo: this.routeDate.businessNo || '123213'
+      // }
+      // this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview,key).then(data =>{
+      //   this.innerVisible = true
+      // })
+         let key={
+        businessType:"1",
+        businessNo:"1",
+        userCode:"1",
       }
-      this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview,key).then(data =>{
+      this.$fetch.post(this.HOST + this.$url.undwrtSubmitToExamine,key).then(data =>{
+        console.log(data)
         this.innerVisible = true
       })
     },
+    //初始化
     init() {
       
       let  keyWords ={
@@ -1886,8 +1906,8 @@ export default {
       }
      this.$fetch.post(this.HOST + this.$url.uwmainGetUwInfo, keyWords).then(data =>{
        console.log(data)
-       this.underwritingDetails = data
-       this.underwritingDetails.uwNotion = data.uwnotions[0]
+      //  this.underwritingDetails = data
+      //  this.underwritingDetails.uwNotion = data.uwnotions[0]
       //  this.underwritingDetails.displayFlag ={}
        
 

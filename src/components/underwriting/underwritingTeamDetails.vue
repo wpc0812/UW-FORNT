@@ -625,7 +625,7 @@ export default {
         userCode: this.routeDate.businessNo, // 员工号
       }
      this.$fetch.post(this.HOST + this.$url.uwmainGetUwInfo, keyWords).then(data =>{
-       this.underwritingDetails = data
+      //  this.underwritingDetails = data
       //  this.underwritingDetails.displayFlag = {}
      })
     },
@@ -647,7 +647,7 @@ export default {
     },
     // 提交审核
     submit(){
-      debugger
+      // debugger
       let key = {
         businessNo:  12321,
         businessType: 'H',
@@ -655,7 +655,7 @@ export default {
       };
       this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
         console.log(data);
-        this.subOptions = data.selectPath;
+        // this.subOptions = data.selectPath;
         this.outerVisible = true;
       });
       // this.outerVisible= true
