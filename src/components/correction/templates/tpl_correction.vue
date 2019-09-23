@@ -152,7 +152,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span="3">
-                <a class="dec" :href="httphref" download="LicensenoAddModel.xls">号牌号码导入模板下载</a>
+
+                <a class="dec" href="./LicensenoAddModel.xls" download="">号牌号码导入模板下载</a>
+
               </el-col>
               <el-col :span="5">
                 <div class="reminder">请在号牌导入与录入两项中选择一项进行特批配置</div>
@@ -185,6 +187,8 @@
 <script>
 import qs from "querystring";
 import { relations } from "@/assets/js/baseCode";
+import axios from 'axios'
+import utils from '../../../utils'
 let [inputValidator, selectValidator] = [
   { required: true, message: "1", trigger: "blur" },
   { required: true, message: "2", trigger: "change" }
@@ -433,6 +437,12 @@ export default {
         .then(res => {
           this.successtrue = res;
         })
+    },
+    downLoad(){
+      debugger
+      let url ='./static/template/LicensenoAddModel.xls'
+        window.open (url)
+         
     },
     // 保存
     requestdata() {
