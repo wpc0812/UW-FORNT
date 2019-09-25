@@ -1544,47 +1544,55 @@
       :lock-scroll="false"
       :visible.sync="outerVisible"
     >
-      <div id="form">
-        <el-form ref="form" :model="form" label-width="150px" :rules="rules">
+      <div >
+        <el-form   label-width="150px" :rules="rules">
           <el-row>
             <el-col :span="12">
-              <el-form-item label="当前任务环节:"></el-form-item>
+              <el-form-item label="当前任务环节:" style="margin-bottom:0"></el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="提交路径选择:"></el-form-item>
+              <el-form-item label="提交路径选择:"  style="margin-bottom:0"></el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="省公司一级核保:" prop="value">
-                <el-select v-model="form.value" placeholder="请选择">
-                  <el-option
+            <el-col :span="12"> 
+                <el-form-item label="省公司一级核保:"  style="margin-bottom:2px"></el-form-item>
+              <!-- <span>省公司一级核保:</span>  -->
+            </el-col>
+            <el-col :span="12"> 
+              <el-select v-model="aprove.nodeCode" placeholder="请选择" style="margin-bottom:2px">
+                <el-option
                     v-for="item in subOptions"
-                    :key="item.path"
-                    :label="item.pathName"
-                    :value="item.path"
+                    :key="item.key"
+                    :label="item.value"
+                    :value="item.key"
                   ></el-option>
                 </el-select>
-              </el-form-item>
+              </el-col>
+
+            <el-col :span="12">  
+              <el-form-item label="审批片语:" ></el-form-item>
+              <!-- <span>  审批片语:</span> -->
             </el-col>
-            <el-col :span="12">
-              <el-form-item label="审批片语:">
-                <el-select v-model="form.value" placeholder="请选择">
+            <el-col :span="12"> 
+               <el-select v-model="aprove.inspSpeak" placeholder="请选择">
                   <el-option
                     v-for="item in uwNotionCarCheckStatus"
-                     :key="item.value"
+                     :key="item.label"
                       :label="item.label"
                       :value="item.label"
                   ></el-option>
-                </el-select>
-              </el-form-item>
+              </el-select> 
             </el-col>
+
+          </el-row>
+          <el-row>
+           
             <el-col :span="24" class="mt10">
               <el-input
                 type="textarea"
+                disabled
                 placeholder="请输入"
                 :autosize="{ minRows: 2, maxRows: 4}"
-                v-model="textarea1"
+                v-model="aprove.handleText"
               ></el-input>
             </el-col>
             <el-col :span="24" class="mt10">
@@ -1592,7 +1600,7 @@
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="核保员意见:"
-                v-model="textarea2"
+                v-model="aprove.remark"
               ></el-input>
             </el-col>
             <el-button
@@ -1782,7 +1790,7 @@ export default {
       tableList: [{}],
       value: "",
       relationDialog: false,
-      form: {},
+      aprove: {},
       rules: {},
       radio: 1,
       tableData: [], // 保费折扣率 弹框 列表
@@ -1851,45 +1859,55 @@ export default {
     },
     // 提交审核
     submit(){
-      // debugger
-      // let key = {
-      //   businessNo:  12321,
-      //   businessType: 'H',
-      //   usercode: "A000"
-      // };
-      // this.$fetch.post(this.HOST + this.$url.saveUwPayee, key).then(data => {
-      //   console.log(data);
-      //   this.subOptions = data.selectPath;
-      //   this.outerVisible = true;
-      // });
+      
 
     let key={
-        businessType:"1",
-        businessNo:"1",
-        userCode:"1",
+        "businessType":"T",
+        "businessNo":"TDZA201945010000014005",
+        "nodeName":"市公司一级",
+        "editType":"submit",
+        "curNode":"301"
       }
       this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview, key).then(data => {
         console.log(data);
+        this.subOptions = data.mapList
+        console.log(this.subOptions)
+        this.aprove.handleText = data.uwnotion.handleText
         this.outerVisible = true;
       });
     },
     // 提交审核
     submitReview(){
-      // let key ={
-      //   businessNo: this.routeDate.businessNo || '123213'
-      // }
-      // this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview,key).then(data =>{
-      //   this.innerVisible = true
-      // })
-         let key={
-        businessType:"1",
-        businessNo:"1",
-        userCode:"1",
-      }
-      this.$fetch.post(this.HOST + this.$url.undwrtSubmitToExamine,key).then(data =>{
-        console.log(data)
-        this.innerVisible = true
-      })
+       let keyWords ={
+          "businessType": "T",
+          "businessNo": "TDZA201945010000014005",
+          "nodeCode": this.aprove.nodeCode,
+          "prepusercode": "",  // 当前登录人code
+          "uwnotion": {
+              "handleText": this.aprove.handleText + this.aprove.inspSpeak + ';' + this.aprove.remark,
+
+          }
+        }
+        let url = ''
+        switch (this.aprove.nodeCode) {
+          case '000': // 通过
+             url = this.HOST + this.$url.undwrtendTask
+            break;
+          case '999': // 驳回
+            url = this.HOST + this.$url.undwrtworkReject
+            break
+          default: // 其他
+            url = this.HOST + this.$url.undwrtSubmitToExamine
+            break;
+        }
+        this.$fetch.post(url,keyWords).then(data =>{
+          console.log(data)
+          this.outerVisible = false;
+          this.innerVisible = true
+        })
+     
+      
+    
     },
     //初始化
     init() {

@@ -69,7 +69,9 @@ module.exports  = {
     autoDistributeElectricPinChannels: '/autoDistribute/electricPinChannels', // 电销渠道
     autoDistributeEndorsementInfo: '/autoDistribute/endorsementInfo', // 批单
     undwrtSubmitReview: '/undwrt/submitReview', // 提交审核新按钮
-    undwrtSubmitToExamine: '/undwrt/submitToExamine', // 提交审核新弹窗
+    undwrtSubmitToExamine: '/undwrt/submitToExamine', // 其他时 提交审核新弹窗
+    undwrtendTask: '/undwrt/endTask',  // 选择通过时的 提交审核
+    undwrtworkReject: '/undwrt/workReject',  // 选择下发时的 提交审核
     
     uwIDSVehicleViewQuerySelect:'/undwrt/idsQuery',//赔付率详情查询
     userLoginLogout: '/userLogin/logout', // 注销

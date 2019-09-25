@@ -10,11 +10,11 @@
           
           <div v-for="(flowlog,index) in flowlogList" 
           :key="index" :class="(index +1 ) != flowlogList.length? 'border-btm-gra' : ''" >
-            <el-form label-width="120px">
+            <el-form label-width="120px" disabled>
               <el-row :gutter="20">
                   <el-col :span="8">
                       <el-form-item label="序号"> 
-                          <el-input v-model="flowlog.id" :disabled="true"></el-input>
+                          <el-input :value="index +1" :disabled="true"></el-input>
                       </el-form-item>
                   </el-col>
                   <el-col :span="8">
