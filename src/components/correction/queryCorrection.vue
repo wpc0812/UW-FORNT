@@ -166,7 +166,7 @@
         <el-table-column prop="costRateUpper" label="手续费上限"></el-table-column>
         <el-table-column prop="costRateBIUpper" label="商业险跟单手续费上限"></el-table-column>
         <el-table-column prop="valid" label="核保类别"></el-table-column>
-        <el-table-column prop="finishDate" label="控制结束日期"></el-table-column>
+        <el-table-column prop="finishDateString" label="控制结束日期"></el-table-column>
         <el-table-column prop="handlerUser" label="特批操作员"></el-table-column>
         <el-table-column label="修改">
           <template slot-scope="scope">

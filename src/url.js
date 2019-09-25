@@ -13,6 +13,7 @@ module.exports  = {
     underWriterInforUpdateCkecker: '/updateCkecker', // 核保人员 修改
     underWriterInforDeleteChechker: '/deleteCkecker', // 删除
     //  ----- 超权限车队 start ----
+    rtAddLastFourYearPayPercen: '/motorcade/lastFourYearPayPercen', //超权限车队  根据不同条件查询
     rtAddGetUnder: '/motorcade/getUnderwritingTaskList', //超权限车队  根据不同条件查询
     rtAddFindMotorcadeMain: '/motorcade/findMotorcadeMainByMotorcadeNo', //超权限车队  异地已上报根据业务号查询查询
     rtAddSaves:'/motorcade/motorcadeMainSave', //超权限车队  异地新增

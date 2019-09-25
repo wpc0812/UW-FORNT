@@ -127,6 +127,7 @@ export default {
         type: "1"
       },
       relations: [
+        { value: "全部", label: "" },
         { value: "1_被保险人", label: "1" },
         { value: "2_投保人", label: "2" }
       ],
@@ -189,6 +190,7 @@ export default {
       .post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
       .then(res => {
         for (let i = 0; i < res.length; i++) {
+          res[i].state=res[i].state.trim()
           for (let j = 0; j < this.state.length; j++) {
             if (res[i].state == this.state[j].label)
               res[i].state = this.state[j].value;

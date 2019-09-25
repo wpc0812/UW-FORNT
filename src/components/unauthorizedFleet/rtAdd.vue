@@ -65,6 +65,7 @@
                       v-model="UwMotorcadeMainVO.businessNature"
                       clearable
                       placeholder="请选择"
+                      @change="renewalny"
                     >
                       <el-option
                         v-for="item in carmainmodelvalue"
@@ -78,18 +79,14 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <el-button
-                      @click="selectHistory"
-                      size="small"
-                      text="primary"
-                    >查询</el-button>
+                    <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="车队车辆总数:" prop="carcountAll">
-                    <el-input v-model="UwMotorcadeMainVO.carcountAll"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.carcountAll" maxlength="6" type="number"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -99,12 +96,20 @@
                     label-width="175px"
                     class="text-left"
                   >
-                    <el-input v-model="UwMotorcadeMainVO.estimatedPremiumSize"></el-input>
+                    <el-input
+                      v-model="UwMotorcadeMainVO.estimatedPremiumSize"
+                      maxlength="4"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="异地车数量:" prop="foreigncarcount" class="text-left">
-                    <el-input v-model="UwMotorcadeMainVO.foreigncarcount"></el-input>
+                    <el-input
+                      v-model="UwMotorcadeMainVO.foreigncarcount"
+                      maxlength="6"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -142,7 +147,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="控制结束日期:" prop="finishdate">
+                  <el-form-item label="控制结束日期:" prop="finishdate" class="labelheight1">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
                       v-model="UwMotorcadeMainVO.finishdate"
@@ -152,16 +157,18 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="text-left">
-                    <el-input v-model="UwMotorcadeMainVO.costRateUpper"></el-input>
+                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight1">
+                    <el-input v-model="UwMotorcadeMainVO.costRateUpper" type="number"></el-input>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item label="监控方案:" class="text-left">
+                  <el-form-item label="监控方案:" class="labelheight1" prop="monitoringProgramme">
                     <el-input
                       type="textarea"
                       :rows="1"
+                      maxlength="99"
+                      :autosize="{ minRows: 2, maxRows: 4}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
                   </el-form-item>
@@ -169,22 +176,36 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="承保条件:" prop="underWritingCondition">
+                  <el-form-item label="承保条件:" class="labelheight1" prop="underWritingCondition">
                     <el-input
                       type="textarea"
                       :rows="1"
+                      maxlength="99"
+                      :autosize="{ minRows: 2, maxRows: 4}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="关联关系人名称:" class="text-left">
-                    <el-input type="textarea" :rows="1" v-model="UwMotorcadeMainVO.insuredNameSUB"></el-input>
+                  <el-form-item label="关联关系人名称:" class="labelheight1">
+                    <el-input
+                      type="textarea"
+                      :rows="1"
+                      maxlength="59"
+                      :autosize="{ minRows: 2, maxRows: 4}"
+                      v-model="UwMotorcadeMainVO.insuredNameSUB"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="备注:" class="text-left">
-                    <el-input type="textarea" :rows="1" v-model="UwMotorcadeMainVO.remark"></el-input>
+                  <el-form-item label="备注:" class="labelheight1">
+                    <el-input
+                      type="textarea"
+                      :rows="1"
+                      maxlength="99"
+                      :autosize="{ minRows: 2, maxRows: 4}"
+                      v-model="UwMotorcadeMainVO.remark"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -219,18 +240,183 @@
         <el-button type="primary" @click="valLen()">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="请选择"
+      class="checkboxmargin"
+      :visible.sync="SelectMsgDialog"
+      width="50%"
+      :before-close="handleClose"
+      :lock-scroll="false"
+    >
+      <div>
+        <el-card class="circular mt4 shadow">
+          <template slot="title">
+            <div class="title-blue-bar"></div>
+            <div class="card-title">请输入查询条件</div>
+          </template>
+          <el-form :model="UwMotorcadeMainVOs" label-width="150px">
+            <el-row>
+              <el-row class="el_row_msg">
+                <el-col :span="10">
+                  <el-form-item label="姓名:">
+                    <el-input v-model="UwMotorcadeMainVOs.insuredName"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="客户编码:">
+                    <el-input v-model="UwMotorcadeMainVOs.insuredCode"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row class="text_select">
+                <el-col class="querycenter">
+                  <el-button @click="querySelect()" size="mini" type="primary">查询</el-button>
+                </el-col>
+              </el-row>
+            </el-row>
+          </el-form>
+          <el-table
+            :data="resultSelect"
+            stripe
+            tooltip-effect="dark"
+            :cell-style="{'text-align': 'center'}"
+            :header-cell-style="{'text-align': 'center'}"
+            :header-cell-class-name="'table-header-bg'"
+          >
+            <el-table-column prop="customerCode" label="客户编码"></el-table-column>
+            <el-table-column prop="customerCName" label="姓名"></el-table-column>
+            <el-table-column prop="identifyNumber" label="证件号码"></el-table-column>
+            <el-table-column prop="applicCode" label="选择">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="choseCode(scope.row)"
+                >选择</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </div>
+      <span slot="footer">
+        <el-button @click="SelectMsgDialog = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
+import SelectMsg from "./selectMSg";
 
 export default {
   name: "rtAdd",
   data() {
+    //车队车辆总数
+    var carcountAllEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 6) {
+        callback(new Error("最多为5位"));
+      } else if (
+        parseInt(value) < parseInt(this.UwMotorcadeMainVO.foreigncarcount)
+      ) {
+        this.$refs["UwMotorcadeMainVO"].clearValidate("carcountAll");
+        callback(new Error("车队车辆总数大于等于异地车数量"));
+      } else if (
+        parseInt(value)<0
+      ) {
+        callback(new Error("车队车辆总数只能为正整数"));
+      }else if (
+        parseInt(value) >= parseInt(this.UwMotorcadeMainVO.foreigncarcount) &&
+        this.UwMotorcadeMainVO.foreigncarcount.length > 0 &&
+        this.UwMotorcadeMainVO.foreigncarcount.length <= 6
+      ) {
+        callback();
+      }
+    };
+    // 异地车数量
+    var foreigncarcountEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 6) {
+        callback(new Error("最多为5位"));
+      } else if (
+        parseInt(value)<0
+      ) {
+        callback(new Error("异地车辆数只能为正整数"));
+      }else if (
+        parseInt(value) > parseInt(this.UwMotorcadeMainVO.carcountAll)
+      ) {
+        this.$refs["UwMotorcadeMainVO"].clearValidate("foreigncarcount");
+        callback(new Error("车队车辆总数小于异地车辆数,请修改"));
+      } else if (
+        parseInt(value) <= parseInt(this.UwMotorcadeMainVO.carcountAll) &&
+        this.UwMotorcadeMainVO.carcountAll.length > 0 &&
+        this.UwMotorcadeMainVO.carcountAll.length <= 6
+      ) {
+        callback();
+      }
+    };
+    //商业险手续费上限/^\d+.?\d{0,2}$/
+    var costRateUpperEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if(value&&parseFloat(value)<0){
+        callback(new Error("商业险手续费上限应该大于0"));
+      }else if (value && !/^\d+.?\d{0,2}$/.test(value)) {
+        callback(new Error("最多保留两位小数"));
+      } else if (value && /^\d+.?\d{0,2}$/.test(value)) {
+        callback();
+      }
+    };
+    // 控制结束日期
+    var finishdateEcc = (rules, value, callback) => {
+      let str = this.UwMotorcadeMainVO.finishdate.replace("/-/g", "/");
+      let newTime = new Date(str).getTime();
+      if (!value) {
+        callback(new Error("结束日期为必填项"));
+      } else if (
+        value &&
+        newTime < new Date().getTime() - 24 * 60 * 60 * 1000
+      ) {
+        callback(new Error("选中日期应大于等于当前日期"));
+      } else if (
+        value &&
+        newTime >= new Date().getTime() - 24 * 60 * 60 * 1000
+      ) {
+        callback();
+      }
+    };
+     // 预估保费规模
+     var estimatedPremiumSizeEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 4) {
+        callback(new Error("最多为4位"));
+      } else if (
+        parseInt(value)<0
+      ) {
+        callback(new Error("预估保费规模只能为正整数"));
+      }else if (value&&parseInt(value)>0&&value.length <=4
+      ) {
+        callback();
+      }
+    };
+    // 监控方案
+    var monitoringProgrammeEcc = (rules, value, callback) => {
+      if (value && value.length > 100) {
+        callback(new Error("监控方案为100字以内"));
+      } else if (value && value.length <= 100) {
+        callback();
+      }
+    };
     return {
+      resultSelect: [],
+      SelectMsgDialog: false,
       val: [],
+      businessDis: false,
       transferItems: [], // 穿梭框 数据
       transferItem: [], // 穿梭框 绑定数据
       transfetTitle: ["已选择", "为选择"],
@@ -241,6 +427,10 @@ export default {
       carmainareaLabel: "",
       transferDialog: false,
       transferType: "",
+      UwMotorcadeMainVOs: {
+        insuredName: "",
+        insuredCode: ""
+      },
       UwMotorcadeMainVO: {
         comcode: "",
         insuredflag: "",
@@ -256,7 +446,7 @@ export default {
         finishdate: "",
         costRateUpper: "",
         underWritingCondition: "",
-        type:"1"
+        type: "1"
       },
       relationss: [
         { value: "1_被保险人", label: "1" },
@@ -265,7 +455,7 @@ export default {
       carmainmodelvalue: [
         { value: "新车车队", label: "1" },
         { value: "转入车队", label: "2" },
-        { value: "续保车队", label: "3", disabled: true }
+        { value: "续保车队", label: "3" }
       ],
       rules: {
         comcode: [
@@ -290,13 +480,24 @@ export default {
           { required: true, message: "业务来源必选", trigger: ["change"] }
         ],
         carcountAll: [
-          { required: true, message: "车队车辆总数必填", trigger: ["blur"] }
+          {
+            required: true,
+            message: "车队车辆总数必填项",
+            trigger: ["change"]
+          },
+          { validator: carcountAllEcc, trigger: ["blur", "change"] }
         ],
         estimatedPremiumSize: [
-          { required: true, message: "预估保费规模必填", trigger: ["blur"] }
+          {
+            required: true,
+            message: "必填项，且只能输入数字",
+            trigger: ["blur"]
+          },
+          { validator: estimatedPremiumSizeEcc, trigger: ["blur", "change"] }
         ],
         foreigncarcount: [
-          { required: true, message: "异地车辆数必填", trigger: ["blur"] }
+          { required: true, message: "异地车数量必填项", trigger: ["change"] },
+          { validator: foreigncarcountEcc, trigger: ["blur", "change"] }
         ],
         carCadastral: [
           { required: true, message: "涉及车籍地必选", trigger: ["change"] }
@@ -312,13 +513,28 @@ export default {
           { required: true, message: "车辆主要使用地必选", trigger: ["change"] }
         ],
         finishdate: [
-          { required: true, message: "控制结束日期必选", trigger: ["change"] }
+          {
+            required: true,
+            message: "控制结束日期为必选项",
+            trigger: ["change"]
+          },
+          { validator: finishdateEcc, trigger: ["blur", "change"] }
         ],
         costRateUpper: [
-          { required: true, message: "商业险手续费上限必填", trigger: ["blur"] }
+          { required: true, message: "商业险为必填项", trigger: ["change"] },
+          { validator: costRateUpperEcc, trigger: ["blur", "change"] }
+        ],
+        monitoringProgramme: [
+          { validator: monitoringProgrammeEcc, trigger: ["blur", "change"] },
         ],
         underWritingCondition: [
-          { required: true, message: "承保条件必填", trigger: ["blur"] }
+          { required: true, message: "承保条件必填", trigger: ["blur"] },
+          {
+            min: 0,
+            max: 99,
+            message: "输入最多在100个汉字之内",
+            trigger: ["change", "blur"]
+          }
         ]
       },
       activeNames: ["1"],
@@ -328,6 +544,51 @@ export default {
   },
   computed: {},
   methods: {
+    // 续保判断
+    renewalny(){
+      console.log(this.UwMotorcadeMainVO.businessNature)
+      if(this.UwMotorcadeMainVO.businessNature=="3"){
+        if(this.UwMotorcadeMainVO.insuredflag!=""&&this.UwMotorcadeMainVO.insuredName!=""){
+        let uwMotorcadeMainVO={ 
+          insuredflag:this.UwMotorcadeMainVO.insuredflag,
+          insuredName:this.UwMotorcadeMainVO.insuredName,
+        }
+        this.$fetch
+        .post(this.HOST + this.$url.rtAddLastFourYearPayPercen, uwMotorcadeMainVO)
+        .then(res => {
+          console.log(res);
+          if(res!=="false"){
+            this.UwMotorcadeMainVO.businessNature="3";
+          }else{
+            alert("没有历史数据，不可以选择续保车队");
+            this.UwMotorcadeMainVO.businessNature="1";
+          }
+        });
+        }else{
+          
+          alert("关系人标志和关系人名称不能为空");
+          this.UwMotorcadeMainVO.businessNature="1";
+        }
+      
+        
+      }
+    },
+    //弹窗查询
+    querySelect() {
+      let uwMotorcadeMainVO = this.UwMotorcadeMainVOs;
+      this.$fetch
+        .post(this.HOST + this.$url.rtAddToInsured, uwMotorcadeMainVO)
+        .then(res => {
+          console.log(res);
+          this.resultSelect = res;
+        });
+    },
+    //弹窗选择
+    choseCode(row) {
+      this.UwMotorcadeMainVO.insuredName = row.customerCName;
+      this.UwMotorcadeMainVO.insuredCode = row.customerCode;
+      this.SelectMsgDialog = false;
+    },
     // 穿梭框 change 事件
     transferChange(value, direction, movedKeys) {
       // console.log(this.datas)
@@ -342,10 +603,8 @@ export default {
       let label = [];
       for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < options.length; j++) {
-          // console.log(items[i].value,options[j])
           if (items[i].value === options[j]) {
             label.push(items[i].label);
-            // console.log(label);
           }
         }
       }
@@ -422,7 +681,7 @@ export default {
                       type: "success",
                       message: "保存成功!"
                     });
-                    this.$router.go(-1)
+                    this.$router.go(-1);
                   });
               })
               .catch(() => {
@@ -436,13 +695,39 @@ export default {
     },
     //通过关系人代码
     selectCode() {
-      // this.$router.push({path: '/selectMSg',query:{row:this.UwMotorcadeMainVO.insuredCode}})
-      this.$router.push({ path: "/selectMSg" });
+      if (this.UwMotorcadeMainVO.insuredCode) {
+        let _this=this
+        this.UwMotorcadeMainVOs.insuredCode = this.UwMotorcadeMainVO.insuredCode;
+        this.$fetch
+          .post(this.HOST + this.$url.rtAddToInsured, this.UwMotorcadeMainVOs)
+          .then(res => {
+            console.log(res);
+            if (res) {
+              _this.resultSelect = res;
+              this.SelectMsgDialog = true;
+            }
+          });
+      } else {
+        return;
+      }
     },
-    //通过关系人代码
+    //通过关系人名称
     selectName() {
-      //  this.$router.push({path: '/selectMSg',query:{row:this.UwMotorcadeMainVO.insuredName}})
-      this.$router.push({ path: "/selectMSg" });
+      if (this.UwMotorcadeMainVO.insuredName) {
+        let _this=this
+        this.UwMotorcadeMainVOs.insuredName = this.UwMotorcadeMainVO.insuredName;
+          this.$fetch
+          .post(this.HOST + this.$url.rtAddToInsured, this.UwMotorcadeMainVOs)
+          .then(res => {
+            console.log(res);
+            if (res) {
+              _this.resultSelect = res;
+              this.SelectMsgDialog = true;
+            }
+          });
+      } else {
+        return;
+      }
     },
     //历史赔付率
     selectHistory() {
@@ -459,7 +744,7 @@ export default {
           // window.open("http://www.baidu.com")
           window.open(data);
         });
-    },
+    }
   },
 
   created() {
@@ -467,33 +752,18 @@ export default {
 };
 </script>
 <style scoped>
-/* .el-input--small >>> .el-input__inner {
-  height: 25px;
-  line-height: 25px;
-} */
 .peoCode {
   width: 150px;
   float: left;
 }
-/* .selectCode {
-  display: inline-block;
-  width: 40px;
-  height: 25px;
-  margin-top: 3px;
-  padding: 2px 2px 0 2px;
-} */
 .selectCode {
   position: relative;
   left: -22px;
   top: 0px;
 }
-
 .el-form >>> label {
   font-size: 12px;
 }
-/* .UwMotorcadeMainVOupdate >>>.el-input__inner{
-  border-radius: 0px;
-    } */
 .UwMotorcadeMainVOupdate >>> .el-form-item__label {
   background: #e8f6f9;
 }
@@ -523,5 +793,16 @@ export default {
   color: #0066cc;
   text-decoration: none;
   margin-left: 13px;
+}
+.labelheight1 >>> .el-form-item__label,
+.labelheight1 >>> .el-input__inner {
+  line-height: 50px;
+  height: 50px;
+}
+.querycenter {
+  text-align: center;
+}
+.checkboxmargin >>> .el-dialog__footer {
+  text-align: center;
 }
 </style>

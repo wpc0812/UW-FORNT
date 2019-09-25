@@ -182,6 +182,7 @@ export default {
         .post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
         .then(res => {
           for (let i = 0; i < res.length; i++) {
+            res[i].state=res[i].state.trim()
             for (let j = 0; j < this.state.length; j++) {
               if (res[i].state == this.state[j].label)
                 res[i].state = this.state[j].value;

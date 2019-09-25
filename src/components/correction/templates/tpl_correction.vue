@@ -350,7 +350,6 @@ export default {
   methods: {
     uploadname(file) {
       this.UwctrlVO.licenses = file.name;
-      console.log(file.name);
     },
     // 成功回调
     open2() {
@@ -410,13 +409,10 @@ export default {
     },
     // 文件上传成功回调
     onSuccess(esponse, file, fileList) {
-      // console.log(esponse, file, fileList);
     },
     handleRemove(file, fileList) {
-      // console.log(file, fileList);
     },
     handlePreview(file) {
-      // console.log(file);
     },
     // 文件上传
     customUpload(file) {

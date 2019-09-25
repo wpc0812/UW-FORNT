@@ -1,8 +1,6 @@
 <template>
   <div>
     <el-card class="circular mt4 shadow">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item name="1">
           <template slot="title">
             <div class="title-blue-bar"></div>
             <div class="card-title">请输入查询条件</div>
@@ -28,8 +26,6 @@
               </el-row>
             </el-row>
           </el-form>
-        </el-collapse-item>
-      </el-collapse>
     </el-card>
     <el-card>
       <el-table
@@ -43,14 +39,17 @@
         <el-table-column prop="businessNo" label="客户编码"></el-table-column>
         <el-table-column prop="contractNo" label="姓名"></el-table-column>
         <el-table-column prop="insuredFlag" label="证件号码"></el-table-column>
-        <el-table-column prop="applicCode" label="选择"></el-table-column>
+        <el-table-column prop="applicCode" label="选择">
+          <template slot-scope="scope">
+                  <el-button type="text" size="small" @click="choseCode(scope.row)" v-if="states=='0'||states=='1'">选择</el-button>
+                </template>
+              </el-table-column>
       </el-table>
     </el-card>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { relations } from "@/assets/js/baseCode";
 export default {
   name: "selectMSg",
   data() {
@@ -59,22 +58,13 @@ export default {
         insuredName: "",
         insuredCode: ""
       },
-      activeNames: ["1"],
-      rtAdd: {},
       results: [],
-      datas: {
-        id: "450001000100002",
-        name: "",
-        hid: "12354644",
-        chose: "选择"
-      },
-      relations,
-      flag: false
     };
   },
   computed: {},
 
   methods: {
+    //查询
     query() {
       // console.log(this.UwMotorcadeMainVO);
       let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
@@ -87,6 +77,10 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    //选择
+    choseCode(row){
+      this.$router.push({path: '/rtAdd',query:{businessNo:row.businessNo,contractNo:row.contractNo}})
     }
   },
   created() {

@@ -522,7 +522,7 @@
             "id": 31,
             "path": "/otReported",
             "iconCls": "el-icon-edit",
-            "name": "qt已上报车队",
+            "name": "已上报车队",
             "component": "OtReported",
             "children": [],
             "meta": {
@@ -534,7 +534,7 @@
             "id": 32,
             "path": "/otAdd",
             "iconCls": "el-icon-edit",
-            "name": "qt新增车队",
+            "name": "新增车队",
             "component": "OtAdd",
             "children": [],
             "meta": {

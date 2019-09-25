@@ -37,7 +37,7 @@
     </el-card>
 
     <!-- 弹窗  -->
-    <el-dialog title="提示" class="zhuxiao" :visible.sync="centerDialogVisible" width="30%" center>
+    <el-dialog title="提示" class="zhuxiao" :visible.sync="centerDialogVisible" width="20%" center>
       <span>确认删除???</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="yes">确 定</el-button>
@@ -83,7 +83,7 @@ export default {
       this.centerDialogVisible = false;
       // console.log("111")
       this.$fetch
-        .get(this.HOST + this.$url.deletebatchDel, {params: {motorcadeNo: this.$route.query.motorcadeNo,batchNo: this.$route.query.row}})
+        .get(this.HOST + this.$url.deletebatchDel, {params: {uwmotorcademainid:this.$route.query.uwmotorcademainid,batchNo: this.$route.query.row}})
         .then(res => {
           console.log(res);
           setTimeout(()=>{
@@ -102,11 +102,11 @@ export default {
   created() {
     // console.log(this.$route.query.row,this.$route.query.motorcadeNo);
     this.$fetch
-      .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
-        params: { motorcadeNo: this.$route.query.motorcadeNo }
+      .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
+        params: {uwmotorcademainid:this.$route.query.uwmotorcademainid}
       })
       .then(res => {
-        this.results = res.uwMotorcadeInfos;
+        this.results = res
         console.log(res);
       });
   }

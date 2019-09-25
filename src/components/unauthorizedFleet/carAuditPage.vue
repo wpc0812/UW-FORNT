@@ -209,7 +209,7 @@
                 > <div class="textcontent"> {{UwMotorcadeInfoVO.finishdate}}天</div></el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="states=='0'||states=='5'">
+            <el-row v-if="this.displaynone=='0'||this.displaynone=='5'">
               <el-col :span="10">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
@@ -422,6 +422,7 @@ export default {
   name: "carAuditPage",
   data() {
     return {
+      displaynone:"",
       dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
@@ -510,15 +511,15 @@ export default {
       });
     },
     //新增文件选取
-    addUploadname(file, fileList) {
+    addUploadname(file) {
       if (file) {
-        this.UwMotorcadeInfoVO.addpici = file.name;
-        console.log(file.name, this.UwMotorcadeInfoVO.addpici);
+        this.$set( this.UwMotorcadeInfoVO,'appici',file.name)
         let formData = new FormData();
         formData.append("file", file.raw);
         formData.append("id", this.uwmotorcademainids);
         this.uploading = true;
         this.formDataAdd = formData;
+        this.$forceUpdate()        
       }
     },
     // 新增文件上传
@@ -531,20 +532,23 @@ export default {
         },
         data: this.formDataAdd
       }).then(res => {
-        console.log(res);
+        console.log(res,typeof res);
+        if(res==true){
+           this.displaynone="8"
+           this.$forceUpdate();
+        }
       });
     },
     //修改文件选取
     upUploadname(file, fileList) {
       if (file) {
-        this.UwMotorcadeInfoVO.uppici = file.name;
-        console.log(file.name, this.UwMotorcadeInfoVO.uppici);
         let formData = new FormData();
         formData.append("file", file.raw);
         formData.append("motorcadeNo",this.UwMotorcadeInfoVO.motorcadeNo);
         this.uploading = true;
+        this.UwMotorcadeInfoVO.uppici = file.name;
         this.formDataUP = formData;
-        // console.log(formData, this.formDataUP);
+        this.$forceUpdate()
       }
     },
     //修改文件上传
@@ -742,6 +746,9 @@ export default {
           }
         })
         .then(res => {
+           for (let i = 0; i < res.length; i++) {
+            res[i].state=res[i].state.trim()
+           }
           this.results = res;
           console.log(res);
         });
@@ -875,6 +882,7 @@ export default {
     this.init();
     this.parameter = this.$route.query;
     this.states = this.$route.query.state;
+    this.displaynone=this.$route.query.state;
   }
 };
 </script>

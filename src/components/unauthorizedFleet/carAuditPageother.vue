@@ -209,7 +209,7 @@
                 ><div class="textcontent"> {{UwMotorcadeInfoVO.finishdate}}天</div></el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="states=='0'||states=='5'">
+            <el-row v-if="this.displaynone=='0'||this.displaynone=='5'">
               <el-col :span="10">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
@@ -239,7 +239,7 @@
                 <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                <a class="dec" :href="httphref" download="UwMotorcadeMainModel.xls">号牌号码导入模板下载</a>
+                <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
             <el-row v-if="states=='0'||states=='1'||states=='2 '||states=='5'||states=='4'">
@@ -422,6 +422,7 @@ export default {
   name: "carAuditPageother",
   data() {
     return {
+      displaynone:"",
       dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
@@ -511,14 +512,14 @@ export default {
     },
     //新增文件选取
     addUploadname(file, fileList) {
+      this.UwMotorcadeInfoVO.appici = file.name;
       if (file) {
-        this.UwMotorcadeInfoVO.addpici = file.name;
-        console.log(file.name, this.UwMotorcadeInfoVO.addpici);
         let formData = new FormData();
         formData.append("file", file.raw);
         formData.append("id", this.uwmotorcademainids);
         this.uploading = true;
         this.formDataAdd = formData;
+        this.$forceUpdate();
       }
     },
     // 新增文件上传
@@ -532,19 +533,23 @@ export default {
         data: this.formDataAdd
       }).then(res => {
         console.log(res);
+        if(res==true){
+          this.displaynone="8"
+          this.$forceUpdate();
+          // this.states=
+        }
       });
     },
     //修改文件选取
     upUploadname(file, fileList) {
       if (file) {
-        this.UwMotorcadeInfoVO.uppici = file.name;
-        console.log(file.name, this.UwMotorcadeInfoVO.uppici);
         let formData = new FormData();
         formData.append("file", file.raw);
         formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
         this.uploading = true;
+        this.UwMotorcadeInfoVO.uppici = file.name;
         this.formDataUP = formData;
-        // console.log(formData, this.formDataUP);
+        this.$forceUpdate()
       }
     },
     //修改文件上传
@@ -603,7 +608,7 @@ export default {
     },
     submitTask() {
       let picc = {
-        motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
+        businessNo: this.UwMotorcadeInfoVO.motorcadeNo,
         userCode: "userCode",
         handleText: this.textarea2,
         userName: "userName"
@@ -737,10 +742,13 @@ export default {
         .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
           params: {
             licenseNo: this.UwMotorcadeInfoVO.licenseNo,
-            motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo
+            uwmotorcademainid:this.uwmotorcademainids
           }
         })
         .then(res => {
+           for (let i = 0; i < res.length; i++) {
+            res[i].state=res[i].state.trim()
+           }
           this.results = res;
           console.log(res);
         });
@@ -873,6 +881,7 @@ export default {
     this.init();
     this.parameter = this.$route.query;
     this.states = this.$route.query.state;
+    this.displaynone=this.$route.query.state;
   }
 };
 </script>
