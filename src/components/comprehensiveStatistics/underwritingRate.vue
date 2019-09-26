@@ -121,17 +121,10 @@ export default {
       if(!this.underwritingRate.startDate || !this.underwritingRate.endDate){
         return
       } else{
-        let date = (new Date(this.underwritingRate.endDate) - new Date(this.underwritingRate.startDate))/ (1000 * 60 * 60 * 24)  
-        if (date < 0) {
-          this.$message.error('截止日期不能小于其实日期');
+        if (!utils.dateLimit(this.underwritingRate.startDate,this.underwritingRate.endDate,90))  {
           this.underwritingRate.endDate =''
-          return
         }
-        if (date > 90) {
-          this.$message.error('查询周期不能大于90天');
-          this.underwritingRate.endDate =''
-          return
-        }
+       
       }
 
     }

@@ -17,6 +17,7 @@
                       v-model="distributedMonitoring.startDate"
                       value-format="yyyy-MM-dd"
                       type="date"
+                      @change="checkDateLimit"
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
@@ -27,6 +28,7 @@
                       v-model="distributedMonitoring.endDate"
                       value-format="yyyy-MM-dd"
                       type="date"
+                      @change="checkDateLimit"
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
@@ -140,7 +142,17 @@ export default {
     // 已处理展开关闭状态
     processed(val) {
       this.task.tab2 = val;
-    }
+    },
+    checkDateLimit(){
+      if(!this.distributedMonitoring.startDate || !this.distributedMonitoring.endDate){
+              return
+            } else{
+              if (!utils.dateLimit(this.distributedMonitoring.startDate,this.distributedMonitoring.endDate,90))  {
+                this.distributedMonitoring.endDate =''
+              }
+            
+            }
+          }
   },
   created() {}
 };

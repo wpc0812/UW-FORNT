@@ -22,6 +22,7 @@
                       value-format="yyyy-MM-dd"
                       v-model="returnStatistics.startDate"
                       type="date"
+                      @cheng='checkDateLimit'
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
@@ -30,6 +31,7 @@
                   <el-form-item label="截止时间:" class="text-left">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
+                      @change="checkDateLimit"
                       v-model="returnStatistics.endDate"
                       type="date"
                       placeholder="选择日期"
@@ -66,6 +68,15 @@ export default {
     exportFile() {
       let url = this.HOST + this.$url.exportArtificialReturn
       utils.axiosDown(url,this.returnStatistics)
+    },
+    checkDateLimit(){
+      
+      if(this.returnStatistics.startDate && this.returnStatistics.endDate){
+        if(!utils.dateLimit(this.returnStatistics.startDate,this.returnStatistics.endDate,90)){
+          this.this.returnStatistics.endDate = ''
+        }
+
+      }
     }
   },
   created() {}

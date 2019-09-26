@@ -1,4 +1,5 @@
 import axios from "axios"
+import {Message}  from 'element-ui'
 export default {
     //字符串转数组
    stringToArray(string){
@@ -183,14 +184,29 @@ export default {
             link.click()
           })
     },
+    // 获取 路由 token
     getUrlToken(name){
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
         if(r!=null)return  unescape(r[2]); return null;
       
     },
+    // 移除 token
     removeToken(){
         sessionStorage.removeItem("token")
+    },
+    // 判断日期范围大于在多少天之内
+    dateLimit(start,end,days){
+        let date =  (new Date(end) - new Date(start))/ (1000 * 60 * 60 * 24)
+        if (date < 0) {
+            Message.error('截止日期不能小于其实日期');
+            return false
+          } 
+          if (date > days) {
+            Message.error('查询周期不能大于' + days +'天');
+            return false
+          }
     }
+    
     
 }

@@ -44,28 +44,33 @@
               </el-row>
               <el-row>
                 <el-form-item label="一级业务类型:" class="text-left">
-                  <el-checkbox-group
+                  <el-radio-group
+                   @change='chooseControl("one")'
                     v-model="summaryForm.levelOneBusinessType"
                   >
-                    <el-checkbox
+                    <el-radio
                       v-for="state in status1"
                       :label="state.code"
                       :key="state.code"
-                    >{{state.value}}</el-checkbox>
-                  </el-checkbox-group>
+                     
+                    >{{state.value}}</el-radio>
+                  </el-radio-group>
                 </el-form-item>
               </el-row>
               <el-row>
                 <el-form-item label="二级业务类型:" class="text-left">
-                  <el-checkbox-group
+                  <el-radio-group
+                  @change='chooseControl("two")'
                     v-model="summaryForm.levelTwoBusinessType"
                   >
-                    <el-checkbox
+                    <el-radio
+
                       v-for="state in status2"
                       :label="state.code"
+                       
                       :key="state.code"
-                    >{{state.value}}</el-checkbox>
-                  </el-checkbox-group>
+                    >{{state.value}}</el-radio>
+                  </el-radio-group>
                 </el-form-item>
               </el-row>
               
@@ -114,8 +119,8 @@ export default {
       summaryForm: {
         state: "1",
         businessStates: [],
-        levelOneBusinessType: [],
-        levelTwoBusinessType: [],
+        levelOneBusinessType: '',
+        levelTwoBusinessType:'',
       },
       
     };
@@ -139,6 +144,19 @@ export default {
            this.status1.pop({ code: "12", value: "续保报备"})
         }
     },
+
+    chooseControl(level){
+      console.log(level)
+      switch (level) {
+        case 'one':
+          this.summaryForm.levelTwoBusinessType = ''
+          break;
+      
+        case 'two':
+          this.summaryForm.levelOneBusinessType = ''
+          break;
+      }
+    }
    
   },
   created() {}
@@ -173,4 +191,5 @@ export default {
 .el-card >>> .el-card__header{
   border: none
 }
+
 </style>
