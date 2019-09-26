@@ -17,6 +17,7 @@
                       v-model="underwritingRate.startDate"
                       value-format="yyyy-MM-dd"
                       type="date"
+                      @change="checkDateLimit"
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
@@ -27,6 +28,7 @@
                       v-model="underwritingRate.endDate"
                       value-format="yyyy-MM-dd"
                       type="date"
+                      @change="checkDateLimit"
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
@@ -90,7 +92,6 @@ export default {
 
   methods: {
     // ...mapActions(["getrtReported"]),
-
     query() {
        this.$fetch
         .post(this.HOST + this.$url.underwritingRateStatistics, this.underwritingRate)
@@ -101,6 +102,7 @@ export default {
     },
     // 导出 
     exportFile() {
+
       let url = this.HOST + this.$url.exportUnderwriteRate
       utils.axiosDown(url,this.underwritingRate)
     },
@@ -113,6 +115,25 @@ export default {
     // 已处理展开关闭状态
     processed(val) {
       this.task.tab2 = val;
+    },
+    // 自动通过率查询 时间范围  为90天
+    checkDateLimit(){
+      if(!this.underwritingRate.startDate || !this.underwritingRate.endDate){
+        return
+      } else{
+        let date = (new Date(this.underwritingRate.endDate) - new Date(this.underwritingRate.startDate))/ (1000 * 60 * 60 * 24)  
+        if (date < 0) {
+          this.$message.error('截止日期不能小于其实日期');
+          this.underwritingRate.endDate =''
+          return
+        }
+        if (date > 90) {
+          this.$message.error('查询周期不能大于90天');
+          this.underwritingRate.endDate =''
+          return
+        }
+      }
+
     }
   },
   created() {}
