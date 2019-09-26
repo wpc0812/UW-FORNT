@@ -65,6 +65,7 @@
                       v-model="UwMotorcadeMainVO.businessNature"
                       clearable
                       placeholder="请选择"
+                      @focus="businessNatureFocus"
                       @change="renewalny"
                     >
                       <el-option
@@ -108,6 +109,7 @@
                     <el-input
                       v-model="UwMotorcadeMainVO.foreigncarcount"
                       maxlength="6"
+                      :min="0"
                       type="number"
                     ></el-input>
                   </el-form-item>
@@ -288,11 +290,7 @@
             <el-table-column prop="identifyNumber" label="证件号码"></el-table-column>
             <el-table-column prop="applicCode" label="选择">
               <template slot-scope="scope">
-                <el-button
-                  type="text"
-                  size="small"
-                  @click="choseCode(scope.row)"
-                >选择</el-button>
+                <el-button type="text" size="small" @click="choseCode(scope.row)">选择</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -302,13 +300,25 @@
         <el-button @click="SelectMsgDialog = false">取 消</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="提示"
+      style="text-align='center'"
+      :visible.sync="dialogVisibles"
+      width="30%"
+      class="diacenter"
+      :before-close="handleClose"
+    >
+      <span>{{message}}</span>
+      <span slot="footer" class="dialog-footer dialogFooter">
+        <el-button type="primary" @click="dialogVisibles = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
-import SelectMsg from "./selectMSg";
 
 export default {
   name: "rtAdd",
@@ -324,11 +334,9 @@ export default {
       ) {
         this.$refs["UwMotorcadeMainVO"].clearValidate("carcountAll");
         callback(new Error("车队车辆总数大于等于异地车数量"));
-      } else if (
-        parseInt(value)<0
-      ) {
+      } else if (parseInt(value) < 0) {
         callback(new Error("车队车辆总数只能为正整数"));
-      }else if (
+      } else if (
         parseInt(value) >= parseInt(this.UwMotorcadeMainVO.foreigncarcount) &&
         this.UwMotorcadeMainVO.foreigncarcount.length > 0 &&
         this.UwMotorcadeMainVO.foreigncarcount.length <= 6
@@ -342,11 +350,9 @@ export default {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
         callback(new Error("最多为5位"));
-      } else if (
-        parseInt(value)<0
-      ) {
+      } else if (parseInt(value) < 0) {
         callback(new Error("异地车辆数只能为正整数"));
-      }else if (
+      } else if (
         parseInt(value) > parseInt(this.UwMotorcadeMainVO.carcountAll)
       ) {
         this.$refs["UwMotorcadeMainVO"].clearValidate("foreigncarcount");
@@ -359,13 +365,13 @@ export default {
         callback();
       }
     };
-    //商业险手续费上限/^\d+.?\d{0,2}$/
+    //商业险手续费上限
     var costRateUpperEcc = (rules, value, callback) => {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
-      } else if(value&&parseFloat(value)<0){
-        callback(new Error("商业险手续费上限应该大于0"));
-      }else if (value && !/^\d+.?\d{0,2}$/.test(value)) {
+      } else if (value && parseFloat(value) < 0) {
+        callback(new Error("商业险手续费上限应大于0"));
+      } else if (value && !/^\d+.?\d{0,2}$/.test(value)) {
         callback(new Error("最多保留两位小数"));
       } else if (value && /^\d+.?\d{0,2}$/.test(value)) {
         callback();
@@ -389,18 +395,15 @@ export default {
         callback();
       }
     };
-     // 预估保费规模
-     var estimatedPremiumSizeEcc = (rules, value, callback) => {
+    // 预估保费规模
+    var estimatedPremiumSizeEcc = (rules, value, callback) => {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 4) {
         callback(new Error("最多为4位"));
-      } else if (
-        parseInt(value)<0
-      ) {
+      } else if (parseInt(value) < 0) {
         callback(new Error("预估保费规模只能为正整数"));
-      }else if (value&&parseInt(value)>0&&value.length <=4
-      ) {
+      } else if (value && parseInt(value) > 0 && value.length <= 4) {
         callback();
       }
     };
@@ -413,6 +416,8 @@ export default {
       }
     };
     return {
+      message: "",
+      dialogVisibles: false,
       resultSelect: [],
       SelectMsgDialog: false,
       val: [],
@@ -480,24 +485,17 @@ export default {
           { required: true, message: "业务来源必选", trigger: ["change"] }
         ],
         carcountAll: [
-          {
-            required: true,
-            message: "车队车辆总数必填项",
-            trigger: ["change"]
-          },
-          { validator: carcountAllEcc, trigger: ["blur", "change"] }
+          { required: true, validator: carcountAllEcc, trigger: ["blur"] }
         ],
         estimatedPremiumSize: [
           {
             required: true,
-            message: "必填项，且只能输入数字",
+            validator: estimatedPremiumSizeEcc,
             trigger: ["blur"]
-          },
-          { validator: estimatedPremiumSizeEcc, trigger: ["blur", "change"] }
+          }
         ],
         foreigncarcount: [
-          { required: true, message: "异地车数量必填项", trigger: ["change"] },
-          { validator: foreigncarcountEcc, trigger: ["blur", "change"] }
+          { required: true, validator: foreigncarcountEcc, trigger: ["blur"] }
         ],
         carCadastral: [
           { required: true, message: "涉及车籍地必选", trigger: ["change"] }
@@ -513,19 +511,17 @@ export default {
           { required: true, message: "车辆主要使用地必选", trigger: ["change"] }
         ],
         finishdate: [
-          {
-            required: true,
-            message: "控制结束日期为必选项",
-            trigger: ["change"]
-          },
-          { validator: finishdateEcc, trigger: ["blur", "change"] }
+          { required: true, validator: finishdateEcc, trigger: ["blur"] }
         ],
         costRateUpper: [
-          { required: true, message: "商业险为必填项", trigger: ["change"] },
-          { validator: costRateUpperEcc, trigger: ["blur", "change"] }
+          { required: true, validator: costRateUpperEcc, trigger: ["blur"] }
         ],
         monitoringProgramme: [
-          { validator: monitoringProgrammeEcc, trigger: ["blur", "change"] },
+          {
+            required: true,
+            validator: monitoringProgrammeEcc,
+            trigger: ["blur"]
+          }
         ],
         underWritingCondition: [
           { required: true, message: "承保条件必填", trigger: ["blur"] },
@@ -544,33 +540,49 @@ export default {
   },
   computed: {},
   methods: {
+    //业务来源获取焦点事件
+    businessNatureFocus() {
+      if (
+        this.UwMotorcadeMainVO.insuredName == "" &&
+        this.UwMotorcadeMainVO.insuredflag == ""
+      ) {
+        this.dialogVisibles = true;
+        this.message = "请先录入关系人名称";
+      } else {
+      }
+    },
     // 续保判断
-    renewalny(){
-      console.log(this.UwMotorcadeMainVO.businessNature)
-      if(this.UwMotorcadeMainVO.businessNature=="3"){
-        if(this.UwMotorcadeMainVO.insuredflag!=""&&this.UwMotorcadeMainVO.insuredName!=""){
-        let uwMotorcadeMainVO={ 
-          insuredflag:this.UwMotorcadeMainVO.insuredflag,
-          insuredName:this.UwMotorcadeMainVO.insuredName,
+    renewalny() {
+      console.log(this.UwMotorcadeMainVO.businessNature);
+      if (this.UwMotorcadeMainVO.businessNature == "3") {
+        if (
+          this.UwMotorcadeMainVO.insuredflag != "" &&
+          this.UwMotorcadeMainVO.insuredName != ""
+        ) {
+          let uwMotorcadeMainVO = {
+            insuredflag: this.UwMotorcadeMainVO.insuredflag,
+            insuredName: this.UwMotorcadeMainVO.insuredName
+          };
+          this.$fetch
+            .post(
+              this.HOST + this.$url.rtAddLastFourYearPayPercen,
+              uwMotorcadeMainVO
+            )
+            .then(res => {
+              console.log(res);
+              if (res !== "false") {
+                this.UwMotorcadeMainVO.businessNature = "3";
+              } else {
+                this.dialogVisibles = true;
+                this.message = "没有历史数据，不可以选择续保车队";
+                this.UwMotorcadeMainVO.businessNature = "1";
+              }
+            });
+        } else {
+          this.dialogVisibles = true;
+          this.message = "关系人标志和关系人名称不能为空";
+          this.UwMotorcadeMainVO.businessNature = "1";
         }
-        this.$fetch
-        .post(this.HOST + this.$url.rtAddLastFourYearPayPercen, uwMotorcadeMainVO)
-        .then(res => {
-          console.log(res);
-          if(res!=="false"){
-            this.UwMotorcadeMainVO.businessNature="3";
-          }else{
-            alert("没有历史数据，不可以选择续保车队");
-            this.UwMotorcadeMainVO.businessNature="1";
-          }
-        });
-        }else{
-          
-          alert("关系人标志和关系人名称不能为空");
-          this.UwMotorcadeMainVO.businessNature="1";
-        }
-      
-        
       }
     },
     //弹窗查询
@@ -646,7 +658,6 @@ export default {
       this.transferItem = item; //返回或者传入的数据
       this.transferType = type; //类型（省份/车型）
       this.transferDialog = true;
-      // console.log(items,item,type)
     },
     //保存
     save() {
@@ -696,7 +707,7 @@ export default {
     //通过关系人代码
     selectCode() {
       if (this.UwMotorcadeMainVO.insuredCode) {
-        let _this=this
+        let _this = this;
         this.UwMotorcadeMainVOs.insuredCode = this.UwMotorcadeMainVO.insuredCode;
         this.$fetch
           .post(this.HOST + this.$url.rtAddToInsured, this.UwMotorcadeMainVOs)
@@ -714,9 +725,9 @@ export default {
     //通过关系人名称
     selectName() {
       if (this.UwMotorcadeMainVO.insuredName) {
-        let _this=this
+        let _this = this;
         this.UwMotorcadeMainVOs.insuredName = this.UwMotorcadeMainVO.insuredName;
-          this.$fetch
+        this.$fetch
           .post(this.HOST + this.$url.rtAddToInsured, this.UwMotorcadeMainVOs)
           .then(res => {
             console.log(res);
@@ -747,8 +758,7 @@ export default {
     }
   },
 
-  created() {
-  }
+  created() {}
 };
 </script>
 <style scoped>
@@ -803,6 +813,12 @@ export default {
   text-align: center;
 }
 .checkboxmargin >>> .el-dialog__footer {
+  text-align: center;
+}
+.diacenter {
+  text-align: center;
+}
+.diacenter >>> .el-dialog__footer {
   text-align: center;
 }
 </style>
