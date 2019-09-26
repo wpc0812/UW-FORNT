@@ -108,4 +108,7 @@ module.exports  = {
     underwritingSimpleSelect:"/comprehensiveStatistics/SimpleUnderwritingStatisticsSelect",//核保 统计 简单核保统计 查询
     underwritingSimpleExport:"/export/SimpleUnderwritingStatisticsExport",//核保 统计 简单核保统计 导出
 
+
+    demoSelect:'/demo/select'
+
 }
