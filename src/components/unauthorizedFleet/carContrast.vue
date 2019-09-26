@@ -84,7 +84,7 @@
             <el-table-column prop="underWritingCondition" label="承保条件"></el-table-column>
             <el-table-column prop="costRatemax" label="商业险手续费上限"></el-table-column>
             <el-table-column prop="monitoringProgramme" label="监控方案"></el-table-column>
-            <el-table-column prop="finishdate" label="控制结束日期"></el-table-column>
+            <el-table-column prop="finishdateString" label="控制结束日期"></el-table-column>
             <el-table-column prop="insuredNameSUB" label="关联关系人名称"></el-table-column>
             <el-table-column prop="remark" label="备注"></el-table-column>
           </el-table>
@@ -171,7 +171,6 @@ export default {
       let label = [];
       for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < options.length; j++) {
-          // console.log(items[i].value,options[j])
           if (items[i].value === options[j]) {
             label.push(items[i].label);
           }
@@ -186,9 +185,12 @@ export default {
           params: { motorcadeNo: this.$route.query.motorcadeNo }
         })
         .then(res => {
-          for (let i in res) {
-            this.results.push(res[i]);
-          }
+            this.results=res;
+            for(let i in res[0]){
+                if(res[0][i] !== res[1][i]){
+                  // console.log(res[1][i])
+                }
+            }
           for (let i = 0; i < this.results.length; i++) {
             if (this.results[i].carCadastral) {
               this.allData.carCadastral = this.results[i].carCadastral.split(

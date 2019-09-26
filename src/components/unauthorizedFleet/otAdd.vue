@@ -106,12 +106,12 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="超分公司权限车辆总数:" prop="uppercarcount" class="text-left">
-                    <el-input-number
+                    <el-input
                       v-model="UwMotorcadeMainVO.uppercarcount"
                       maxlength="6"
                       :min="0"
                       type="number"
-                    ></el-input-number>
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -306,6 +306,7 @@
       width="30%"
       class="diacenter"
       :before-close="handleClose"
+      :lock-scroll="false"
     >
       <span>{{message}}</span>
       <span slot="footer" class="dialog-footer dialogFooter">
@@ -325,38 +326,44 @@ export default {
   data() {
     //车队车辆总数
     var carcountAllEcc = (rules, value, callback) => {
+      console.log(value.length);
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
-        callback(new Error("最多为5位"));
+        callback(new Error("数字位数最多为6位"));
       } else if (
         parseInt(value) < parseInt(this.UwMotorcadeMainVO.uppercarcount)
       ) {
         this.$refs["UwMotorcadeMainVO"].clearValidate("carcountAll");
-        callback(new Error("车队车辆总数大于等于超分公司权限车辆总数"));
+        callback(new Error("车队车辆总数大于等于车辆总数"));
       } else if (parseInt(value) < 0) {
         callback(new Error("车队车辆总数只能为正整数"));
       } else if (
         parseInt(value) >= parseInt(this.UwMotorcadeMainVO.uppercarcount) &&
-        this.UwMotorcadeMainVO.foreigncarcount.length > 0 &&
-        this.UwMotorcadeMainVO.foreigncarcount.length <= 6
+        this.UwMotorcadeMainVO.uppercarcount.length > 0 &&
+        this.UwMotorcadeMainVO.uppercarcount.length <= 6
       ) {
+        console.log(
+          this.UwMotorcadeMainVO.uppercarcount.length,
+          "uppercarcount",
+          this.UwMotorcadeMainVO.carcountAll
+        );
         callback();
       }
     };
-    // 超分公司权限车辆总数uppercarcount
+    // 超分公司权限车辆总数
     var uppercarcountEcc = (rules, value, callback) => {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
-        callback(new Error("最多为5位"));
+        callback(new Error("数字位数最多为6位"));
       } else if (parseInt(value) < 0) {
-        callback(new Error("超分公司权限车辆总数只能为正整数"));
+        callback(new Error("车辆总数只能为正整数"));
       } else if (
         parseInt(value) > parseInt(this.UwMotorcadeMainVO.carcountAll)
       ) {
         this.$refs["UwMotorcadeMainVO"].clearValidate("uppercarcount");
-        callback(new Error("车队车辆总数小于超分公司权限车辆总数,请修改"));
+        callback(new Error("车队车辆总数小于车辆总数,请修改"));
       } else if (
         parseInt(value) <= parseInt(this.UwMotorcadeMainVO.carcountAll) &&
         this.UwMotorcadeMainVO.carcountAll.length > 0 &&
@@ -499,7 +506,11 @@ export default {
           }
         ],
         uppercarcount: [
-          { required: true, validator: uppercarcountEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: uppercarcountEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         uppercartype: [
           {
@@ -519,16 +530,24 @@ export default {
           { required: true, message: "车辆主要使用地必选", trigger: ["change"] }
         ],
         finishdate: [
-          { required: true, validator: finishdateEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: finishdateEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         costRateUpper: [
-          { required: true, validator: costRateUpperEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: costRateUpperEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         monitoringProgramme: [
           {
             required: true,
             validator: monitoringProgrammeEcc,
-            trigger: ["blur"]
+            trigger: ["blur", "change"]
           }
         ],
         underWritingCondition: [
@@ -561,7 +580,6 @@ export default {
     },
     // 续保判断
     renewalny() {
-      console.log(this.UwMotorcadeMainVO.businessNature);
       if (this.UwMotorcadeMainVO.businessNature == "3") {
         if (
           this.UwMotorcadeMainVO.insuredflag != "" &&
@@ -749,19 +767,30 @@ export default {
     },
     //历史赔付率
     selectHistory() {
-      let key = {
-        reportFormsType: "teamquality",
-        comcode: this.UwMotorcadeMainVO.comcode,
-        businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
-        taskType: "" // 业务类型
-      };
-      this.$fetch
-        .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
-        .then(data => {
-          console.log(typeof data);
-          // window.open("http://www.baidu.com")
-          window.open(data);
-        });
+      if (this.UwMotorcadeMainVO.businessNature == "") {
+        this.dialogVisibles = true;
+        this.message = "请先选择业务来源";
+      } else if (this.UwMotorcadeMainVO.businessNature == "3") {
+        let key = {
+          reportFormsType: "teamquality",
+          comcode: this.UwMotorcadeMainVO.comcode,
+          businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
+          taskType: "" // 业务类型
+        };
+        this.$fetch
+          .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
+          .then(data => {
+            console.log(typeof data);
+            // window.open("http://www.baidu.com")
+            window.open(data);
+          });
+      } else if (
+        this.UwMotorcadeMainVO.businessNature == "1" ||
+        this.UwMotorcadeMainVO.businessNature == "2"
+      ) {
+        this.dialogVisibles = true;
+        this.message = "无历史数据";
+      }
     }
   },
   created() {}

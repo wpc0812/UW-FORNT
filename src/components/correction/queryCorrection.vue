@@ -298,6 +298,9 @@ export default {
     }
   },
   created() {
+    this.UwctrlVO.finishDate1='2019-01-01'
+    this.UwctrlVO.finishDate2=new Date();
+    console.log(typeof new Date())
     let uwctrlVO = this.UwctrlVO;
     this.$fetch
       .post(this.HOST + this.$url.correctionQury, uwctrlVO)

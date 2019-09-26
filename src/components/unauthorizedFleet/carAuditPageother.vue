@@ -201,12 +201,12 @@
                   ></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item
                   class="labelheight1"
                   v-model="UwMotorcadeInfoVO.finishdate"
                   label="距离控制日期结束日期:"
-                ><div class="textcontent"> {{UwMotorcadeInfoVO.finishdate}}天</div></el-form-item>
+                ><div class="textcontent"> {{UwMotorcadeInfoVO.coutDay}}天</div></el-form-item>
               </el-col>
             </el-row>
             <el-row v-if="this.displaynone=='0'||this.displaynone=='5'">
@@ -332,6 +332,7 @@
                   <el-button type="text" size="small" @click="deletebatch(scope.row)" v-if="states=='0'||states=='1'">删除批次</el-button>
                   <el-button type="text" size="small" style="color:#606266;" v-if="states=='3'">审核中</el-button>
                   <el-button type="text" size="small" style="color:#606266;" v-if="states=='5'">已生效办结</el-button>
+                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='4'">已审核通过</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -635,11 +636,13 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
         .then(res => {
+          console.log(res)
           window.open(res);
         });
     },
     //续保
     outerRenewal() {
+
       this.$fetch
         .get(this.HOST + this.$url.carAuditPageOuterRenewal, {
           params: { id: 1 }

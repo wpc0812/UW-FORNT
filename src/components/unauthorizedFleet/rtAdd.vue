@@ -306,6 +306,7 @@
       :visible.sync="dialogVisibles"
       width="30%"
       class="diacenter"
+      :lock-scroll="false"
       :before-close="handleClose"
     >
       <span>{{message}}</span>
@@ -328,7 +329,7 @@ export default {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
-        callback(new Error("最多为5位"));
+        callback(new Error("数字位数最多为6位"));
       } else if (
         parseInt(value) < parseInt(this.UwMotorcadeMainVO.foreigncarcount)
       ) {
@@ -349,7 +350,7 @@ export default {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
-        callback(new Error("最多为5位"));
+        callback(new Error("数字位数最多为6位"));
       } else if (parseInt(value) < 0) {
         callback(new Error("异地车辆数只能为正整数"));
       } else if (
@@ -485,17 +486,25 @@ export default {
           { required: true, message: "业务来源必选", trigger: ["change"] }
         ],
         carcountAll: [
-          { required: true, validator: carcountAllEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: carcountAllEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         estimatedPremiumSize: [
           {
             required: true,
             validator: estimatedPremiumSizeEcc,
-            trigger: ["blur"]
+            trigger: ["blur", "change"]
           }
         ],
         foreigncarcount: [
-          { required: true, validator: foreigncarcountEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: foreigncarcountEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         carCadastral: [
           { required: true, message: "涉及车籍地必选", trigger: ["change"] }
@@ -511,10 +520,18 @@ export default {
           { required: true, message: "车辆主要使用地必选", trigger: ["change"] }
         ],
         finishdate: [
-          { required: true, validator: finishdateEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: finishdateEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         costRateUpper: [
-          { required: true, validator: costRateUpperEcc, trigger: ["blur"] }
+          {
+            required: true,
+            validator: costRateUpperEcc,
+            trigger: ["blur", "change"]
+          }
         ],
         monitoringProgramme: [
           {
@@ -742,19 +759,30 @@ export default {
     },
     //历史赔付率
     selectHistory() {
-      let key = {
-        reportFormsType: "teamquality",
-        comcode: this.UwMotorcadeMainVO.comcode,
-        businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
-        taskType: "" // 业务类型
-      };
-      this.$fetch
-        .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
-        .then(data => {
-          console.log(typeof data);
-          // window.open("http://www.baidu.com")
-          window.open(data);
-        });
+      if (this.UwMotorcadeMainVO.businessNature == "") {
+        this.dialogVisibles = true;
+        this.message = "请先选择业务来源";
+      } else if (this.UwMotorcadeMainVO.businessNature == "3") {
+        let key = {
+          reportFormsType: "teamquality",
+          comcode: this.UwMotorcadeMainVO.comcode,
+          businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
+          taskType: "" // 业务类型
+        };
+        this.$fetch
+          .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
+          .then(data => {
+            console.log(typeof data);
+            // window.open("http://www.baidu.com")
+            window.open(data);
+          });
+      } else if (
+        this.UwMotorcadeMainVO.businessNature == "1" ||
+        this.UwMotorcadeMainVO.businessNature == "2"
+      ) {
+        this.dialogVisibles = true;
+        this.message = "无历史数据";
+      }
     }
   },
 
