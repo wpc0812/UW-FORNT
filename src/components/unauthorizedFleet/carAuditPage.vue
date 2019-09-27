@@ -9,16 +9,16 @@
         <el-col :span="3" v-if="states=='5'">
           <el-button class="btn" type="primary" @click="outerRenewal" size="mini">续保</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='2 '||states=='4'||states=='5'">
+        <el-col :span="3" v-if="states=='2'||states=='4'||states=='5'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
         <el-col :span="3">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2 '||states=='4'">
+        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2'||states=='4'">
           <el-button class="btn" type="primary" @click="outerDelete" size="mini">删除</el-button>
         </el-col>
-        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2 '||states=='4'">
+        <el-col :span="3" v-if="states=='0'||states=='1'||states=='2'||states=='4'">
           <el-button class="btn" type="primary" @click="outerUpimg" size="mini">影像上传</el-button>
         </el-col>
         <el-col :span="3">
@@ -242,7 +242,7 @@
                  <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
               </el-col>
             </el-row>
-            <el-row v-if="states=='0'|| states== '1'|| states=='2 '|| states=='5'|| states=='4'">
+            <el-row v-if="states=='0'|| states== '1'|| states=='2'|| states=='5'|| states=='4'">
               <el-col :span="10">
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
@@ -359,7 +359,7 @@
             </el-col>
             <el-col :span="14" style="textAlian='center'">
               <el-form-item label="请选择" label-width="170px">
-                <el-select v-model="form.value" placeholder="请选择">
+                <el-select v-model="form.flag" placeholder="请选择">
                   <el-option
                     v-for="item in options"
                     :key="item.label"
@@ -485,11 +485,6 @@ export default {
         {
           value: "提交总公司",
           label: "1"
-        },
-        {
-          value: "审核未通过",
-          label: "2",
-          disabled: true
         }
       ],
       formDataAdd: {},
@@ -611,7 +606,8 @@ export default {
         motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
         userCode: "userCode",
         handleText: this.textarea2,
-        userName: "userName"
+        userName: "userName",
+        flag:this.form.flag ,
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageSubmits, picc)
@@ -766,7 +762,6 @@ export default {
         .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
         .then(data => {
           console.log(typeof data);
-          // window.open("http://www.baidu.com")
           window.open(data);
         });
     },
@@ -784,7 +779,6 @@ export default {
       let label = [];
       for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < options.length; j++) {
-          // console.log(items[i].value,options[j])
           if (items[i].value === options[j]) {
             label.push(items[i].label);
           }

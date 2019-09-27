@@ -475,6 +475,30 @@
     "component": "Home",
     "children": [
       {
+        "id": 28,
+        "path": "/rtAudit",
+        "iconCls": "fa fa-file-code-o",
+        "name": "异地车队审核",
+        "component": "RtAudit",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id": 29,
+        "path": "/otAudit",
+        "iconCls": "fa fa-file-code-o",
+        "name": "其他车队审核",
+        "component": "OtAudit",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
         "id" : 27 ,
         "path": "",
         "iconCls": "fa fa-file-code-o",

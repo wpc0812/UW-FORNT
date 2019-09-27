@@ -89,11 +89,11 @@ export default {
   mounted(){
     // console.log(this.$route.name)
     // console.log(this.menu)
-  }
+  },
 
-  // created() {
+  created() {
   // this.menu();
-  // }
+  }
 };
 </script>
 <style lang="scss" scoped>

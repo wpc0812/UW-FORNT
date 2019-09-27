@@ -7,11 +7,11 @@ module.exports  = {
     correctionUpdate: '/greenchannel/updateUwctrl',//核保特批 修改
     correctionShow:'/greenchannel/showGreenChannel',//核保特批 修改展示页面
     //   -----核保人员 start----
-    underWriterInforGetCkeckerList: '/getCkeckerList', // 核保人员 列表查询
-    underWriterInforAddcheker: '/addCkecker', // 核保人员详细信息添加
-    underWriterInforQueryCkecker:'/queryCkecker', // 核保人员详细信息查看
-    underWriterInforUpdateCkecker: '/updateCkecker', // 核保人员 修改
-    underWriterInforDeleteChechker: '/deleteCkecker', // 删除
+    underWriterInforGetCkeckerList: '/checker/getCkeckerList', // 核保人员 列表查询
+    underWriterInforAddcheker: '/checker/addCkecker', // 核保人员详细信息添加
+    underWriterInforQueryCkecker:'/checker/queryCkecker', // 核保人员详细信息查看
+    underWriterInforUpdateCkecker: '/checker/updateCkecker', // 核保人员 修改
+    underWriterInforDeleteChechker: '/checker/deleteCkecker', // 删除
     //  ----- 超权限车队 start ----
     rtAddLastFourYearPayPercen: '/motorcade/lastFourYearPayPercen', //超权限车队  根据不同条件查询
     rtAddGetUnder: '/motorcade/getUnderwritingTaskList', //超权限车队  根据不同条件查询

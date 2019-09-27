@@ -356,6 +356,39 @@ const router = new Router({
             keepAlive: false
           }
         },
+         //超权限车队维护 -异地车队审核
+         {
+          path: '/rtAudit',
+          name: '异地车队审核',
+          component: _import('unauthorizedFleet/rtAudit'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+          //超权限车队维护 -其他车队审核
+          {
+            path: '/otAudit',
+            name: '其他车队审核',
+            component: _import('unauthorizedFleet/otAudit'),
+            hidden: true,
+            meta: {
+              requireAuth: true,
+              keepAlive: false
+            }
+          },
+           //超权限车队维护 -异地其他审核详情页
+           {
+            path: '/ortCarAuditPage',
+            name: '异地其他审核详情页',
+            component: _import('unauthorizedFleet/ortCarAuditPage'),
+            hidden: true,
+            meta: {
+              requireAuth: true,
+              keepAlive: false
+            }
+          },
         //超权限车队维护 -异地已上报车队
         {
           path: '/rtReported',

@@ -8,6 +8,7 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">{{titletype}}</div>
           </template>
+
           <el-table
             stripe
             :data="results"
@@ -19,21 +20,63 @@
             <el-table-column prop="ocvalue" label></el-table-column>
             <el-table-column prop="contractNo" label="业务号"></el-table-column>
             <el-table-column prop="comcode" label="分公司"></el-table-column>
-            <el-table-column prop="insuredflag" label="控制关系人标志"></el-table-column>
-            <el-table-column prop="insuredName" label="控制关系人名称"></el-table-column>
-            <el-table-column prop="businessNature" label="业务来源"></el-table-column>
-            <el-table-column prop="carcountAll" label="车队车辆总数"></el-table-column>
-            <el-table-column prop="estimatedPremiumSize" label="预估保费规模(单位：万元)"></el-table-column>
+            <el-table-column prop="insuredflag" label="控制关系人标志">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.insuredflag !=results[0].insuredflag ? 'table-cell-bg' :''"
+                >{{scope.row.insuredflag}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="insuredName" label="控制关系人名称">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.insuredName !=results[0].insuredName ? 'table-cell-bg' :''"
+                >{{scope.row.insuredName}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="businessNature" label="业务来源">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.businessNature !=results[0].businessNature ? 'table-cell-bg' :''"
+                >{{scope.row.businessNature}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="carcountAll" label="车队车辆总数">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.carcountAll !=results[0].carcountAll ? 'table-cell-bg' :''"
+                >{{scope.row.carcountAll}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="estimatedPremiumSize" label="预估保费规模(单位：万元)">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.estimatedPremiumSize !=results[0].estimatedPremiumSize ? 'table-cell-bg' :''"
+                >{{scope.row.estimatedPremiumSize}}</div>
+              </template>
+            </el-table-column>
             <el-table-column
               v-if="this.$route.query.nametype=='1'"
               prop="foreigncarcount"
               label="异地车数量"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.foreigncarcount !=results[0].foreigncarcount ? 'table-cell-bg' :''"
+                >{{scope.row.foreigncarcount}}</div>
+              </template>
+            </el-table-column>
             <el-table-column
               v-if="this.$route.query.nametype=='2'"
               prop="uppercarcount"
               label="超分公司权限车辆总数"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.uppercarcount !=results[0].uppercarcount ? 'table-cell-bg' :''"
+                >{{scope.row.uppercarcount}}</div>
+              </template>
+            </el-table-column>
           </el-table>
           <el-table
             stripe
@@ -49,44 +92,102 @@
               prop="carCadastral"
               label="涉及车籍地"
             >
-              <el-button
-                type="text"
-                size="small"
-                @click="showCarSpecies(provinceCodes,'carCadastral')"
-              >点击查看</el-button>
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.carCadastral !=results[0].carCadastral ? 'table-cell-bg' :''"
+                >
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="showCarSpecies(provinceCodes,'carCadastral')"
+                  >点击查看</el-button>
+                </div>
+              </template>
             </el-table-column>
             <el-table-column
               v-if="this.$route.query.nametype=='2'"
               prop="uppercartype"
               label="超分公司权限车辆种类"
             >
-              <el-button
-                type="text"
-                size="small"
-                @click="showCarSpecies(carTypeCodes,'uppercartype')"
-              >点击查看</el-button>
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.uppercartype !=results[0].uppercartype ? 'table-cell-bg' :''"
+                >
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="showCarSpecies(carTypeCodes,'uppercartype')"
+                  >点击查看</el-button>
+                </div>
+              </template>
             </el-table-column>
 
             <el-table-column prop="carmainmodel" label="车队车辆主要车型">
-              <el-button
-                type="text"
-                size="small"
-                @click="showCarSpecies(carTypeCodes,'carmainmodel')"
-              >点击查看</el-button>
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.carmainmodel !=results[0].carmainmodel ? 'table-cell-bg' :''"
+                >
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="showCarSpecies(carTypeCodes,'carmainmodel')"
+                  >点击查看</el-button>
+                </div>
+              </template>
             </el-table-column>
             <el-table-column prop="carmainarea" label="车辆主要使用地">
-              <el-button
-                type="text"
-                size="small"
-                @click="showCarSpecies(provinceCodes,'carmainarea')"
-              >点击查看</el-button>
+              <template slot-scope="scope">
+                <div :class="scope.row.carmainarea !=results[0].carmainarea ? 'table-cell-bg' :''">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="showCarSpecies(provinceCodes,'carmainarea')"
+                  >点击查看</el-button>
+                </div>
+              </template>
             </el-table-column>
-            <el-table-column prop="underWritingCondition" label="承保条件"></el-table-column>
-            <el-table-column prop="costRatemax" label="商业险手续费上限"></el-table-column>
-            <el-table-column prop="monitoringProgramme" label="监控方案"></el-table-column>
-            <el-table-column prop="finishdateString" label="控制结束日期"></el-table-column>
-            <el-table-column prop="insuredNameSUB" label="关联关系人名称"></el-table-column>
-            <el-table-column prop="remark" label="备注"></el-table-column>
+            <el-table-column prop="underWritingCondition" label="承保条件">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.underWritingCondition !=results[0].underWritingCondition ? 'table-cell-bg' :''"
+                >{{scope.row.underWritingCondition}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="costRatemax" label="商业险手续费上限">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.costRatemax !=results[0].costRatemax ? 'table-cell-bg' :''"
+                >{{scope.row.costRatemax}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="monitoringProgramme" label="监控方案">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.monitoringProgramme !=results[0].monitoringProgramme ? 'table-cell-bg' :''"
+                >{{scope.row.monitoringProgramme}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="finishdateString" label="控制结束日期">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.finishdateString !=results[0].finishdateString ? 'table-cell-bg' :''"
+                >{{scope.row.finishdateString}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="insuredNameSUB" label="关联关系人名称">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.insuredNameSUB !=results[0].insuredNameSUB ? 'table-cell-bg' :''"
+                >{{scope.row.insuredNameSUB}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="remark" label="备注">
+              <template slot-scope="scope">
+                <div
+                  :class="scope.row.remark !=results[0].remark ? 'table-cell-bg' :''"
+                >{{scope.row.remark}}</div>
+              </template>
+            </el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -115,6 +216,7 @@ export default {
   name: "carContrast",
   data() {
     return {
+      state: "1",
       titletype: "",
       activeNames: "1",
       results: [],
@@ -132,6 +234,11 @@ export default {
   },
 
   methods: {
+    // backcellcolor({row, column, rowIndex,columnIndex }){
+    //   if(this.state=="1"&&columnIndex=="2"){
+    //     background: '#eceb3c'
+    //   }
+    // },
     // 点击查看
     showCarSpecies(items, types) {
       switch (types) {
@@ -185,12 +292,13 @@ export default {
           params: { motorcadeNo: this.$route.query.motorcadeNo }
         })
         .then(res => {
-            this.results=res;
-            for(let i in res[0]){
-                if(res[0][i] !== res[1][i]){
-                  // console.log(res[1][i])
-                }
-            }
+          console.log(res);
+          this.results = res;
+          // for(let i in res[0]){
+          //     if(res[0][i] !== res[1][i]){
+          //       console.log(res[1][i])
+          //     }
+          // }
           for (let i = 0; i < this.results.length; i++) {
             if (this.results[i].carCadastral) {
               this.allData.carCadastral = this.results[i].carCadastral.split(
@@ -223,7 +331,6 @@ export default {
     } else if (this.$route.query.nametype == "2") {
       this.titletype = "其他车队修改前后信息对比";
     }
-
     this.init();
   }
 };
@@ -252,5 +359,8 @@ export default {
 }
 .tanchuang >>> .el-dialog__footer {
   text-align: center;
+}
+.table-cell-bg {
+  background: red;
 }
 </style>
