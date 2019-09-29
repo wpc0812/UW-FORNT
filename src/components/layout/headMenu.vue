@@ -62,9 +62,9 @@ export default {
   color: #ffffff;
   // background: url("../../assets/imgs/background-img.jpg");
   background: #409EFF;
-  margin: 0 10px;
+  // margin: 0 10px;
   background-size: cover;
-  border-radius: 5px;
+  // border-radius: 5px;
   .head {
     display: flex;
     margin-left: 0;

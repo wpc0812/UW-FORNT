@@ -402,8 +402,6 @@ export default {
 .text-left {
   width: 1388px;
 }
-.circular {
-  padding-bottom: 15px;
-}
+
 </style>
 

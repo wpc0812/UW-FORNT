@@ -119,7 +119,5 @@ export default {
   right: 35px;
   top: 10px;
 }
-.circular {
-  border-radius: 8px;
-}
+
 </style>

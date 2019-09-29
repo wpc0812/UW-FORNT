@@ -289,9 +289,7 @@ export default {
   right: 35px;
   top: 10px;
 }
-.circular {
-  border-radius: 8px;
-}
+
 .el-card >>> .el-card__header{
   border: none
 }

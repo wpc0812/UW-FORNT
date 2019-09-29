@@ -8,7 +8,7 @@
         <head-menu></head-menu>
       </el-header>
       <el-container class="index-bg">
-        <el-aside :width="!isCollapse ? '250px' : '20px'" :class="{ 'position-left': !isCollapse}" class="scrollbar">
+        <el-aside :width="!isCollapse ? '250px' : '20px'"  class="scrollbar">
           <left-menu @isCollapse="getCollapse"></left-menu>
         </el-aside>
         <el-main :class="{ 'has-bar' : !isCollapse}" style="padding-top: 0">
@@ -41,12 +41,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.position-left {
-  left: 10.2px;
-}
+
 .el-aside {
   position: fixed;
   height: 100%;
+  margin-top: -8px;
+  box-shadow: 1px 10px 4px rgba(0,21,41,.08);
+  background: rgb(241, 242, 244);
   div {
     margin-bottom: 75px;
   }
@@ -58,7 +59,7 @@ export default {
   position: relative;
 }
 .has-bar {
-  margin-left: 260px;
+  margin-left: 250px;
 }
 img {
   position: fixed;
@@ -83,4 +84,6 @@ img {
   position: fixed;
   height: 72px;
 }
+
+
 </style>

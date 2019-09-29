@@ -6,22 +6,25 @@
         :unique-opened="true"
         text-color="#4C4C4C"
         :default-active="active"
-        background-color="#ffffff"
+        background-color="#FFF"
         :collapse-transition="false"
         :router="true"
       >
         <template v-for="item in menu">
           <!--菜单循环第一层，含有子集-->
-          <el-submenu :key="item.id" :index="item.name" v-if="item.children.length">
-            <template slot="title">
+          <el-submenu :key="item.id" :index="item.name" v-if="item.children.length" >
+            <template slot="title" style="background: red" >
+
               <i :class="item.iconCls" class="font-size15 color-blue"></i>
-              <span slot="title">&nbsp;{{item.name}}</span>
+              <span slot="title">&nbsp;{{item.name}} </span>
+              
+              
             </template>
             <!-- 二、三级菜单 -->
             <template v-for="(itemChild, index) in item.children">
               <!-- 三级菜单 -->
               <template v-if="itemChild.children && itemChild.children.length">
-                <el-submenu :key="index" :index="itemChild.name">
+                <el-submenu :key="index" :index="itemChild.name" >
                   <span slot="title">
                     <i :class="itemChild.iconCls" class="font-size15 color-blue"></i>
                     {{itemChild.name}}
@@ -106,16 +109,14 @@ export default {
 .left-menu {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background-color: rgb(241, 242, 244);
   // border-radius: 18px;
 }
 .menu-arrow {
   height: 100px;
   line-height: 100px;
   color: #ccc;
-  &:hover {
-    color: #e9e9e9
-  }
+  
 }
 .menu-arrow-bar {
   background-color: #ffffff;
@@ -130,17 +131,27 @@ export default {
   }
 }
 .el-menu-item.is-active{
-  background-color: #409EFF  !important;
-  color: #ffffff;
+  background-color: #ecf5ff!important;
+  color: rgb(64, 158, 255);
+  border-left: 4px solid #409eff
 }
 .el-submenu  /deep/  .el-submenu__title{
-  height: 45px ;
-  line-height: 45px
+  height: 50px ;
+  background: rgb(241, 242, 244) !important;
+  line-height: 50px;
+  &:hover{
+    background: #ecf5ff!important
+  }
 }
 .el-submenu .el-menu-item{
-  height: 35px;
-  line-height: 35px
+  height: 45px;
+  line-height: 45px;
+  
+  &:hover{
+    background: #ecf5ff!important
+  }
 }
+
 </style>
 
 

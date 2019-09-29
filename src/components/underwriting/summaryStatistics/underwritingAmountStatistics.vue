@@ -101,9 +101,7 @@ export default {
   margin-right: 10px;
   float: left
 }
-.circular {
-  border-radius: 8px;
-}
+
 .header-btn{
   position: absolute;
   right: 35px;

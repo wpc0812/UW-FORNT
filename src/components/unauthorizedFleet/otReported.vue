@@ -221,7 +221,5 @@ export default {
   border-radius: 8px;
   margin-right: 10px;
 }
-.circular {
-  border-radius: 8px;
-}
+
 </style>

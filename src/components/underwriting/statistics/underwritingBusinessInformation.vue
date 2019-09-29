@@ -161,7 +161,5 @@ export default {
  .el-card__body {
   padding: 10px 20px;
 }
-.circular {
-  border-radius: 8px;
-}
+
 </style>
