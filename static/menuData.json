@@ -2,14 +2,14 @@
   {
     "id" : 1 ,
     "path":"/home",
-    "iconCls": "el-icon-tickets",
+    "iconCls": "fa fa-wpforms",
     "name": "核保管理",
     "component": "Home",
     "children":[
       {
         "id" : 2 ,
         "path":"/",
-        "iconCls": "el-icon-tickets",
+        "iconCls": "fa fa-clipboard",
         "name": "核保",
         "component": "",
         "children":[
@@ -156,7 +156,7 @@
       {
         "id" : 33 ,
         "path":"/",
-        "iconCls": "el-icon-tickets",
+        "iconCls": "fa fa-line-chart",
         "name": "统计",
         "component": "",
         "children":[
@@ -229,7 +229,7 @@
       {
         "id" : 38 ,
         "path":"/",
-        "iconCls": "el-icon-tickets",
+        "iconCls": "el-icon-s-marketing",
         "name": "汇总统计",
         "component": "",
         "children":[
@@ -350,7 +350,7 @@
       {
         "id": 22,
         "path": "/payeeModificationReview",
-        "iconCls": "fa fa-paw",
+        "iconCls": "el-icon-user",
         "name": "收款人账户修改审核",
         "component": "PayeeModificationReview",
         "children": [],
@@ -369,7 +369,7 @@
   {
     "id" : 15 ,
     "path": "/home",
-    "iconCls": "fa fa-exchange",
+    "iconCls": "el-icon-s-claim",
     "name": "核保特批管理",
     "component": "Home",
     "children": [
@@ -395,7 +395,7 @@
   {
     "id" : 19 ,
     "path": "/home",
-    "iconCls": "el-icon-s-platform",
+    "iconCls": "el-icon-s-data",
     "name": "综合统计",
     "component": "Home",
     "children": [
@@ -470,7 +470,7 @@
   {
     "id" : 26 ,
     "path": "/home",
-    "iconCls": "el-icon-edit",
+    "iconCls": "fa fa-truck",
     "name": "超权限车队维护",
     "component": "Home",
     "children": [
