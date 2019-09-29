@@ -43,7 +43,7 @@ module.exports  = {
     distributedMonitoringStatistics:'/comprehensiveStatistics/distributionMonitoringStatistics',// 综合统计 分发监控统计 查询
     // distributedMonitoring:'/comprehensiveStatistics/distributionMonitoringStatistics',// 综合统计 规则执行统计 导出
     // -----核保处理 ---
-    uwmainGetUwList: '/payee/uwmain/getUwList',
+    uwmainGetUwList: '/uwmain/getUwList',
     getUwPayeeList: '/payee/getUwPayeeList',
     saveUwPayee:'/payee/saveUwPayee', // 提交审核 -select options
     giveUpUwPayee: '/payee/giveUpUwPayee', // 放弃
@@ -60,7 +60,7 @@ module.exports  = {
     payeeGetUwPayeeList: '/payee/getUwPayeeList' ,// 收款人 审核 查询
     payeeGetUwPayeeAllInfo: '/payee/getUwPayeeAllInfo', // 收款人审核 -详细信息
     uwmainUploadECM:'/uwmain/uploadECM', // 主流程-影像上传
-    uwmainMobileECM:'/uwmain/mobileECM', // 主流程-手机影像 
+
     uwmainStartECM :'/uwmain/startECM ', // 主流程-查看关联单影像
     uwmainGetECM:'/uwmain/getECM', // 主流程-影像查看
     uwmainGetLastYearPolicyInfo: '/uwmain/getLastYearPolicyInfo', // 主流程 -查看上年度保单
