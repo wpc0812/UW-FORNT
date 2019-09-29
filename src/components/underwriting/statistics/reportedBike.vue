@@ -36,11 +36,11 @@
                   </el-form-item>
                 </el-col>
               
-                <el-col :span="12">
-                  <el-button @click="exportFile" size="mini" type="primary">导出</el-button>
-                </el-col>
-                <el-col :span="12">
+                <el-col :span="24">
                   <el-button @click="query" size="mini" type="primary">查询</el-button>
+                  <el-button @click="exportFile" size="mini" type="primary">导出</el-button>
+              
+                  
                 </el-col>
             
             </el-row>

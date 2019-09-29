@@ -49,7 +49,7 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="12">
+                <el-col :span="24">
                   <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
                 </el-col>
               </el-row>

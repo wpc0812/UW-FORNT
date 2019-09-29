@@ -395,7 +395,7 @@
   {
     "id" : 19 ,
     "path": "/home",
-    "iconCls": "fa fa-newspaper-o",
+    "iconCls": "el-icon-s-platform",
     "name": "综合统计",
     "component": "Home",
     "children": [
@@ -445,14 +445,14 @@
   {
     "id" : 23 ,
     "path": "/home",
-    "iconCls": "fa fa-server",
+    "iconCls": "el-icon-s-custom",
     "name": "人员信息管理",
     "component": "Home",
     "children": [
       {
         "id": 24,
         "path": "/underwriterInfor",
-        "iconCls": "fa fa-server",
+        "iconCls": "el-icon-s-custom",
         "name": "核保员信息管理",
         "component": "UnderwriterInfor",
         "children": [],

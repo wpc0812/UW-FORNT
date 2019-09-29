@@ -58,15 +58,13 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
-                </el-col>
-                <el-col :span="8">
-                  <el-button @click="statisticalResults" size="mini" type="primary">统计结果</el-button>
-                </el-col>
-                <el-col :span="8">
+              <el-row class="text-center">
+                <el-col :span="24">
+                 
                   <el-button @click="query" size="mini" type="primary">查询</el-button>
+                  <el-button @click="statisticalResults" size="mini" type="primary">统计结果</el-button>
+                  <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
+                  
                 </el-col>
               </el-row>
             </el-row>

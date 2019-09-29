@@ -50,6 +50,21 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
+                <el-form-item label="提交时间:">
+                  <el-date-picker
+                    :title="underwriting.flowDate"
+                    v-model="underwriting.flowDate"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    type="datetimerange"
+                    time-arrow-control
+                    range-separator="至"
+                    @blur='datePickerChange'
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+                <el-col :span="14">
                   <el-form-item label="核保类型:" class="text-left">
                     <el-checkbox-group
                       class="inline-block"
@@ -71,23 +86,14 @@
                     >所有</el-checkbox>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-col :span="7">
-                <el-form-item label="提交时间:">
-                  <el-date-picker
-                    :title="underwriting.flowDate"
-                    v-model="underwriting.flowDate"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    type="datetimerange"
-                    time-arrow-control
-                    range-separator="至"
-                    @blur='datePickerChange'
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                  ></el-date-picker>
+                <el-col :span="10">
+                <el-form-item label="渠道码:">
+                  <el-input v-model="underwriting.agentCode"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="16">
+              </el-row>
+              
+              <el-col :span="14">
                 <el-form-item label="占用状态:" class="text-left">
                   <el-checkbox-group v-model="underwriting.occupied">
                     <el-checkbox
@@ -101,7 +107,13 @@
                     </el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
+              </el-col>  
+              <el-col :span="10">
+                <el-form-item label="被保险人:">
+                  <el-input v-model="underwriting.insuredName"></el-input>
+                </el-form-item>
               </el-col>
+
               <el-col :span="24">
                 <el-form-item label="审批类型:" class="text-left">
                   <el-checkbox-group
@@ -124,16 +136,8 @@
                   >所有</el-checkbox>
                 </el-form-item>
               </el-col>
-              <el-col :span="7">
-                <el-form-item label="渠道码:">
-                  <el-input v-model="underwriting.agentCode"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="7">
-                <el-form-item label="被保险人:">
-                  <el-input v-model="underwriting.insuredName"></el-input>
-                </el-form-item>
-              </el-col>
+              
+            
               <el-col :span="24" class="text-center">
                 <el-button @click="query()" size="mini" type="primary">查询</el-button>
                 <el-button @click="reset" size="mini">重置</el-button>

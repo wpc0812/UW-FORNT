@@ -119,5 +119,7 @@ export default {
   right: 35px;
   top: 10px;
 }
-
+.el-card >>> .el-card__header{
+  border: none
+}
 </style>
