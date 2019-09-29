@@ -206,7 +206,9 @@
                   class="labelheight1"
                   v-model="UwMotorcadeInfoVO.finishdate"
                   label="距离控制日期结束日期:"
-                ><div class="textcontent"> {{UwMotorcadeInfoVO.coutDay}}天</div></el-form-item>
+                >
+                  <div class="textcontent">{{UwMotorcadeInfoVO.coutDay}}天</div>
+                </el-form-item>
               </el-col>
             </el-row>
             <el-row v-if="this.displaynone=='0'||this.displaynone=='5'">
@@ -239,7 +241,7 @@
                 <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
+                <a class="dec" href="./UwMotorcadeMainModel.xls" download>号牌号码导入模板下载</a>
               </el-col>
             </el-row>
             <el-row v-if="states=='0'||states=='1'||states=='2'||states=='5'||states=='4'">
@@ -272,7 +274,7 @@
                 <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
+                <a class="dec" href="./UwMotorcadeMainModel.xls" download>号牌号码导入模板下载</a>
               </el-col>
             </el-row>
           </el-collapse-item>
@@ -329,10 +331,25 @@
               ></el-table-column>
               <el-table-column align="center" prop="deductible" label="删除批次">
                 <template slot-scope="scope">
-                  <el-button type="text" size="small" @click="deletebatch(scope.row)" v-if="states=='0'||states=='1'">删除批次</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="deletebatch(scope.row)"
+                    v-if="states=='0'||states=='1'"
+                  >删除批次</el-button>
                   <el-button type="text" size="small" style="color:#606266;" v-if="states=='3'">审核中</el-button>
-                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='5'">已生效办结</el-button>
-                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='4'">已审核通过</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="color:#606266;"
+                    v-if="states=='5'"
+                  >已生效办结</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="color:#606266;"
+                    v-if="states=='4'"
+                  >已审核通过</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -406,9 +423,9 @@
       :visible.sync="dialogVisibleMore"
       width="20%"
     >
-      <div class="ulli" v-for="(item,index) in aaaaaaaa" :key="index">{{item}}</div>
+      <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisibleMore = false">关闭本窗口</el-button>
       </span>
     </el-dialog>
   </div>
@@ -423,8 +440,8 @@ export default {
   name: "carAuditPageother",
   data() {
     return {
-      transferTitle:"",
-      displaynone:"",
+      transferTitle: "",
+      displaynone: "",
       dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
@@ -481,7 +498,7 @@ export default {
       outerVisible: false,
       innerVisible: false,
       textarea2: "",
-      uwmotorcademainids:"",
+      uwmotorcademainids: "",
       options: [
         {
           value: "提交总公司",
@@ -535,8 +552,8 @@ export default {
         data: this.formDataAdd
       }).then(res => {
         console.log(res);
-        if(res==true){
-          this.displaynone="8"
+        if (res == true) {
+          this.displaynone = "8";
           this.$forceUpdate();
           // this.states=
         }
@@ -551,7 +568,7 @@ export default {
         this.uploading = true;
         this.UwMotorcadeInfoVO.uppici = file.name;
         this.formDataUP = formData;
-        this.$forceUpdate()
+        this.$forceUpdate();
       }
     },
     //修改文件上传
@@ -571,7 +588,7 @@ export default {
     carAuditPagechu() {
       let _url = "http://11.205.241.44:8082" + this.$url.carAuditPageToInsured;
       let paramsFileData = {
-        uwmotorcademainid:this.uwmotorcademainids,
+        uwmotorcademainid: this.uwmotorcademainids,
         licenseNo: this.UwMotorcadeInfoVO.licenseNo
       };
       window.location.href =
@@ -583,7 +600,7 @@ export default {
         path: "/unNumPlate",
         query: {
           row: row.licenseNo,
-          uwmotorcademainid:this.uwmotorcademainids,
+          uwmotorcademainid: this.uwmotorcademainids
         }
       });
     },
@@ -600,7 +617,7 @@ export default {
         path: "/deletebatch",
         query: {
           row: row.batchNo,
-          uwmotorcademainid:this.uwmotorcademainids
+          uwmotorcademainid: this.uwmotorcademainids
         }
       });
     },
@@ -637,13 +654,12 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageOuterBranch, picc)
         .then(res => {
-          console.log(res)
+          console.log(res);
           window.open(res);
         });
     },
     //续保
     outerRenewal() {
-
       this.$fetch
         .get(this.HOST + this.$url.carAuditPageOuterRenewal, {
           params: { id: 1 }
@@ -700,7 +716,7 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode 
+        comCode: this.UwMotorcadeInfoVO.comcode
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
@@ -746,13 +762,13 @@ export default {
         .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
           params: {
             licenseNo: this.UwMotorcadeInfoVO.licenseNo,
-            uwmotorcademainid:this.uwmotorcademainids
+            uwmotorcademainid: this.uwmotorcademainids
           }
         })
         .then(res => {
-           for (let i = 0; i < res.length; i++) {
-            res[i].state=res[i].state.trim()
-           }
+          for (let i = 0; i < res.length; i++) {
+            res[i].state = res[i].state.trim();
+          }
           this.results = res;
           console.log(res);
         });
@@ -789,28 +805,34 @@ export default {
         .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
           params: {
             motorcadeNo: this.$route.query.row,
-            uwmotorcademainid:this.$route.query.id
+            uwmotorcademainid: this.$route.query.id
           }
         })
         .then(res => {
-          this.uwmotorcademainids=res.uwMotorcadeMain.id;
+          this.uwmotorcademainids = res.uwMotorcadeMain.id;
           this.results = res.uwMotorcadeMain.uwMotorcadeInfos;
           if (res.uwMotorcadeMain.uppercartype) {
-            this.allData.uppercartype = res.uwMotorcadeMain.uppercartype.split(",");
+            this.allData.uppercartype = res.uwMotorcadeMain.uppercartype.split(
+              ","
+            );
             res.uwMotorcadeMain.uppercartype = this.getShowlabel(
               this.carTypeCodes,
               res.uwMotorcadeMain.uppercartype.split(",")
             );
           }
           if (res.uwMotorcadeMain.carmainmodel) {
-            this.allData.carmainmodel = res.uwMotorcadeMain.carmainmodel.split(",");
+            this.allData.carmainmodel = res.uwMotorcadeMain.carmainmodel.split(
+              ","
+            );
             res.uwMotorcadeMain.carmainmodel = this.getShowlabel(
               this.carTypeCodes,
               res.uwMotorcadeMain.carmainmodel.split(",")
             );
           }
           if (res.uwMotorcadeMain.carmainarea) {
-            this.allData.carmainarea = res.uwMotorcadeMain.carmainarea.split(",");
+            this.allData.carmainarea = res.uwMotorcadeMain.carmainarea.split(
+              ","
+            );
             res.uwMotorcadeMain.carmainarea = this.getShowlabel(
               this.provinceCodes,
               res.uwMotorcadeMain.carmainarea.split(",")
@@ -885,11 +907,10 @@ export default {
   created() {
     //设置collapse全部展开
     this.setActiveNames();
-    // this.init();
-    // this.parameter = this.$route.query;
-    // this.states = this.$route.query.state;
-    // this.displaynone=this.$route.query.state;
-    this.aaaaaaaa=["asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd",]
+    this.init();
+    this.parameter = this.$route.query;
+    this.states = this.$route.query.state;
+    this.displaynone=this.$route.query.state;
   }
 };
 </script>
@@ -928,9 +949,6 @@ export default {
   line-height: 50px;
   height: 50px;
 }
-/* .updatastyleinput .el-form-item {
-  margin-bottom: 25px;
-} */
 .acolor {
   color: #0066cc;
   text-decoration: none;
@@ -950,7 +968,7 @@ export default {
 .selectMargin {
   margin-top: 10px;
 }
-.textareaheight{
+.textareaheight {
   min-height: 62px;
   height: 62px;
 }
@@ -960,19 +978,41 @@ export default {
 .ulli li {
   list-style-type: none;
 }
-.tanchuang >>> .el-dialog__footer {
-  text-align: center;
-}
-/* .tanchuang{
-  height:450px;
-} */
-.updatastyleinput >>> .el-input.is-disabled .el-input__inner{
+.updatastyleinput >>> .el-input.is-disabled .el-input__inner {
   background-color: #ffffff;
 }
-.labelheight1 .textcontent{
-  text-align: center; 
+.labelheight1 .textcontent {
+  text-align: center;
   line-height: 50px;
-  height: 50px;  
-} 
-
+  height: 50px;
+}
+.tanchuang {
+  display: flex;
+  justify-content: center;
+  align-items: Center;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog {
+  margin: 0 auto !important;
+  height: 80%;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog__body {
+  position: absolute;
+  left: 0;
+  top: 54px;
+  bottom: 62px;
+  right: 0;
+  padding: 0;
+  z-index: 1;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.tanchuang >>> .el-dialog__footer {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 0px;
+  padding: 5px;
+}
 </style>

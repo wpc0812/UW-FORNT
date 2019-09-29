@@ -408,7 +408,7 @@
     >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisibleMore = false">关闭本窗口</el-button>
       </span>
     </el-dialog>
   </div>
@@ -948,9 +948,6 @@ export default {
 .ulli li {
   list-style-type: none;
 }
-.tanchuang >>> .el-dialog__footer {
-  text-align: center;
-}
 .updatastyleinput >>> .el-input.is-disabled .el-input__inner{
   background-color: #ffffff;
 }
@@ -959,4 +956,33 @@ export default {
   line-height: 50px;
   height: 50px;  
 } 
+.tanchuang {
+  display: flex;
+  justify-content: center;
+  align-items: Center;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog {
+  margin: 0 auto !important;
+  height: 80%;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog__body {
+  position: absolute;
+  left: 0;
+  top: 54px;
+  bottom: 62px;
+  right: 0;
+  padding: 0;
+  z-index: 1;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.tanchuang >>> .el-dialog__footer {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 0px;
+  padding: 5px;
+}
 </style>
