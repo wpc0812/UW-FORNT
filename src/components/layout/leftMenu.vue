@@ -74,7 +74,8 @@ export default {
     return {
       menu,
       isCollapse: eval(localStorage.getItem('isCollapse')),
-      active: this.$route.name
+      active: this.$route.name,
+      comCodeLevel: 'Z'
     };
   },
 

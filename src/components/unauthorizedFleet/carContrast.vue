@@ -195,14 +195,14 @@
     <!-- 弹窗 -->
     <el-dialog
       :lock-scroll="false"
-      title="展示"
+      :title="transferTitle"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%"
+      width="20%"
     >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisibleMore = false">关闭本窗口</el-button>
       </span>
     </el-dialog>
   </div>
@@ -216,6 +216,7 @@ export default {
   name: "carContrast",
   data() {
     return {
+      transferTitle:"",
       state: "1",
       titletype: "",
       activeNames: "1",
@@ -243,6 +244,7 @@ export default {
     showCarSpecies(items, types) {
       switch (types) {
         case "carCadastral":
+          this.transferTitle = "涉及车籍地";
           this.arrays = this.getShowlabels(
             this.provinceCodes,
             this.allData.carCadastral
@@ -251,6 +253,7 @@ export default {
           break;
 
         case "uppercartype":
+          this.transferTitle = "超分公司权限车辆种类";
           this.arrays = this.getShowlabels(
             this.carTypeCodes,
             this.allData.uppercartype
@@ -258,6 +261,7 @@ export default {
           break;
 
         case "carmainmodel":
+          this.transferTitle = "车队车辆主要车型";
           this.arrays = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carmainmodel
@@ -265,6 +269,7 @@ export default {
           break;
 
         case "carmainarea":
+          this.transferTitle = "车辆主要使用地";
           this.arrays = this.getShowlabels(
             this.provinceCodes,
             this.allData.carmainarea
@@ -294,11 +299,6 @@ export default {
         .then(res => {
           console.log(res);
           this.results = res;
-          // for(let i in res[0]){
-          //     if(res[0][i] !== res[1][i]){
-          //       console.log(res[1][i])
-          //     }
-          // }
           for (let i = 0; i < this.results.length; i++) {
             if (this.results[i].carCadastral) {
               this.allData.carCadastral = this.results[i].carCadastral.split(
@@ -357,10 +357,36 @@ export default {
 .ulli li {
   list-style-type: none;
 }
-.tanchuang >>> .el-dialog__footer {
-  text-align: center;
-}
 .table-cell-bg {
   background: red;
+}
+.tanchuang {
+  display: flex;
+  justify-content: center;
+  align-items: Center;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog {
+  margin: 0 auto !important;
+  height: 80%;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog__body {
+  position: absolute;
+  left: 0;
+  top: 54px;
+  bottom: 62px;
+  right: 0;
+  padding: 0;
+  z-index: 1;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.tanchuang >>> .el-dialog__footer {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 0px;
+  padding: 5px;
 }
 </style>

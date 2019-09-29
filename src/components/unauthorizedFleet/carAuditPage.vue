@@ -401,14 +401,14 @@
     </el-dialog>
     <el-dialog
       :lock-scroll="false"
-      title="展示"
+      :title="transferTitle"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%"
+      width="20%"
     >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisibleMore = false">关闭本窗口</el-button>
       </span>
     </el-dialog>
   </div>
@@ -423,6 +423,7 @@ export default {
   name: "carAuditPage",
   data() {
     return {
+      transferTitle:"",
       displaynone:"",
       dialogVisibleMore: false,
       states: "",
@@ -809,6 +810,7 @@ export default {
     showCarSpecies(items, types) {
       switch (types) {
         case "carCadastral":
+          this.transferTitle = "涉及车籍地";
           this.carCadastraldata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carCadastral
@@ -816,6 +818,7 @@ export default {
           this.arrays = this.carCadastraldata;
           break;
         case "carmainmodel":
+          this.transferTitle = "车队车辆主要车型";
           this.carmainmodeldata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carmainmodel
@@ -823,6 +826,7 @@ export default {
           this.arrays = this.carmainmodeldata;
           break;
         case "carmainarea":
+          this.transferTitle = "车辆主要使用地";
           this.carmainareadata = this.getShowlabels(
             this.provinceCodes,
             this.allData.carmainarea
@@ -944,9 +948,6 @@ export default {
 .ulli li {
   list-style-type: none;
 }
-.tanchuang >>> .el-dialog__footer {
-  text-align: center;
-}
 .updatastyleinput >>> .el-input.is-disabled .el-input__inner{
   background-color: #ffffff;
 }
@@ -955,4 +956,33 @@ export default {
   line-height: 50px;
   height: 50px;  
 } 
+.tanchuang {
+  display: flex;
+  justify-content: center;
+  align-items: Center;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog {
+  margin: 0 auto !important;
+  height: 80%;
+  overflow: hidden;
+}
+.tanchuang >>> .el-dialog__body {
+  position: absolute;
+  left: 0;
+  top: 54px;
+  bottom: 62px;
+  right: 0;
+  padding: 0;
+  z-index: 1;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.tanchuang >>> .el-dialog__footer {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 0px;
+  padding: 5px;
+}
 </style>
