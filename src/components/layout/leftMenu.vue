@@ -6,7 +6,7 @@
         :unique-opened="true"
         text-color="#4C4C4C"
         :default-active="active"
-        background-color="#FFF"
+        background-color="#f1f2f4"
         :collapse-transition="false"
         :router="true"
       >
@@ -63,6 +63,30 @@
     <div v-show="isCollapse" class="menu-arrow-bar mouse-pointer" @click="getCollapse">
       <i class="el-icon-arrow-right"></i>
     </div>
+         <!-- {
+        "id": 28,
+        "path": "/rtAudit",
+        "iconCls": "fa fa-file-code-o",
+        "name": "异地车队审核",
+        "component": "RtAudit",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      },
+      {
+        "id": 29,
+        "path": "/otAudit",
+        "iconCls": "fa fa-file-code-o",
+        "name": "其他车队审核",
+        "component": "OtAudit",
+        "children": [],
+        "meta": {
+          "keepAlive": false,
+          "reuireAuth": true
+        }
+      }, -->
   </div>
 </template>
 <script>
