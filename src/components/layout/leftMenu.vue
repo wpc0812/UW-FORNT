@@ -42,7 +42,7 @@
               </template>
               <!-- 二级菜单 -->
               <template v-else>
-                <el-menu-item :key="itemChild.id" :index="itemChild.name" :route="itemChild.path">
+                <el-menu-item :key="itemChild.id" :index="itemChild.name" :route="itemChild.path" v-if="comCodeLevel == 'F' && itemChild.name == '其他车队审核' ">
                   <i :class="itemChild.iconCls" class="font-size15 color-blue"></i>
                   {{itemChild.name}}
                 </el-menu-item>
@@ -74,7 +74,8 @@ export default {
     return {
       menu,
       isCollapse: eval(localStorage.getItem('isCollapse')),
-      active: this.$route.name
+      active: this.$route.name,
+      comCodeLevel: 'Z'
     };
   },
 

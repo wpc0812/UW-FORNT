@@ -421,10 +421,10 @@
     </el-dialog>
     <el-dialog
       :lock-scroll="false"
-      title="展示"
+      :title="transferTitle"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%"
+      width="20%"
     >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
@@ -443,6 +443,7 @@ export default {
   name: "ortCarAuditPage",
   data() {
     return {
+      transferTitle:"",
       displaynone: "",
       dialogVisibleMore: false,
       states: "",
@@ -819,6 +820,7 @@ export default {
     showCarSpecies(items, types) {
       switch (types) {
          case "uppercartype":
+           this.transferTitle = "超分公司权限车辆种类";
           this.uppercartypedata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.uppercartype
@@ -826,6 +828,7 @@ export default {
           this.arrays = this.uppercartypedata;
           break;
         case "carCadastral":
+          this.transferTitle = "涉及车籍地";
           this.carCadastraldata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carCadastral
@@ -833,6 +836,7 @@ export default {
           this.arrays = this.carCadastraldata;
           break;
         case "carmainmodel":
+          this.transferTitle = "车队车辆主要车型";
           this.carmainmodeldata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carmainmodel
@@ -840,6 +844,7 @@ export default {
           this.arrays = this.carmainmodeldata;
           break;
         case "carmainarea":
+          this.transferTitle = "车辆主要使用地";
           this.carmainareadata = this.getShowlabels(
             this.provinceCodes,
             this.allData.carmainarea

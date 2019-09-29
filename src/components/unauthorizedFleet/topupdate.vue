@@ -229,7 +229,7 @@
     </el-card>
     <!-- 弹出框 -->
     <el-dialog
-      title="请选择"
+      :title="transferTitle"
       class="checkboxmargin"
       :visible.sync="transferDialog"
       width="40%"
@@ -261,6 +261,7 @@ export default {
 
   data() {
     return {
+      transferTitle: "",
       transferItems: [], // 穿梭框 数据
       transferItem: [], // 穿梭框 绑定数据
       transfetTitle: ["已选择", "为选择"],
@@ -439,6 +440,15 @@ export default {
     },
     // 点击弹出
     openTransfer(items, item, type) {
+      if (type == "carCadastral") {
+        this.transferTitle = "涉及车籍地";
+      } else if (type == "carmainmodel") {
+        this.transferTitle = "车队车辆主要车型";
+      } else if (type == "carmainarea") {
+        this.transferTitle = "车辆主要使用地";
+      } else if (type == "uppercartype") {
+        this.transferTitle = "超分公司权限车辆种类";
+      }
       this.transferItems = items; //总数据data
       this.transferItem = item; //返回或者传入的数据
       this.transferType = type; //类型（省份/车型）

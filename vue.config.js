@@ -6,13 +6,13 @@ function resolve(dir) {
 module.exports = {
   publicPath: '/undwrt',     //设置静态资源的访问路径
   outputDir: 'dist/undwrt',   //设置编译后代码的存放路径
-  assetsDir: 'static',
+  // assetsDir: 'static',
 
   
   devServer: {
     // proxy: 'http://192.168.43.119:8763' //手机
     // proxy: 'http://192.168.137.254:8763' //电脑
-    proxy: 'http://11.205.241.44:8082',//模拟数据
+    proxy: 'http://10.156.128.106:30169/',//模拟数据
 
     // 11.205.241.44 葛超印
     //11.205.241.15 金生哥

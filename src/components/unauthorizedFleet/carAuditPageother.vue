@@ -401,12 +401,12 @@
     </el-dialog>
     <el-dialog
       :lock-scroll="false"
-      title="展示"
+      :title="transferTitle"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%"
+      width="20%"
     >
-      <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
+      <div class="ulli" v-for="(item,index) in aaaaaaaa" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisibleMore = false">确 定</el-button>
       </span>
@@ -423,6 +423,7 @@ export default {
   name: "carAuditPageother",
   data() {
     return {
+      transferTitle:"",
       displaynone:"",
       dialogVisibleMore: false,
       states: "",
@@ -822,6 +823,7 @@ export default {
     showCarSpecies(items, types) {
       switch (types) {
         case "uppercartype":
+          this.transferTitle = "超分公司权限车辆种类";
           this.uppercartypedata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.uppercartype
@@ -829,6 +831,7 @@ export default {
           this.arrays = this.uppercartypedata;
           break;
         case "carmainmodel":
+          this.transferTitle = "车队车辆主要车型";
           this.carmainmodeldata = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carmainmodel
@@ -836,6 +839,7 @@ export default {
           this.arrays = this.carmainmodeldata;
           break;
         case "carmainarea":
+          this.transferTitle = "车辆主要使用地";
           this.carmainareadata = this.getShowlabels(
             this.provinceCodes,
             this.allData.carmainarea
@@ -881,10 +885,11 @@ export default {
   created() {
     //设置collapse全部展开
     this.setActiveNames();
-    this.init();
-    this.parameter = this.$route.query;
-    this.states = this.$route.query.state;
-    this.displaynone=this.$route.query.state;
+    // this.init();
+    // this.parameter = this.$route.query;
+    // this.states = this.$route.query.state;
+    // this.displaynone=this.$route.query.state;
+    this.aaaaaaaa=["asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd","asdas","asda","asdasd",]
   }
 };
 </script>
@@ -945,10 +950,10 @@ export default {
 .selectMargin {
   margin-top: 10px;
 }
-/* .textareaheight{
+.textareaheight{
   min-height: 62px;
   height: 62px;
-} */
+}
 .ulli {
   text-align: center;
 }
@@ -958,6 +963,9 @@ export default {
 .tanchuang >>> .el-dialog__footer {
   text-align: center;
 }
+/* .tanchuang{
+  height:450px;
+} */
 .updatastyleinput >>> .el-input.is-disabled .el-input__inner{
   background-color: #ffffff;
 }
@@ -966,4 +974,5 @@ export default {
   line-height: 50px;
   height: 50px;  
 } 
+
 </style>

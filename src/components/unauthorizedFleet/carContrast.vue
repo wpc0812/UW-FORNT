@@ -195,10 +195,10 @@
     <!-- 弹窗 -->
     <el-dialog
       :lock-scroll="false"
-      title="展示"
+      :title="transferTitle"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
-      width="15%"
+      width="20%"
     >
       <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       <span slot="footer" class="dialog-footer">
@@ -216,6 +216,7 @@ export default {
   name: "carContrast",
   data() {
     return {
+      transferTitle:"",
       state: "1",
       titletype: "",
       activeNames: "1",
@@ -243,6 +244,7 @@ export default {
     showCarSpecies(items, types) {
       switch (types) {
         case "carCadastral":
+          this.transferTitle = "涉及车籍地";
           this.arrays = this.getShowlabels(
             this.provinceCodes,
             this.allData.carCadastral
@@ -251,6 +253,7 @@ export default {
           break;
 
         case "uppercartype":
+          this.transferTitle = "超分公司权限车辆种类";
           this.arrays = this.getShowlabels(
             this.carTypeCodes,
             this.allData.uppercartype
@@ -258,6 +261,7 @@ export default {
           break;
 
         case "carmainmodel":
+          this.transferTitle = "车队车辆主要车型";
           this.arrays = this.getShowlabels(
             this.carTypeCodes,
             this.allData.carmainmodel
@@ -265,6 +269,7 @@ export default {
           break;
 
         case "carmainarea":
+          this.transferTitle = "车辆主要使用地";
           this.arrays = this.getShowlabels(
             this.provinceCodes,
             this.allData.carmainarea
