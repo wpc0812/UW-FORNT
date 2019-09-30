@@ -141,7 +141,7 @@
               <el-col :span="24" class="text-center">
                 <el-button @click="query()" size="mini" type="primary">查询</el-button>
                 <el-button @click="reset" size="mini">重置</el-button>
-                <el-button @click="interfaceTest" type="success" icon="el-icon-check" circlesize="mini"></el-button>
+
 
               </el-col>
             </el-row>
@@ -562,13 +562,7 @@ export default {
       this.task.tab2 = val;
     },
 
-    // 接口测试
-    interfaceTest(){
-
-      this.$fetch.post(this.HOST + this.$url.demoSelect,{}).then(data =>{
-        this.$message.success(data)
-      })
-    }
+  
   },
   created() {}
 };

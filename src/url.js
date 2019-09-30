@@ -109,6 +109,6 @@ module.exports  = {
     underwritingSimpleExport:"/export/SimpleUnderwritingStatisticsExport",//核保 统计 简单核保统计 导出
 
 
-    demoSelect:'/demo/select'
+
 
 }

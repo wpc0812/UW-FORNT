@@ -19,7 +19,7 @@ import { Message } from 'element-ui';
 // import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
 
 // Vue.prototype.$axios = axios;
-Vue.prototype.HOST = "/apis"
+Vue.prototype.HOST = "/apis/underwrite"
 
 // Vue.prototype.HOST = ""
 
