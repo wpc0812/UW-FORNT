@@ -164,7 +164,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 4}"
+                    :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.monitoringProgramme"
                   ></el-input>
                 </el-form-item>
@@ -174,7 +174,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 4}"
+                    :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.underWritingCondition"
                   ></el-input>
                 </el-form-item>
@@ -184,7 +184,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 4}"
+                    :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.insuredNameSUB"
                   ></el-input>
                 </el-form-item>
@@ -196,7 +196,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 4}"
+                    :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.remark"
                   ></el-input>
                 </el-form-item>
@@ -373,7 +373,7 @@
             <el-col :span="24" class="mt10">
               <el-input
                 type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
+                :autosize="{ minRows: 3, maxRows: 3}"
                 placeholder="核保员意见:"
                 v-model="textarea2"
               ></el-input>
@@ -917,8 +917,8 @@ export default {
 }
 .labelheight1 >>> .el-form-item__label,
 .labelheight1 >>> .el-input__inner {
-  line-height: 50px;
-  height: 50px;
+  line-height: 69px;
+  height: 69px;
 }
 /* .updatastyleinput .el-form-item {
   margin-bottom: 25px;
@@ -953,8 +953,8 @@ export default {
 }
 .labelheight1 .textcontent{
   text-align: center; 
-  line-height: 50px;
-  height: 50px;  
+  line-height: 69px;
+  height: 69px;  
 } 
 .tanchuang {
   display: flex;

@@ -80,7 +80,11 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
+                    <template>
+                      <el-input v-model="historyValue" style="text-align:center;">
+                        <el-button @click="selectHistory" slot="append" size="small" type="text">查询</el-button>
+                      </el-input>
+                    </template>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -149,18 +153,23 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="控制结束日期:" prop="finishdate" class="labelheight1">
+                  <el-form-item label="控制结束日期:" prop="finishdate" class="labelheight2">
                     <el-date-picker
                       value-format="yyyy-MM-dd"
                       v-model="UwMotorcadeMainVO.finishdate"
                       type="date"
+                      class="inputheight"
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight1">
-                    <el-input v-model="UwMotorcadeMainVO.costRateUpper" type="number"></el-input>
+                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight2">
+                    <el-input
+                      v-model="UwMotorcadeMainVO.costRateUpper"
+                      class="inputheight"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
 
@@ -170,7 +179,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
-                      :autosize="{ minRows: 2, maxRows: 4}"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
                   </el-form-item>
@@ -183,7 +192,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
-                      :autosize="{ minRows: 2, maxRows: 4}"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
                   </el-form-item>
@@ -194,7 +203,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="59"
-                      :autosize="{ minRows: 2, maxRows: 4}"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
                     ></el-input>
                   </el-form-item>
@@ -205,7 +214,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
-                      :autosize="{ minRows: 2, maxRows: 4}"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
                     ></el-input>
                   </el-form-item>
@@ -416,14 +425,17 @@ export default {
     };
     // 监控方案
     var monitoringProgrammeEcc = (rules, value, callback) => {
-      if (value && value.length > 100) {
+      if (!value) {
+        callback(new Error("监控方案为必填项"));
+      } else if (value && value.length > 100) {
         callback(new Error("监控方案为100字以内"));
       } else if (value && value.length <= 100) {
         callback();
       }
     };
     return {
-      transferTitle:"",
+      historyValue: "",
+      transferTitle: "",
       message: "aaa",
       dialogVisibles: false,
       resultSelect: [],
@@ -481,7 +493,11 @@ export default {
           }
         ],
         insuredflag: [
-          { required: true, message: "控制关系人标志必选", trigger: ["change"] }
+          {
+            required: true,
+            message: "控制关系人标志必选",
+            trigger: ["blur", "change"]
+          }
         ],
         insuredName: [
           { required: true, message: "控制关系人名称必填", trigger: ["blur"] }
@@ -517,18 +533,22 @@ export default {
           {
             required: true,
             message: "超分公司权限车辆种类",
-            trigger: ["change"]
+            trigger: ["blur", "change"]
           }
         ],
         carmainmodel: [
           {
             required: true,
             message: "车队车辆主要车型必选",
-            trigger: ["change"]
+            trigger: ["blur", "change"]
           }
         ],
         carmainarea: [
-          { required: true, message: "车辆主要使用地必选", trigger: ["change"] }
+          {
+            required: true,
+            message: "车辆主要使用地必选",
+            trigger: ["blur", "change"]
+          }
         ],
         finishdate: [
           {
@@ -790,6 +810,7 @@ export default {
           .then(data => {
             console.log(typeof data);
             // window.open("http://www.baidu.com")
+            this.historyValue = data;
             window.open(data);
           });
       } else if (
@@ -816,9 +837,6 @@ export default {
 }
 .el-form >>> label {
   font-size: 12px;
-}
-.UwMotorcadeMainVOupdate >>> .el-form-item__label {
-  background: #e8f6f9;
 }
 .UwMotorcadeMainVOupdate .el-form-item {
   margin-bottom: 20px;
@@ -849,8 +867,8 @@ export default {
 }
 .labelheight1 >>> .el-form-item__label,
 .labelheight1 >>> .el-input__inner {
-  line-height: 50px;
-  height: 50px;
+  line-height: 69px;
+  height: 69px;
 }
 .querycenter {
   text-align: center;
@@ -863,5 +881,13 @@ export default {
 }
 .diacenter >>> .el-dialog__footer {
   text-align: center;
+}
+.labelheight2 >>> .el-form-item__label {
+  height: 69px;
+  line-height: 69px;
+}
+.labelheight2 >>> .inputheight {
+  height: 32px;
+  line-height: 69px;
 }
 </style>

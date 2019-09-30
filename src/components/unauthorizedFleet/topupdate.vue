@@ -80,14 +80,18 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
+                      <template>
+                      <el-input v-model="historyValue" style="text-align:center;">
+                        <el-button @click="selectHistory" slot="append" size="small" type="text">查询</el-button>
+                      </el-input>
+                    </template>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="车队车辆总数:" prop="carcountAll">
-                    <el-input v-model="UwMotorcadeMainVO.carcountAll"></el-input>
+                    <el-input v-model="UwMotorcadeMainVO.carcountAll" maxlength="6" type="number"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -97,17 +101,31 @@
                     label-width="175px"
                     class="text-left"
                   >
-                    <el-input v-model="UwMotorcadeMainVO.estimatedPremiumSize"></el-input>
+                    <el-input
+                      v-model="UwMotorcadeMainVO.estimatedPremiumSize"
+                      maxlength="4"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="this.$route.query.nametype=='1'">
                   <el-form-item label="异地车辆数:" prop="foreigncarcount">
-                    <el-input v-model="UwMotorcadeMainVO.foreigncarcount" :disabled="distorenewal"></el-input>
+                    <el-input
+                      v-model="UwMotorcadeMainVO.foreigncarcount"
+                      maxlength="6"
+                      :min="0"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="this.$route.query.nametype=='2'">
                   <el-form-item label="超分公司权限车辆总数:" prop="uppercarcount" class="text-left">
-                    <el-input v-model="UwMotorcadeMainVO.uppercarcount" :disabled="distorenewal"></el-input>
+                     <el-input
+                      v-model="UwMotorcadeMainVO.uppercarcount"
+                      maxlength="6"
+                      :min="0"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -159,20 +177,21 @@
                   <el-form-item
                     label="控制结束日期:"
                     prop="finishdate"
-                    class="labelheight"
+                    class="labelheight2"
                     :disabled="distorenewal"
                   >
                     <el-date-picker
                       value-format="yyyy-MM-dd"
                       v-model="UwMotorcadeMainVO.finishdate"
                       type="date"
+                      class="inputheight"
                       placeholder="选择日期"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight">
-                    <el-input v-model="UwMotorcadeMainVO.costRateUpper"></el-input>
+                  <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight2">
+                    <el-input v-model="UwMotorcadeMainVO.costRateUpper" class="inputheight" type="number"></el-input>
                   </el-form-item>
                 </el-col>
 
@@ -180,8 +199,9 @@
                   <el-form-item label="监控方案:" class="labelheight">
                     <el-input
                       type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 4}"
-                      placeholder="请输入内容"
+                      :rows="1"
+                      maxlength="99"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
                   </el-form-item>
@@ -191,9 +211,10 @@
                 <el-col :span="8">
                   <el-form-item label="承保条件:" class="labelheight" prop="underWritingCondition">
                     <el-input
-                      type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 4}"
-                      placeholder="请输入内容"
+                     type="textarea"
+                      :rows="1"
+                      maxlength="99"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
                   </el-form-item>
@@ -201,9 +222,10 @@
                 <el-col :span="8">
                   <el-form-item label="关联关系人名称:" class="labelheight">
                     <el-input
-                      type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 4}"
-                      placeholder="请输入内容"
+                     type="textarea"
+                      :rows="1"
+                      maxlength="59"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
                     ></el-input>
                   </el-form-item>
@@ -211,9 +233,10 @@
                 <el-col :span="8">
                   <el-form-item label="备注:" class="labelheight">
                     <el-input
-                      type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 4}"
-                      placeholder="请输入内容"
+                       type="textarea"
+                      :rows="1"
+                      maxlength="99"
+                      :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
                     ></el-input>
                   </el-form-item>
@@ -261,6 +284,7 @@ export default {
 
   data() {
     return {
+      historyValue:"",
       transferTitle: "",
       transferItems: [], // 穿梭框 数据
       transferItem: [], // 穿梭框 绑定数据
@@ -501,6 +525,7 @@ export default {
         .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
         .then(data => {
           console.log(typeof data);
+          this.historyValue=data;
           // window.open("http://www.baidu.com")
           window.open(data);
         });
@@ -577,9 +602,6 @@ export default {
 .el-form >>> label {
   font-size: 12px;
 }
-.UwMotorcadeMainVOupdate >>> .el-form-item__label {
-  background: #e8f6f9;
-}
 .UwMotorcadeMainVOupdate .el-form-item {
   margin-bottom: 20px;
 }
@@ -602,8 +624,8 @@ export default {
 }
 .labelheight >>> .el-form-item__label,
 .labelheight >>> .el-input__inner {
-  line-height: 50px;
-  height: 50px;
+  line-height: 69px;
+  height: 69px;
 }
 .checkboxmargin >>> .el-transfer-panel {
   width: 35%;
@@ -615,5 +637,13 @@ export default {
   color: #0066cc;
   text-decoration: none;
   margin-left: 13px;
+}
+.labelheight2 >>> .el-form-item__label {
+  height: 69px;
+  line-height: 69px;
+}
+.labelheight2 >>> .inputheight {
+  height: 32px;
+  line-height: 69px;
 }
 </style>
