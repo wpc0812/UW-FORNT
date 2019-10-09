@@ -58,7 +58,6 @@
                     type="datetimerange"
                     time-arrow-control
                     range-separator="至"
-                    @blur='datePickerChange'
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                   ></el-date-picker>
@@ -81,7 +80,7 @@
                     <el-checkbox
                       class="check-group ml5"
                       :indeterminate="isIndeterminate.taskType"
-                      v-model="checkAll.taskTypeList"
+                      v-model="checkAll.taskType"
                       @change="handleCheckAllChange('taskType')"
                     >所有</el-checkbox>
                   </el-form-item>
@@ -274,6 +273,7 @@ import tplUnderwriting from "@/components/underwriting/templates/tpl_underwritin
 import { userInfo } from 'os';
 import { decode } from 'querystring';
 
+
 const [taskType, appTypes] = [
   ["ST", "GT", "E", "H"],
   ["a", "b", "c", "d", "e", "f", "g", "i", "h"]
@@ -298,16 +298,16 @@ export default {
       },
       activeNames: ["1", "2", "3"],
       underwriting: {
-        stateList: [],
-        taskTypeList: [],
-        occupied: [],
-        appTypes: [],
+        stateList: ['0'],
+        taskTypeList: taskType,
+        occupied: ['0','1','2'],
+        appTypes: appTypes,
         pageNo: 1,
         everyPage: 10
       },
       checkAll: {
-        taskType: false,
-        appTypes: false
+        taskType: true,
+        appTypes: true
       },
       isIndeterminate: {
         appTypes: false,
@@ -330,26 +330,28 @@ export default {
     //重置
     reset() {
       this.underwriting = {
-        stateList: [],
-        taskTypeList: [],
-        occupied: [],
-        appTypes: [],
+        stateList: ['0'],
+        taskTypeList: taskType,
+        occupied: ['0','1','2'],
+        appTypes: appTypes,
         pageNo: 1,
         everyPage: 10
       };
       this.checkAll = {
-        taskType: false,
-        appTypes: false
+        taskType: true,
+        appTypes: true
       };
       this.isIndeterminate = {
         appTypes: false,
         taskType: false
       }
+      this.getDate()
     },
 
 
     //查询
     query() {
+      this.datePickerChange()
       /**
        * 处理查询时的类型和次数
        * 未选择状态和 类型时默认全部查询
@@ -429,10 +431,13 @@ export default {
       }
       
     },
-    datePickerChange( ){
+    datePickerChange(){
       console.log(this.underwriting.flowDate)
-      this.underwriting.beginDate = this.underwriting.flowDate[0]
-      this.underwriting.endDate = this.underwriting.flowDate[1]
+      if(this.underwriting.flowDate && this.underwriting.flowDate instanceof Array && this.underwriting.flowDate.length > 0) {
+        this.underwriting.beginDate = this.underwriting.flowDate[0]
+        this.underwriting.endDate = this.underwriting.flowDate[1]
+      }
+      
       console.log(this.underwriting)
 
     },
@@ -533,7 +538,7 @@ export default {
     //全选
     handleCheckAllChange(flag) {
       if (flag == "taskType") {
-        this.underwriting.taskType = this.checkAll.taskType ? taskType : [];
+        this.underwriting.taskTypeList = this.checkAll.taskType ? taskType : [];
         this.isIndeterminate.taskType = false;
       } else {
         this.underwriting.appTypes = this.checkAll.appTypes ? appTypes : [];
@@ -561,10 +566,20 @@ export default {
     processed(val) {
       this.task.tab2 = val;
     },
+    getDate(){
+      let date = new Date();
+      let startDate = date.format("yyyy-MM-dd") + ' '+'00:00:00';
+      date.setDate(date.getDate() + 1) 
+      let endDate = date.format("yyyy-MM-dd")+ ' '+'23:59:59'
 
+      this.underwriting.flowDate = [startDate,endDate]
+    }
   
   },
-  created() {}
+  created() {
+    this.getDate()
+   
+  }
 };
 </script>
 <style scoped>

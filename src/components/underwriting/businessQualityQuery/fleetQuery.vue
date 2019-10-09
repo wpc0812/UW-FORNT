@@ -7,7 +7,7 @@ import utils from '../../../utils'
 
 
 export default {
-  name: "cdClaimList",
+  name: "FleetQuery",
   components: {},
   data() {
     return {
