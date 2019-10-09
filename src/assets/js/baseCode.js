@@ -26,7 +26,7 @@ export const relations = [
 ]
 //核保类型
 export const underwritingTypes = [
-  { code: 'ST', value: '散弹投保单'},
+  { code: 'ST', value: '散单投保单'},
   { code: 'GT', value: '团单投保单'},
   { code: 'E', value: '批单'},
   { code: 'H', value: '团单方案'},

@@ -51,20 +51,22 @@
               <el-row>
                 <el-col :span="10">
                   <el-form-item label="核保状态:" class="text-left">
-                    <el-checkbox-group v-model="arraystate">
-                      <el-checkbox label="通过" value='1'></el-checkbox>
-                      <el-checkbox label="未通过" value='0'></el-checkbox>
+                    <el-checkbox-group v-model="arraystate" @change="changecheckbox">
+                      <el-checkbox
+                        class="check-group"
+                        v-for="state in radiostate"
+                        :label="state.code"
+                        :key="state.code"
+                      >{{state.value}}</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row class="text-center">
                 <el-col :span="24">
-                 
                   <el-button @click="query" size="mini" type="primary">查询</el-button>
                   <el-button @click="statisticalResults" size="mini" type="primary">统计结果</el-button>
                   <el-button @click="rtReportedchu" size="mini" type="primary">导出</el-button>
-                  
                 </el-col>
               </el-row>
             </el-row>
@@ -82,11 +84,15 @@
           </template>
           <el-row class="text-left">
             <el-pagination
+              class="mb10 mt10 text-left"
+              @size-change="proposalSizeChange"
+              @current-change="proposalCurrentChange"
+              :pager-count="5"
               small
-              :current-page.sync="currentPage"
-              :page-sizes="[20, 40, 80, 160]"
-              :page-size="20"
-              layout="sizes, prev, pager, next"
+              :current-page="pageInfo.proposalPageNo"
+              :page-sizes="[10, 20, 50]"
+              :page-size="pageInfo.proposalPageSize"
+              layout="total, sizes, prev, pager, next, jumper"
               :total="totalnum"
             ></el-pagination>
           </el-row>
@@ -127,11 +133,15 @@
           </template>
           <el-row class="text-left">
             <el-pagination
+              class="mb10 mt10 text-left"
+              @size-change="policySizeChange"
+              @current-change="policyCurrentChange"
+              :pager-count="5"
               small
-              :current-page.sync="currentPage1"
-              :page-sizes="[20, 40, 80, 160]"
-              :page-size="20"
-              layout="sizes, prev, pager, next"
+              :current-page="pageInfo.policyPageNo"
+              :page-sizes="[10, 20, 50]"
+              :page-size="pageInfo.policyPageSize"
+              layout="total, sizes, prev, pager, next, jumper"
               :total="totalnum1"
             ></el-pagination>
           </el-row>
@@ -172,11 +182,15 @@
           </template>
           <el-row class="text-left">
             <el-pagination
+              class="mb10 mt10 text-left"
+              @size-change="endorsementSizeChange"
+              @current-change="endorsementCurrentChange"
+              :pager-count="5"
               small
-              :current-page.sync="currentPage2"
-              :page-sizes="[20, 40, 80, 160]"
-              :page-size="20"
-              layout="sizes, prev, pager, next"
+              :current-page="pageInfo.endorsementPageNo"
+              :page-sizes="[10, 20, 50]"
+              :page-size="pageInfo.endorsementPageSize"
+              layout="total, sizes, prev, pager, next, jumper"
               :total="totalnum2"
             ></el-pagination>
           </el-row>
@@ -243,6 +257,19 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
+    <el-dialog
+      title="提示"
+      style="text-align='center'"
+      :visible.sync="dialogVisibles"
+      width="20%"
+      class="diacenter"
+      :lock-scroll="false"
+    >
+      <span>{{message}}</span>
+      <span slot="footer" class="dialog-footer dialogFooter">
+        <el-button type="primary" @click="dialogVisibles = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -254,14 +281,25 @@ export default {
   components: {},
   data() {
     return {
-      totalnum: 10,
-      currentPage: 1,
-      totalnum1: 10,
-      currentPage1: 1,
-      totalnum2: 10,
-      currentPage2: 1,
-      totalnum3: 10,
+      radiostate: [
+        { code: "1", value: "通过" },
+        { code: "0", value: "不通过" }
+      ],
+      dialogVisibles: false,
+      message: "",
+      totalnum: 0,
+      totalnum1: 0,
+      totalnum2: 0,
+      totalnum3: 0,
       currentPage3: 1,
+      pageInfo: {
+        proposalPageNo: 1,
+        proposalPageSize: 10,
+        policyPageNo: 1,
+        policyPageSize: 10,
+        endorsementPageSize: 10,
+        endorsementPageNo: 1
+      },
       UwMotorcadeMainVO: {
         personNo: "",
         state: "",
@@ -276,7 +314,7 @@ export default {
       InsurancePolicy: [],
       singleNum: [],
       statisticalResult: [],
-      arraystate:[]
+      arraystate: []
     };
   },
 
@@ -295,24 +333,69 @@ export default {
       let _url = this.HOST + this.$url.underwritingStatisticsExport;
       utils.axiosDown(_url, uwMotorcadeMainVO);
     },
+    // 投保单条数
+    policySizeChange(val) {
+      this.pageInfo.policyPageSize = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
+    // 投保单第几页
+    policyCurrentChange(val) {
+      this.pageInfo.policyPageNo = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
+    // 保单条数
+    proposalSizeChange(val) {
+      debugger;
+      this.pageInfo.proposalPageSize = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
+    // 保单第几页
+    proposalCurrentChange(val) {
+      this.pageInfo.proposalPageNo = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
+    // 批单条数
+    endorsementSizeChange(val) {
+      this.pageInfo.endorsementPageSize = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
+    // 批单第几页
+    endorsementCurrentChange(val) {
+      this.pageInfo.endorsementPageNo = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
     // 查询
     query() {
-      let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      uwMotorcadeMainVO.state = this.arraystate.join();
-      this.$fetch
-        .post(this.HOST + this.$url.underwritingStatistics, uwMotorcadeMainVO)
-        .then(res => {
-          if (res) {
-            this.flag = true;
-            this.flag1 = false;
-            this.InsuranceApplication = res.proposalList;
-            this.InsurancePolicy = res.policyList;
-            this.singleNum = res.endorsementList;
-            this.totalnum = res.proposalTotal;
-            this.totalnum1 = res.policyTotal;
-            this.totalnum2 = res.endorsementTotal;
-          }
-        });
+        this.UwMotorcadeMainVO.state = this.arraystate.join();
+        this.$fetch
+          .post(this.HOST + this.$url.underwritingStatistics, {
+            ...this.UwMotorcadeMainVO,
+            ...this.pageInfo
+          })
+          .then(res => {
+            if (res) {
+              this.flag = true;
+              this.flag1 = false;
+              this.InsuranceApplication = res.proposalList;
+              this.InsurancePolicy = res.policyList;
+              this.singleNum = res.endorsementList;
+              this.totalnum = res.proposalTotal;
+              this.totalnum1 = res.policyTotal;
+              this.totalnum2 = res.endorsementTotal;
+            }
+          });
     },
     //统计结果
     statisticalResults() {
@@ -333,30 +416,29 @@ export default {
     },
     //投保单
     BusinessNum1(row) {
-      let name="h1";
-       this.$router.push({
+      let name = "h1";
+      this.$router.push({
         path: "/detailedInformation",
         query: { row: row.businessNo, name }
       });
       // console.log(row.businessNo,name)
-
     },
     //保单
     BusinessNum2(row) {
-      let name="h1";
-       this.$router.push({
+      let name = "h1";
+      this.$router.push({
         path: "/detailedInformation",
         query: { row: row.businessNo, name }
       });
     },
     //批单
     BusinessNum3(row) {
-      let name="h3";
-       this.$router.push({
+      let name = "h3";
+      this.$router.push({
         path: "/detailedInformation",
         query: { row: row.businessNo, name }
       });
-    },
+    }
   },
   created() {
     this.flag = false;
@@ -387,5 +469,14 @@ export default {
   border-radius: 8px;
   margin-right: 10px;
 }
-
+.diacenter {
+  text-align: center;
+}
+.diacenter >>> .el-dialog__footer {
+  text-align: center;
+}
+.diacenter >>> .el-dialog__body {
+  font-size: 16px;
+  font-weight: bolder;
+}
 </style>

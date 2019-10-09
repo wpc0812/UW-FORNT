@@ -19,9 +19,9 @@ import { Message } from 'element-ui';
 // import { postRequest, getRequest, deleteRequest, putRequest} from './utils/api'
 
 // Vue.prototype.$axios = axios;
-Vue.prototype.HOST = "/apis/underwrite"
+// Vue.prototype.HOST = "/apis/underwrite"
 
-// Vue.prototype.HOST = ""
+Vue.prototype.HOST = ""
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'small'})

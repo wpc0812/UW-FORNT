@@ -335,6 +335,7 @@ export default {
   data() {
     //车队车辆总数
     var carcountAllEcc = (rules, value, callback) => {
+       var reg = new RegExp('^-?[0-9]+([.]{1}[0-9]+){0,1}$');
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {

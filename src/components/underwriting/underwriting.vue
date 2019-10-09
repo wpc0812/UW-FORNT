@@ -381,7 +381,7 @@ export default {
     },
     getListDetail(key) {
         // console.log(key.underwritingCondition.taskType,key.underwritingCondition.state)
-        console.log(typeof(key))
+        // console.log(typeof(key))
       this.$fetch.post(this.HOST + this.$url.uwmainGetUwList,key).then( data => {
         // console.log(data)
         if( data.state ==='1'){

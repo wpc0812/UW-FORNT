@@ -358,7 +358,7 @@ export default {
   list-style-type: none;
 }
 .table-cell-bg {
-  background: red;
+  background: rgb(233, 233, 16);
 }
 .tanchuang {
   display: flex;

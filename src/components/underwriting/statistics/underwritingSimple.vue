@@ -216,7 +216,7 @@ export default {
       radio: "1",
       UwMotorcadeMainVO: {
         personNo: "",
-        level: "",
+        level: "1",
         startDate: "",
         endDate: ""
       },
@@ -243,7 +243,7 @@ export default {
     // 查询
     query() {
       let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-      console.log(uwMotorcadeMainVO);
+      // console.log(uwMotorcadeMainVO);
       this.$fetch
         .post(this.HOST + this.$url.underwritingSimpleSelect, uwMotorcadeMainVO)
         .then(res => {

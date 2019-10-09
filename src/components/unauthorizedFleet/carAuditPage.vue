@@ -164,6 +164,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.monitoringProgramme"
                   ></el-input>
@@ -174,6 +175,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.underWritingCondition"
                   ></el-input>
@@ -184,6 +186,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.insuredNameSUB"
                   ></el-input>
@@ -196,6 +199,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.remark"
                   ></el-input>
@@ -375,6 +379,7 @@
                 type="textarea"
                 :autosize="{ minRows: 3, maxRows: 3}"
                 placeholder="核保员意见:"
+                resize='none'
                 v-model="textarea2"
               ></el-input>
             </el-col>
@@ -694,7 +699,8 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
+         comCode:"33000000"
+        // comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageUploadECMs, ImageRequestDTO)
@@ -710,7 +716,8 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-        comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
+        comCode: "33000000"
+        // comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageQueryECMs, ImageRequestDTO)

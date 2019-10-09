@@ -1831,7 +1831,7 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.uwmainGetUwInfo, keyWords)
         .then(data => {
-          console.log(data);
+          // console.log(data);
           this.underwritingDetails = data;
           this.underwritingDetails.uwNotion = data.uwnotions[0];
           //  this.underwritingDetails.displayFlag ={}

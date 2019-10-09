@@ -101,7 +101,7 @@ module.exports  = {
 
 
 
-    underwritingStatistics:"/comprehensiveStatistics/UnderwritingStatisticsSelect",//核保 统计 核保统计查询
+    underwritingStatistics:"/comprehensiveStatistics/underwritingStatisticsSelect",//核保 统计 核保统计查询
     underwritingStatisticsResult:"/comprehensiveStatistics/UnderwritingStatisticalResultsSelect",//核保 统计 核保统计 统计结果
     underwritingStatisticsExport:"/export/UnderwritingStatisticsExport",//核保 统计 核保统计 导出
     underwritingAmountSExport:"/export/UnderwritingAmountStatisticsExport",//核保 统计 核保量统计 导出
