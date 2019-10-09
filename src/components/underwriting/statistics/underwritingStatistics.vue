@@ -51,9 +51,9 @@
               <el-row>
                 <el-col :span="10">
                   <el-form-item label="核保状态:" class="text-left">
-                    <el-checkbox-group v-model="arraystate" @change="changecheckbox">
-                      <el-checkbox label="通过"></el-checkbox>
-                      <el-checkbox label="未通过"></el-checkbox>
+                    <el-checkbox-group v-model="arraystate">
+                      <el-checkbox label="通过" value='1'></el-checkbox>
+                      <el-checkbox label="未通过" value='0'></el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
                 </el-col>
@@ -285,13 +285,13 @@ export default {
   },
 
   methods: {
-    //多选框
-    changecheckbox() {
-    },
+ 
     //导出
     rtReportedchu() {
       let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
+      
       uwMotorcadeMainVO.state = this.arraystate.join();
+      uwMotorcadeMainVO.personNo = "2fbbb15e"
       let _url = this.HOST + this.$url.underwritingStatisticsExport;
       utils.axiosDown(_url, uwMotorcadeMainVO);
     },

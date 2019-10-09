@@ -209,7 +209,7 @@
         <el-collapse-item name="3" v-if="underwriting.stateList.indexOf('1') > -1 || list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
           <template slot="title">
             <div class="title-blue-bar"></div>
-            <div class="card-title">已处理任务  {{underwriting.taskTypeList.indexOf('H') > -1 }}</div>
+            <div class="card-title">已处理任务</div>
           </template>
           <el-collapse v-model="task.tab2" @change="processed">
             <tpl-underwriting

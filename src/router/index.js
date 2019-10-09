@@ -170,16 +170,54 @@ const router = new Router({
             keepAlive: false
           }
         },
-        // {
-        //   path: '/autoPushDetail',
-        //   name: '自动推送详情页',
-        //   component: _import('underwriting/autoPushDetail'),
-        //   hidden: true,
-        //   meta: {
-        //     requireAuth: true,
-        //     keepAlive: false
-        //   }
-        // },
+        // 核保管理--车队业务质量查询--车队业务质量查询
+        {
+          path: '/fleetQuery',
+          name: '车队业务质量查询',
+          component: _import('underwriting/businessQualityQuery/fleetQuery'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        // 核保管理--车队业务质量查询--车队承保清单下载
+        {
+          path: '/cdInsuranceList',
+          name: '车队承保清单下载',
+          component: _import('underwriting/businessQualityQuery/cdInsuranceList'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        // 核保管理--车队业务质量查询--车队理赔清单下载
+        {
+          path: '/cdClaimList',
+          name: '车队理赔清单下载',
+          component: _import('underwriting/businessQualityQuery/cdClaimList'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        
+        // 核保管理--车队业务质量查询--高风险车队业务质量报表下载
+        {
+          path: '/cdQualityReport',
+          name: '高风险车队业务质量报表下载',
+          component: _import('underwriting/businessQualityQuery/cdQualityReport'),
+          hidden: true,
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          }
+        },
+        
+     
+    
          // 核保管理 -- 统计---核保统计
         {
           path: '/underwritingStatistics',

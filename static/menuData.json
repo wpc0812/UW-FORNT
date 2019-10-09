@@ -52,60 +52,11 @@
         "children": [
           {
             "id" : 6 ,
-            "path": "",
+            "path": "/fleetQuery",
             "iconCls": "el-icon-edit-outline",
             "name": "车队业务质量查询",
             "component": "Home",
-            "children": [
-              {
-                "id": 7,
-                "path": "/cdInsuranceList",
-                "iconCls": "el-icon-edit-outline",
-                "name": "基础查询",
-                "component": "CdInsuranceList",
-                "children": [],
-                "meta": {
-                  "keepAlive": false,
-                  "reuireAuth": true
-                }
-              },
-              {
-                "id": 8,
-                "path": "/addArticle",
-                "iconCls": "el-icon-edit-outline",
-                "name": "按地区查询",
-                "component": "AddArticle",
-                "children": [],
-                "meta": {
-                  "keepAlive": false,
-                  "reuireAuth": true
-                }
-              },
-              {
-                "id": 9,
-                "path": "/addArticle",
-                "iconCls": "el-icon-edit-outline",
-                "name": "按车辆种类查询",
-                "component": "AddArticle",
-                "children": [],
-                "meta": {
-                  "keepAlive": false,
-                  "reuireAuth": true
-                }
-              },
-              {
-                "id": 10,
-                "path": "/addArticle",
-                "iconCls": "el-icon-edit-outline",
-                "name": "按关系人查询查询",
-                "component": "AddArticle",
-                "children": [],
-                "meta": {
-                  "keepAlive": false,
-                  "reuireAuth": true
-                }
-              }
-            ],
+            "children": [ ],
             "meta": {
               "keepAlive": false,
               "reuireAuth": true
