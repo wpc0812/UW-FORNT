@@ -38,21 +38,14 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="7">
-                  <el-form-item label="状态:" class="text-left">
-                    <el-checkbox-group v-model="underwriting.stateList">
-                      <el-checkbox
-                        class="check-group"
-                        v-for="state in status"
-                        :label="state.code"
-                        :key="state.code"
-                      >{{state.value}}</el-checkbox>
-                    </el-checkbox-group>
+                  <el-form-item label="渠道码:">
+                    <el-input v-model="underwriting.agentCode"></el-input>
                   </el-form-item>
                 </el-col>
+                
                 <el-col :span="10">
                 <el-form-item label="提交时间:">
                   <el-date-picker
-                    :title="underwriting.flowDate"
                     v-model="underwriting.flowDate"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     type="datetimerange"
@@ -85,9 +78,10 @@
                     >所有</el-checkbox>
                   </el-form-item>
                 </el-col>
+                
                 <el-col :span="10">
-                <el-form-item label="渠道码:">
-                  <el-input v-model="underwriting.agentCode"></el-input>
+                <el-form-item label="被保险人:">
+                  <el-input v-model="underwriting.insuredName"></el-input>
                 </el-form-item>
               </el-col>
               </el-row>
@@ -108,10 +102,17 @@
                 </el-form-item>
               </el-col>  
               <el-col :span="10">
-                <el-form-item label="被保险人:">
-                  <el-input v-model="underwriting.insuredName"></el-input>
-                </el-form-item>
-              </el-col>
+                  <el-form-item label="状态:" class="text-left">
+                    <el-checkbox-group v-model="underwriting.stateList">
+                      <el-checkbox
+                        class="check-group"
+                        v-for="state in status"
+                        :label="state.code"
+                        :key="state.code"
+                      >{{state.value}}</el-checkbox>
+                    </el-checkbox-group>
+                  </el-form-item>
+                </el-col>
 
               <el-col :span="24">
                 <el-form-item label="审批类型:" class="text-left">
@@ -272,6 +273,7 @@ import {
 import tplUnderwriting from "@/components/underwriting/templates/tpl_underwriting";
 import { userInfo } from 'os';
 import { decode } from 'querystring';
+import { stat } from 'fs';
 
 
 const [taskType, appTypes] = [
@@ -571,8 +573,10 @@ export default {
       let startDate = date.format("yyyy-MM-dd") + ' '+'00:00:00';
       date.setDate(date.getDate() + 1) 
       let endDate = date.format("yyyy-MM-dd")+ ' '+'23:59:59'
+      console.log(startDate.toString())
+      // this.underwriting.flowDate = [JSON.parse(JSON.stringify(startDate)),JSON.parse(JSON.stringify(endDate))]
+      this.$set(this.underwriting,'flowDate',[startDate.toString(),endDate.toString()])
 
-      this.underwriting.flowDate = [startDate,endDate]
     }
   
   },
