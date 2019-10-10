@@ -80,11 +80,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <template>
-                      <el-input v-model="historyValue" style="text-align:center;">
-                        <el-button @click="selectHistory" slot="append" size="small" type="text">查询</el-button>
-                      </el-input>
-                    </template>
+                        <el-button @click="selectHistory"  size="small" type="text">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -179,6 +175,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
@@ -192,6 +189,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
@@ -203,6 +201,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="59"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
                     ></el-input>
@@ -214,6 +213,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
                     ></el-input>
@@ -325,7 +325,6 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
 import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
 
@@ -434,7 +433,6 @@ export default {
       }
     };
     return {
-      historyValue: "",
       transferTitle: "",
       message: "aaa",
       dialogVisibles: false,
@@ -810,7 +808,6 @@ export default {
           .then(data => {
             console.log(typeof data);
             // window.open("http://www.baidu.com")
-            this.historyValue = data;
             window.open(data);
           });
       } else if (

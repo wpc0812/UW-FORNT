@@ -94,9 +94,9 @@
         <el-table-column prop="insuredName" label="关系人名称"></el-table-column>
         <el-table-column prop="businessNature" label="业务来源"></el-table-column>
         <el-table-column prop="lastFourYearPayPercent" width="115" label="历史满期赔付率"></el-table-column>
-        <el-table-column prop="finishdate" label="控制结束日期"></el-table-column>
+        <el-table-column prop="finishdateString" label="控制结束日期"></el-table-column>
         <el-table-column prop="isextendtime" label="是否续保"></el-table-column>
-        <el-table-column prop="firstSubmitDate" label="提交时间"></el-table-column>
+        <el-table-column prop="firstSubmitDateString" label="提交时间"></el-table-column>
         <el-table-column prop="submitUser" label="分公司上报人"></el-table-column>
         <el-table-column prop="memberName" label="总公司审核人"></el-table-column>
       </el-table>

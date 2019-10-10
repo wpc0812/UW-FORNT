@@ -1,18 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import layout from './modules/layout';
-import underwriting from './modules/underwriting';
-import getters from './getters'
 import '../lib/sockjs'
 import '../lib/stomp'
-
+import initState from "./initState"
+import mutations from "./mutations"
+import actions from "./actions"
+import getters from "./getters"
+import modules from "./modules"
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  modules: {
-    layout,
-    underwriting
-  },
-  getters
+  state:initState,
+  mutations,
+  actions,
+  getters,
+  modules:modules,
 })
 export default store

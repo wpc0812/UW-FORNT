@@ -2,7 +2,7 @@
   <div>
     <div class="left-menu" v-show="!isCollapse">
       <el-menu
-        class="el-menu-vertical-demo scrollbar text-left left-bar"
+        class="el-menu-vertical-demo scrollbar text-left left-bar heightStyle"
         :unique-opened="true"
         text-color="#4C4C4C"
         :default-active="active"
@@ -12,19 +12,16 @@
       >
         <template v-for="item in menu">
           <!--菜单循环第一层，含有子集-->
-          <el-submenu :key="item.id" :index="item.name" v-if="item.children.length" >
-            <template slot="title" style="background: red" >
-
+          <el-submenu :key="item.id" :index="item.name" v-if="item.children.length">
+            <template slot="title" style="background: red">
               <i :class="item.iconCls" class="font-size15 color-blue"></i>
-              <span slot="title">&nbsp;{{item.name}} </span>
-              
-              
+              <span slot="title">&nbsp;{{item.name}}</span>
             </template>
             <!-- 二、三级菜单 -->
             <template v-for="(itemChild, index) in item.children">
               <!-- 三级菜单 -->
               <template v-if="itemChild.children && itemChild.children.length">
-                <el-submenu :key="index" :index="itemChild.name" >
+                <el-submenu :key="index" :index="itemChild.name">
                   <span slot="title">
                     <i :class="itemChild.iconCls" class="font-size15 color-blue"></i>
                     {{itemChild.name}}
@@ -63,7 +60,7 @@
     <div v-show="isCollapse" class="menu-arrow-bar mouse-pointer" @click="getCollapse">
       <i class="el-icon-arrow-right"></i>
     </div>
-         <!-- {
+    <!-- {
         "id": 28,
         "path": "/rtAudit",
         "iconCls": "fa fa-file-code-o",
@@ -86,7 +83,7 @@
           "keepAlive": false,
           "reuireAuth": true
         }
-      }, -->
+    },-->
   </div>
 </template>
 <script>
@@ -97,9 +94,9 @@ export default {
   data() {
     return {
       menu,
-      isCollapse: eval(localStorage.getItem('isCollapse')),
+      isCollapse: eval(localStorage.getItem("isCollapse")),
       active: this.$route.name,
-      comCodeLevel: 'Z'
+      comCodeLevel: "Z"
     };
   },
 
@@ -111,22 +108,22 @@ export default {
     getCollapse() {
       this.isCollapse = !this.isCollapse;
       this.$emit("isCollapse", this.isCollapse);
-      localStorage.setItem('isCollapse', this.isCollapse);
+      localStorage.setItem("isCollapse", this.isCollapse);
     }
   },
-  mounted(){
+  mounted() {
     // console.log(this.$route.name)
     // console.log(this.menu)
   },
 
   created() {
-  // this.menu();
+    // this.menu();
   }
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .color-blue {
-  color: #409EFF;
+  color: #409eff;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 250px;
@@ -135,48 +132,44 @@ export default {
   display: flex;
   align-items: center;
   background-color: rgb(241, 242, 244);
-  // border-radius: 18px;
 }
 .menu-arrow {
   height: 100px;
   line-height: 100px;
   color: #ccc;
-  
 }
 .menu-arrow-bar {
   background-color: #ffffff;
   color: #ccc;
-  height:40px;
+  height: 40px;
   line-height: 40px;
   width: 15px;
   border-radius: 0 8px 8px 0;
-  &:hover {
-    padding-left: 3px;
-    color: #e9e9e9;
-  }
 }
-.el-menu-item.is-active{
-  background-color: #ecf5ff!important;
+.menu-arrow-bar:hover {
+  padding-left: 3px;
+  color: #e9e9e9;
+}
+.el-menu-item.is-active {
+  background-color: #ecf5ff !important;
   color: rgb(64, 158, 255);
-  border-left: 4px solid #409eff
+  border-left: 4px solid #409eff;
 }
-.el-submenu  /deep/  .el-submenu__title{
-  height: 50px ;
+.el-submenu >>> .el-submenu__title {
+  height: 50px;
   background: rgb(241, 242, 244) !important;
   line-height: 50px;
-  &:hover{
-    background: #ecf5ff!important
-  }
 }
-.el-submenu .el-menu-item{
+.el-submenu .el-submenu__title :hover {
+  background: #ecf5ff !important;
+}
+.el-submenu .el-menu-item {
   height: 45px;
   line-height: 45px;
-  
-  &:hover{
-    background: #ecf5ff!important
-  }
 }
-
+.el-submenu .el-menu-item:hover {
+  background: #ecf5ff !important;
+}
 </style>
 
 
