@@ -12,7 +12,7 @@
         <el-col :span="3" v-if="states=='2'||states=='4'||states=='5'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" v-if="states!=='0'">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
         <el-col :span="3" v-if="states=='0'||states=='1'||states=='2'||states=='4'">
@@ -48,7 +48,7 @@
     </el-card>
     <el-form :model="UwMotorcadeInfoVO" class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
-      <el-card class="circular mt4 shadow">
+      <el-card class="circular mt4 shadow soildstyle">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="2">
             <template slot="title">
@@ -58,33 +58,51 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.motorcadeNo" :disabled="flagdisabled"></el-input>
+                  <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize='none'
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.motorcadeNo"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="分公司" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.comcode" :disabled="flagdisabled"></el-input>
+                <el-form-item label="分公司:" class="labelheight">
+                    <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize='none'
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.comcode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="控制关系人标志:" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.insuredflag" :disabled="flagdisabled"></el-input>
+                    <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize='none'
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.insuredflag"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="控制关系人名称:">
+                <el-form-item label="控制关系人名称:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.insuredName" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="控制关系人代码:">
+                <el-form-item label="控制关系人代码:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.insuredCode" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="业务来源:">
+                <el-form-item label="业务来源:" class="lineHeightstyle">
                   <el-select
                     v-model="UwMotorcadeInfoVO.businessNature"
                     :disabled="flagdisabled"
@@ -103,17 +121,17 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="历史年度满期赔付率(%):">
+                <el-form-item label="历史年度满期赔付率(%):" class="lineHeightstyle">
                   <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="车队车辆总数:">
+                <el-form-item label="车队车辆总数:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.carcountAll" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="预估保费规模(单位:万元):">
+                <el-form-item label="预估保费规模(单位:万元):" class="lineHeightstyle">
                   <el-input
                     v-model="UwMotorcadeInfoVO.estimatedPremiumSize"
                     :disabled="flagdisabled"
@@ -123,7 +141,7 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="超分公司权限车辆总数:" class="labelheight1">
+                <el-form-item label="超分公司权限车辆总数:" class="labelheight1 yidiche">
                   <el-input v-model="UwMotorcadeInfoVO.uppercarcount" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
@@ -164,6 +182,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.monitoringProgramme"
                   ></el-input>
@@ -174,6 +193,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.underWritingCondition"
                   ></el-input>
@@ -184,6 +204,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.insuredNameSUB"
                   ></el-input>
@@ -196,6 +217,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize='none'
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.remark"
                   ></el-input>
@@ -390,6 +412,7 @@
             <el-col :span="24" class="mt10">
               <el-input
                 type="textarea"
+                resize='none'
                 :autosize="{ minRows: 3, maxRows: 3}"
                 placeholder="核保员意见:"
                 v-model="textarea2"
@@ -586,7 +609,7 @@ export default {
     },
     //导出get
     carAuditPagechu() {
-      let _url = "http://11.205.241.44:8082" + this.$url.carAuditPageToInsured;
+      let _url = "http://10.156.128.157:31366" + this.$url.carAuditPageToInsured;
       let paramsFileData = {
         uwmotorcademainid: this.uwmotorcademainids,
         licenseNo: this.UwMotorcadeInfoVO.licenseNo
@@ -811,6 +834,7 @@ export default {
         .then(res => {
           this.uwmotorcademainids = res.uwMotorcadeMain.id;
           this.results = res.uwMotorcadeMain.uwMotorcadeInfos;
+          res.uwMotorcadeMain.finishdate=res.uwMotorcadeMain.finishdateString
           if (res.uwMotorcadeMain.uppercartype) {
             this.allData.uppercartype = res.uwMotorcadeMain.uppercartype.split(
               ","
@@ -911,7 +935,6 @@ export default {
     this.parameter = this.$route.query;
     this.states = this.$route.query.state;
     this.displaynone=this.$route.query.state;
-    this.UwMotorcadeInfoVO.comcode="sadasdasdsaDasdasdasd阿三大苏打实打实十大阿三大苏打"
   }
 };
 </script>
@@ -942,14 +965,17 @@ export default {
 }
 .labelheight >>> .el-form-item__label,
 .labelheight >>> .el-input__inner {
-  line-height: 48px;
-  height: 48px;
+  line-height: 50px;
+  height: 50px;
 }
 .labelheight1 >>> .el-form-item__label,
 .labelheight1 >>> .el-input__inner {
-  line-height: 69px;
-  height: 69px;
+  line-height: 70px;
+  height: 70px;
 }
+/* .updatastyleinput .el-form-item {
+  margin-bottom: 25px;
+} */
 .acolor {
   color: #0066cc;
   text-decoration: none;
@@ -969,24 +995,20 @@ export default {
 .selectMargin {
   margin-top: 10px;
 }
-.textareaheight {
-  min-height: 62px;
-  height: 62px;
-}
 .ulli {
   text-align: center;
 }
 .ulli li {
   list-style-type: none;
 }
-.updatastyleinput >>> .el-input.is-disabled .el-input__inner {
+.updatastyleinput >>> .el-input.is-disabled .el-input__inner{
   background-color: #ffffff;
 }
-.labelheight1 .textcontent {
-  text-align: center;
+.labelheight1 .textcontent{
+  text-align: center; 
   line-height: 69px;
-  height: 69px;
-}
+  height: 69px;  
+} 
 .tanchuang {
   display: flex;
   justify-content: center;
@@ -1015,5 +1037,20 @@ export default {
   text-align: center;
   bottom: 0px;
   padding: 5px;
+}
+.lineHeightstyle >>> .el-form-item__label {
+    line-height: 35px;
+}
+ .soildstyle>>>.el-collapse .el-collapse-item__header{
+  border-bottom: 1px solid #E4E7ED;
+}
+.soildstyle >>>.el-input.is-disabled .el-input__inner{
+  border-top: none;
+}
+.yidiche >>>  .el-input.is-disabled .el-input__inner{
+  border-top: 1px solid #E4E7ED;
+}
+.soildstyle >>>.el-textarea.is-disabled .el-textarea__inner{
+  background-color:#FFFFFF;
 }
 </style>

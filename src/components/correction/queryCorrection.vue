@@ -246,7 +246,7 @@ export default {
   methods: {
     // 页数显示
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     //增加修改
     acd(flag, row) {
@@ -300,7 +300,7 @@ export default {
   created() {
     this.UwctrlVO.finishDate1='2019-01-01'
     this.UwctrlVO.finishDate2=new Date();
-    console.log(typeof new Date())
+    // console.log(typeof new Date())
     let uwctrlVO = this.UwctrlVO;
     this.$fetch
       .post(this.HOST + this.$url.correctionQury, uwctrlVO)

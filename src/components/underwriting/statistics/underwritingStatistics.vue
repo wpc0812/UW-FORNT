@@ -51,7 +51,7 @@
               <el-row>
                 <el-col :span="10">
                   <el-form-item label="核保状态:" class="text-left">
-                    <el-checkbox-group v-model="arraystate" @change="changecheckbox">
+                    <el-checkbox-group v-model="arraystate">
                       <el-checkbox
                         class="check-group"
                         v-for="state in radiostate"
@@ -443,6 +443,8 @@ export default {
   created() {
     this.flag = false;
     this.flag1 = false;
+    this.UwMotorcadeMainVO.personNo="A3200000000"
+    console.log(this.$store.state.comcode)
   }
 };
 </script>

@@ -3,7 +3,7 @@
     <!-- 超权限详情 -->
     <el-card class="circular">
       <el-row class="pt10">
-        <el-col :span="3">
+        <el-col :span="3" v-if="states!=='0'">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
         <el-col :span="3" v-if="states=='3'||states=='4'">
@@ -68,17 +68,17 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="控制关系人名称:">
+                <el-form-item label="控制关系人名称:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.insuredName" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="控制关系人代码:">
+                <el-form-item label="控制关系人代码:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.insuredCode" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="业务来源:">
+                <el-form-item label="业务来源:" class="lineHeightstyle">
                   <el-select
                     v-model="UwMotorcadeInfoVO.businessNature"
                     :disabled="flagdisabled"
@@ -97,17 +97,17 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="历史年度满期赔付率(%):">
+                <el-form-item label="历史年度满期赔付率(%):" class="lineHeightstyle">
                   <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="车队车辆总数:">
+                <el-form-item label="车队车辆总数:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.carcountAll" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="预估保费规模(单位:万元):">
+                <el-form-item label="预估保费规模(单位:万元):" class="lineHeightstyle">
                   <el-input
                     v-model="UwMotorcadeInfoVO.estimatedPremiumSize"
                     :disabled="flagdisabled"
@@ -590,7 +590,7 @@ export default {
     },
     //导出get
     carAuditPagechu() {
-      let _url = "http://11.205.241.44:8082" + this.$url.carAuditPageToInsured;
+      let _url = "http://10.156.128.157:31366" + this.$url.carAuditPageToInsured;
       let paramsFileData = {
         uwmotorcademainid: this.uwmotorcademainids,
         licenseNo: this.UwMotorcadeInfoVO.licenseNo
@@ -867,6 +867,7 @@ export default {
         .then(res => {
           this.uwmotorcademainids = res.uwMotorcadeMain.id;
           this.results = res.uwMotorcadeMain.uwMotorcadeInfos;
+          res.uwMotorcadeMain.finishdate=res.uwMotorcadeMain.finishdateString
             if (res.uwMotorcadeMain.uppercartype) {
             this.v.uppercartype = res.uwMotorcadeMain.uppercartype.split(",");
             res.uwMotorcadeMain.uppercartype = this.getShowlabel(
@@ -1015,5 +1016,8 @@ export default {
   text-align: center;
   bottom: 0px;
   padding: 5px;
+}
+.lineHeightstyle >>> .el-form-item__label {
+    line-height: 33px;
 }
 </style>

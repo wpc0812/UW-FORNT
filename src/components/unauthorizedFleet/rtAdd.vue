@@ -80,11 +80,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                    <template>
-                      <el-input v-model="historyValue" style="text-align:center;">
-                        <el-button @click="selectHistory" slot="append" size="small" type="text">查询</el-button>
-                      </el-input>
-                    </template>
+                        <el-button @click="selectHistory"  size="small" type="text">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -145,7 +141,7 @@
                     <el-input
                       v-model="carmainareaLabel"
                       placeholder="点击选择"
-                      @focus="openTransfer(carTypeCodes,UwMotorcadeMainVO.carmainarea,'carmainarea')"
+                      @focus="openTransfer(provinceCodes,UwMotorcadeMainVO.carmainarea,'carmainarea')"
                       class="labelmargin"
                     ></el-input>
                   </el-form-item>
@@ -179,6 +175,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
@@ -192,6 +189,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
@@ -203,6 +201,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="59"
+                      resize='none'
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
                     ></el-input>
@@ -213,6 +212,7 @@
                     <el-input
                       type="textarea"
                       :rows="1"
+                      resize='none'
                       maxlength="99"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
@@ -326,7 +326,6 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
 import { carTypeCodes, provinceCodes } from "@/assets/js/baseCode";
 import utils from "../../utils/index";
 
@@ -335,7 +334,6 @@ export default {
   data() {
     //车队车辆总数
     var carcountAllEcc = (rules, value, callback) => {
-       var reg = new RegExp('^-?[0-9]+([.]{1}[0-9]+){0,1}$');
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
@@ -429,7 +427,6 @@ export default {
       }
     };
     return {
-      historyValue: "",
       transferTitle: "",
       message: "",
       dialogVisibles: false,
@@ -803,7 +800,6 @@ export default {
           .then(data => {
             console.log(typeof data);
             // window.open("http://www.baidu.com")
-            this.historyValue = data;
             window.open(data);
           });
       } else if (

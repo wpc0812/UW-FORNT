@@ -82,11 +82,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                     <template>
-                      <el-input v-model="historyValue" style="text-align:center;">
-                        <el-button @click="selectHistory" slot="append" size="small" type="text">查询</el-button>
-                      </el-input>
-                    </template>
+                        <el-button @click="selectHistory" size="small" type="text">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -263,7 +259,6 @@ export default {
 
   data() {
     return {
-      historyValue:"",
       transferTitle:"",
       transferItems: [], // 穿梭框 数据
       transferItem: [], // 穿梭框 绑定数据
@@ -501,7 +496,6 @@ export default {
         .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
         .then(data => {
           console.log(typeof data);
-          this.historyValue=data;
           // window.open("http://www.baidu.com")
           window.open(data);
         });

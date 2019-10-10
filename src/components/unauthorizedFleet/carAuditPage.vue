@@ -12,7 +12,7 @@
         <el-col :span="3" v-if="states=='2'||states=='4'||states=='5'">
           <el-button class="btn" type="primary" @click="outerUpdate" size="mini">修改</el-button>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" v-if="states!=='0'">
           <el-button class="btn" type="primary" @click="outerRatio" size="mini">对比</el-button>
         </el-col>
         <el-col :span="3" v-if="states=='0'||states=='1'||states=='2'||states=='4'">
@@ -48,7 +48,7 @@
     </el-card>
     <el-form :model="UwMotorcadeInfoVO" class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
-      <el-card class="circular mt4 shadow">
+      <el-card class="circular mt4 shadow soildstyle">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="2">
             <template slot="title">
@@ -58,33 +58,51 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务号:" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.motorcadeNo" :disabled="flagdisabled"></el-input>
+                  <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize="none"
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.motorcadeNo"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="分公司" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.comcode" :disabled="flagdisabled"></el-input>
+                <el-form-item label="分公司:" class="labelheight">
+                  <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize="none"
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.comcode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="控制关系人标志:" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.insuredflag" :disabled="flagdisabled"></el-input>
+                  <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize="none"
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.insuredflag"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="控制关系人名称:">
+                <el-form-item label="控制关系人名称:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.insuredName" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="控制关系人代码:">
+                <el-form-item label="控制关系人代码:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.insuredCode" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="业务来源:">
+                <el-form-item label="业务来源:" class="lineHeightstyle">
                   <el-select
                     v-model="UwMotorcadeInfoVO.businessNature"
                     :disabled="flagdisabled"
@@ -100,30 +118,26 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
               <el-col :span="8">
-                <el-form-item label="历史年度满期赔付率(%):">
+                <el-form-item label="历史年度满期赔付率(%):" class="lineHeightstyle">
                   <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="车队车辆总数:">
+                <el-form-item label="车队车辆总数:" class="lineHeightstyle">
                   <el-input v-model="UwMotorcadeInfoVO.carcountAll" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="预估保费规模(单位:万元):">
+                <el-form-item label="预估保费规模(单位:万元):" class="lineHeightstyle">
                   <el-input
                     v-model="UwMotorcadeInfoVO.estimatedPremiumSize"
                     :disabled="flagdisabled"
                   ></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
               <el-col :span="8">
-                <el-form-item label="异地车辆数:" class="labelheight1">
+                <el-form-item label="异地车辆数:" class="labelheight1 yidiche">
                   <el-input v-model="UwMotorcadeInfoVO.foreigncarcount" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
@@ -164,7 +178,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    resize='none'
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.monitoringProgramme"
                   ></el-input>
@@ -175,7 +189,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    resize='none'
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.underWritingCondition"
                   ></el-input>
@@ -186,7 +200,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    resize='none'
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.insuredNameSUB"
                   ></el-input>
@@ -199,7 +213,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
-                    resize='none'
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.remark"
                   ></el-input>
@@ -210,7 +224,9 @@
                   class="labelheight1"
                   v-model="UwMotorcadeInfoVO.finishdate"
                   label="距离控制日期结束日期:"
-                > <div class="textcontent"> {{UwMotorcadeInfoVO.coutDay}}天</div></el-form-item>
+                >
+                  <div class="textcontent">{{UwMotorcadeInfoVO.coutDay}}天</div>
+                </el-form-item>
               </el-col>
             </el-row>
             <el-row v-if="this.displaynone=='0'||this.displaynone=='5'">
@@ -243,7 +259,7 @@
                 <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                 <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
+                <a class="dec" href="./UwMotorcadeMainModel.xls" download>号牌号码导入模板下载</a>
               </el-col>
             </el-row>
             <el-row v-if="states=='0'|| states== '1'|| states=='2'|| states=='5'|| states=='4'">
@@ -276,7 +292,7 @@
                 <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
-                 <a class="dec" href="./UwMotorcadeMainModel.xls" download="">号牌号码导入模板下载</a>
+                <a class="dec" href="./UwMotorcadeMainModel.xls" download>号牌号码导入模板下载</a>
               </el-col>
             </el-row>
           </el-collapse-item>
@@ -333,10 +349,25 @@
               ></el-table-column>
               <el-table-column align="center" prop="deductible" label="删除批次">
                 <template slot-scope="scope">
-                  <el-button type="text" size="small" @click="deletebatch(scope.row)" v-if="states=='0'||states=='1'">删除批次</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="deletebatch(scope.row)"
+                    v-if="states=='0'||states=='1'"
+                  >删除批次</el-button>
                   <el-button type="text" size="small" style="color:#606266;" v-if="states=='3'">审核中</el-button>
-                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='5'">已生效办结</el-button>
-                  <el-button type="text" size="small" style="color:#606266;" v-if="states=='4'">已审核通过</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="color:#606266;"
+                    v-if="states=='5'"
+                  >已生效办结</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="color:#606266;"
+                    v-if="states=='4'"
+                  >已审核通过</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -379,7 +410,7 @@
                 type="textarea"
                 :autosize="{ minRows: 3, maxRows: 3}"
                 placeholder="核保员意见:"
-                resize='none'
+                resize="none"
                 v-model="textarea2"
               ></el-input>
             </el-col>
@@ -428,8 +459,8 @@ export default {
   name: "carAuditPage",
   data() {
     return {
-      transferTitle:"",
-      displaynone:"",
+      transferTitle: "",
+      displaynone: "",
       dialogVisibleMore: false,
       states: "",
       flagdisabled: true,
@@ -456,7 +487,6 @@ export default {
         insuredNameSUB: "",
         underWritingCondition: "",
         remark: "",
-        finishdate: "",
         carCadastraldata: [],
         carmainmodeldata: [],
         carmainareadata: []
@@ -486,7 +516,7 @@ export default {
       outerVisible: false,
       innerVisible: false,
       textarea2: "",
-      uwmotorcademainids:"",
+      uwmotorcademainids: "",
       options: [
         {
           value: "提交总公司",
@@ -515,13 +545,13 @@ export default {
     //新增文件选取
     addUploadname(file) {
       if (file) {
-        this.$set( this.UwMotorcadeInfoVO,'appici',file.name)
+        this.$set(this.UwMotorcadeInfoVO, "appici", file.name);
         let formData = new FormData();
         formData.append("file", file.raw);
         formData.append("id", this.uwmotorcademainids);
         this.uploading = true;
         this.formDataAdd = formData;
-        this.$forceUpdate()        
+        this.$forceUpdate();
       }
     },
     // 新增文件上传
@@ -534,10 +564,10 @@ export default {
         },
         data: this.formDataAdd
       }).then(res => {
-        console.log(res,typeof res);
-        if(res==true){
-           this.displaynone="8"
-           this.$forceUpdate();
+        console.log(res, typeof res);
+        if (res == true) {
+          this.displaynone = "8";
+          this.$forceUpdate();
         }
       });
     },
@@ -546,11 +576,11 @@ export default {
       if (file) {
         let formData = new FormData();
         formData.append("file", file.raw);
-        formData.append("motorcadeNo",this.UwMotorcadeInfoVO.motorcadeNo);
+        formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
         this.uploading = true;
         this.UwMotorcadeInfoVO.uppici = file.name;
         this.formDataUP = formData;
-        this.$forceUpdate()
+        this.$forceUpdate();
       }
     },
     //修改文件上传
@@ -568,9 +598,10 @@ export default {
     },
     //导出get
     carAuditPagechu() {
-      let _url = "http://11.205.241.44:8082" + this.$url.carAuditPageToInsured;
+      let _url =
+        "http://10.156.128.157:31366" + this.$url.carAuditPageToInsured;
       let paramsFileData = {
-        uwmotorcademainid:this.uwmotorcademainids,
+        uwmotorcademainid: this.uwmotorcademainids,
         licenseNo: this.UwMotorcadeInfoVO.licenseNo
       };
       window.location.href =
@@ -582,7 +613,7 @@ export default {
         path: "/unNumPlate",
         query: {
           row: row.licenseNo,
-          uwmotorcademainid:this.uwmotorcademainids
+          uwmotorcademainid: this.uwmotorcademainids
         }
       });
     },
@@ -599,7 +630,7 @@ export default {
         path: "/deletebatch",
         query: {
           row: row.batchNo,
-          uwmotorcademainid:this.uwmotorcademainids
+          uwmotorcademainid: this.uwmotorcademainids
         }
       });
     },
@@ -613,7 +644,7 @@ export default {
         userCode: "userCode",
         handleText: this.textarea2,
         userName: "userName",
-        flag:this.form.flag ,
+        flag: this.form.flag
       };
       this.$fetch
         .post(this.HOST + this.$url.carAuditPageSubmits, picc)
@@ -699,7 +730,7 @@ export default {
         businessType: "oa",
         userCode: "ob",
         userName: "oc",
-         comCode:"33000000"
+        comCode: "33000000"
         // comCode: this.UwMotorcadeInfoVO.comcode || "33000000"
       };
       this.$fetch
@@ -747,13 +778,13 @@ export default {
         .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
           params: {
             licenseNo: this.UwMotorcadeInfoVO.licenseNo,
-            uwmotorcademainid:this.uwmotorcademainids
+            uwmotorcademainid: this.uwmotorcademainids
           }
         })
         .then(res => {
-           for (let i = 0; i < res.length; i++) {
-            res[i].state=res[i].state.trim()
-           }
+          for (let i = 0; i < res.length; i++) {
+            res[i].state = res[i].state.trim();
+          }
           this.results = res;
           console.log(res);
         });
@@ -819,7 +850,7 @@ export default {
         case "carCadastral":
           this.transferTitle = "涉及车籍地";
           this.carCadastraldata = this.getShowlabels(
-            this.carTypeCodes,
+            this.provinceCodes,
             this.allData.carCadastral
           );
           this.arrays = this.carCadastraldata;
@@ -850,28 +881,35 @@ export default {
         .get(this.HOST + this.$url.rtAddFindMotorcadeMain, {
           params: {
             motorcadeNo: this.$route.query.row,
-            uwmotorcademainid:this.$route.query.id
+            uwmotorcademainid: this.$route.query.id
           }
         })
         .then(res => {
-          this.uwmotorcademainids=res.uwMotorcadeMain.id;
+          this.uwmotorcademainids = res.uwMotorcadeMain.id;
           this.results = res.uwMotorcadeMain.uwMotorcadeInfos;
+          res.uwMotorcadeMain.finishdate = res.uwMotorcadeMain.finishdateString;
           if (res.uwMotorcadeMain.carCadastral) {
-            this.allData.carCadastral = res.uwMotorcadeMain.carCadastral.split(",");
+            this.allData.carCadastral = res.uwMotorcadeMain.carCadastral.split(
+              ","
+            );
             res.uwMotorcadeMain.carCadastral = this.getShowlabel(
-              this.carTypeCodes,
+              this.provinceCodes,
               res.uwMotorcadeMain.carCadastral.split(",")
             );
           }
           if (res.uwMotorcadeMain.carmainmodel) {
-            this.allData.carmainmodel = res.uwMotorcadeMain.carmainmodel.split(",");
+            this.allData.carmainmodel = res.uwMotorcadeMain.carmainmodel.split(
+              ","
+            );
             res.uwMotorcadeMain.carmainmodel = this.getShowlabel(
               this.carTypeCodes,
               res.uwMotorcadeMain.carmainmodel.split(",")
             );
           }
           if (res.uwMotorcadeMain.carmainarea) {
-            this.allData.carmainarea = res.uwMotorcadeMain.carmainarea.split(",");
+            this.allData.carmainarea = res.uwMotorcadeMain.carmainarea.split(
+              ","
+            );
             res.uwMotorcadeMain.carmainarea = this.getShowlabel(
               this.provinceCodes,
               res.uwMotorcadeMain.carmainarea.split(",")
@@ -888,7 +926,7 @@ export default {
     this.init();
     this.parameter = this.$route.query;
     this.states = this.$route.query.state;
-    this.displaynone=this.$route.query.state;
+    this.displaynone = this.$route.query.state;
   }
 };
 </script>
@@ -919,13 +957,13 @@ export default {
 }
 .labelheight >>> .el-form-item__label,
 .labelheight >>> .el-input__inner {
-  line-height: 48px;
-  height: 48px;
+  line-height: 50px;
+  height: 50px;
 }
 .labelheight1 >>> .el-form-item__label,
 .labelheight1 >>> .el-input__inner {
-  line-height: 69px;
-  height: 69px;
+  line-height: 70px;
+  height: 70px;
 }
 /* .updatastyleinput .el-form-item {
   margin-bottom: 25px;
@@ -955,14 +993,14 @@ export default {
 .ulli li {
   list-style-type: none;
 }
-.updatastyleinput >>> .el-input.is-disabled .el-input__inner{
+.updatastyleinput >>> .el-input.is-disabled .el-input__inner {
   background-color: #ffffff;
 }
-.labelheight1 .textcontent{
-  text-align: center; 
+.labelheight1 .textcontent {
+  text-align: center;
   line-height: 69px;
-  height: 69px;  
-} 
+  height: 69px;
+}
 .tanchuang {
   display: flex;
   justify-content: center;
@@ -991,5 +1029,20 @@ export default {
   text-align: center;
   bottom: 0px;
   padding: 5px;
+}
+.lineHeightstyle >>> .el-form-item__label {
+  line-height: 35px;
+}
+.soildstyle >>> .el-collapse .el-collapse-item__header {
+  border-bottom: 1px solid #e4e7ed;
+}
+.soildstyle >>> .el-input.is-disabled .el-input__inner {
+  border-top: none;
+}
+.yidiche >>> .el-input.is-disabled .el-input__inner {
+  border-top: 1px solid #e4e7ed;
+}
+.soildstyle >>> .el-textarea.is-disabled .el-textarea__inner {
+  background-color: #ffffff;
 }
 </style>

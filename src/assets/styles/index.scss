@@ -229,3 +229,11 @@ body {
 body .el-table th.gutter{//表头与表格宽度不一致
   display: table-cell!important;
 }
+//input[type="number"]去箭头
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
