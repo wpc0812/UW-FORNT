@@ -1,60 +1,118 @@
 <template>
-  <div class="titlestyle" >
+  <div class="titlestyle">
     <!-- 任务审核 -->
-    <div style="padding-left: 5px" >
-      <el-row class="text-lef " >
-            <el-button size='mini' type="primary" @click="goTolinks('details')" v-if="underwritingDetails.displayFlag.browseFlag == '1'">详细信息</el-button>
-            <el-button size='mini' type="primary" @click='goToFlowLog()' v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">流转记录</el-button>
+    <div style="padding-left: 5px">
+      <el-row class="text-lef">
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('details')"
+          v-if="underwritingDetails.displayFlag.browseFlag == '1'"
+        >详细信息</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goToFlowLog()"
+          v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'"
+        >流转记录</el-button>
 
-            <!-- <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.lastPolicyClaimFlag == '1'" >上年保单理赔信息</el-button> -->
+        <!-- <el-button size='mini' @click='goTolinks()' v-if="underwritingDetails.displayFlag.lastPolicyClaimFlag == '1'" >上年保单理赔信息</el-button> -->
 
-            <el-button size='mini' type="primary" @click="goTolinks('headCompany')" v-if="underwritingDetails.displayFlag.headOfficeInfoFlag == '1'">查看总公司资料</el-button>
-            <el-button size='mini' type="primary" @click="goTolinks('branchCompany')" v-if="underwritingDetails.displayFlag.branchOfficeInfoFlag == '1'">查看分公司资料</el-button>
-            <el-button size='mini' type="primary" @click="goTolinks('startECM')"  v-if="underwritingDetails.displayFlag.relationImageFlag == '1'">查看关联单影像</el-button>
-            
-            <el-button size='mini' type="primary"  @click="goTolinks('getECM')" v-if="underwritingDetails.displayFlag.infoFlag == '1'">资料查看</el-button>
-            
-            <el-button size='mini' type="primary" @click="goTolinks('uploadECM')"  v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'">上传影像</el-button>
-            <el-button size='mini' type="primary" @click="goTolinks('mobileECM')" v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'">手机影像</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('headCompany')"
+          v-if="underwritingDetails.displayFlag.headOfficeInfoFlag == '1'"
+        >查看总公司资料</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('branchCompany')"
+          v-if="underwritingDetails.displayFlag.branchOfficeInfoFlag == '1'"
+        >查看分公司资料</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('startECM')"
+          v-if="underwritingDetails.displayFlag.relationImageFlag == '1'"
+        >查看关联单影像</el-button>
 
-            <el-button size='mini' type="primary" @click="goToCarDeviceInfo" v-if="underwritingDetails.displayFlag.deviceInfoFlag == '1'">设备信息</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('getECM')"
+          v-if="underwritingDetails.displayFlag.infoFlag == '1'"
+        >资料查看</el-button>
 
-            <el-button size='mini' type="primary" @click="goTolinks('lastYearPolicyInfo')" v-if="underwritingDetails.displayFlag.lastPolicyInfoFlag == '1'" >查看上年保单信息</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('uploadECM')"
+          v-if="underwritingDetails.displayFlag.uploadImageFlag == '1'"
+        >上传影像</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('mobileECM')"
+          v-if="underwritingDetails.displayFlag.mobileImageFlag == '1'"
+        >手机影像</el-button>
 
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goToCarDeviceInfo"
+          v-if="underwritingDetails.displayFlag.deviceInfoFlag == '1'"
+        >设备信息</el-button>
 
-            <el-button size='mini' type="primary" @click="goToUnderwriteRiskTypeRate" v-if="underwritingDetails.displayFlag.riskTypeRateFlag == '1'">查看风险类别占比</el-button>
-            <el-button size='mini' type="primary" @click="goTolinks('teamquality')" v-if="underwritingDetails.displayFlag.reportFormsFlag == '1'">车队业务质量统计查询</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('lastYearPolicyInfo')"
+          v-if="underwritingDetails.displayFlag.lastPolicyInfoFlag == '1'"
+        >查看上年保单信息</el-button>
 
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goToUnderwriteRiskTypeRate"
+          v-if="underwritingDetails.displayFlag.riskTypeRateFlag == '1'"
+        >查看风险类别占比</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="goTolinks('teamquality')"
+          v-if="underwritingDetails.displayFlag.reportFormsFlag == '1'"
+        >车队业务质量统计查询</el-button>
 
-            <el-button size='mini' type="primary" @click="getBack()" v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'">撤回</el-button>
-
-
+        <el-button
+          size="mini"
+          type="primary"
+          @click="getBack()"
+          v-if="underwritingDetails.displayFlag.flowRecordFlag == '1'"
+        >撤回</el-button>
       </el-row>
     </div>
-    
+
     <el-card class="circular">
-       
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
-          <template slot="title" >
+          <template slot="title">
             <div class="title-blue-bar"></div>
             <div class="card-title">任务审核</div>
           </template>
-         
+
           <el-row class="pt11">
             <!-- <el-col :span="24" class="el-card__header text-left">任务审核</el-col> -->
             <el-col :span="24" class="pt11">
               <el-button type="primary" @click="submit" size="mini">提交审核</el-button>
               <!-- <el-button type="primary" @click="submit1" size="mini">提交审核</el-button> -->
               <el-button size="mini" @click="giveUp">放弃</el-button>
-
-
             </el-col>
           </el-row>
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-form  :model="underwritingDetails" label-width="120px" >
+    <el-form :model="underwritingDetails" label-width="120px">
       <!-- 处理核保任务 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
@@ -99,8 +157,11 @@
             </el-row>
             <el-row>
               <el-col :span="24">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;"> 电子投保/ <br> 纸质投保:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    电子投保/
+                    <br />纸质投保:
+                  </div>
                   <el-input v-model="underwritingDetails.taskProcessing.isNetProp"></el-input>
                 </el-form-item>
               </el-col>
@@ -123,18 +184,22 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="投保单号:" >
+                <el-form-item label="投保单号:">
                   <el-input v-model="underwritingDetails.summaryInfo.proposalNo"></el-input>
                 </el-form-item>
               </el-col>
-              
-             
+
               <el-col :span="8">
                 <el-form-item label="保单号:">
                   <el-input v-model="underwritingDetails.summaryInfo.policyNo">
-                     <el-button  v-if="bussinessType ==='E' " size="mini" slot="append" type="primary" @click="relationDialog = true" > 关联</el-button>
+                    <el-button
+                      v-if="bussinessType ==='E' "
+                      size="mini"
+                      slot="append"
+                      type="primary"
+                      @click="relationDialog = true"
+                    >关联</el-button>
                   </el-input>
-                 
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -142,52 +207,44 @@
                   <el-input v-model="underwritingDetails.summaryInfo.contractNo"></el-input>
                 </el-form-item>
               </el-col>
-            
+
               <el-col :span="8">
                 <el-form-item label="签单日期:">
                   <el-input v-model="underwritingDetails.summaryInfo.operateDate"></el-input>
                 </el-form-item>
               </el-col>
-            
-               <el-col :span="8" v-if="bussinessType === 'E' ">
-                <el-form-item label="退保原因:" >
+
+              <el-col :span="8" v-if="bussinessType === 'E' ">
+                <el-form-item label="退保原因:">
                   <el-input v-model="underwritingDetails.summaryInfo.cancelReason"></el-input>
                 </el-form-item>
               </el-col>
-               <el-col :span="8" v-if="bussinessType === 'E' ">
+              <el-col :span="8" v-if="bussinessType === 'E' ">
                 <el-form-item label="批改类型:">
                   <el-input v-model="underwritingDetails.summaryInfo.endorType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                
-                  <el-form-item label="保险期限从:">
-                    <el-input v-model="underwritingDetails.summaryInfo.startDate"></el-input>
-                  </el-form-item>
-               
-               
-                
-              </el-col>
-               <el-col :span="8">
-                  <el-form-item label="时:">
-                      <el-input v-model="underwritingDetails.summaryInfo.startHour"></el-input>
-                   </el-form-item>
-                </el-col>
-              <el-col :span="8">
-               
-                  <el-form-item label="至:">
-                    <el-input v-model="underwritingDetails.summaryInfo.endDate"></el-input>
-                  </el-form-item>
-               
-           
-                  
+                <el-form-item label="保险期限从:">
+                  <el-input v-model="underwritingDetails.summaryInfo.startDate"></el-input>
+                </el-form-item>
               </el-col>
               <el-col :span="8">
-                  <el-form-item label="时:" >
-                    <el-input v-model="underwritingDetails.summaryInfo.endHour"></el-input>
-                  </el-form-item>
+                <el-form-item label="时:">
+                  <el-input v-model="underwritingDetails.summaryInfo.startHour"></el-input>
+                </el-form-item>
               </el-col>
-             <el-col :span="8" v-if="bussinessType ==='E' ">
+              <el-col :span="8">
+                <el-form-item label="至:">
+                  <el-input v-model="underwritingDetails.summaryInfo.endDate"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="时:">
+                  <el-input v-model="underwritingDetails.summaryInfo.endHour"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" v-if="bussinessType ==='E' ">
                 <el-form-item label="生效日期:">
                   <el-input v-model="underwritingDetails.summaryInfo.validDate"></el-input>
                 </el-form-item>
@@ -198,11 +255,10 @@
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item  label="承包意见">
+                <el-form-item label="承包意见">
                   <el-input v-model="underwritingDetails.summaryInfo.remark"></el-input>
                 </el-form-item>
               </el-col>
-             
             </el-row>
           </el-collapse-item>
         </el-collapse>
@@ -226,11 +282,9 @@
             >
               <el-table-column align="center" prop="index" width="80" label="序号"></el-table-column>
               <el-table-column align="center" prop="makeCom" width="120" label="处理部门"></el-table-column>
-              <el-table-column align="center" prop=" userName" width="120"  label="审核人员"></el-table-column>
+              <el-table-column align="center" prop=" userName" width="120" label="审核人员"></el-table-column>
               <el-table-column align="center" prop="handleText" label="承保意见" show-overflow-tooltip></el-table-column>
-
             </el-table>
-            
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -241,15 +295,15 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">显示批文</div>
             </template>
-           <el-col :span="24">
-                <el-form-item  label="商业险批文">
-                  <el-input v-model="underwritingDetails.uwpTexts.uwptextS"></el-input>
-                </el-form-item>
+            <el-col :span="24">
+              <el-form-item label="商业险批文">
+                <el-input v-model="underwritingDetails.uwpTexts.uwptextS"></el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="24">
-                <el-form-item  label="交强险批文">
-                  <el-input v-model="underwritingDetails.uwpTexts.uwptextJ"></el-input>
-                </el-form-item>
+              <el-form-item label="交强险批文">
+                <el-input v-model="underwritingDetails.uwpTexts.uwptextJ"></el-input>
+              </el-form-item>
             </el-col>
           </el-collapse-item>
         </el-collapse>
@@ -291,11 +345,13 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">法人代码/<br>身份证号码:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    法人代码/
+                    <br />身份证号码:
+                  </div>
                   <el-input v-model="underwritingDetails.uwinsuredT.identifyNumber"></el-input>
                 </el-form-item>
-                
               </el-col>
             </el-row>
             <el-row>
@@ -349,7 +405,7 @@
                   <el-input v-model="underwritingDetails.uwinsuredI.aliasName"></el-input>
                 </el-form-item>
               </el-col>
-           
+
               <el-col :span="8">
                 <el-form-item label="被投保人单位性质:">
                   <el-input v-model="underwritingDetails.uwinsuredI.businessSort"></el-input>
@@ -360,18 +416,21 @@
                   <el-input v-model="underwritingDetails.uwinsuredI.insurednature"></el-input>
                 </el-form-item>
               </el-col>
-               <el-col :span="8">
+              <el-col :span="8">
                 <el-form-item label="被保险人证件类型:">
                   <el-input v-model="underwritingDetails.uwinsuredI.identifyType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                 <div slot="label" style="line-height:16px;">法人代码/<br>身份证号码:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    法人代码/
+                    <br />身份证号码:
+                  </div>
                   <el-input v-model="underwritingDetails.uwinsuredI.identifyNumber"></el-input>
                 </el-form-item>
               </el-col>
-            
+
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
                   <el-input v-model="underwritingDetails.uwinsuredI.linkerName"></el-input>
@@ -387,7 +446,7 @@
                   <el-input v-model="underwritingDetails.uwinsuredI.mobile"></el-input>
                 </el-form-item>
               </el-col>
-            
+
               <el-col :span="8">
                 <el-form-item label="邮政编码:">
                   <el-input v-model="underwritingDetails.uwinsuredI.postCode"></el-input>
@@ -434,8 +493,11 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                 <div slot="label" style="line-height:16px;">法人代码/<br>身份证号码:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    法人代码/
+                    <br />身份证号码:
+                  </div>
                   <el-input v-model="underwritingDetails.uwinsuredC.identifyNumber"></el-input>
                 </el-form-item>
               </el-col>
@@ -603,8 +665,10 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="拖拉机标准:">
-
-                  <div slot="label" style="line-height: 16px">是否符合<br>拖拉机标准:</div>
+                  <div slot="label" style="line-height: 16px">
+                    是否符合
+                    <br />拖拉机标准:
+                  </div>
                   <el-input v-model="underwritingDetails.uwitemCar.isCriterion"></el-input>
                 </el-form-item>
               </el-col>
@@ -616,8 +680,11 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height: 16px">重载货车<br>智能设备:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height: 16px">
+                    重载货车
+                    <br />智能设备:
+                  </div>
                   <el-input v-model="underwritingDetails.uwitemCar.intelligentDevice"></el-input>
                 </el-form-item>
               </el-col>
@@ -697,8 +764,11 @@
                 </el-form-item>
               </el-col>
               <el-col :span="16">
-                <el-form-item >
-                  <div slot="label" style="line-height: 16px"> 发动机<br>型号/功率:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height: 16px">
+                    发动机
+                    <br />型号/功率:
+                  </div>
                   <el-input v-model="underwritingDetails.uwcarmodel.enginetypeAndPower"></el-input>
                 </el-form-item>
               </el-col>
@@ -833,13 +903,15 @@
                 <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
                 <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
                 <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
-                
+
                 <el-table-column align="center" prop="discount" label="保费折扣%">
-                <template slot-scope="scope">
-                  <span > {{scope.row.discount}}<el-button 
-                   class="button-uwprofit" @click="openAdjustRateDialog(scope.row)">*</el-button> </span>
-                </template>
-              </el-table-column>
+                  <template slot-scope="scope">
+                    <span>
+                      {{scope.row.discount}}
+                      <el-button class="button-uwprofit" @click="openAdjustRateDialog(scope.row)">*</el-button>
+                    </span>
+                  </template>
+                </el-table-column>
                 <el-table-column align="center" prop="premium" label="续保调整比例%"></el-table-column>
                 <el-table-column align="center" prop="adjustRate" label="应交保费(元)"></el-table-column>
               </el-table>
@@ -871,9 +943,7 @@
               <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
               <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
               <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
-              <el-table-column align="center" prop="adjustRate" label="续保调整比例%">
-                
-              </el-table-column>
+              <el-table-column align="center" prop="adjustRate" label="续保调整比例%"></el-table-column>
               <el-table-column align="center" prop="premium" label="应交保费(元)"></el-table-column>
             </el-table>
             <el-row class="mt10">
@@ -911,8 +981,11 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">定报价指标信息</div>
             </template>
-            <div v-for="(uwqfixationDetail, index) in underwritingDetails.uwqfixationDetails " 
-            :key="index" :class="(index+1) != underwritingDetails.uwqfixationDetails.length ? 'border-btm-gra': '' "> 
+            <div
+              v-for="(uwqfixationDetail, index) in underwritingDetails.uwqfixationDetails "
+              :key="index"
+              :class="(index+1) != underwritingDetails.uwqfixationDetails.length ? 'border-btm-gra': '' "
+            >
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="投保单号:">
@@ -946,7 +1019,10 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item>
-                    <div slot="label" style="line-height: 16px"> 营业税金<br>及附加比率:</div>
+                    <div slot="label" style="line-height: 16px">
+                      营业税金
+                      <br />及附加比率:
+                    </div>
                     <el-input v-model="uwqfixationDetail.taxorAppend"></el-input>
                   </el-form-item>
                 </el-col>
@@ -981,8 +1057,11 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item >
-                    <div slot="label" style="line-height:16px">是否报价<br>(0:否 1:是):</div>
+                  <el-form-item>
+                    <div slot="label" style="line-height:16px">
+                      是否报价
+                      <br />(0:否 1:是):
+                    </div>
                     <el-input v-model="uwqfixationDetail.isQuotation"></el-input>
                   </el-form-item>
                 </el-col>
@@ -1017,26 +1096,34 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item >
-                    <div slot="label" style="line-height:16px">定价返回的跟单 <br> 风险保费合计:</div>
+                  <el-form-item>
+                    <div slot="label" style="line-height:16px">
+                      定价返回的跟单
+                      <br />风险保费合计:
+                    </div>
                     <el-input v-model="uwqfixationDetail.riskSumPremium"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item >
-                    <div slot="label" style="line-height: 16px"> 不考虑模拟<br>交强的折扣率:</div>
+                  <el-form-item>
+                    <div slot="label" style="line-height: 16px">
+                      不考虑模拟
+                      <br />交强的折扣率:
+                    </div>
                     <el-input v-model="uwqfixationDetail.discountBI"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item>
-                    <div slot="label" style="line-height: 16px"> 不考虑模拟交强<br>的销售费用率:</div>
+                    <div slot="label" style="line-height: 16px">
+                      不考虑模拟交强
+                      <br />的销售费用率:
+                    </div>
                     <el-input v-model="uwqfixationDetail.poundageBI"></el-input>
                   </el-form-item>
                 </el-col>
-            </el-row>
+              </el-row>
             </div>
-            
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1048,20 +1135,15 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">约定驾驶人信息</div>
             </template>
-            <el-table
-              :data="underwritingDetails.uwcardrivers"
-              style="width: 100%">
-
-              <el-table-column prop="driverName" label="姓名" > </el-table-column>
-              <el-table-column prop="drivingLicenseNo" label="驾驶证号"> </el-table-column>
-              <el-table-column prop="sex" label="性别" > </el-table-column>
-              <el-table-column prop="age" label="年龄" > </el-table-column>
-              <el-table-column prop="causetroubleTimes" label="上年违章次数" > </el-table-column>
-              <el-table-column prop="drivingYears" label="驾龄" > </el-table-column>
-              <el-table-column prop="acceptLicenseDate" label="初次领证日期" > </el-table-column>
+            <el-table :data="underwritingDetails.uwcardrivers" style="width: 100%">
+              <el-table-column prop="driverName" label="姓名"></el-table-column>
+              <el-table-column prop="drivingLicenseNo" label="驾驶证号"></el-table-column>
+              <el-table-column prop="sex" label="性别"></el-table-column>
+              <el-table-column prop="age" label="年龄"></el-table-column>
+              <el-table-column prop="causetroubleTimes" label="上年违章次数"></el-table-column>
+              <el-table-column prop="drivingYears" label="驾龄"></el-table-column>
+              <el-table-column prop="acceptLicenseDate" label="初次领证日期"></el-table-column>
             </el-table>
-           
-
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1074,15 +1156,11 @@
               <div class="card-title">特别约定</div>
             </template>
 
-            <el-table
-              :data="underwritingDetails.uwengages"
-              style="width: 100%">
-
-              <el-table-column prop="serialNo" label="序号" > </el-table-column>
-              <el-table-column prop="clauseCode" label="特约序号" > </el-table-column>
-              <el-table-column prop="clauses" label="特约内容" > </el-table-column>
+            <el-table :data="underwritingDetails.uwengages" style="width: 100%">
+              <el-table-column prop="serialNo" label="序号"></el-table-column>
+              <el-table-column prop="clauseCode" label="特约序号"></el-table-column>
+              <el-table-column prop="clauses" label="特约内容"></el-table-column>
             </el-table>
-           
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1189,14 +1267,20 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item > 
-                   <div slot="label" style="line-height:16px;">纳税人<br>身份证号:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    纳税人
+                    <br />身份证号:
+                  </div>
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayeridentno"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                   <div slot="label" style="line-height:16px;">纳税人<br>识别号:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    纳税人
+                    <br />识别号:
+                  </div>
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.taxpayernumber"></el-input>
                 </el-form-item>
               </el-col>
@@ -1223,25 +1307,33 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                <div slot="label" style="line-height:16px;">减免税<br>比例/金额:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    减免税
+                    <br />比例/金额:
+                  </div>
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.taxabateamount"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">开具税务机关<br>代码/名称:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    开具税务机关
+                    <br />代码/名称:
+                  </div>
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.taxcomcode"></el-input>
                 </el-form-item>
               </el-col>
 
               <el-col :span="8">
-                <el-form-item >
-                <div slot="label">
-                  <!-- 批单申请单号号 -->
-                  <div slot="label" style="line-height:16px;">完税凭证号/<br>减免税证明号：</div>
-
-                </div>
+                <el-form-item>
+                  <div slot="label">
+                    <!-- 批单申请单号号 -->
+                    <div slot="label" style="line-height:16px;">
+                      完税凭证号/
+                      <br />减免税证明号：
+                    </div>
+                  </div>
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.dutypaidproofno"></el-input>
                 </el-form-item>
               </el-col>
@@ -1257,22 +1349,31 @@
               </el-col>
 
               <el-col :span="8">
-                <el-form-item >
-                   <div slot="label" style="line-height:16px;">前次缴费<br>年度:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    前次缴费
+                    <br />年度:
+                  </div>
 
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.prepaytaxyear"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">前次保单<br>止期:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    前次保单
+                    <br />止期:
+                  </div>
 
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.prepolicyenddate"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                   <div slot="label" style="line-height:16px;">本次缴费<br>起期:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    本次缴费
+                    <br />起期:
+                  </div>
 
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.paystartdate"></el-input>
                 </el-form-item>
@@ -1280,7 +1381,6 @@
 
               <el-col :span="8">
                 <el-form-item label="本次交税止期:">
-
                   <el-input v-model="underwritingDetails.payTravelTaxInfo.payenddate"></el-input>
                 </el-form-item>
               </el-col>
@@ -1354,8 +1454,11 @@
             </template>
             <el-row>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">保险合同争<br>议解决方式:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    保险合同争
+                    <br />议解决方式:
+                  </div>
                   <el-input v-model="underwritingDetails.otherInformation.argueSolution"></el-input>
                 </el-form-item>
               </el-col>
@@ -1378,7 +1481,11 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="验车时间:">
-                  <el-date-picker v-model="underwritingDetails.otherInformation.carCheckTime" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+                  <el-date-picker
+                    v-model="underwritingDetails.otherInformation.carCheckTime"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                  ></el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -1423,8 +1530,11 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">上年度是否<br>在本公司承保:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    上年度是否
+                    <br />在本公司承保:
+                  </div>
                   <el-input v-model="underwritingDetails.otherInformation.otherNature_two"></el-input>
                 </el-form-item>
               </el-col>
@@ -1434,12 +1544,14 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">驾驶行为<br>全国评分:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    驾驶行为
+                    <br />全国评分:
+                  </div>
                   <el-input v-model="underwritingDetails.otherInformation.nationalDriScore"></el-input>
                 </el-form-item>
               </el-col>
-            
 
               <el-col :span="8">
                 <el-form-item label="驾驶行为本省评分:">
@@ -1447,8 +1559,11 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item >
-                  <div slot="label" style="line-height:16px;">是否有同车<br>保期重复:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    是否有同车
+                    <br />保期重复:
+                  </div>
                   <el-input v-model="underwritingDetails.otherInformation.isProposalRepetition"></el-input>
                 </el-form-item>
               </el-col>
@@ -1459,18 +1574,20 @@
               </el-col>
 
               <el-col :span="24">
-                <el-form-item >
-                   <div slot="label" style="line-height:16px;">同车情况下的<br>投保单号列表:</div>
+                <el-form-item>
+                  <div slot="label" style="line-height:16px;">
+                    同车情况下的
+                    <br />投保单号列表:
+                  </div>
                   <el-input v-model="underwritingDetails.otherInformation.repetitionProposalNos"></el-input>
                 </el-form-item>
               </el-col>
-              
-            </el-row>  
+            </el-row>
           </el-collapse-item>
         </el-collapse>
       </el-card>
       <!-- 审核信息 -->
-       <el-card class="circular mt4 shadow" v-if="underwritingDetails.uwNotion">
+      <el-card class="circular mt4 shadow" v-if="underwritingDetails.uwNotion">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="2">
             <template slot="title">
@@ -1485,21 +1602,23 @@
                       v-for="item in uwNotionFlags"
                       :key="item.value"
                       :label="item.label"
-                      :value="item.value">
-                    </el-option>
+                      :value="item.value"
+                    ></el-option>
                   </el-select>
-
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="审批片语:">
-                   <el-select v-model="underwritingDetails.uwNotion.carCheckStatus" placeholder="请选择">
+                  <el-select
+                    v-model="underwritingDetails.uwNotion.carCheckStatus"
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="item in uwNotionCarCheckStatus"
                       :key="item.value"
                       :label="item.label"
-                      :value="item.label">
-                    </el-option>
+                      :value="item.label"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -1509,12 +1628,11 @@
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}"
                     placeholder="请输入内容"
-                    v-model="underwritingDetails.uwNotion.handleText">
-                  </el-input>
+                    v-model="underwritingDetails.uwNotion.handleText"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-           
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -1544,48 +1662,46 @@
       :lock-scroll="false"
       :visible.sync="outerVisible"
     >
-      <div >
-        <el-form   label-width="150px" :rules="rules">
+      <div>
+        <el-form label-width="150px" :rules="rules">
           <el-row>
             <el-col :span="12">
               <el-form-item label="当前任务环节:" style="margin-bottom:0"></el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="提交路径选择:"  style="margin-bottom:0"></el-form-item>
+              <el-form-item label="提交路径选择:" style="margin-bottom:0"></el-form-item>
             </el-col>
-            <el-col :span="12"> 
-                <el-form-item label="省公司一级核保:"  style="margin-bottom:2px"></el-form-item>
+            <el-col :span="12">
+              <el-form-item label="省公司一级核保:" style="margin-bottom:2px"></el-form-item>
               <!-- <span>省公司一级核保:</span>  -->
             </el-col>
-            <el-col :span="12"> 
+            <el-col :span="12">
               <el-select v-model="aprove.nodeCode" placeholder="请选择" style="margin-bottom:2px">
                 <el-option
-                    v-for="item in subOptions"
-                    :key="item.key"
-                    :label="item.value"
-                    :value="item.key"
-                  ></el-option>
-                </el-select>
-              </el-col>
+                  v-for="item in subOptions"
+                  :key="item.key"
+                  :label="item.value"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </el-col>
 
-            <el-col :span="12">  
-              <el-form-item label="审批片语:" ></el-form-item>
+            <el-col :span="12">
+              <el-form-item label="审批片语:"></el-form-item>
               <!-- <span>  审批片语:</span> -->
             </el-col>
-            <el-col :span="12"> 
-               <el-select v-model="aprove.inspSpeak" placeholder="请选择">
-                  <el-option
-                    v-for="item in uwNotionCarCheckStatus"
-                     :key="item.label"
-                      :label="item.label"
-                      :value="item.label"
-                  ></el-option>
-              </el-select> 
+            <el-col :span="12">
+              <el-select v-model="aprove.inspSpeak" placeholder="请选择">
+                <el-option
+                  v-for="item in uwNotionCarCheckStatus"
+                  :key="item.label"
+                  :label="item.label"
+                  :value="item.label"
+                ></el-option>
+              </el-select>
             </el-col>
-
           </el-row>
           <el-row>
-           
             <el-col :span="24" class="mt10">
               <el-input
                 type="textarea"
@@ -1621,118 +1737,84 @@
       :visible.sync="innerVisible"
     >
       <el-row>工作流提示：投保单：34412414214214退回到业务系统成功！</el-row>
-      <el-button
-        @click="goback()"
-        size="mini"
-        type="primary"
-        class="mt10"
-      >关闭当前窗口</el-button>
+      <el-button @click="goback()" size="mini" type="primary" class="mt10">关闭当前窗口</el-button>
     </el-dialog>
 
-    <el-dialog
-      class="el-dialog__body__update"
-      width="45%"
-      title=""
-      :visible.sync="relationDialog"
-    >
-    <el-form label-width="120px">
-      <el-row>
-        <el-col :span="16">
-          <el-form-item label="投保单:">
-              <el-input v-model="underwritingDetails.summaryInfo.proposalNo" ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-button  type="text" style="color:#409eff" @click="goTolinks('traditional')"> 传统渠道</el-button>
-        </el-col>
-        <el-col :span="4">
-          <el-button type="text" style="color:#409eff" @click="goTolinks('electricPin')"> 电销渠道</el-button>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="保单:">
-                <el-input v-model="underwritingDetails.summaryInfo.policyNo" ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-button  type="text" style="color:#409eff" @click="goTolinks('traditional')"> 传统渠道</el-button>
-        </el-col>
-        <el-col :span="4">
-          <el-button type="text" style="color:#409eff" @click="goTolinks('electricPin')"> 电销渠道</el-button>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="批单:">
-               <div class="link-input" > <span @click="goTolinks('endor')">123</span> </div>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-      <el-button
-        @click="relationDialog = false"
-        size="mini"
-        type="primary"
-        class="mt10"
-      >关闭当前窗口</el-button>
+    <el-dialog class="el-dialog__body__update" width="45%" title :visible.sync="relationDialog">
+      <el-form label-width="120px">
+        <el-row>
+          <el-col :span="16">
+            <el-form-item label="投保单:">
+              <el-input v-model="underwritingDetails.summaryInfo.proposalNo"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="text" style="color:#409eff" @click="goTolinks('traditional')">传统渠道</el-button>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="text" style="color:#409eff" @click="goTolinks('electricPin')">电销渠道</el-button>
+          </el-col>
+          <el-col :span="16">
+            <el-form-item label="保单:">
+              <el-input v-model="underwritingDetails.summaryInfo.policyNo"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="text" style="color:#409eff" @click="goTolinks('traditional')">传统渠道</el-button>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="text" style="color:#409eff" @click="goTolinks('electricPin')">电销渠道</el-button>
+          </el-col>
+          <el-col :span="16">
+            <el-form-item label="批单:">
+              <div class="link-input">
+                <span @click="goTolinks('endor')">123</span>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <el-button @click="relationDialog = false" size="mini" type="primary" class="mt10">关闭当前窗口</el-button>
     </el-dialog>
 
- <!-- // 保费折扣率 弹框 列表 -->
+    <!-- // 保费折扣率 弹框 列表 -->
     <el-dialog
       class="el-dialog__body__update"
       width="60%"
       title="显示优惠信息"
       :visible.sync="adjustRateDialog"
+    >
+      <el-table
+        :data="underwritingDetails.uwprofitdetails"
+        tooltip-effect="dark"
+        style="width: 100%"
       >
-        <el-table
-          :data="underwritingDetails.uwprofitdetails"
-          tooltip-effect="dark"
-          style="width: 100%"
-          >
-          <el-table-column
-            type="selection"
-            width="55">
-          </el-table-column>
-          <el-table-column
-            label="优惠代码"
-            prop="profitCode"
-            width="120">
-
-          </el-table-column>
-          <el-table-column
-            prop="profitName"
-            label="优惠原因"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="profitRate"
-            label="优惠率"
-            width="120"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="condition"
-            label="优惠条件"
-            >
-          </el-table-column>
-        </el-table>
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column label="优惠代码" prop="profitCode" width="120"></el-table-column>
+        <el-table-column prop="profitName" label="优惠原因"></el-table-column>
+        <el-table-column prop="profitRate" label="优惠率" width="120"></el-table-column>
+        <el-table-column prop="condition" label="优惠条件"></el-table-column>
+      </el-table>
     </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 
 export default {
   name: "UnderwritingDetails",
   data() {
     return {
       subOptions: [],
-      bussinessType: '',
-      routeDate: '',
+      bussinessType: "",
+      routeDate: "",
       activeNames: [],
       underwritingDetails: {
         taskProcessing: {}, //处理核保任务
-	      summaryInfo: {}, //概要信息
-        underwriteOpinion:[], // 历次审核意见	
-	      uwpTexts: {}, // 显示批文
+        summaryInfo: {}, //概要信息
+        underwriteOpinion: [], // 历次审核意见
+        uwpTexts: {}, // 显示批文
         uwinsuredT: {}, // 投保人信息
         uwinsuredI: {}, // 被保险人信息
         uwinsuredC: {}, // 车主信息
@@ -1741,7 +1823,7 @@ export default {
         insurancePeriod: {}, // 保险期限
         uwitemkindZ: [], // 主险
         uwitemkindF: [], // 附加险
-        payTravelTaxInfo:{} ,//代收代缴车船税信息
+        payTravelTaxInfo: {}, //代收代缴车船税信息
         uwqfixationDetails: [], // 定报价指标信息
         uwcardrivers: [], // 约定驾驶人信息
         uwengages: [], // 特别约定
@@ -1749,43 +1831,42 @@ export default {
         otherInformation: {}, // 其他信息
         uwitemkindCount: {}, // 险别总计
         uwNotion: {}, // 审批信息
-        displayFlag:{ 
-          browseFlag: '0', // 详细信息
-          flowRecordFlag: '0', //	流转记录
-          ClaimFlag: '0', //	出险信息
-          lastPolicyClaimFlag: '0', //	上年保单理赔信息
-          coverFacEnquiryFlag: '0', //	预约协议临分意向
-          headOfficeInfoFlag: '0', //	查看总公司资料
-          branchOfficeInfoFlag: '0', //	查看分公司资料
-          relationImageFlag: '0', //	查看关联单影像
-          infoFlag: '0', //	资料查看
-          uploadImageFlag: '0', //	上传影像
-          mobileImageFlag: '0', //	手机影像
-          deviceInfoFlag: '0', //	设备信息
-          shipInfoFlag: '0', //	船舶信息
-          lastPolicyInfoFlag: '0', //	查看上年保单信息
-          revokeFlag: '0', //	撤回
-          riskTypeRateFlag: '0',//	查看风险类别占比
-          reportFormsFlag: '0',//	车队业务质量统计查询
-          possessTaskFlag: '0',	// 任务审核
-          approvalInfoFlag: '0', //	审批信息
+        displayFlag: {
+          browseFlag: "0", // 详细信息
+          flowRecordFlag: "0", //	流转记录
+          ClaimFlag: "0", //	出险信息
+          lastPolicyClaimFlag: "0", //	上年保单理赔信息
+          coverFacEnquiryFlag: "0", //	预约协议临分意向
+          headOfficeInfoFlag: "0", //	查看总公司资料
+          branchOfficeInfoFlag: "0", //	查看分公司资料
+          relationImageFlag: "0", //	查看关联单影像
+          infoFlag: "0", //	资料查看
+          uploadImageFlag: "0", //	上传影像
+          mobileImageFlag: "0", //	手机影像
+          deviceInfoFlag: "0", //	设备信息
+          shipInfoFlag: "0", //	船舶信息
+          lastPolicyInfoFlag: "0", //	查看上年保单信息
+          revokeFlag: "0", //	撤回
+          riskTypeRateFlag: "0", //	查看风险类别占比
+          reportFormsFlag: "0", //	车队业务质量统计查询
+          possessTaskFlag: "0", // 任务审核
+          approvalInfoFlag: "0" //	审批信息
         },
         uwprofitdetails: [] // 主险 -- 优惠率弹框
       },
-          // 审核意见 ---审批动作
+      // 审核意见 ---审批动作
       uwNotionFlags: [
-        { value: '1', label: '审核通过'},
-        { value: '2', label: '下发修改'},
-        { value: '3', label: '提交上级'},
+        { value: "1", label: "审核通过" },
+        { value: "2", label: "下发修改" },
+        { value: "3", label: "提交上级" }
       ],
       // 审核意见 ---审批片语
-      uwNotionCarCheckStatus:[
-        { value: '1', label: '同意'},
-        { value: '2', label: '拒绝承保'},
-        { value: '3', label: '请补充以下资料后重新提交'},
-        { value: '4', label: '请调整以下承保条件后重新提交'},
-        { value: '5', label: '超过本级权限，提交上级审核'},
-
+      uwNotionCarCheckStatus: [
+        { value: "1", label: "同意" },
+        { value: "2", label: "拒绝承保" },
+        { value: "3", label: "请补充以下资料后重新提交" },
+        { value: "4", label: "请调整以下承保条件后重新提交" },
+        { value: "5", label: "超过本级权限，提交上级审核" }
       ],
       tableList: [{}],
       value: "",
@@ -1798,7 +1879,7 @@ export default {
       innerVisible: false,
       adjustRateDialog: false, // 保费折扣率 弹框】
       textarea1: "",
-      condition: '0',
+      condition: "0",
       textarea2: "",
       options: [
         {
@@ -1821,27 +1902,29 @@ export default {
       }
     },
     // 返回上一级
-    goback(){
-        this.$router.go(-1)
+    goback() {
+      this.$router.go(-1);
     },
     // 撤回
-    getBack(){
-       let keyWords ={
-          businessNo: this.routeDate.businessNo || 'AST12312312',
-          ComCode: this.routeDate.businessNo || 'BJ233',
-          UserCode: this.routeDate.businessNo || 'WPC212',
-          UserName: this.routeDate.businessNo || '宛平城',
-          revokeType: this.routeDate.type || 'EH', // 撤回类型 1：省级从承保撤回  2：省级从总公司撤回  3：总公司从省级撤回
-          taskId: this.routeDate.businessNo || 'id12312', // 任务id
-          businessType: this.routeDate.type || 'ST',
-          batchNo: this.routeDate.type || 12312312,
-       }
-      this.$fetch.post(this.HOST + this.$url.undwrtrevokeUndwrt ,keyWords).then(data => {
-        console.log(data)
-        this.$message.success(data)
-      })
+    getBack() {
+      let keyWords = {
+        businessNo: this.routeDate.businessNo || "AST12312312",
+        ComCode: this.routeDate.businessNo || "BJ233",
+        UserCode: this.routeDate.businessNo || "WPC212",
+        UserName: this.routeDate.businessNo || "宛平城",
+        revokeType: this.routeDate.type || "EH", // 撤回类型 1：省级从承保撤回  2：省级从总公司撤回  3：总公司从省级撤回
+        taskId: this.routeDate.businessNo || "id12312", // 任务id
+        businessType: this.routeDate.type || "ST",
+        batchNo: this.routeDate.type || 12312312
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.undwrtrevokeUndwrt, keyWords)
+        .then(data => {
+          console.log(data);
+          this.$message.success(data);
+        });
     },
-     // 放弃
+    // 放弃
     giveUp() {
       let key = {
         businessNo: this.parameter.businessNo,
@@ -1852,328 +1935,343 @@ export default {
         console.log(data);
         this.$message.success(data);
         setTimeout(() => {
-           this.goback()
+          this.goback();
         }, 1500);
-       
       });
     },
     // 提交审核
-    submit(){
-      
-
-    let key={
-        "businessType":"T",
-        "businessNo":"TDZA201945010000014005",
-        "nodeName":"市公司一级",
-        "editType":"submit",
-        "curNode":"301"
+    submit() {
+      let key = {
+        businessType: "T",
+        businessNo: "TDZA201945010000014005",
+        nodeName: "市公司一级",
+        editType: "submit",
+        curNode: "301"
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.undwrtSubmitReview, key)
+        .then(data => {
+          console.log(data);
+          this.subOptions = data.mapList;
+          console.log(this.subOptions);
+          this.aprove.handleText = data.uwnotion.handleText;
+          this.outerVisible = true;
+        });
+    },
+    // 提交审核
+    submitReview() {
+      let keyWords = {
+        businessType: "T",
+        businessNo: "TDZA201945010000014005",
+        nodeCode: this.aprove.nodeCode,
+        prepusercode: "", // 当前登录人code
+        uwnotion: {
+          handleText:
+            this.aprove.handleText +
+            this.aprove.inspSpeak +
+            ";" +
+            this.aprove.remark
+        }
+      };
+      let url = "";
+      switch (this.aprove.nodeCode) {
+        case "000": // 通过
+          url = this.HOST + this.$url.undwrtendTask;
+          break;
+        case "999": // 驳回
+          url = this.HOST + this.$url.undwrtworkReject;
+          break;
+        default:
+          // 其他
+          url = this.HOST + this.$url.undwrtSubmitToExamine;
+          break;
       }
-      this.$fetch.post(this.HOST + this.$url.undwrtSubmitReview, key).then(data => {
+      this.$fetch.post(url, keyWords).then(data => {
         console.log(data);
-        this.subOptions = data.mapList
-        console.log(this.subOptions)
-        this.aprove.handleText = data.uwnotion.handleText
-        this.outerVisible = true;
+        this.outerVisible = false;
+        this.innerVisible = true;
       });
-    },
-    // 提交审核
-    submitReview(){
-       let keyWords ={
-          "businessType": "T",
-          "businessNo": "TDZA201945010000014005",
-          "nodeCode": this.aprove.nodeCode,
-          "prepusercode": "",  // 当前登录人code
-          "uwnotion": {
-              "handleText": this.aprove.handleText + this.aprove.inspSpeak + ';' + this.aprove.remark,
-
-          }
-        }
-        let url = ''
-        switch (this.aprove.nodeCode) {
-          case '000': // 通过
-             url = this.HOST + this.$url.undwrtendTask
-            break;
-          case '999': // 驳回
-            url = this.HOST + this.$url.undwrtworkReject
-            break
-          default: // 其他
-            url = this.HOST + this.$url.undwrtSubmitToExamine
-            break;
-        }
-        this.$fetch.post(url,keyWords).then(data =>{
-          console.log(data)
-          this.outerVisible = false;
-          this.innerVisible = true
-        })
-     
-      
-    
     },
     //初始化
     init() {
-      
-      let  keyWords ={
-        request: 'INFO', // 固定穿参
+      let keyWords = {
+        request: "INFO", // 固定穿参
         businessNo: this.routeDate.businessNo, // 业务单号
         taskType: this.routeDate.type, // 任务类别
         taskId: this.routeDate.businessNo, //  任务Id
         businessType: this.routeDate.type, // businessType
         comCode: this.routeDate.businessNo, // 公司代码
         userCode: this.routeDate.businessNo, // 员工号
-        username: 'wpc'
-      }
-     this.$fetch.post(this.HOST + this.$url.uwmainGetUwInfo, keyWords).then(data =>{
-       console.log(data)
-      //  this.underwritingDetails = data
-      //  this.underwritingDetails.uwNotion = data.uwnotions[0]
-      //  this.underwritingDetails.displayFlag ={}
-       
-
-     })
+        username: "wpc"
+      };
+      this.$fetch
+        .post(this.HOST + this.$url.uwmainGetUwInfo, keyWords)
+        .then(data => {
+          console.log(data);
+          //  this.underwritingDetails = data
+          //  this.underwritingDetails.uwNotion = data.uwnotions[0]
+          //  this.underwritingDetails.displayFlag ={}
+        });
     },
     // 设备信息
-    goToDeviceInfo(){
-
-    },
+    goToDeviceInfo() {},
     // 获取跳转链接并打开新窗口
-    goTolinks(type){
-      let key ={}
-      switch(type){
-        case 'teamquality' :
-           key = { 
-            'reportFormsType': 'teamquality',
-            'comcode': '12322312',
-            'businessNo': this.routeDate.businessNo || '123', // 业务号
-            'taskType': this.routeDate.type || 'T'// 业务类型
-          }
-          this.$fetch.get(this.HOST + this.$url.uwmainTeamquality, {params:key}).then(data => {
-            console.log(data)
-            // window.open("http://www.baidu.com")
-            window.open(data)
-          })
-          break
-          case 'details':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
-              "taskType": "sdsd",
-              "taskId": "123",
-              "comCode": "13000000"
-              }
+    goTolinks(type) {
+      let key = {};
+      switch (type) {
+        case "teamquality":
+          key = {
+            reportFormsType: "teamquality",
+            comcode: "12322312",
+            businessNo: this.routeDate.businessNo || "123", // 业务号
+            taskType: this.routeDate.type || "T" // 业务类型
+          };
+          this.$fetch
+            .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
+            .then(data => {
+              console.log(data);
+              // window.open("http://www.baidu.com")
+              window.open(data);
+            });
+          break;
+        case "details":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "sfsdfsdf",
+            taskType: "sdsd",
+            taskId: "123",
+            comCode: "13000000"
+          };
 
-          this.$fetch.post(this.HOST + this.$url.telSaleInfo,key).then(data => {
-            console.log(data)
-            // window.open("http://www.baidu.com")
-            window.open(data)
-          })
-          break 
-          // 影像上传
-          case 'uploadECM':
-             key = {
-              "businessNo": this.routeDate.businessNo || "TDAA201923060000081619",
-              "businessType": this.routeDate.type  || "T",
-              "taskId": "1",
-              "userName": "江苏用户",
-              'userCode': 'A320000003',
-              "comCode": "33000000"
-              }
-          this.$fetch.post(this.HOST + this.$url.uwmainUploadECM,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-           // 影像查看
-          case 'getECM':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "TDAA201923060000081619",
-              "businessType": this.routeDate.type  || "T",
-              "taskId": "sdsd",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "33000000",
-              "SaleImgFlag": '123'
-              }
+          this.$fetch
+            .post(this.HOST + this.$url.telSaleInfo, key)
+            .then(data => {
+              console.log(data);
+              // window.open("http://www.baidu.com")
+              window.open(data);
+            });
+          break;
+        // 影像上传
+        case "uploadECM":
+          key = {
+            businessNo: this.routeDate.businessNo || "TDAA201923060000081619",
+            businessType: this.routeDate.type || "T",
+            taskId: "1",
+            userName: "江苏用户",
+            userCode: "A320000003",
+            comCode: "33000000"
+          };
+          this.$fetch
+            .post(this.HOST + this.$url.uwmainUploadECM, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 影像查看
+        case "getECM":
+          key = {
+            businessNo: this.routeDate.businessNo || "TDAA201923060000081619",
+            businessType: this.routeDate.type || "T",
+            taskId: "sdsd",
+            userName: "123",
+            userCode: "123",
+            comCode: "33000000",
+            SaleImgFlag: "123"
+          };
 
-          this.$fetch.post(this.HOST + this.$url.uwmainGetECM,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          // 手机影像
-          case 'mobileECM':
-             key = {
-              "method": "123",
-              'user_id': '123',
-              "plate_no": "13000000",
-              "caller_id": '123'
-              }
+          this.$fetch
+            .post(this.HOST + this.$url.uwmainGetECM, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 手机影像
+        case "mobileECM":
+          key = {
+            method: "123",
+            user_id: "123",
+            plate_no: "13000000",
+            caller_id: "123"
+          };
 
-          this.$fetch.post(this.HOST + this.$url.uwmainMobileECM,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-           // 关联单影像
-          case 'startECM':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "T",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000",
-              }
+          this.$fetch
+            .post(this.HOST + this.$url.uwmainMobileECM, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 关联单影像
+        case "startECM":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "T",
+            userName: "123",
+            userCode: "123",
+            comCode: "13000000"
+          };
 
-          this.$fetch.post(this.HOST + this.$url.uwmainStartECM,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          // 查看分公司资料
-          case 'branchCompany':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "T",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000",
-              }
-          this.$fetch.post(this.HOST + this.$url.autoDistributeBranchCompanyInfo,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          // 总公司
-          case 'headCompany':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000",
-              }
-          this.$fetch.post(this.HOST + this.$url.autoDistributeHeadCompanyInfo,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          // 批单
-          case 'endor':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000",
-              }
-          this.$fetch.post(this.HOST + this.$url.autoDistributeEndorsementInfo,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          // 电销渠道
-          case 'electricPin':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000",
-              }
-          this.$fetch.post(this.HOST + this.$url.autoDistributeElectricPinChannels,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          // 传统渠道
-          case 'traditional':
-             key = {
-              "businessNo": this.routeDate.businessNo ||  "454654564564",
-              "businessType": this.routeDate.type  || "sfsdfsdf",
-              "userName": "123",
-              'userCode': '123',
-              "comCode": "13000000",
-              }
-          this.$fetch.post(this.HOST + this.$url.autoDistributeTraditionalChannels,key).then(data => {
-            console.log(data)
-            window.open(data)
-          })
-          break
-          case 'lastYearPolicyInfo':
-            key = {
-              lastPolicyNo: '123',
-              riskCode: '122'
-
-            }
-            this.$fetch.get(this.HOST + this.$url.uwmainGetLastYearPolicyInfo, {params:key}).then( data => {
-              window.open(data)
+          this.$fetch
+            .post(this.HOST + this.$url.uwmainStartECM, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 查看分公司资料
+        case "branchCompany":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "T",
+            userName: "123",
+            userCode: "123",
+            comCode: "13000000"
+          };
+          this.$fetch
+            .post(this.HOST + this.$url.autoDistributeBranchCompanyInfo, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 总公司
+        case "headCompany":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "sfsdfsdf",
+            userName: "123",
+            userCode: "123",
+            comCode: "13000000"
+          };
+          this.$fetch
+            .post(this.HOST + this.$url.autoDistributeHeadCompanyInfo, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 批单
+        case "endor":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "sfsdfsdf",
+            userName: "123",
+            userCode: "123",
+            comCode: "13000000"
+          };
+          this.$fetch
+            .post(this.HOST + this.$url.autoDistributeEndorsementInfo, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 电销渠道
+        case "electricPin":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "sfsdfsdf",
+            userName: "123",
+            userCode: "123",
+            comCode: "13000000"
+          };
+          this.$fetch
+            .post(this.HOST + this.$url.autoDistributeElectricPinChannels, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        // 传统渠道
+        case "traditional":
+          key = {
+            businessNo: this.routeDate.businessNo || "454654564564",
+            businessType: this.routeDate.type || "sfsdfsdf",
+            userName: "123",
+            userCode: "123",
+            comCode: "13000000"
+          };
+          this.$fetch
+            .post(this.HOST + this.$url.autoDistributeTraditionalChannels, key)
+            .then(data => {
+              console.log(data);
+              window.open(data);
+            });
+          break;
+        case "lastYearPolicyInfo":
+          key = {
+            lastPolicyNo: "123",
+            riskCode: "122"
+          };
+          this.$fetch
+            .get(this.HOST + this.$url.uwmainGetLastYearPolicyInfo, {
+              params: key
             })
-          break
+            .then(data => {
+              window.open(data);
+            });
+          break;
       }
-
     },
     // 流转记录
-    goToFlowLog(){
+    goToFlowLog() {
       let routeUrl = this.$router.resolve({
-          path: "/flowLog",
-           query: {
-          businessNo: '123'
+        path: "/flowLog",
+        query: {
+          businessNo: "123"
         }
-      })
-      window.open(routeUrl.href, '_blank')
+      });
+      window.open(routeUrl.href, "_blank");
     },
     // 跳转设备信息
-    goToCarDeviceInfo(){
+    goToCarDeviceInfo() {
       let routeUrl = this.$router.resolve({
-          path: "/deviceView",
-           query: {
-          businessNo:this.routeDate.businessNo || '123',
-          type: this.routeDate.type || 'H'
+        path: "/deviceView",
+        query: {
+          businessNo: this.routeDate.businessNo || "123",
+          type: this.routeDate.type || "H"
         }
-      })
-      window.open(routeUrl.href, '_blank')
+      });
+      window.open(routeUrl.href, "_blank");
     },
     // 跳转 风险类占比
-    goToUnderwriteRiskTypeRate(){
+    goToUnderwriteRiskTypeRate() {
       let routeUrl = this.$router.resolve({
-          path: "/underwriteRiskTypeRate",
-           query: {
-          businessNo: '123',
-          type: 'H'
+        path: "/underwriteRiskTypeRate",
+        query: {
+          businessNo: "123",
+          type: "H"
         }
-      })
-      window.open(routeUrl.href, '_blank')
+      });
+      window.open(routeUrl.href, "_blank");
     },
 
     // 打开保费折扣率弹框
-    openAdjustRateDialog(row){
-      this.adjustRateDialog = true
+    openAdjustRateDialog(row) {
+      this.adjustRateDialog = true;
     },
     // 赔付率查询
-    goToIdsQuery(){
+    goToIdsQuery() {
       let routeUrl = this.$router.resolve({
-          path: "/uwIDSVehicleViewQuery",
-           query: {
-                condition: this.condition
-          }
-        })
-      window.open(routeUrl.href, '_blank')
+        path: "/uwIDSVehicleViewQuery",
+        query: {
+          condition: this.condition
+        }
+      });
+      window.open(routeUrl.href, "_blank");
     },
-    handleSelectionChange(){
-
-    }
+    handleSelectionChange() {}
   },
-  
-  
 
   created() {
     //设置collapse全部展开
     this.routeDate = this.$route.query;
-    setTimeout(()=> {
+    setTimeout(() => {
       this.setActiveNames();
       this.init();
-    }) 
-   
-    
+    });
   }
 };
 </script>
@@ -2195,37 +2293,37 @@ export default {
   color: #409eff;
   padding-left: 15px;
   text-align: left;
-  cursor: pointer
+  cursor: pointer;
+}
+.titlestyle >>> .card-title {
+  font-size: 12px;
+}
+.titlestyle >>> .title-blue-bar {
+  height: 16px;
+}
+.titlestyle >>> .el-collapse-item__header {
+  height: 25px;
+  line-height: 25px;
+}
+.el-collapse-item__wrap >>> .el-collapse-item__content {
+  padding-bottom: 0px;
 }
 </style>
 <style>
- .titlestyle /deep/ .card-title{
-  font-size: 12px;
-}
- .titlestyle  /deep/.title-blue-bar{
-  height: 16px;
-}
- .titlestyle  /deep/ .el-collapse-item__header{
-   height: 25px;
-   line-height: 25px;
-}
-.pt11{
+.pt11 {
   padding-top: 0px;
 }
-.el-collapse-item__wrap /deep/ .el-collapse-item__content{
-        padding-bottom: 0px;
-}
-.el-collapse-item__wrap >>>  .el-form-item{
+.el-collapse-item__wrap >>> .el-form-item {
   margin-bottom: 20px;
 }
-.border-btm-gra{
-  border-bottom: solid 1px rgba(70, 90, 100, 0.6)
+.border-btm-gra {
+  border-bottom: solid 1px rgba(70, 90, 100, 0.6);
 }
-.button-uwprofit{
-  padding: 0px 2px; 
+.button-uwprofit {
+  padding: 0px 2px;
   font-size: 20px;
   height: 20px;
-  padding:2px 3px 0 3px;
-  line-height: 20px
+  padding: 2px 3px 0 3px;
+  line-height: 20px;
 }
 </style>

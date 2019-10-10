@@ -329,7 +329,6 @@ export default {
       let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
       
       uwMotorcadeMainVO.state = this.arraystate.join();
-      uwMotorcadeMainVO.personNo = "2fbbb15e"
       let _url = this.HOST + this.$url.underwritingStatisticsExport;
       utils.axiosDown(_url, uwMotorcadeMainVO);
     },
@@ -444,7 +443,7 @@ export default {
     this.flag = false;
     this.flag1 = false;
     this.UwMotorcadeMainVO.personNo="A3200000000"
-    console.log(this.$store.state.comcode)
+    // console.log(this.$store.state.comcode)
   }
 };
 </script>

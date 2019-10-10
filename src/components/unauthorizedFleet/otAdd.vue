@@ -80,7 +80,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                        <el-button @click="selectHistory"  size="small" type="text">查询</el-button>
+                    <el-button @click="selectHistory" size="small" type="text">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -175,7 +175,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
-                      resize='none'
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
@@ -189,7 +189,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
-                      resize='none'
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
@@ -201,7 +201,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="59"
-                      resize='none'
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
                     ></el-input>
@@ -213,7 +213,7 @@
                       type="textarea"
                       :rows="1"
                       maxlength="99"
-                      resize='none'
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
                     ></el-input>
@@ -334,7 +334,6 @@ export default {
   data() {
     //车队车辆总数
     var carcountAllEcc = (rules, value, callback) => {
-      console.log(value.length);
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
@@ -351,11 +350,6 @@ export default {
         this.UwMotorcadeMainVO.uppercarcount.length > 0 &&
         this.UwMotorcadeMainVO.uppercarcount.length <= 6
       ) {
-        console.log(
-          this.UwMotorcadeMainVO.uppercarcount.length,
-          "uppercarcount",
-          this.UwMotorcadeMainVO.carcountAll
-        );
         callback();
       }
     };
@@ -614,7 +608,6 @@ export default {
               uwMotorcadeMainVO
             )
             .then(res => {
-              console.log(res);
               if (res !== "false") {
                 this.UwMotorcadeMainVO.businessNature = "3";
               } else {
@@ -636,7 +629,6 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.rtAddToInsured, uwMotorcadeMainVO)
         .then(res => {
-          console.log(res);
           this.resultSelect = res;
         });
     },
@@ -648,9 +640,7 @@ export default {
     },
     // 穿梭框 change 事件
     transferChange(value, direction, movedKeys) {
-      // console.log(this.datas)
       // this.UwMotorcadeMainVO.carCadastral=value;
-      // console.log(value, direction, movedKeys)
     },
     handleClose: function() {
       this.transferDialog = false;
@@ -660,7 +650,6 @@ export default {
       let label = [];
       for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < options.length; j++) {
-          // console.log(items[i].value,options[j])
           if (items[i].value === options[j]) {
             label.push(items[i].label);
           }
@@ -735,7 +724,6 @@ export default {
               type: "warning"
             })
               .then(() => {
-                // console.log(this.$url.rtAddSaves)
                 this.$fetch
                   .post(this.HOST + this.$url.rtAddSaves, uwMotorcadeMainVO)
                   .then(data => {
@@ -763,7 +751,6 @@ export default {
         this.$fetch
           .post(this.HOST + this.$url.rtAddToInsured, this.UwMotorcadeMainVOs)
           .then(res => {
-            console.log(res);
             if (res) {
               _this.resultSelect = res;
               this.SelectMsgDialog = true;
@@ -781,7 +768,6 @@ export default {
         this.$fetch
           .post(this.HOST + this.$url.rtAddToInsured, this.UwMotorcadeMainVOs)
           .then(res => {
-            console.log(res);
             if (res) {
               _this.resultSelect = res;
               this.SelectMsgDialog = true;
@@ -806,7 +792,6 @@ export default {
         this.$fetch
           .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
           .then(data => {
-            console.log(typeof data);
             // window.open("http://www.baidu.com")
             window.open(data);
           });

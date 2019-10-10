@@ -23,17 +23,29 @@
                 </el-col>
                 <el-col :span="14">
                   <el-form-item label="商业险手续费上限:" prop="costRatemax">
-                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.costRatemax" :disabled="flags"></el-input>
+                    <el-input
+                      class="peoCode"
+                      v-model="UwMotorcadeInfoVO.costRatemax"
+                      :disabled="flags"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
                   <el-form-item label="商业险总折扣率下限:" label-width="200px">
-                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.costdisountmin" :disabled="flags"></el-input>
+                    <el-input
+                      class="peoCode"
+                      v-model="UwMotorcadeInfoVO.costdisountmin"
+                      :disabled="flags"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="14">
                   <el-form-item label="自主核保系数*自助渠道系数下限(出ncd系数):">
-                    <el-input class="peoCode" v-model="UwMotorcadeInfoVO.exceptNCDDiscountUpper" :disabled="flags"></el-input>
+                    <el-input
+                      class="peoCode"
+                      v-model="UwMotorcadeInfoVO.exceptNCDDiscountUpper"
+                      :disabled="flags"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24" class="text-center">
@@ -49,15 +61,15 @@
     <!-- dialog弹出框 -->
     <el-dialog
       title="提示"
+      :lock-scroll="false"
       :visible.sync="outerVisible"
-      width="50%"
-      class="dialog-footer-parent"
+      width="15%"
+      class="dialog-footer-parent styleCenter"
       :before-close="handleClose"
     >
-      <span class="fontSizeTrue">确定保存吗？</span>
+      <span class="fontSizeTrue">{{messages}}</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="outerVisible = false">确 定</el-button>
-        <el-button @click="outerVisible = false">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -71,13 +83,15 @@ export default {
 
   data() {
     return {
-      flags:true,
+      messages: "",
+      flags: true,
       outerVisible: false,
       centerDialogVisible: false,
       activeNames: ["1"],
       relations,
       pageSize: 10,
       valueidx: "",
+      licenseNo: "",
       UwMotorcadeInfoVO: {},
       rules: {
         licenseNo: [
@@ -85,14 +99,14 @@ export default {
             required: true,
             message: "号码牌不能和修改前相同",
             trigger: ["change", "blur"]
-          } 
+          }
         ],
-          costRatemax: [
+        costRatemax: [
           {
             required: true,
             message: "商业险手续费上限必填",
             trigger: ["blur"]
-          } 
+          }
         ]
       }
     };
@@ -108,14 +122,23 @@ export default {
     save() {
       this.$refs.UwMotorcadeInfoVO.validate(valids => {
         if (valids) {
-          // console.log("555555")
           this.$fetch
             .post(
               this.HOST + this.$url.unNumPlateUpdate,
               this.UwMotorcadeInfoVO
             )
             .then(res => {
-              console.log(res);
+              if (res==true) {
+                this.outerVisible = true;
+                this.messages = "保存成功";
+                setTimeout(() => {
+                  this.outerVisible = false;
+                  this.$router.go(-1);
+                },2000);
+              } else{
+                this.outerVisible = true;
+                this.messages = "保存失败";
+              }
             });
         }
       });
@@ -149,6 +172,7 @@ export default {
   },
   created() {
     // console.log(this.$route.query.row,this.$route.query.motorcadeNo);
+    
     this.$fetch
       .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
         params: {
@@ -157,8 +181,11 @@ export default {
         }
       })
       .then(res => {
-        this.UwMotorcadeInfoVO = res[0];
-        // console.log(res[0]);
+       
+        if (res && res instanceof Array && res.length > 0) {
+          this.UwMotorcadeInfoVO = res[0];
+        }
+        
       });
   }
 };
@@ -167,5 +194,8 @@ export default {
 .peoCode {
   width: 230px;
   float: left;
+}
+.styleCenter >>> .el-dialog__footer {
+  text-align: center;
 }
 </style>

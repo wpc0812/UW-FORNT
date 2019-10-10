@@ -626,13 +626,14 @@ export default {
 
     //删除批次
     deletebatch(row) {
-      this.$router.push({
+      let deletebatchPage= this.$router.resolve({
         path: "/deletebatch",
         query: {
           row: row.batchNo,
           uwmotorcademainid: this.uwmotorcademainids
         }
       });
+      window.open(deletebatchPage.href, '_blank');
     },
     //提交审核
     submitaudit() {

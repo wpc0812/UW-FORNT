@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Router from 'vue-router'
 import ElementUI from 'element-ui'
 import 'font-awesome/css/font-awesome.min.css'
 // import 'element-ui/lib/theme-chalk/index.css';
@@ -36,6 +37,12 @@ const i18n = new VueI18n({
       'en-US': en   // 英文语言包
     }
 })
+//解决vue中的NavigationDuplicated错误
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.prototype.$fetch = fetch;
 Vue.prototype.$url = Url;
 // Vue.prototype.getRequest = getRequest;

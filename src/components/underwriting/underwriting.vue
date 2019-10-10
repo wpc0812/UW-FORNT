@@ -591,7 +591,7 @@ export default {
   background: none;
   height: 40px;
 }
-.circular /deep/ .collapseBack{
+.circular >>>.collapseBack{
   background-color: #212224;
 }
 </style>
