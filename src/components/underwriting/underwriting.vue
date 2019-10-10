@@ -438,6 +438,9 @@ export default {
       if(this.underwriting.flowDate && this.underwriting.flowDate instanceof Array && this.underwriting.flowDate.length > 0) {
         this.underwriting.beginDate = this.underwriting.flowDate[0]
         this.underwriting.endDate = this.underwriting.flowDate[1]
+      } else{
+          this.underwriting.beginDate = ''
+        this.underwriting.endDate = ''
       }
       
       console.log(this.underwriting)
