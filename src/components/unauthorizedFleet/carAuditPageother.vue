@@ -716,13 +716,14 @@ export default {
     },
     //对比
     outerRatio() {
-      this.$router.push({
+       let outerRatioPage= this.$router.resolve({
         path: "/carContrast",
         query: {
           motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
           nametype: "2"
         }
       });
+       window.open(outerRatioPage.href, '_blank');
     },
     //删除
     outerDelete() {
@@ -1019,7 +1020,7 @@ export default {
 }
 .tanchuang >>> .el-dialog {
   margin: 0 auto !important;
-  height: 80%;
+  height: 50%;
   overflow: hidden;
 }
 .tanchuang >>> .el-dialog__body {

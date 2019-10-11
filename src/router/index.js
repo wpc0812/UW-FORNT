@@ -430,7 +430,7 @@ const router = new Router({
         //超权限车队维护 -异地已上报车队
         {
           path: '/rtReported',
-          name: '已上报车队',
+          name: '异地已上报车队',
           component: _import('unauthorizedFleet/rtReported'),
           hidden: true,
           meta: {
@@ -441,7 +441,7 @@ const router = new Router({
         //超权限车队维护 -异地新增车队
         {
           path: '/rtAdd',
-          name: '新增车队',
+          name: '异地新增车队',
           component: _import('unauthorizedFleet/rtAdd'),
           hidden: true,
           meta: {
@@ -474,7 +474,7 @@ const router = new Router({
         //超权限车队维护 其他已上报车队
         {
           path: '/otReported',
-          name: 'qt已上报车队',
+          name: '其他已上报车队',
           component: _import('unauthorizedFleet/otReported'),
           hidden: true,
           meta: {
@@ -485,7 +485,7 @@ const router = new Router({
         //超权限车队维护 其他新增车队
         {
           path: '/otAdd',
-          name: 'qt新增车队',
+          name: '其他新增车队',
           component: _import('unauthorizedFleet/otAdd'),
           hidden: true,
           meta: {

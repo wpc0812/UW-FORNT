@@ -731,7 +731,9 @@ export default {
                       type: "success",
                       message: "保存成功!"
                     });
-                    this.$router.go(-1);
+                    this.$router.push({
+                      path: "/otReported"
+                    });
                   });
               })
               .catch(() => {

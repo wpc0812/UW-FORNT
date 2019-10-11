@@ -29,7 +29,7 @@
                   <el-menu-item
                     v-for="(leafMenu,leafKey) in itemChild.children"
                     :key="leafKey"
-                    :index="leafMenu.name"
+                    :index="leafMenu.path"
                     :route="leafMenu.path"
                   >
                     <i :class="leafMenu.iconCls" class="font-size15 color-blue"></i>
@@ -39,7 +39,7 @@
               </template>
               <!-- 二级菜单 -->
               <template v-else>
-                <el-menu-item :key="itemChild.id" :index="itemChild.name" :route="itemChild.path">
+                <el-menu-item :key="itemChild.id" :index="itemChild.path" :route="itemChild.path">
                   <i :class="itemChild.iconCls" class="font-size15 color-blue"></i>
                   {{itemChild.name}}
                 </el-menu-item>
@@ -95,7 +95,7 @@ export default {
     return {
       menu,
       isCollapse: eval(localStorage.getItem("isCollapse")),
-      active: this.$route.name,
+      active: this.$route.path,
       comCodeLevel: "Z"
     };
   },
@@ -103,6 +103,14 @@ export default {
   // computed: {
   //   ...mapGetters(["getMenu"])
   // },
+  watch:{
+     $route(to,from){
+      //  console.log(to.path)
+      //  console.log(this.$route)
+       this.active = to.path
+  }
+  },
+  
 
   methods: {
     getCollapse() {
@@ -118,6 +126,7 @@ export default {
 
   created() {
     // this.menu();
+    this.active = this.$route.path
   }
 };
 </script>
@@ -171,5 +180,3 @@ export default {
   background: #ecf5ff !important;
 }
 </style>
-
-

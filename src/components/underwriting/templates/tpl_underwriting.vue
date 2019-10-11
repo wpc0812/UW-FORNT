@@ -98,7 +98,7 @@ export default {
       deep: true,  // 深度监听
       immediate:true,
       handler(newVal,oldVal) {
-         console.log(this.title,this.activeNames)
+        //  console.log(this.title,this.activeNames)
          if(newVal && newVal instanceof Array && newVal.length > 0){
            this.activeNames.push(this.title)
          }
