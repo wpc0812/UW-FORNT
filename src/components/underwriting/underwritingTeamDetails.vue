@@ -618,7 +618,7 @@ export default {
       this.$fetch
         .post(this.HOST + this.$url.uwmainGetUwInfo, keyWords)
         .then(data => {
-          //  this.underwritingDetails = data
+           this.underwritingDetails = data
           //  this.underwritingDetails.displayFlag = {}
         });
     },

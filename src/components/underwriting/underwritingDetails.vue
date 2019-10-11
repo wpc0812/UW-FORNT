@@ -2008,8 +2008,8 @@ export default {
         .post(this.HOST + this.$url.uwmainGetUwInfo, keyWords)
         .then(data => {
           console.log(data);
-          //  this.underwritingDetails = data
-          //  this.underwritingDetails.uwNotion = data.uwnotions[0]
+           this.underwritingDetails = data
+           this.underwritingDetails.uwNotion = data.uwnotions[0]
           //  this.underwritingDetails.displayFlag ={}
         });
     },
