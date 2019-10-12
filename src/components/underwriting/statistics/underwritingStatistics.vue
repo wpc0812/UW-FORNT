@@ -348,7 +348,7 @@ export default {
     },
     // 保单条数
     proposalSizeChange(val) {
-      debugger;
+     
       this.pageInfo.proposalPageSize = val;
       setTimeout(() => {
         this.query();

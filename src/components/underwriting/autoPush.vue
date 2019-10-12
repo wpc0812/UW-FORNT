@@ -203,7 +203,7 @@ export default {
       })
     },
     godetail(row) {
-      debugger
+      
       this.$router.push({
         path: "/underwritingDetails",
         query: row

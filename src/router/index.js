@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { Loading } from 'element-ui'
+
 
 // 选择不同的引入方式、大型项目中 懒加载页面足够多的话会导致热更新耗时较长、所以只在生产环境下启动懒加载
 // const _import = require("./_import_production");
@@ -679,22 +679,5 @@ const router = new Router({
   ]
 })
 
-let loadingService
-
-router.beforeEach((to, from, next) => {
-  // 全局loadoing
-  loadingService = Loading.service({
-    lock: true,
-    text: 'Loading',
-    customClass: 'loading-background'
-  })
-
-  next();
-})
-
-router.afterEach((to, from) => {
-  // 关闭全局loading
-  loadingService.close()
-})
 
 export default router

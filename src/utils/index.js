@@ -174,7 +174,7 @@ export default {
             if (!data) {
                 return
             }
-            debugger
+            
             let url = window.URL.createObjectURL(data.data)
             let link = document.createElement('a')
             link.style.display = 'none'
@@ -190,6 +190,10 @@ export default {
         var r = window.location.search.substr(1).match(reg);
         if(r!=null)return  unescape(r[2]); return null;
       
+    },
+    // 获取 session内的缓存
+    getSessionData(key){
+        return window.sessionStorage.getItem(key)
     },
     // 移除 token
     removeToken(){

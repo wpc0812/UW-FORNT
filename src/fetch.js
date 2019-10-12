@@ -14,12 +14,13 @@ const service = axios.create(config);
 let loadService = "";
 service.interceptors.request.use(
   request => {
-    // loadService = Loading.service({
-    //   lock: true,
-    //   text: 'Loading',
-    //   spinner: 'el-icon-loading',
-    //   background:'rgba(0, 0, 0, 0.7)'
-    // })
+    loadService = Loading.service({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background:'rgba(0, 0, 0, 0.7)'
+    })
+
     const token =  window.sessionStorage.token ||utils.getUrlToken('token')
     if (token) {
       // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
@@ -36,12 +37,12 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     if (response.status !== 200) {
-        // loadService.close()
+        loadService.close()
         Message.error('接口返回错误')
-        throw new Error();
+        // throw new Error();
     } else {
 
-      // loadService.close()
+      loadService.close()
 
 
       // Token更新
@@ -71,7 +72,7 @@ service.interceptors.response.use(
     }
   },
   err => {
-    // loadService.close()
+    loadService.close()
    return Promise.reject(err);
   }
 );

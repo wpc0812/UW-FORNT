@@ -105,7 +105,7 @@ export default {
   // },
   watch:{
      $route(to,from){
-      //  console.log(to.path)
+       console.log(to.path)
       //  console.log(this.$route)
        this.active = to.path
   }

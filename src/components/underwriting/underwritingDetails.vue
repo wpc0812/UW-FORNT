@@ -2010,7 +2010,7 @@ export default {
           console.log(data);
            this.underwritingDetails = data
            this.underwritingDetails.uwNotion = data.uwnotions[0]
-          //  this.underwritingDetails.displayFlag ={}
+          //  this.underwritingDetails.displayFlag ={} 
         });
     },
     // 设备信息

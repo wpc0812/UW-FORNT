@@ -435,7 +435,7 @@ export default {
         })
     },
     downLoad(){
-      debugger
+    
       let url ='./static/template/LicensenoAddModel.xls'
         window.open (url)
          

@@ -288,7 +288,7 @@ export default {
     },
     // 提交审核
     submit(){
-      debugger
+      
       let key = {
         businessNo:  12321,
         businessType: 'H',
@@ -365,7 +365,7 @@ export default {
         }
     },
     init() {
-      debugger
+      
       this.$fetch.post(this.HOST + this.$url.monopolyGetUwMonopolyAllInfo,
       {businessNo:this.parameter.row.businessNo}).then(data => {
         console.log(data)

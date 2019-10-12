@@ -640,7 +640,6 @@ export default {
     },
     // 提交审核
     submit() {
-      // debugger
       let key = {
         businessNo: 12321,
         businessType: "H",

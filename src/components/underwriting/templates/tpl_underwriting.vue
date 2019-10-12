@@ -30,7 +30,7 @@
           :header-cell-class-name="'table-header-bg'"
         >
           <el-table-column prop="businessType" label="业务状态"></el-table-column>
-          <el-table-column label="业务号">
+          <el-table-column label="业务号" width="200"> 
             <template slot-scope="scope">
               <el-button type="text" size="mini" @click="goDetail(scope.row)">{{scope.row.businessNo}}</el-button>
             </template>

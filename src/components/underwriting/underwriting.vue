@@ -274,6 +274,7 @@ import tplUnderwriting from "@/components/underwriting/templates/tpl_underwritin
 import { userInfo } from 'os';
 import { decode } from 'querystring';
 import { stat } from 'fs';
+import utils from '../../utils'
 
 
 const [taskType, appTypes] = [
@@ -360,6 +361,7 @@ export default {
        * 已选择，查询已选择的
        * 
        */
+      
       let stateArry = ['0','1']
       let taskTypeArry = ["ST", "GT", "E", "H"]
       if(this.underwriting.stateList && this.underwriting.stateList.length > 0){
@@ -387,7 +389,7 @@ export default {
         // console.log(key.underwritingCondition.taskType,key.underwritingCondition.state)
         // console.log(typeof(key))
       this.$fetch.post(this.HOST + this.$url.uwmainGetUwList,key).then( data => {
-        // console.log(data)
+        console.log(data)
         if( data.state ==='1'){
           if (data.taskType == 'H'){
             this.$set(this.list1,data.taskType,data.businessHVOList)
@@ -528,7 +530,7 @@ export default {
             break;
 
           case "团单方案":
-            debugger
+            
             // this.TreatedBatch(obj.pageSize, obj.pageNo); 
             //未处理-散单
              
@@ -585,6 +587,7 @@ export default {
   },
   created() {
     this.getDate()
+    console.log(utils.getSessionData('userCode'))
    
   }
 };
