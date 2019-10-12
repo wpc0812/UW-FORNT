@@ -42,7 +42,7 @@
     </el-card>
     <el-form :model="UwMotorcadeInfoVO" class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
-      <el-card class="circular mt4 shadow">
+       <el-card class="circular mt4 shadow soildstyle">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="2">
             <template slot="title">
@@ -56,8 +56,14 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="分公司" class="labelheight">
-                  <el-input v-model="UwMotorcadeInfoVO.comcode" :disabled="flagdisabled"></el-input>
+                <el-form-item label="分公司:" class="labelheight">
+                  <el-input
+                    :disabled="flagdisabled"
+                    type="textarea"
+                    resize="none"
+                    :autosize="{ minRows: 2, maxRows: 2}"
+                    v-model="UwMotorcadeInfoVO.comcode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -98,7 +104,9 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="历史年度满期赔付率(%):" class="lineHeightstyle">
-                  <el-button @click="selectHistory" size="small" text="primary">查询</el-button>
+                  <div style="border:1px solid #94d8e4; height:30px;">
+                    <el-button @click="selectHistory" size="small" type="text">查询</el-button>
+                  </div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -117,48 +125,66 @@
             </el-row>
             <el-row>
               <el-col :span="8"  v-if="this.$route.query.typenum=='r'"> 
-                <el-form-item label="异地车辆数:" class="labelheight1">
+                <el-form-item label="异地车辆数:" :class="[selectView==true?'labelheight2':'lineHeightstyle']">
                   <el-input v-model="UwMotorcadeInfoVO.foreigncarcount" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
                <el-col :span="8" v-if="this.$route.query.typenum=='o'">
-                <el-form-item label="超分公司权限车辆总数:" class="labelheight1">
+                <el-form-item label="超分公司权限车辆总数:" :class="[selectView==true?'labelheight2':'lineHeightstyle']">
                   <el-input v-model="UwMotorcadeInfoVO.uppercarcount" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8" v-if="this.$route.query.typenum=='r'">
-                <el-form-item label="涉及车籍地:" class="labelheight1">
+                <el-form-item label="涉及车籍地:" :class="[selectView==true?'labelheight2':'lineHeightstyle']">
                   <el-input v-model="UwMotorcadeInfoVO.carCadastral" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showCarSpecies(carTypeCodes,'carCadastral')">点击查看</div>
+                  <div :class="[selectView==true?'showdiv':'hideDiv']" @click="showCarSpecies(carTypeCodes,'carCadastral')">点击查看</div>
                 </el-form-item>
               </el-col>
                <el-col :span="8" v-if="this.$route.query.typenum=='o'">
-                <el-form-item label="超分公司权限车辆种类:" class="labelheight1">
+                <el-form-item label="超分公司权限车辆种类:" :class="[selectView==true?'labelheight2':'lineHeightstyle']">
                   <el-input v-model="UwMotorcadeInfoVO.uppercartype" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showCarSpecies(carTypeCodes,'uppercartype')">点击查看</div>
+                  <div :class="[selectView==true?'showdiv':'hideDiv']" @click="showCarSpecies(carTypeCodes,'uppercartype')">点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="车队车辆主要车型:" class="labelheight1">
+                <el-form-item
+                  label="车队车辆主要车型:"
+                  :class="[selectView==true?'labelheight2':'lineHeightstyle']"
+                >
                   <el-input v-model="UwMotorcadeInfoVO.carmainmodel" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showCarSpecies(carTypeCodes,'carmainmodel')">点击查看</div>
+                  <div
+                    :class="[selectView==true?'showdiv':'hideDiv']"
+                    @click="showCarSpecies(carTypeCodes,'carmainmodel')"
+                  >点击查看</div>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="车辆主要使用地:" class="labelheight1">
+                <el-form-item
+                  label="车辆主要使用地:"
+                  :class="[selectView1==true?'labelheight2':'lineHeightstyle']"
+                >
                   <el-input v-model="UwMotorcadeInfoVO.carmainarea" :disabled="flagdisabled"></el-input>
-                  <div class="showdiv" @click="showCarSpecies(provinceCodes,'carmainarea')">点击查看</div>
+                  <div
+                    :class="[selectView1==true?'showdiv':'hideDiv']"
+                    @click="showCarSpecies(provinceCodes,'carmainarea')"
+                  >点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="控制结束日期:" class="labelheight1">
+                <el-form-item
+                  label="控制结束日期:"
+                  :class="[selectView1==true?'labelheight2':'lineHeightstyle']"
+                >
                   <el-input v-model="UwMotorcadeInfoVO.finishdate" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="商业险手续费上限(%):" class="labelheight1">
+                <el-form-item
+                  label="商业险手续费上限(%):"
+                  :class="[selectView1==true?'labelheight2':'lineHeightstyle']"
+                >
                   <el-input v-model="UwMotorcadeInfoVO.costRateUpper" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
@@ -169,6 +195,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.monitoringProgramme"
                   ></el-input>
@@ -179,6 +206,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.underWritingCondition"
                   ></el-input>
@@ -189,6 +217,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.insuredNameSUB"
                   ></el-input>
@@ -201,6 +230,7 @@
                   <el-input
                     :disabled="flagdisabled"
                     type="textarea"
+                    resize="none"
                     :autosize="{ minRows: 3, maxRows: 3}"
                     v-model="UwMotorcadeInfoVO.remark"
                   ></el-input>
@@ -217,7 +247,7 @@
               </el-col>
             </el-row>
             <el-row v-if="this.displaynone=='0'||this.displaynone=='5'">
-              <el-col :span="10">
+              <el-col :span="8">
                 <el-form-item label="新增批次:">
                   <el-input v-model="UwMotorcadeInfoVO.appici">
                     <template slot="append">
@@ -240,17 +270,11 @@
                       </el-upload>
                     </template>
                   </el-input>
+                   <br />
+                  <el-button size="small" class="buttonFile" @click="addpici" type="primary">上传文件</el-button>
                 </el-form-item>
               </el-col>
-              <el-col :span="3">
-                <el-button size="small" @click="addpici" type="primary">上传文件</el-button>
-              </el-col>
-              <el-col :span="4">
-                <a class="dec" href="./UwMotorcadeMainModel.xls" download>号牌号码导入模板下载</a>
-              </el-col>
-            </el-row>
-            <el-row v-if="states=='2 '|| states=='5'|| states=='4'">
-              <el-col :span="10">
+              <el-col :span="8" v-if="states=='2 '|| states=='5'|| states=='4'">
                 <el-form-item label="修改批次:">
                   <el-input v-model="UwMotorcadeInfoVO.uppici">
                     <template slot="append">
@@ -273,10 +297,9 @@
                       </el-upload>
                     </template>
                   </el-input>
+                  <br />
+                  <el-button size="small" class="buttonFile" @click="updatepici" type="primary">上传文件</el-button>
                 </el-form-item>
-              </el-col>
-              <el-col :span="3">
-                <el-button size="small" @click="updatepici()" type="primary">上传文件</el-button>
               </el-col>
               <el-col :span="4">
                 <a class="dec" href="./UwMotorcadeMainModel.xls" download>号牌号码导入模板下载</a>
@@ -443,6 +466,8 @@ export default {
   name: "ortCarAuditPage",
   data() {
     return {
+      selectView1: false,
+      selectView: false,
       transferTitle:"",
       displaynone: "",
       dialogVisibleMore: false,
@@ -534,6 +559,12 @@ export default {
         type: "success"
       });
     },
+     open3() {
+      this.$message({
+        message: this.messages,
+        type: "warning"
+      });
+    },
     //新增文件选取
     addUploadname(file) {
       if (file) {
@@ -548,20 +579,29 @@ export default {
     },
     // 新增文件上传
     addpici() {
-      this.$fetch({
-        url: this.HOST + this.$url.carAuditPageaddfile,
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        data: this.formDataAdd
-      }).then(res => {
-        console.log(res, typeof res);
-        if (res == true) {
-          this.displaynone = "8";
-          this.$forceUpdate();
-        }
-      });
+     if (
+        this.UwMotorcadeInfoVO.appici &&
+        this.UwMotorcadeInfoVO.appici.length > 0
+      ) {
+        this.$fetch({
+          url: this.HOST + this.$url.carAuditPageaddfile,
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          data: this.formDataAdd
+        }).then(res => {
+          if (res == true) {
+            this.messages = "上传成功";
+            this.open2();
+            this.displaynone = "8";
+            this.$forceUpdate();
+          }
+        });
+      } else {
+        this.messages = "请选择文件";
+        this.open3();
+      }
     },
     //修改文件选取
     upUploadname(file, fileList) {
@@ -577,16 +617,25 @@ export default {
     },
     //修改文件上传
     updatepici() {
-      this.$fetch({
-        url: this.HOST + this.$url.carAuditPageUpdatefile,
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        data: this.formDataUP
-      }).then(res => {
-        console.log(res);
-      });
+     if (
+        this.UwMotorcadeInfoVO.uppici &&
+        this.UwMotorcadeInfoVO.uppici.length > 0
+      ) {
+        this.$fetch({
+          url: this.HOST + this.$url.carAuditPageUpdatefile,
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          data: this.formDataUP
+        }).then(res => {
+          this.messages = "上传成功";
+          this.open2();
+        });
+      } else {
+        this.messages = "请选择文件";
+        this.open3();
+      }
     },
     //导出get
     carAuditPagechu() {
@@ -876,6 +925,9 @@ export default {
               this.carTypeCodes,
               res.uwMotorcadeMain.uppercartype.split(",")
             );
+             if (res.uwMotorcadeMain.uppercartype.split(",").length > 3) {
+              this.selectView = true;
+            }
           }
           if (res.uwMotorcadeMain.carCadastral) {
             this.allData.carCadastral = res.uwMotorcadeMain.carCadastral.split(
@@ -885,6 +937,9 @@ export default {
               this.carTypeCodes,
               res.uwMotorcadeMain.carCadastral.split(",")
             );
+             if (res.uwMotorcadeMain.carCadastral.split(",").length > 3) {
+              this.selectView = true;
+            }
           }
           if (res.uwMotorcadeMain.carmainmodel) {
             this.allData.carmainmodel = res.uwMotorcadeMain.carmainmodel.split(
@@ -894,6 +949,9 @@ export default {
               this.carTypeCodes,
               res.uwMotorcadeMain.carmainmodel.split(",")
             );
+             if (res.uwMotorcadeMain.carmainmodel.split(",").length > 3) {
+              this.selectView = true;
+            }
           }
           if (res.uwMotorcadeMain.carmainarea) {
             this.allData.carmainarea = res.uwMotorcadeMain.carmainarea.split(
@@ -903,6 +961,9 @@ export default {
               this.provinceCodes,
               res.uwMotorcadeMain.carmainarea.split(",")
             );
+             if (res.uwMotorcadeMain.carmainarea.split(",").length > 3) {
+              this.selectView1 = true;
+            }
           }
           this.UwMotorcadeInfoVO = res.uwMotorcadeMain;
         });
@@ -941,22 +1002,24 @@ export default {
 .updatastyleinput >>> .el-input__inner {
   border-radius: 0px;
 }
-.updatastyleinput >>> .el-form-item__label {
-  background: #e8f6f9;
-}
 .labelheight >>> .el-form-item__label,
 .labelheight >>> .el-input__inner {
-  line-height: 48px;
-  height: 48px;
+  line-height: 50px;
+  height: 50px;
 }
 .labelheight1 >>> .el-form-item__label,
 .labelheight1 >>> .el-input__inner {
+  line-height: 72px;
+  height: 72px;
+}
+.labelheight2 >>> .el-form-item__label {
+  line-height: 72px;
+  height: 72px;
+}
+.labelheight2 >>> .el-input__inner {
   line-height: 69px;
   height: 69px;
 }
-/* .updatastyleinput .el-form-item {
-  margin-bottom: 25px;
-} */
 .acolor {
   color: #0066cc;
   text-decoration: none;
@@ -973,11 +1036,20 @@ export default {
   bottom: -6px;
   left: 2px;
 }
+.hideDiv {
+  display: none;
+}
 .selectMargin {
   margin-top: 10px;
 }
+.ullipar {
+  width: 60%;
+  margin-left: 20%;
+  border: 1px solid #7cb2e3;
+}
 .ulli {
   text-align: center;
+  border: 1px solid #7cb2e3;
 }
 .ulli li {
   list-style-type: none;
@@ -987,8 +1059,10 @@ export default {
 }
 .labelheight1 .textcontent {
   text-align: center;
-  line-height: 69px;
-  height: 69px;
+  line-height: 67px;
+  height: 67px;
+  border: 1px solid #94d8e4;
+  color: #000;
 }
 .tanchuang {
   display: flex;
@@ -1020,6 +1094,23 @@ export default {
   padding: 5px;
 }
 .lineHeightstyle >>> .el-form-item__label {
-    line-height: 33px;
+  line-height: 35px;
+}
+.soildstyle >>> .el-textarea.is-disabled .el-textarea__inner {
+  background-color: #ffffff;
+  border-radius: 0px;
+  border-color: #94d8e4;
+  color: #000;
+  font-weight: bolder;
+}
+.soildstyle >>> .el-input.is-disabled .el-input__inner {
+  border-color: #94d8e4;
+  color: #000;
+}
+.buttonFile {
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 3px;
+  float: left;
 }
 </style>

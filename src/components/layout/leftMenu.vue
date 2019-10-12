@@ -93,6 +93,38 @@ import menu from "static/menuData.json";
 export default {
   data() {
     return {
+      muenArr: [
+        "/rtReported",
+        "/rtAdd",
+        "/otReported",
+        "/otAdd",
+        "/underwriterInfor",
+        "/underwritingRate",
+        "/ruleExecution",
+        "/distributedMonitoring",
+        "/queryCorrection",
+        "/payeeModificationReview",
+        "/recommendedModRev",
+        "/underwriting",
+        "/autoPush",
+        "/fleetQuery",
+        "/cdInsuranceList",
+        "/cdClaimList",
+        "/cdQualityReport",
+        "/underwritingStatistics",
+        "/underwritingAmount",
+        "/underwritingSimple",
+        "/reportedBike",
+        "/underwritingAmountStatistics",
+        "/underwritingMonthlyStatistics",
+        "/underwritingGroupStatistics",
+        "/underwritingDifferentStatistics",
+        "/underwritingRenewalStatistics",
+        "/underwritingConfigurationStatistics",
+        "/underwritingSpecialMaintenanceStatistics",
+        "/underwritingSummaryForm",
+        "/underwritingReturnStatistics"
+      ],
       menu,
       isCollapse: eval(localStorage.getItem("isCollapse")),
       active: this.$route.path,
@@ -103,14 +135,16 @@ export default {
   // computed: {
   //   ...mapGetters(["getMenu"])
   // },
-  watch:{
-     $route(to,from){
-       console.log(to.path)
+  watch: {
+    $route(to, from) {
+      // console.log(to.path);
       //  console.log(this.$route)
-       this.active = to.path
-  }
+      // console.log(this.muenArr.indexOf(to.path)>-1);
+      if (this.muenArr.indexOf(to.path) > -1) {
+        this.active = to.path;
+      }
+    }
   },
-  
 
   methods: {
     getCollapse() {
@@ -126,7 +160,7 @@ export default {
 
   created() {
     // this.menu();
-    this.active = this.$route.path
+    // this.active = this.$route.path
   }
 };
 </script>
