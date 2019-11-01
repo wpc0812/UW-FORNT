@@ -36,14 +36,12 @@
           @click="goTolinks('startECM')"
           v-if="underwritingDetails.displayFlag.relationImageFlag == '1'"
         >查看关联单影像</el-button>
-
         <el-button
           size="mini"
           type="primary"
           @click="goTolinks('getECM')"
           v-if="underwritingDetails.displayFlag.infoFlag == '1'"
         >资料查看</el-button>
-
         <el-button
           size="mini"
           type="primary"
@@ -112,7 +110,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-form :model="underwritingDetails" label-width="120px">
+    <el-form :model="underwritingDetails" label-width="120px" class="bigKuang" disabled>
       <!-- 处理核保任务 -->
       <el-card class="circular mt4 shadow">
         <el-collapse v-model="activeNames">
@@ -177,8 +175,8 @@
               <div class="title-blue-bar"></div>
               <div class="card-title">概要信息</div>
             </template>
-            <el-row :gutter="20">
-              <el-col :span="8" v-if="bussinessType ==='E' ">
+            <el-row :gutter="20" v-if="typeE !='E' ">
+              <el-col :span="8">
                 <el-form-item label="批单号:">
                   <el-input v-model="underwritingDetails.summaryInfo.endorseno"></el-input>
                 </el-form-item>
@@ -188,18 +186,9 @@
                   <el-input v-model="underwritingDetails.summaryInfo.proposalNo"></el-input>
                 </el-form-item>
               </el-col>
-
               <el-col :span="8">
                 <el-form-item label="保单号:">
-                  <el-input v-model="underwritingDetails.summaryInfo.policyNo">
-                    <el-button
-                      v-if="bussinessType ==='E' "
-                      size="mini"
-                      slot="append"
-                      type="primary"
-                      @click="relationDialog = true"
-                    >关联</el-button>
-                  </el-input>
+                  <el-input v-model="underwritingDetails.summaryInfo.policyNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -211,17 +200,6 @@
               <el-col :span="8">
                 <el-form-item label="签单日期:">
                   <el-input v-model="underwritingDetails.summaryInfo.operateDate"></el-input>
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="8" v-if="bussinessType === 'E' ">
-                <el-form-item label="退保原因:">
-                  <el-input v-model="underwritingDetails.summaryInfo.cancelReason"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8" v-if="bussinessType === 'E' ">
-                <el-form-item label="批改类型:">
-                  <el-input v-model="underwritingDetails.summaryInfo.endorType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -244,21 +222,103 @@
                   <el-input v-model="underwritingDetails.summaryInfo.endHour"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if="bussinessType ==='E' ">
-                <el-form-item label="生效日期:">
-                  <el-input v-model="underwritingDetails.summaryInfo.validDate"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8" v-if="bussinessType ==='E' ">
-                <el-form-item label="时:">
-                  <el-input v-model="underwritingDetails.summaryInfo.validhour"></el-input>
-                </el-form-item>
-              </el-col>
               <el-col :span="24">
                 <el-form-item label="承包意见">
                   <el-input v-model="underwritingDetails.summaryInfo.remark"></el-input>
                 </el-form-item>
               </el-col>
+            </el-row>
+            <el-row :gutter="20" v-if="typeE ==='E' ">
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="批单号:">
+                    <el-input v-model="underwritingDetails.summaryInfo.endorseno"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="投保单号:">
+                    <el-input v-model="underwritingDetails.summaryInfo.proposalNo"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7">
+                  <el-form-item label="保单号:">
+                    <el-input v-model="underwritingDetails.summaryInfo.policyNo">
+                      <el-button
+                        size="mini"
+                        slot="append"
+                        type="primary"
+                        @click="relationDialog = true"
+                      >关联</el-button>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="签单日期:">
+                    <el-input v-model="underwritingDetails.summaryInfo.operateDate"></el-input>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label="退保原因:">
+                    <el-input v-model="underwritingDetails.summaryInfo.cancelReason"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7">
+                  <el-form-item label="合同号:">
+                    <el-input v-model="underwritingDetails.summaryInfo.contractNo"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="保险期限从:">
+                    <el-input v-model="underwritingDetails.summaryInfo.startDate"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="时:">
+                    <el-input v-model="underwritingDetails.summaryInfo.startHour"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7">
+                  <el-form-item label="至:">
+                    <el-input v-model="underwritingDetails.summaryInfo.endDate"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="时:">
+                    <el-input v-model="underwritingDetails.summaryInfo.endHour"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="生效日期:">
+                    <el-input v-model="underwritingDetails.summaryInfo.validDate"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="7">
+                  <el-form-item label="时:">
+                    <el-input v-model="underwritingDetails.summaryInfo.validhour"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="批改类型:">
+                    <el-input v-model="underwritingDetails.summaryInfo.endorType"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="23">
+                  <el-form-item label="承包意见">
+                    <el-input v-model="underwritingDetails.summaryInfo.remark"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-row>
           </el-collapse-item>
         </el-collapse>
@@ -288,7 +348,7 @@
           </el-collapse-item>
         </el-collapse>
       </el-card>
-      <el-card class="circular mt4 shadow" v-if="bussinessType ==='E' ">
+      <el-card class="circular mt4 shadow" v-if="typeE ==='E' ">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="23">
             <template slot="title">
@@ -317,31 +377,52 @@
               <div class="card-title">投保人信息</div>
             </template>
             <el-row>
+              <!-- :class="[data[0].uwinsuredT&&data[1].uwinsuredT&&(data[1].uwinsuredT.insuredName!=data[0].uwinsuredT.insuredName)?'el-input__inner':'']" -->
               <el-col :span="8">
                 <el-form-item label="投保人名称:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.insuredName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.insuredName!=dataE[0].uwinsuredT.insuredName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.insuredName:''"
+                    v-model="underwritingDetails.uwinsuredT.insuredName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="投保人住所:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.insuredAddress"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.insuredAddress!=dataE[0].uwinsuredT.insuredAddress)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.insuredAddress:''"
+                    v-model="underwritingDetails.uwinsuredT.insuredAddress"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="投保人别名:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.aliasName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.aliasName!=dataE[0].uwinsuredT.aliasName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.aliasName:''"
+                    v-model="underwritingDetails.uwinsuredT.aliasName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="投保人单位性质:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.businessSort"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.businessSort!=dataE[0].uwinsuredT.businessSort)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.businessSort:''"
+                    v-model="underwritingDetails.uwinsuredT.businessSort"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="投保人性质:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.insurednature"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.insurednature!=dataE[0].uwinsuredT.insurednature)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.insurednature:''"
+                    v-model="underwritingDetails.uwinsuredT.insurednature"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -350,31 +431,51 @@
                     法人代码/
                     <br />身份证号码:
                   </div>
-                  <el-input v-model="underwritingDetails.uwinsuredT.identifyNumber"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.identifyNumber!=dataE[0].uwinsuredT.identifyNumber)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.identifyNumber:''"
+                    v-model="underwritingDetails.uwinsuredT.identifyNumber"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.linkerName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.linkerName!=dataE[0].uwinsuredT.linkerName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.linkerName:''"
+                    v-model="underwritingDetails.uwinsuredT.linkerName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.phoneNumber"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.phoneNumber!=dataE[0].uwinsuredT.phoneNumber)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.phoneNumber:''"
+                    v-model="underwritingDetails.uwinsuredT.phoneNumber"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="移动电话:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.mobile"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.mobile!=dataE[0].uwinsuredT.mobile)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.mobile:''"
+                    v-model="underwritingDetails.uwinsuredT.mobile"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="邮政编码:">
-                  <el-input v-model="underwritingDetails.uwinsuredT.postCode"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredT&&dataE[1].uwinsuredT&&(dataE[1].uwinsuredT.postCode!=dataE[0].uwinsuredT.postCode)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredT?dataE[0].uwinsuredT.postCode:''"
+                    v-model="underwritingDetails.uwinsuredT.postCode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -392,33 +493,57 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="被投保人名称:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.insuredName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.insuredName!=dataE[0].uwinsuredI.insuredName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.insuredName:''"
+                    v-model="underwritingDetails.uwinsuredI.insuredName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被投保人住所:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.insuredAddress"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.insuredAddress!=dataE[0].uwinsuredI.insuredAddress)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.insuredAddress:''"
+                    v-model="underwritingDetails.uwinsuredI.insuredAddress"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被投保人别名:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.aliasName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.aliasName!=dataE[0].uwinsuredI.aliasName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.aliasName:''"
+                    v-model="underwritingDetails.uwinsuredI.aliasName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
 
               <el-col :span="8">
                 <el-form-item label="被投保人单位性质:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.businessSort"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.businessSort!=dataE[0].uwinsuredI.businessSort)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.businessSort:''"
+                    v-model="underwritingDetails.uwinsuredI.businessSort"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被投保人性质:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.insurednature"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.insurednature!=dataE[0].uwinsuredI.insurednature)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.insurednature:''"
+                    v-model="underwritingDetails.uwinsuredI.insurednature"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="被保险人证件类型:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.identifyType"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.identifyType!=dataE[0].uwinsuredI.identifyType)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.identifyType:''"
+                    v-model="underwritingDetails.uwinsuredI.identifyType"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -427,29 +552,49 @@
                     法人代码/
                     <br />身份证号码:
                   </div>
-                  <el-input v-model="underwritingDetails.uwinsuredI.identifyNumber"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.identifyNumber!=dataE[0].uwinsuredI.identifyNumber)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.identifyNumber:''"
+                    v-model="underwritingDetails.uwinsuredI.identifyNumber"
+                  ></el-input>
                 </el-form-item>
               </el-col>
 
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.linkerName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.linkerName!=dataE[0].uwinsuredI.linkerName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.linkerName:''"
+                    v-model="underwritingDetails.uwinsuredI.linkerName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.phoneNumber"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.phoneNumber!=dataE[0].uwinsuredI.phoneNumber)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.phoneNumber:''"
+                    v-model="underwritingDetails.uwinsuredI.phoneNumber"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="移动电话:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.mobile"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.mobile!=dataE[0].uwinsuredI.mobile)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.mobile:''"
+                    v-model="underwritingDetails.uwinsuredI.mobile"
+                  ></el-input>
                 </el-form-item>
               </el-col>
 
               <el-col :span="8">
                 <el-form-item label="邮政编码:">
-                  <el-input v-model="underwritingDetails.uwinsuredI.postCode"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredI&&dataE[1].uwinsuredI&&(dataE[1].uwinsuredI.postCode!=dataE[0].uwinsuredI.postCode)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredI?dataE[0].uwinsuredI.postCode:''"
+                    v-model="underwritingDetails.uwinsuredI.postCode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -467,29 +612,49 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车主名称:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.insuredName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.insuredName!=dataE[0].uwinsuredC.insuredName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.insuredName:''"
+                    v-model="underwritingDetails.uwinsuredC.insuredName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车主住所:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.insuredAddress"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.insuredAddress!=dataE[0].uwinsuredC.insuredAddress)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.insuredAddress:''"
+                    v-model="underwritingDetails.uwinsuredC.insuredAddress"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车主别名:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.aliasName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.aliasName!=dataE[0].uwinsuredC.aliasName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.aliasName:''"
+                    v-model="underwritingDetails.uwinsuredC.aliasName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车主单位性质:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.businessSort"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.businessSort!=dataE[0].uwinsuredC.businessSort)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.businessSort:''"
+                    v-model="underwritingDetails.uwinsuredC.businessSort"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车主性质:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.insurednature"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.insurednature!=dataE[0].uwinsuredC.insurednature)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.insurednature:''"
+                    v-model="underwritingDetails.uwinsuredC.insurednature"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -498,31 +663,51 @@
                     法人代码/
                     <br />身份证号码:
                   </div>
-                  <el-input v-model="underwritingDetails.uwinsuredC.identifyNumber"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.identifyNumber!=dataE[0].uwinsuredC.identifyNumber)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.identifyNumber:''"
+                    v-model="underwritingDetails.uwinsuredC.identifyNumber"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="联系人姓名:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.linkerName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.linkerName!=dataE[0].uwinsuredC.linkerName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.linkerName:''"
+                    v-model="underwritingDetails.uwinsuredC.linkerName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="固定电话:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.phoneNumber"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.phoneNumber!=dataE[0].uwinsuredC.phoneNumber)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.phoneNumber:''"
+                    v-model="underwritingDetails.uwinsuredC.phoneNumber"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="移动电话:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.mobile"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.mobile!=dataE[0].uwinsuredC.mobile)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.mobile:''"
+                    v-model="underwritingDetails.uwinsuredC.mobile"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="邮政编码:">
-                  <el-input v-model="underwritingDetails.uwinsuredC.postCode"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwinsuredC&&dataE[1].uwinsuredC&&(dataE[1].uwinsuredC.postCode!=dataE[0].uwinsuredC.postCode)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwinsuredC?dataE[0].uwinsuredC.postCode:''"
+                    v-model="underwritingDetails.uwinsuredC.postCode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -540,51 +725,87 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="号牌号码:">
-                  <el-input v-model="underwritingDetails.uwitemCar.licenseNo"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.licenseNo!=dataE[0].uwitemCar.licenseNo)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.licenseNo:''"
+                    v-model="underwritingDetails.uwitemCar.licenseNo"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="号牌种类:">
-                  <el-input v-model="underwritingDetails.uwitemCar.licenseType"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.licenseType!=dataE[0].uwitemCar.licenseType)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.licenseType:''"
+                    v-model="underwritingDetails.uwitemCar.licenseType"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车型名称:">
-                  <el-input v-model="underwritingDetails.uwitemCar.brandName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.brandName!=dataE[0].uwitemCar.brandName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.brandName:''"
+                    v-model="underwritingDetails.uwitemCar.brandName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车辆种类:">
-                  <el-input v-model="underwritingDetails.uwitemCar.carKindCode"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.carKindCode!=dataE[0].uwitemCar.carKindCode)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.carKindCode:''"
+                    v-model="underwritingDetails.uwitemCar.carKindCode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="载客量:">
-                  <el-input v-model="underwritingDetails.uwitemCar.seatCount"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.seatCount!=dataE[0].uwitemCar.seatCount)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.seatCount:''"
+                    v-model="underwritingDetails.uwitemCar.seatCount"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="排量/功率(升):">
-                  <el-input v-model="underwritingDetails.uwitemCar.exhaustScale"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.exhaustScale!=dataE[0].uwitemCar.exhaustScale)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.exhaustScale:''"
+                    v-model="underwritingDetails.uwitemCar.exhaustScale"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="核定载质量(吨):">
-                  <el-input v-model="underwritingDetails.uwitemCar.tonCount"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.tonCount!=dataE[0].uwitemCar.tonCount)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.tonCount:''"
+                    v-model="underwritingDetails.uwitemCar.tonCount"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="整备质量(吨):">
-                  <el-input v-model="underwritingDetails.uwitemCar.carloteququality"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.carloteququality!=dataE[0].uwitemCar.carloteququality)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.carloteququality:''"
+                    v-model="underwritingDetails.uwitemCar.carloteququality"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="初登日期:">
-                  <el-input v-model="underwritingDetails.uwitemCar.enrollDate"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.enrollDate!=dataE[0].uwitemCar.enrollDate)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.enrollDate:''"
+                    v-model="underwritingDetails.uwitemCar.enrollDate"
+                  ></el-input>
                   <!-- <el-date-picker v-model="underwritingDetails.uwitemCar.enrollDate" type="date" value-format="yyyy-MM-dd"></el-date-picker> -->
                 </el-form-item>
               </el-col>
@@ -592,75 +813,127 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="使用年限:">
-                  <el-input v-model="underwritingDetails.uwitemCar.useYears"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.useYears!=dataE[0].uwitemCar.useYears)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.useYears:''"
+                    v-model="underwritingDetails.uwitemCar.useYears"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="使用性质:">
-                  <el-input v-model="underwritingDetails.uwitemCar.useNatureCode"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.useNatureCode!=dataE[0].uwitemCar.useNatureCode)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.useNatureCode:''"
+                    v-model="underwritingDetails.uwitemCar.useNatureCode"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="条款类型:">
-                  <el-input v-model="underwritingDetails.uwitemCar.clauseTypeCname"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.clauseTypeCname!=dataE[0].uwitemCar.clauseTypeCname)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.clauseTypeCname:''"
+                    v-model="underwritingDetails.uwitemCar.clauseTypeCname"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="条款类别:">
-                  <el-input v-model="underwritingDetails.uwitemCar.clauseType"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.clauseType!=dataE[0].uwitemCar.clauseType)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.clauseType:''"
+                    v-model="underwritingDetails.uwitemCar.clauseType"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="新车购置价格:">
-                  <el-input v-model="underwritingDetails.uwitemCar.purchasePrice"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.purchasePrice!=dataE[0].uwitemCar.purchasePrice)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.purchasePrice:''"
+                    v-model="underwritingDetails.uwitemCar.purchasePrice"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="总保险费:">
-                  <el-input v-model="underwritingDetails.uwitemCar.sumPremium"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.sumPremium!=dataE[0].uwitemCar.sumPremium)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.sumPremium:''"
+                    v-model="underwritingDetails.uwitemCar.sumPremium"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="发动机号:">
-                  <el-input v-model="underwritingDetails.uwitemCar.engineNo"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.engineNo!=dataE[0].uwitemCar.engineNo)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.engineNo:''"
+                    v-model="underwritingDetails.uwitemCar.engineNo"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="VIN码:">
-                  <el-input v-model="underwritingDetails.uwitemCar.vinNo"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.vinNo!=dataE[0].uwitemCar.vinNo)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.vinNo:''"
+                    v-model="underwritingDetails.uwitemCar.vinNo"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="新增设备:">
-                  <el-input v-model="underwritingDetails.uwitemCar.carDevice"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.carDevice!=dataE[0].uwitemCar.carDevice)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.carDevice:''"
+                    v-model="underwritingDetails.uwitemCar.carDevice"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="品牌:">
-                  <el-input v-model="underwritingDetails.uwitemCar.brandName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.brandName!=dataE[0].uwitemCar.brandName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.brandName:''"
+                    v-model="underwritingDetails.uwitemCar.brandName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车系:">
-                  <el-input v-model="underwritingDetails.uwitemCar.familyName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.familyName!=dataE[0].uwitemCar.familyName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.familyName:''"
+                    v-model="underwritingDetails.uwitemCar.familyName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车架号:">
-                  <el-input v-model="underwritingDetails.uwitemCar.frameNo"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.frameNo!=dataE[0].uwitemCar.frameNo)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.frameNo:''"
+                    v-model="underwritingDetails.uwitemCar.frameNo"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="车辆气缸数:">
-                  <el-input v-model="underwritingDetails.uwitemCar.cylinderCount"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.cylinderCount!=dataE[0].uwitemCar.cylinderCount)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.cylinderCount:''"
+                    v-model="underwritingDetails.uwitemCar.cylinderCount"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -669,12 +942,20 @@
                     是否符合
                     <br />拖拉机标准:
                   </div>
-                  <el-input v-model="underwritingDetails.uwitemCar.isCriterion"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.isCriterion!=dataE[0].uwitemCar.isCriterion)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.isCriterion:''"
+                    v-model="underwritingDetails.uwitemCar.isCriterion"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="车型别名:">
-                  <el-input v-model="underwritingDetails.uwitemCar.aliasName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.aliasName!=dataE[0].uwitemCar.aliasName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.aliasName:''"
+                    v-model="underwritingDetails.uwitemCar.aliasName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -685,12 +966,20 @@
                     重载货车
                     <br />智能设备:
                   </div>
-                  <el-input v-model="underwritingDetails.uwitemCar.intelligentDevice"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.intelligentDevice!=dataE[0].uwitemCar.intelligentDevice)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.intelligentDevice:''"
+                    v-model="underwritingDetails.uwitemCar.intelligentDevice"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="安装日期:">
-                  <el-input v-model="underwritingDetails.uwitemCar.installDate"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].uwitemCar&&dataE[1].uwitemCar&&(dataE[1].uwitemCar.installDate!=dataE[0].uwitemCar.installDate)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].uwitemCar?dataE[0].uwitemCar.installDate:''"
+                    v-model="underwritingDetails.uwitemCar.installDate"
+                  ></el-input>
                   <!-- <el-date-picker v-model="underwritingDetails.uwitemCar.installDate" type="date" value-format="yyyy-MM-dd"></el-date-picker> -->
                 </el-form-item>
               </el-col>
@@ -831,15 +1120,69 @@
               :header-cell-class-name="'table-header-bg'"
             >
               <el-table-column align="center" label width="55"></el-table-column>
-              <el-table-column align="center" prop="vehicleseat" label="载客数"></el-table-column>
-              <el-table-column align="center" prop="vehicletonnage" label="载重量"></el-table-column>
-              <el-table-column align="center" prop="vehicleexhaust" label=" 排气量(升)"></el-table-column>
-              <el-table-column align="center" prop="strIsAlarm" label="防盗" show-overflow-tooltip></el-table-column>
-              <el-table-column align="center" prop="strIsABS" label="ABS" show-overflow-tooltip></el-table-column>
-              <el-table-column align="center" prop="strIsAirBag" label="安全气囊"></el-table-column>
-              <el-table-column align="center" label="车损系数" prop="quotietydam"></el-table-column>
-              <el-table-column align="center" prop="quotietyloss" label="盗抢系数"></el-table-column>
-              <el-table-column align="center" prop="vehicleprice" label="车辆价格"></el-table-column>
+              <el-table-column align="center" prop="vehicleseat" label="载客数">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.vehicleseat !=dataE[0].uwcarmodelCompareList.vehicleseat ? 'table-cell-bg' :''"
+                  >{{scope.row.vehicleseat}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="vehicletonnage" label="载重量">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.vehicletonnage !=dataE[0].uwcarmodelCompareList.vehicletonnage ? 'table-cell-bg' :''"
+                  >{{scope.row.vehicletonnage}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="vehicleexhaust" label=" 排气量(升)">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.vehicleexhaust !=dataE[0].uwcarmodelCompareList.vehicleexhaust ? 'table-cell-bg' :''"
+                  >{{scope.row.vehicleexhaust}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="strIsAlarm" label="防盗" show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.strIsAlarm !=dataE[0].uwcarmodelCompareList.strIsAlarm ? 'table-cell-bg' :''"
+                  >{{scope.row.strIsAlarm}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="strIsABS" label="ABS" show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.strIsABS !=dataE[0].uwcarmodelCompareList.strIsABS ? 'table-cell-bg' :''"
+                  >{{scope.row.strIsABS}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="strIsAirBag" label="安全气囊">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.strIsAirBag !=dataE[0].uwcarmodelCompareList.strIsAirBag ? 'table-cell-bg' :''"
+                  >{{scope.row.strIsAirBag}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="车损系数" prop="quotietydam">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.quotietydam !=dataE[0].uwcarmodelCompareList.quotietydam ? 'table-cell-bg' :''"
+                  >{{scope.row.quotietydam}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="quotietyloss" label="盗抢系数">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.quotietyloss !=dataE[0].uwcarmodelCompareList.quotietyloss ? 'table-cell-bg' :''"
+                  >{{scope.row.quotietyloss}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="vehicleprice" label="车辆价格">
+                <template slot-scope="scope">
+                  <div
+                    :class="scope.row.vehicleprice !=dataE[0].uwcarmodelCompareList.vehicleprice ? 'table-cell-bg' :''"
+                  >{{scope.row.vehicleprice}}</div>
+                </template>
+              </el-table-column>
             </el-table>
           </el-collapse-item>
         </el-collapse>
@@ -855,22 +1198,38 @@
             <el-row>
               <el-col :span="6">
                 <el-form-item label="保险期限从:">
-                  <el-input v-model="underwritingDetails.insurancePeriod.startDate"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].insurancePeriod&&dataE[1].insurancePeriod&&(dataE[1].insurancePeriod.startDate!=dataE[0].insurancePeriod.startDate)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].insurancePeriod?dataE[0].insurancePeriod.startDate:''"
+                    v-model="underwritingDetails.insurancePeriod.startDate"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="时:">
-                  <el-input v-model="underwritingDetails.insurancePeriod.startHour"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].insurancePeriod&&dataE[1].insurancePeriod&&(dataE[1].insurancePeriod.startHour!=dataE[0].insurancePeriod.startHour)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].insurancePeriod?dataE[0].insurancePeriod.startHour:''"
+                    v-model="underwritingDetails.insurancePeriod.startHour"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="至:">
-                  <el-input v-model="underwritingDetails.insurancePeriod.endDate"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].insurancePeriod&&dataE[1].insurancePeriod&&(dataE[1].insurancePeriod.endDate!=dataE[0].insurancePeriod.endDate)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].insurancePeriod?dataE[0].insurancePeriod.endDate:''"
+                    v-model="underwritingDetails.insurancePeriod.endDate"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="时:">
-                  <el-input v-model="underwritingDetails.insurancePeriod.endHour"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].insurancePeriod&&dataE[1].insurancePeriod&&(dataE[1].insurancePeriod.endHour!=dataE[0].insurancePeriod.endHour)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].insurancePeriod?dataE[0].insurancePeriod.endHour:''"
+                    v-model="underwritingDetails.insurancePeriod.endHour"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -896,24 +1255,113 @@
                 :header-cell-class-name="'table-header-bg'"
               >
                 <el-table-column align="center" label="险别代码" prop="kindCode"></el-table-column>
-                <el-table-column align="center" prop="kindCode" label="险别名称"></el-table-column>
-                <el-table-column align="center" prop="flag" label="不计免赔率"></el-table-column>
-                <el-table-column align="center" prop="amount" label="保险金额/责任限额"></el-table-column>
-                <el-table-column align="center" prop="rate" label="费率(%)"></el-table-column>
-                <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
-                <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
-                <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
+                <el-table-column align="center" prop="kindName" label="险别名称">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0&&dataE[0].uwitemkindZ[scope.$index].kindName?dataE[0].uwitemkindZ[scope.$index].kindName:''"
+                      :class="scope.row.kindName !=(dataE[0]&&dataE[0].uwitemkindZ.length>0&&dataE[0].uwitemkindZ[scope.$index].kindName?dataE[0].uwitemkindZ[scope.$index].kindName:'')? 'table-cell-bg' :''"
+                    >{{scope.row.kindName}}</div>
+                    <div v-else>{{scope.row.kindName}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="flag" label="不计免赔率">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].flag:''"
+                      :class="scope.row.flag!=dataE[0].uwitemkindZ[scope.$index].flag? 'table-cell-bg' :''"
+                    >{{scope.row.flag}}</div>
+                    <div v-else>{{scope.row.flag}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="amount" label="保险金额/责任限额">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].amount:''"
+                      :class="scope.row.amount!=dataE[0].uwitemkindZ[scope.$index].amount? 'table-cell-bg' :''"
+                    >{{scope.row.amount}}</div>
+                    <div v-else>{{scope.row.amount}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="rate" label="费率(%)">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].rate:''"
+                      :class="scope.row.rate!=dataE[0].uwitemkindZ[scope.$index].rate? 'table-cell-bg' :''"
+                    >{{scope.row.rate}}</div>
+                    <div v-else>{{scope.row.rate}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].benchMarkPremium:''"
+                      :class="scope.row.benchMarkPremium!=dataE[0].uwitemkindZ[scope.$index].benchMarkPremium? 'table-cell-bg' :''"
+                    >{{scope.row.benchMarkPremium}}</div>
+                    <div v-else>{{scope.row.benchMarkPremium}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="deductible" label="免赔额(元)">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].deductible:''"
+                      :class="scope.row.deductible!=dataE[0].uwitemkindZ[scope.$index].deductible? 'table-cell-bg' :''"
+                    >{{scope.row.deductible}}</div>
+                    <div v-else>{{scope.row.deductible}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].deductibleRate:''"
+                      :class="scope.row.deductibleRate!=dataE[0].uwitemkindZ[scope.$index].deductibleRate? 'table-cell-bg' :''"
+                    >{{scope.row.deductibleRate}}</div>
+                    <div v-else>{{scope.row.deductibleRate}}</div>
+                  </template>
+                </el-table-column>
 
                 <el-table-column align="center" prop="discount" label="保费折扣%">
                   <template slot-scope="scope">
-                    <span>
+                    <span
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].discount:''"
+                      :class="scope.row.discount!=dataE[0].uwitemkindZ[scope.$index].discount? 'table-cell-bg' :''"
+                    >
+                      {{scope.row.discount}}
+                      <el-button class="button-uwprofit" @click="openAdjustRateDialog(scope.row)">*</el-button>
+                    </span>
+                    <span v-else>
                       {{scope.row.discount}}
                       <el-button class="button-uwprofit" @click="openAdjustRateDialog(scope.row)">*</el-button>
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" prop="premium" label="续保调整比例%"></el-table-column>
-                <el-table-column align="center" prop="adjustRate" label="应交保费(元)"></el-table-column>
+                <el-table-column align="center" prop="premium" label="续保调整比例%">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].premium:''"
+                      :class="scope.row.premium!=dataE[0].uwitemkindZ[scope.$index].premium? 'table-cell-bg' :''"
+                    >{{scope.row.premium}}</div>
+                    <div v-else>{{scope.row.premium}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="adjustRate" label="应交保费(元)">
+                  <template slot-scope="scope">
+                    <div
+                      v-if="typeE=='E'"
+                      :title="dataE[0]&&dataE[0].uwitemkindZ.length>0?dataE[0].uwitemkindZ[scope.$index].adjustRate:''"
+                      :class="scope.row.adjustRate!=dataE[0].uwitemkindZ[scope.$index].adjustRate? 'table-cell-bg' :''"
+                    >{{scope.row.adjustRate}}</div>
+                    <div v-else>{{scope.row.adjustRate}}</div>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-row>
           </el-collapse-item>
@@ -935,16 +1383,106 @@
               :header-cell-style="{background:'white'}"
             >
               <el-table-column align="center" label="险别代码" prop="kindCode"></el-table-column>
-              <el-table-column align="center" prop="kindName" label="险别名称"></el-table-column>
-              <el-table-column align="center" prop="flag" label="不计免赔率"></el-table-column>
-              <el-table-column align="center" prop="amount" label="保险金额/责任限额"></el-table-column>
-              <el-table-column align="center" prop="rate" label="费率(%)"></el-table-column>
-              <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)"></el-table-column>
-              <el-table-column align="center" prop="deductible" label="免赔额(元)"></el-table-column>
-              <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate"></el-table-column>
-              <el-table-column align="center" prop="discount" label="保费折扣%"></el-table-column>
-              <el-table-column align="center" prop="adjustRate" label="续保调整比例%"></el-table-column>
-              <el-table-column align="center" prop="premium" label="应交保费(元)"></el-table-column>
+              <el-table-column align="center" prop="kindName" label="险别名称">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0&&dataE[0].uwitemkindF[scope.$index].kindName?dataE[0].uwitemkindF[scope.$index].kindName:''"
+                    :class="scope.row.kindName !=(dataE[0]&&dataE[0].uwitemkindF.length>0&&dataE[0].uwitemkindF[scope.$index].kindName?dataE[0].uwitemkindF[scope.$index].kindName:'')? 'table-cell-bg' :''"
+                  >{{scope.row.kindName}}</div>
+                  <div v-else>{{scope.row.kindName}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="flag" label="不计免赔率">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].flag:''"
+                    :class="scope.row.flag!=dataE[0].uwitemkindF[scope.$index].flag? 'table-cell-bg' :''"
+                  >{{scope.row.flag}}</div>
+                  <div v-else>{{scope.row.flag}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="amount" label="保险金额/责任限额">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].amount:''"
+                    :class="scope.row.amount!=dataE[0].uwitemkindF[scope.$index].amount? 'table-cell-bg' :''"
+                  >{{scope.row.amount}}</div>
+                  <div v-else>{{scope.row.amount}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="rate" label="费率(%)">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].rate:''"
+                    :class="scope.row.rate!=dataE[0].uwitemkindF[scope.$index].rate? 'table-cell-bg' :''"
+                  >{{scope.row.rate}}</div>
+                  <div v-else>{{scope.row.rate}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="benchMarkPremium" label="标准保费(元)">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].benchMarkPremium:''"
+                    :class="scope.row.benchMarkPremium!=dataE[0].uwitemkindF[scope.$index].benchMarkPremium? 'table-cell-bg' :''"
+                  >{{scope.row.benchMarkPremium}}</div>
+                  <div v-else>{{scope.row.benchMarkPremium}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="deductible" label="免赔额(元)">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].deductible:''"
+                    :class="scope.row.deductible!=dataE[0].uwitemkindF[scope.$index].deductible? 'table-cell-bg' :''"
+                  >{{scope.row.deductible}}</div>
+                  <div v-else>{{scope.row.deductible}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="可选免赔系数%" prop="deductibleRate">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].deductibleRate:''"
+                    :class="scope.row.deductibleRate!=dataE[0].uwitemkindF[scope.$index].deductibleRate? 'table-cell-bg' :''"
+                  >{{scope.row.deductibleRate}}</div>
+                  <div v-else>{{scope.row.deductibleRate}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="discount" label="保费折扣%">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].discount:''"
+                    :class="scope.row.discount!=dataE[0].uwitemkindF[scope.$index].discount? 'table-cell-bg' :''"
+                  >{{scope.row.discount}}</div>
+                  <div v-else>{{scope.row.discount}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="adjustRate" label="续保调整比例%">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].adjustRate:''"
+                    :class="scope.row.adjustRate!=dataE[0].uwitemkindF[scope.$index].adjustRate? 'table-cell-bg' :''"
+                  >{{scope.row.adjustRate}}</div>
+                  <div v-else>{{scope.row.adjustRate}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="premium" label="应交保费(元)">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwitemkindF.length>0?dataE[0].uwitemkindF[scope.$index].premium:''"
+                    :class="scope.row.premium!=dataE[0].uwitemkindF[scope.$index].premium? 'table-cell-bg' :''"
+                  >{{scope.row.premium}}</div>
+                  <div v-else>{{scope.row.premium}}</div>
+                </template>
+              </el-table-column>
             </el-table>
             <el-row class="mt10">
               <el-col :span="8">
@@ -1137,12 +1675,54 @@
             </template>
             <el-table :data="underwritingDetails.uwcardrivers" style="width: 100%">
               <el-table-column prop="driverName" label="姓名"></el-table-column>
-              <el-table-column prop="drivingLicenseNo" label="驾驶证号"></el-table-column>
-              <el-table-column prop="sex" label="性别"></el-table-column>
-              <el-table-column prop="age" label="年龄"></el-table-column>
-              <el-table-column prop="causetroubleTimes" label="上年违章次数"></el-table-column>
-              <el-table-column prop="drivingYears" label="驾龄"></el-table-column>
-              <el-table-column prop="acceptLicenseDate" label="初次领证日期"></el-table-column>
+              <el-table-column prop="drivingLicenseNo" label="驾驶证号">
+                <template slot-scope="scope">
+                  <div
+                    :title="dataE[0]&&dataE[0].uwcardrivers[scope.$index]?dataE[0].uwcardrivers[scope.$index].drivingLicenseNo:''"
+                    :class="scope.row.drivingLicenseNo!=dataE[0].uwcardrivers[scope.$index].drivingLicenseNo? 'table-cell-bg' :''"
+                  >{{scope.row.drivingLicenseNo}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="sex" label="性别">
+                <template slot-scope="scope">
+                  <div
+                    :title="dataE[0]&&dataE[0].uwcardrivers[scope.$index]?dataE[0].uwcardrivers[scope.$index].sex:''"
+                    :class="scope.row.sex!=dataE[0].uwcardrivers[scope.$index].sex? 'table-cell-bg' :''"
+                  >{{scope.row.sex}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="age" label="年龄">
+                <template slot-scope="scope">
+                  <div
+                    :title="dataE[0]&&dataE[0].uwcardrivers[scope.$index]?dataE[0].uwcardrivers[scope.$index].age:''"
+                    :class="scope.row.age!=dataE[0].uwcardrivers[scope.$index].age? 'table-cell-bg' :''"
+                  >{{scope.row.age}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="causetroubleTimes" label="上年违章次数">
+                <template slot-scope="scope">
+                  <div
+                    :title="dataE[0]&&dataE[0].uwcardrivers[scope.$index]?dataE[0].uwcardrivers[scope.$index].causetroubleTimes:''"
+                    :class="scope.row.causetroubleTimes!=dataE[0].uwcardrivers[scope.$index].causetroubleTimes? 'table-cell-bg' :''"
+                  >{{scope.row.causetroubleTimes}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="drivingYears" label="驾龄">
+                <template slot-scope="scope">
+                  <div
+                    :title="dataE[0]&&dataE[0].uwcardrivers[scope.$index]?dataE[0].uwcardrivers[scope.$index].drivingYears:''"
+                    :class="scope.row.drivingYears!=dataE[0].uwcardrivers[scope.$index].drivingYears? 'table-cell-bg' :''"
+                  >{{scope.row.drivingYears}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="acceptLicenseDate" label="初次领证日期">
+                <template slot-scope="scope">
+                  <div
+                    :title="dataE[0]&&dataE[0].uwcardrivers[scope.$index]?dataE[0].uwcardrivers[scope.$index].acceptLicenseDate:''"
+                    :class="scope.row.acceptLicenseDate!=dataE[0].uwcardrivers[scope.$index].acceptLicenseDate? 'table-cell-bg' :''"
+                  >{{scope.row.acceptLicenseDate}}</div>
+                </template>
+              </el-table-column>
             </el-table>
           </el-collapse-item>
         </el-collapse>
@@ -1157,9 +1737,36 @@
             </template>
 
             <el-table :data="underwritingDetails.uwengages" style="width: 100%">
-              <el-table-column prop="serialNo" label="序号"></el-table-column>
-              <el-table-column prop="clauseCode" label="特约序号"></el-table-column>
-              <el-table-column prop="clauses" label="特约内容"></el-table-column>
+              <el-table-column prop="serialNo" label="序号">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwengages[scope.$index]?dataE[0].uwengages[scope.$index].serialNo:''"
+                    :class="scope.row.serialNo!=dataE[0].uwengages[scope.$index].serialNo? 'table-cell-bg' :''"
+                  >{{scope.row.serialNo}}</div>
+                  <div v-else>{{scope.row.serialNo}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="clauseCode" label="特约序号">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwengages[scope.$index]?dataE[0].uwengages[scope.$index].clauseCode:''"
+                    :class="scope.row.clauseCode!=dataE[0].uwengages[scope.$index].clauseCode? 'table-cell-bg' :''"
+                  >{{scope.row.clauseCode}}</div>
+                  <div v-else>{{scope.row.clauseCode}}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="clauses" label="特约内容">
+                <template slot-scope="scope">
+                  <div
+                    v-if="typeE=='E'"
+                    :title="dataE[0]&&dataE[0].uwengages[scope.$index]?dataE[0].uwengages[scope.$index].clauses:''"
+                    :class="scope.row.clauses!=dataE[0].uwengages[scope.$index].clauses? 'table-cell-bg' :''"
+                  >{{scope.row.clauses}}</div>
+                  <div v-else>{{scope.row.clauses}}</div>
+                </template>
+              </el-table-column>
             </el-table>
           </el-collapse-item>
         </el-collapse>
@@ -1415,17 +2022,29 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="业务来源:">
-                  <el-input v-model="underwritingDetails.generalInformation.businessNature"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].generalInformation&&dataE[1].generalInformation&&(dataE[1].generalInformation.businessNature!=dataE[0].generalInformation.businessNature)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].generalInformation?dataE[0].generalInformation.businessNature:''"
+                    v-model="underwritingDetails.generalInformation.businessNature"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="渠道:">
-                  <el-input v-model="underwritingDetails.generalInformation.agentName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].generalInformation&&dataE[1].generalInformation&&(dataE[1].generalInformation.agentName!=dataE[0].generalInformation.agentName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].generalInformation?dataE[0].generalInformation.agentName:''"
+                    v-model="underwritingDetails.generalInformation.agentName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="归属部门:">
-                  <el-input v-model="underwritingDetails.generalInformation.comCName"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].generalInformation&&dataE[1].generalInformation&&(dataE[1].generalInformation.comCName!=dataE[0].generalInformation.comCName)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].generalInformation?dataE[0].generalInformation.comCName:''"
+                    v-model="underwritingDetails.generalInformation.comCName"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -1459,7 +2078,11 @@
                     保险合同争
                     <br />议解决方式:
                   </div>
-                  <el-input v-model="underwritingDetails.otherInformation.argueSolution"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].otherInformation&&dataE[1].otherInformation&&(dataE[1].otherInformation.argueSolution!=dataE[0].otherInformation.argueSolution)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].otherInformation?dataE[0].otherInformation.argueSolution:''"
+                    v-model="underwritingDetails.otherInformation.argueSolution"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -1476,12 +2099,18 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="验车情况:">
-                  <el-input v-model="underwritingDetails.otherInformation.carCheckStatus"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].otherInformation&&dataE[1].otherInformation&&(dataE[1].otherInformation.carCheckStatus!=dataE[0].otherInformation.carCheckStatus)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].otherInformation?dataE[0].otherInformation.carCheckStatus:''"
+                    v-model="underwritingDetails.otherInformation.carCheckStatus"
+                  ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="验车时间:">
                   <el-date-picker
+                    :class="[dataE&&dataE[0].otherInformation&&dataE[1].otherInformation&&(dataE[1].otherInformation.carCheckTime!=dataE[0].otherInformation.carCheckTime)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].otherInformation?dataE[0].otherInformation.carCheckTime:''"
                     v-model="underwritingDetails.otherInformation.carCheckTime"
                     type="date"
                     value-format="yyyy-MM-dd"
@@ -1490,7 +2119,11 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="验车人:">
-                  <el-input v-model="underwritingDetails.otherInformation.carChecker"></el-input>
+                  <el-input
+                    :class="[dataE&&dataE[0].otherInformation&&dataE[1].otherInformation&&(dataE[1].otherInformation.carChecker!=dataE[0].otherInformation.carChecker)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].otherInformation?dataE[0].otherInformation.carChecker:''"
+                    v-model="underwritingDetails.otherInformation.carChecker"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -1573,13 +2206,22 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="24">
+              <el-col :span="24" v-if="this.$route.query.type=='H'">
                 <el-form-item>
                   <div slot="label" style="line-height:16px;">
                     同车情况下的
                     <br />投保单号列表:
                   </div>
                   <el-input v-model="underwritingDetails.otherInformation.repetitionProposalNos"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24" v-if="this.$route.query.type=='E'">
+                <el-form-item label="签单日期:">
+                  <el-input
+                    :class="[dataE&&dataE[0].otherInformation&&dataE[1].otherInformation&&(dataE[1].otherInformation.operateDate!=dataE[0].otherInformation.operateDate)?'valueStyle':'']"
+                    :title="dataE[0]&&dataE[0].otherInformation?dataE[0].otherInformation.operateDate:''"
+                    v-model="underwritingDetails.otherInformation.operateDate"
+                  ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -1732,11 +2374,11 @@
 
     <el-dialog
       class="el-dialog__body__update"
-      width="40%"
+      width="30%"
       title="核保任务提交"
       :visible.sync="innerVisible"
     >
-      <el-row>工作流提示：投保单：34412414214214退回到业务系统成功！</el-row>
+      <el-row>{{messageSH}}</el-row>
       <el-button @click="goback()" size="mini" type="primary" class="mt10">关闭当前窗口</el-button>
     </el-dialog>
 
@@ -1801,13 +2443,18 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { setTimeout } from "timers";
+import utils from "../../utils";
 
 export default {
   name: "UnderwritingDetails",
   data() {
     return {
+      typeE: "",
+      dataE: "", //批单的数据
+      curNode: "201",
+      nudeName: "市公司一级",
+      messageSH: "",
       subOptions: [],
-      bussinessType: "",
       routeDate: "",
       activeNames: [],
       underwritingDetails: {
@@ -1903,6 +2550,7 @@ export default {
     },
     // 返回上一级
     goback() {
+      this.innerVisible = false;
       this.$router.go(-1);
     },
     // 撤回
@@ -1914,7 +2562,7 @@ export default {
         UserName: this.routeDate.businessNo || "宛平城",
         revokeType: this.routeDate.type || "EH", // 撤回类型 1：省级从承保撤回  2：省级从总公司撤回  3：总公司从省级撤回
         taskId: this.routeDate.businessNo || "id12312", // 任务id
-        businessType: this.routeDate.type || "ST",
+        businessType: this.routeDate.type || "T",
         batchNo: this.routeDate.type || 12312312
       };
       this.$fetch
@@ -1942,11 +2590,11 @@ export default {
     // 提交审核
     submit() {
       let key = {
-        businessType: "T",
-        businessNo: "TDZA201945010000014005",
-        nodeName: "市公司一级",
+        businessType: this.$route.query.type,
+        businessNo: this.$route.query.businessNo,
+        nodeName: this.nodeName,
         editType: "submit",
-        curNode: "301"
+        curNode: this.curNode
       };
       this.$fetch
         .post(this.HOST + this.$url.undwrtSubmitReview, key)
@@ -1961,10 +2609,10 @@ export default {
     // 提交审核
     submitReview() {
       let keyWords = {
-        businessType: "T",
-        businessNo: "TDZA201945010000014005",
+        businessType: this.$route.query.type,
+        businessNo: this.$route.query.businessNo,
         nodeCode: this.aprove.nodeCode,
-        prepusercode: "", // 当前登录人code
+        prepusercode: utils.getSessionData("userCode"), // 当前登录人code
         uwnotion: {
           handleText:
             this.aprove.handleText +
@@ -1990,6 +2638,7 @@ export default {
         console.log(data);
         this.outerVisible = false;
         this.innerVisible = true;
+        this.messageSH = data;
       });
     },
     //初始化
@@ -2001,16 +2650,30 @@ export default {
         taskId: this.routeDate.businessNo, //  任务Id
         businessType: this.routeDate.type, // businessType
         comCode: this.routeDate.businessNo, // 公司代码
-        userCode: this.routeDate.businessNo, // 员工号
-        username: "wpc"
+        userCode: utils.getSessionData("userCode") || "A450000001", // 员工号
+        username: utils.getSessionData("userName") || "张三"
       };
       this.$fetch
         .post(this.HOST + this.$url.uwmainGetUwInfo, keyWords)
         .then(data => {
           console.log(data);
-           this.underwritingDetails = data
-           this.underwritingDetails.uwNotion = data.uwnotions[0]
-          //  this.underwritingDetails.displayFlag ={} 
+          if (this.routeDate.type == "E") {
+            if (data) {
+              this.dataE = data;
+
+              this.curNode = data[1].hiddenvo.curNode;
+              this.nodeName = data[1].hiddenvo.nodeName;
+              this.underwritingDetails = data[1];
+              this.underwritingDetails.uwNotion = data[1].uwnotions;
+            }
+            this.underwritingDetails.displayFlag = {};
+          } else {
+            this.curNode = data.hiddenvo.curNode;
+            this.nodeName = data.hiddenvo.nodeName;
+            this.underwritingDetails = data;
+            this.underwritingDetails.uwNotion = data.uwnotions[1];
+            this.underwritingDetails.displayFlag = {};
+          }
         });
     },
     // 设备信息
@@ -2268,6 +2931,7 @@ export default {
   created() {
     //设置collapse全部展开
     this.routeDate = this.$route.query;
+    this.typeE = this.$route.query.type;
     setTimeout(() => {
       this.setActiveNames();
       this.init();
@@ -2307,6 +2971,12 @@ export default {
 }
 .el-collapse-item__wrap >>> .el-collapse-item__content {
   padding-bottom: 0px;
+}
+.valueStyle >>> .el-input__inner {
+  background-color: #ccff33;
+}
+.table-cell-bg {
+  background: #ccff33;
 }
 </style>
 <style>

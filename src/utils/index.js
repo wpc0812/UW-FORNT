@@ -125,7 +125,7 @@ export default {
             // 用axios发送post请求
             method: "post",
             headers: {
-                // token: window.localStorage["token"]
+                token: window.sessionStorage.getItem("token"),
                 // 'Content-Type': 'application/x-www-form-urlencoded'
             },
             url:url, // 请求地址

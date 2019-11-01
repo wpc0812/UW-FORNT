@@ -2,8 +2,9 @@
 body {
   margin: 0;
   background-color: #FFF;
+  width: 100vw;
 }
-
+html,body{ overflow-y: auto;overflow-x: hidden;}
 // 鼠标小手
 .mouse-pointer {
   cursor: pointer;

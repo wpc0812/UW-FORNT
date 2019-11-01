@@ -16,7 +16,7 @@ const router = new Router({
    
     {
       path: '/',
-      redirect: '/underwriting',
+      redirect: '/redirectPage',
     },
     {
       path: '/layout',
@@ -28,6 +28,17 @@ const router = new Router({
         keepAlive: false
       },
       children: [
+            // 欢迎页
+            {
+              path: '/redirectPage',
+              name: '欢迎页',
+              component: _import('redirectPage'),
+              hidden: true,
+              meta: {
+                requireAuth: true,
+                keepAlive: false
+              }
+            },
         // 人员信息管理 -信息管理查询
         {
           path: '/underwriterInfor',
@@ -551,7 +562,7 @@ const router = new Router({
           //超权限车队维护 其他（异地）详情页顶部按钮
           {
             path: '/carContrast',
-            name: '车对信息对比',
+            name: '车队信息对比',
             component: _import('unauthorizedFleet/carContrast'),
             hidden: true,
             meta: {

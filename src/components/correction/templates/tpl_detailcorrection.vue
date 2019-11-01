@@ -8,18 +8,12 @@
             <div class="title-blue-bar"></div>
             <div class="card-title">请填写信息</div>
           </template>
-          <el-form
-            disabled
-            ref="form"
-            :rules="form"
-            :model="UwctrlVO"
-            label-width="150px"
-          >
+          <el-form disabled ref="form" :rules="form" :model="UwctrlVO" label-width="150px">
             <el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="关系人标志:">
-                    <el-select v-model="UwctrlVO.insuredFlag"  clearable placeholder="请选择">
+                    <el-select v-model="UwctrlVO.insuredFlag" clearable placeholder="请选择">
                       <el-option
                         v-for="item in relationsss"
                         :key="item.label"
@@ -52,7 +46,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="折扣率上限:">
+                  <el-form-item label="商业险总折扣率上限:">
                     <el-input v-model="UwctrlVO.profitRateUp"></el-input>
                   </el-form-item>
                 </el-col>
@@ -76,7 +70,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="手续费上限:">
+                  <el-form-item label="商业险跟单手续费上限:">
                     <el-input v-model="UwctrlVO.costRateUpper"></el-input>
                   </el-form-item>
                 </el-col>
@@ -84,21 +78,9 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="控制结束日期:">
-                    <el-input v-model="UwctrlVO.finishDate"></el-input>
+                    <el-input v-model="UwctrlVO.finishDateString"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
-                  <el-form-item label="操作日期:">
-                    <el-input v-model="UwctrlVO.operateDate"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="输入日期:">
-                    <el-input v-model="UwctrlVO.inputDate"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
                 <el-col :span="8">
                   <el-form-item label="有效标志位:">
                     <el-select v-model="UwctrlVO.valid" clearable placeholder="请选择">
@@ -116,17 +98,14 @@
                     <el-input v-model="UwctrlVO.handlerUser"></el-input>
                   </el-form-item>
                 </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="8">
                   <el-form-item label="提示信息:">
                     <el-input v-model="UwctrlVO.message"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-col :span="24">
-                <el-form-item label="商业险跟单手续费上限:">
-                  <el-input v-model="UwctrlVO.costRateBIUpper"></el-input>
-                </el-form-item>
-              </el-col>
             </el-row>
           </el-form>
           <el-col :span="24" class="text-center">
@@ -198,7 +177,7 @@ export default {
   methods: {
     //返回
     goBack() {
-      this.$router.go(-1);
+      window.close();
     },
     handleClose(done) {
       console.log("确认");
@@ -208,11 +187,15 @@ export default {
     save() {}
   },
   created() {
-    this.$fetch.get(this.HOST + this.$url.correctionShow,{params:{id:this.$route.query.row}}).then(res=>{
-         if (res) {
-            this.UwctrlVO=res
-          }
-        })
+    this.$fetch
+      .get(this.HOST + this.$url.correctionShow, {
+        params: { id: this.$route.query.row }
+      })
+      .then(res => {
+        if (res) {
+          this.UwctrlVO = res;
+        }
+      });
   }
 };
 </script>

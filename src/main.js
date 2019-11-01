@@ -21,7 +21,7 @@ import { Loading } from 'element-ui'
 
 // Vue.prototype.$axios = axios;
 // Vue.prototype.HOST = "/apis/underwrite"
-
+// Vue.prototype.HOST = ""
 Vue.prototype.HOST = "/underwrite"
 
 Vue.config.productionTip = false
@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) =>{
   //调用isSSOLogin接口
       axios({
         method: 'post',
-        url: '/getIsSsoLogin',
+        url: '/apis/getIsSsoLogin',
         data: {}
       })
       .then(data =>{
@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) =>{
           window.sessionStorage.setItem('isSSO', isSSO)
           axios({
                   method: 'post',
-                  url: 'getRedirectUrl',
+                  url: '/apis/getRedirectUrl',
                   data: {},
                   
                   
@@ -163,7 +163,7 @@ router.beforeEach((to, from, next) =>{
     })
 
   
-// next()
+next()
   
   
 })

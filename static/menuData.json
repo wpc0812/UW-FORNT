@@ -429,7 +429,7 @@
         "id" : 27 ,
         "path": "",
         "iconCls": "fa fa-file-code-o",
-        "name": "异地车队车队维护",
+        "name": "异地车队维护",
         "component": "Home",
         "children": [
           {

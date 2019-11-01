@@ -442,8 +442,9 @@ export default {
   created() {
     this.flag = false;
     this.flag1 = false;
-    this.UwMotorcadeMainVO.personNo="A3200000000"
+    this.UwMotorcadeMainVO.personNo=utils.getSessionData("comCode")
     // console.log(this.$store.state.comcode)
+    console.log(utils.getSessionData("comCode"))
   }
 };
 </script>

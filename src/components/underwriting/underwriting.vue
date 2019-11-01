@@ -23,10 +23,7 @@
                 </el-col>
                 <el-col :span="10">
                   <el-form-item label="机构代码:" class="text-left">
-                    <el-input
-                      style="width:60%"
-                      v-model="underwriting.comCode"
-                    ></el-input>
+                    <el-input style="width:60%" v-model="underwriting.comCode"></el-input>
                     <span class="tip-color ml5" style="font-size: 12px">样例为:1501*,1502*</span>
                   </el-form-item>
                 </el-col>
@@ -42,20 +39,21 @@
                     <el-input v-model="underwriting.agentCode"></el-input>
                   </el-form-item>
                 </el-col>
-                
+
                 <el-col :span="10">
-                <el-form-item label="提交时间:">
-                  <el-date-picker
-                    v-model="underwriting.flowDate"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    type="datetimerange"
-                    time-arrow-control
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                  ></el-date-picker>
-                </el-form-item>
-              </el-col>
+                  <el-form-item label="提交时间:">
+                    <el-date-picker
+                      v-model="underwriting.flowDate"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      type="datetimerange"
+                      time-arrow-control
+                      unlink-panels
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-col>
                 <el-col :span="14">
                   <el-form-item label="核保类型:" class="text-left">
                     <el-checkbox-group
@@ -78,14 +76,14 @@
                     >所有</el-checkbox>
                   </el-form-item>
                 </el-col>
-                
+
                 <el-col :span="10">
-                <el-form-item label="被保险人:">
-                  <el-input v-model="underwriting.insuredName"></el-input>
-                </el-form-item>
-              </el-col>
+                  <el-form-item label="被保险人:">
+                    <el-input v-model="underwriting.insuredName"></el-input>
+                  </el-form-item>
+                </el-col>
               </el-row>
-              
+
               <el-col :span="14">
                 <el-form-item label="占用状态:" class="text-left">
                   <el-checkbox-group v-model="underwriting.occupied">
@@ -100,19 +98,19 @@
                     </el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
-              </el-col>  
+              </el-col>
               <el-col :span="10">
-                  <el-form-item label="状态:" class="text-left">
-                    <el-checkbox-group v-model="underwriting.stateList">
-                      <el-checkbox
-                        class="check-group"
-                        v-for="state in status"
-                        :label="state.code"
-                        :key="state.code"
-                      >{{state.value}}</el-checkbox>
-                    </el-checkbox-group>
-                  </el-form-item>
-                </el-col>
+                <el-form-item label="状态:" class="text-left">
+                  <el-checkbox-group v-model="underwriting.stateList">
+                    <el-checkbox
+                      class="check-group"
+                      v-for="state in status"
+                      :label="state.code"
+                      :key="state.code"
+                    >{{state.value}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-col>
 
               <el-col :span="24">
                 <el-form-item label="审批类型:" class="text-left">
@@ -136,13 +134,10 @@
                   >所有</el-checkbox>
                 </el-form-item>
               </el-col>
-              
-            
+
               <el-col :span="24" class="text-center">
                 <el-button @click="query()" size="mini" type="primary">查询</el-button>
                 <el-button @click="reset" size="mini">重置</el-button>
-
-
               </el-col>
             </el-row>
           </el-form>
@@ -150,26 +145,31 @@
       </el-collapse>
     </el-card>
     <!-- 查询结果 -->
-  
-    <el-card class="circular mt4 shadow" v-if=" list0['ST']||list0['GT'] ||  list0['E']||  list0['H'] ||underwriting.stateList.length > 0|| list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
+
+    <el-card
+      class="circular mt4 shadow"
+      v-if=" list0['T']||list0['GT'] ||  list0['E']||  list0['H'] ||underwriting.stateList.length > 0|| list1['T']||list1['GT'] ||  list1['E']||  list1['H']"
+    >
       <el-collapse v-model="activeNames">
-        
-        <el-collapse-item name="2" v-if="underwriting.stateList.indexOf('0') > -1|| list0['ST']||list0['GT'] ||  list0['E']||  list0['H']">
+        <el-collapse-item
+          name="2"
+          v-if="underwriting.stateList.indexOf('0') > -1|| list0['T']||list0['GT'] ||  list0['E']||  list0['H']"
+        >
           <template slot="title">
-            <div class="title-blue-bar"></div> 
+            <div class="title-blue-bar"></div>
             <div class="card-title">未处理任务</div>
           </template>
-          <el-collapse v-model="task.tab1" @change="untreated"> 
+          <el-collapse v-model="task.tab1" @change="untreated">
             <tpl-underwriting
-              v-if="underwriting.taskTypeList.indexOf('ST') > -1 || list0['ST']"
+              v-if="underwriting.taskTypeList.indexOf('T') > -1 || list0['T']"
               class="collapse-no-background"
               title="散单投保单"
               @paging="paging"
               @goDetail="goDetail"
-              :results="list0['ST']"
+              :results="list0['T']"
               mark="untreated"
               :arrow="task.tab1.includes('散单投保单')"
-              :total="list0.total['ST']"
+              :total="list0.total['T']"
             ></tpl-underwriting>
             <tpl-underwriting
               title="团单投保单"
@@ -206,7 +206,10 @@
             ></tpl-underwriting>
           </el-collapse>
         </el-collapse-item>
-        <el-collapse-item name="3" v-if="underwriting.stateList.indexOf('1') > -1 || list1['ST']||list1['GT'] ||  list1['E']||  list1['H']">
+        <el-collapse-item
+          name="3"
+          v-if="underwriting.stateList.indexOf('1') > -1 || list1['T']||list1['GT'] ||  list1['E']||  list1['H']"
+        >
           <template slot="title">
             <div class="title-blue-bar"></div>
             <div class="card-title">已处理任务</div>
@@ -215,13 +218,13 @@
             <tpl-underwriting
               class="collapse-no-background"
               title="散单投保单"
-              v-if="underwriting.taskTypeList.indexOf('ST') > -1 ||list1['ST']"
-              :results="list1['ST']"
+              v-if="underwriting.taskTypeList.indexOf('T') > -1 ||list1['T']"
+              :results="list1['T']"
               @paging="paging"
               @goDetail="goDetail"
               mark="treated"
               :arrow="task.tab2.includes('散单投保单')"
-              :total="list1.total['ST']"
+              :total="list1.total['T']"
             ></tpl-underwriting>
             <tpl-underwriting
               class="collapse-no-background"
@@ -271,14 +274,13 @@ import {
   underwritingTypes
 } from "@/assets/js/baseCode";
 import tplUnderwriting from "@/components/underwriting/templates/tpl_underwriting";
-import { userInfo } from 'os';
-import { decode } from 'querystring';
-import { stat } from 'fs';
-import utils from '../../utils'
-
+import { userInfo } from "os";
+import { decode } from "querystring";
+import { stat } from "fs";
+import utils from "../../utils";
 
 const [taskType, appTypes] = [
-  ["ST", "GT", "E", "H"],
+  ["T", "GT", "E", "H"],
   ["a", "b", "c", "d", "e", "f", "g", "i", "h"]
 ];
 
@@ -297,13 +299,13 @@ export default {
         total: {}
       },
       list0: {
-        total:{}
+        total: {}
       },
       activeNames: ["1", "2", "3"],
       underwriting: {
-        stateList: ['0'],
+        stateList: ["0"],
         taskTypeList: taskType,
-        occupied: ['0','1','2'],
+        occupied: ["0", "1", "2"],
         appTypes: appTypes,
         pageNo: 1,
         everyPage: 10
@@ -319,23 +321,21 @@ export default {
       typeApproval,
       occupancyState,
       status,
-      underwritingTypes,
+      underwritingTypes
     };
   },
 
-  computed: {
-   
-  },
-
+  computed: {},
+  watch: {},
   methods: {
     ...mapActions(["getUnderwriting"]),
 
     //重置
     reset() {
       this.underwriting = {
-        stateList: ['0'],
+        stateList: ["0"],
         taskTypeList: taskType,
-        occupied: ['0','1','2'],
+        occupied: ["0", "1", "2"],
         appTypes: appTypes,
         pageNo: 1,
         everyPage: 10
@@ -347,196 +347,221 @@ export default {
       this.isIndeterminate = {
         appTypes: false,
         taskType: false
-      }
-      this.getDate()
+      };
+      this.getDate();
     },
-
 
     //查询
     query() {
-      this.datePickerChange()
+      this.list1 = {
+        total: {}
+      };
+      this.list0 = {
+        total: {}
+      };
+      // console.log(
+      //   this.list0,
+      //   this.list1,
+      //   this.underwriting.taskTypeList,
+      //   this.underwriting.stateList
+      // );
+      this.datePickerChange();
       /**
        * 处理查询时的类型和次数
        * 未选择状态和 类型时默认全部查询
        * 已选择，查询已选择的
-       * 
+       *
        */
-      
-      let stateArry = ['0','1']
-      let taskTypeArry = ["ST", "GT", "E", "H"]
-      if(this.underwriting.stateList && this.underwriting.stateList.length > 0){
-        stateArry = this.underwriting.stateList
+
+      let stateArry = ["0", "1"];
+      let taskTypeArry = ["T", "GT", "E", "H"];
+      if (
+        this.underwriting.stateList &&
+        this.underwriting.stateList.length > 0
+      ) {
+        stateArry = this.underwriting.stateList;
       }
-      if (this.underwriting.taskTypeList && this.underwriting.taskTypeList.length > 0 ) {
-        taskTypeArry = this.underwriting.taskTypeList
+      if (
+        this.underwriting.taskTypeList &&
+        this.underwriting.taskTypeList.length > 0
+      ) {
+        taskTypeArry = this.underwriting.taskTypeList;
       }
-      for(let j = 0; j < stateArry.length; j++ ){
-        for(let i = 0;i < taskTypeArry.length; i++){
-         let key ={
-           request:'LIST',
-           userCode: '1111'
-         }
-        
-         key.underwritingCondition = this.underwriting
-         key.underwritingCondition.taskType = JSON.parse(JSON.stringify(taskTypeArry[i])) 
-         key.underwritingCondition.state = JSON.parse(JSON.stringify(stateArry[j])) 
-         this.getListDetail(JSON.parse(JSON.stringify(key)))
-       }
+      for (let j = 0; j < stateArry.length; j++) {
+        for (let i = 0; i < taskTypeArry.length; i++) {
+          let key = {
+            request: "LIST",
+            userCode: utils.getSessionData("userCode")
+          };
+
+          key.underwritingCondition = this.underwriting;
+          key.underwritingCondition.taskType = JSON.parse(
+            JSON.stringify(taskTypeArry[i])
+          );
+          key.underwritingCondition.state = JSON.parse(
+            JSON.stringify(stateArry[j])
+          );
+          this.getListDetail(JSON.parse(JSON.stringify(key)));
+        }
       }
-      
     },
     getListDetail(key) {
-        // console.log(key.underwritingCondition.taskType,key.underwritingCondition.state)
-        // console.log(typeof(key))
-      this.$fetch.post(this.HOST + this.$url.uwmainGetUwList,key).then( data => {
-        console.log(data)
-        if( data.state ==='1'){
-          if (data.taskType == 'H'){
-            this.$set(this.list1,data.taskType,data.businessHVOList)
+      // console.log(key.underwritingCondition.taskType,key.underwritingCondition.state)
+      // console.log(typeof(key))
+      this.$fetch
+        .post(this.HOST + this.$url.uwmainGetUwList, key)
+        .then(data => {
+          // console.log(data)
+          if (data.state === "1") {
+            if (data.taskType == "H") {
+              this.$set(this.list1, data.taskType, data.businessHVOList);
+              //  console.log(data.taskType, data.businessHVOList)
+              // this.list1[data.data.taskType] = data.data.businessHVOList
+            } else {
+              this.$set(this.list1, data.taskType, data.businessVOList);
+              // console.log(data.taskType, data.businessVOList)
+              // this.$set(this.list1[data.data.taskType],data.data.businessVOList)
+            }
 
-            // this.list1[data.data.taskType] = data.data.businessHVOList
-          } else{
-            this.$set(this.list1,data.taskType,data.businessVOList)
-            // this.$set(this.list1[data.data.taskType],data.data.businessVOList)
+            this.list1.total[data.taskType] = data.sumRecords;
+          } else {
+            if (data.taskType == "H") {
+              this.$set(this.list0, data.taskType, data.businessHVOList);
+              //  console.log(data.taskType, data.businessHVOList)
+              // this.list0[data.data.taskType] = data.data.businessHVOList
+            } else {
+              this.$set(this.list0, data.taskType, data.businessVOList);
+              //  console.log(data.taskType, data.businessVOList)
+              // this.list0[data.data.taskType] = data.data.businessVOList
+            }
+            this.list0.total[data.taskType] = data.sumRecords;
           }
-          
-          this.list1.total[data.taskType] =data.sumRecords
-
-        }else{
-         if (data.taskType == 'H'){
-           this.$set(this.list0,data.taskType,data.businessHVOList)
-            // this.list0[data.data.taskType] = data.data.businessHVOList
-          } else{
-             this.$set(this.list0,data.taskType,data.businessVOList)
-            // this.list0[data.data.taskType] = data.data.businessVOList
-          }
-            this.list0.total[data.taskType] =data.sumRecords
-        }
-      })
+        });
+      // console.log(this.list0,this.list1)
     },
     //详情
     goDetail(row) {
-      if(row.title === '团单方案') {
-        this.$router.push({
-          path: '/underwritingTeamDetails',
+      if (row.title === "团单方案") {
+        let goDetailPage = this.$router.resolve({
+          path: "/underwritingTeamDetails",
           query: {
             businessNo: row.businessNo,
             type: row.businessType
           }
-        })
-      } else{
-        this.$router.push({
-          path: '/underwritingDetails',
+        });
+        window.open(goDetailPage.href, "_blank");
+      } else {
+        let goDetail1Page = this.$router.resolve({
+          path: "/underwritingDetails",
           query: {
             businessNo: row.businessNo,
             type: row.businessType
           }
-        })
+        });
+        window.open(goDetail1Page.href, "_blank");
       }
-      
     },
-    datePickerChange(){
-      console.log(this.underwriting.flowDate)
-      if(this.underwriting.flowDate && this.underwriting.flowDate instanceof Array && this.underwriting.flowDate.length > 0) {
-        this.underwriting.beginDate = this.underwriting.flowDate[0]
-        this.underwriting.endDate = this.underwriting.flowDate[1]
-      } else{
-          this.underwriting.beginDate = ''
-        this.underwriting.endDate = ''
+    datePickerChange() {
+      // console.log(this.underwriting.flowDate)
+      if (
+        this.underwriting.flowDate &&
+        this.underwriting.flowDate instanceof Array &&
+        this.underwriting.flowDate.length > 0
+      ) {
+        this.underwriting.beginDate = this.underwriting.flowDate[0];
+        this.underwriting.endDate = this.underwriting.flowDate[1];
+      } else {
+        this.underwriting.beginDate = "";
+        this.underwriting.endDate = "";
       }
-      
-      console.log(this.underwriting)
 
+      // console.log(this.underwriting)
     },
     //分页查询
     paging(obj) {
       let key = {
-        request:'LIST',
-        userCode: '1111',
-        underwritingCondition:this.underwriting
-              
-      }
+        request: "LIST",
+        userCode: "1111",
+        underwritingCondition: this.underwriting
+      };
       // 处理查询页数 还是 条数
-      if(obj.pageSize ) {
-        key.underwritingCondition.everyPage = obj.pageSize 
+      if (obj.pageSize) {
+        key.underwritingCondition.everyPage = obj.pageSize;
       } else {
-        key.underwritingCondition.pageNo = obj.pageNo 
+        key.underwritingCondition.pageNo = obj.pageNo;
       }
       if (obj.mark == "untreated") {
         switch (obj.title) {
           case "散单投保单":
-          
-            key.underwritingCondition.state = '0',
-            key.underwritingCondition.taskType = 'ST',
-
-            this.getListDetail(key)
+            (key.underwritingCondition.state = "0"),
+              (key.underwritingCondition.taskType = "T"),
+              this.getListDetail(key);
             // this.UntreatedBulk(obj.pageSize, obj.pageNo); //未处理-散单
             break;
 
           case "团单投保单":
-            // this.UntreatedGroup(obj.pageSize, obj.pageNo); 
+            // this.UntreatedGroup(obj.pageSize, obj.pageNo);
             //未处理-散单
-              
-              key.underwritingCondition.state = '0',
-              key.underwritingCondition.taskType = 'GT',
-              this.getListDetail(key)
+
+            (key.underwritingCondition.state = "0"),
+              (key.underwritingCondition.taskType = "GT"),
+              this.getListDetail(key);
             break;
 
           case "批单":
-            // this.UntreatedBatch(obj.pageSize, obj.pageNo); 
+            // this.UntreatedBatch(obj.pageSize, obj.pageNo);
             //未处理-散单
-             
-              key.underwritingCondition.state = '0',
-              key.underwritingCondition.taskType = 'E',
-              this.getListDetail(key)
+
+            (key.underwritingCondition.state = "0"),
+              (key.underwritingCondition.taskType = "E"),
+              this.getListDetail(key);
             break;
 
           case "团单方案":
-            // this.UntreatedBatch(obj.pageSize, obj.pageNo); 
+            // this.UntreatedBatch(obj.pageSize, obj.pageNo);
             //未处理-散单
-             
-              key.underwritingCondition.state = '0',
-              key.underwritingCondition.taskType = 'H',
-              this.getListDetail(key)
+
+            (key.underwritingCondition.state = "0"),
+              (key.underwritingCondition.taskType = "H"),
+              this.getListDetail(key);
             break;
         }
       } else {
         switch (obj.title) {
           case "散单投保单":
-            // this.TreatedBulk(obj.pageSize, obj.pageNo); 
+            // this.TreatedBulk(obj.pageSize, obj.pageNo);
             //未处理-散单
-             
-              key.underwritingCondition.state = '1',
-              key.underwritingCondition.taskType = 'ST',
-              this.getListDetail(key)
+
+            (key.underwritingCondition.state = "1"),
+              (key.underwritingCondition.taskType = "T"),
+              this.getListDetail(key);
             break;
 
           case "团单投保单":
             // this.TreatedGroup(obj.pageSize, obj.pageNo);
-             //未处理-散单
-             
-              key.underwritingCondition.state = '1',
-              key.underwritingCondition.taskType = 'GT',
-              this.getListDetail(key)
+            //未处理-散单
+
+            (key.underwritingCondition.state = "1"),
+              (key.underwritingCondition.taskType = "GT"),
+              this.getListDetail(key);
             break;
 
           case "批单":
-            // this.TreatedBatch(obj.pageSize, obj.pageNo); 
+            // this.TreatedBatch(obj.pageSize, obj.pageNo);
             //未处理-散单
-            
-              key.underwritingCondition.state = '1',
-              key.underwritingCondition.taskType = 'E',
-              this.getListDetail(key)
+
+            (key.underwritingCondition.state = "1"),
+              (key.underwritingCondition.taskType = "E"),
+              this.getListDetail(key);
             break;
 
           case "团单方案":
-            
-            // this.TreatedBatch(obj.pageSize, obj.pageNo); 
+            // this.TreatedBatch(obj.pageSize, obj.pageNo);
             //未处理-散单
-             
-              key.underwritingCondition.state = '1',
-              key.underwritingCondition.taskType = 'E',
-              this.getListDetail(key)
+
+            (key.underwritingCondition.state = "1"),
+              (key.underwritingCondition.taskType = "E"),
+              this.getListDetail(key);
             break;
         }
       }
@@ -562,6 +587,7 @@ export default {
         this.checkAll.appTypes = len === appTypes.length;
         this.isIndeterminate.appTypes = len > 0 && len < appTypes.length;
       }
+      // console.log(this.underwriting.taskTypeList)
     },
 
     // 未处理展开关闭状态
@@ -573,22 +599,22 @@ export default {
     processed(val) {
       this.task.tab2 = val;
     },
-    getDate(){
+    getDate() {
       let date = new Date();
-      let startDate = date.format("yyyy-MM-dd") + ' '+'00:00:00';
-      date.setDate(date.getDate() + 1) 
-      let endDate = date.format("yyyy-MM-dd")+ ' '+'23:59:59'
-      console.log(startDate.toString())
+      let startDate = date.format("yyyy-MM-dd") + " " + "00:00:00";
+      date.setDate(date.getDate() + 1);
+      let endDate = date.format("yyyy-MM-dd") + " " + "23:59:59";
+      // console.log(startDate.toString());
       // this.underwriting.flowDate = [JSON.parse(JSON.stringify(startDate)),JSON.parse(JSON.stringify(endDate))]
-      this.$set(this.underwriting,'flowDate',[startDate.toString(),endDate.toString()])
-
+      this.$set(this.underwriting, "flowDate", [
+        startDate.toString(),
+        endDate.toString()
+      ]);
     }
-  
   },
   created() {
-    this.getDate()
-    console.log(utils.getSessionData('userCode'))
-   
+    this.getDate();
+    // console.log(utils.getSessionData('userCode'))
   }
 };
 </script>
@@ -597,7 +623,7 @@ export default {
   background: none;
   height: 40px;
 }
-.circular >>>.collapseBack{
+.circular >>> .collapseBack {
   background-color: #212224;
 }
 </style>

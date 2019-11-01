@@ -18,7 +18,7 @@
             :header-cell-class-name="'table-header-bg'"
           >
             <el-table-column prop="ocvalue" label></el-table-column>
-            <el-table-column prop="contractNo" label="业务号"></el-table-column>
+            <el-table-column prop="motorcadeNo" label="业务号"></el-table-column>
             <el-table-column prop="comcode" label="分公司"></el-table-column>
             <el-table-column prop="insuredflag" label="控制关系人标志">
               <template slot-scope="scope">
@@ -153,11 +153,11 @@
                 >{{scope.row.underWritingCondition}}</div>
               </template>
             </el-table-column>
-            <el-table-column prop="costRatemax" label="商业险手续费上限">
+            <el-table-column prop="costRateUpper" label="商业险手续费上限">
               <template slot-scope="scope">
                 <div
-                  :class="scope.row.costRatemax !=results[0].costRatemax ? 'table-cell-bg' :''"
-                >{{scope.row.costRatemax}}</div>
+                  :class="scope.row.costRateUpper !=results[0].costRateUpper ? 'table-cell-bg' :''"
+                >{{scope.row.costRateUpper}}</div>
               </template>
             </el-table-column>
             <el-table-column prop="monitoringProgramme" label="监控方案">
@@ -193,14 +193,16 @@
       </el-collapse>
     </el-card>
     <!-- 弹窗 -->
-    <el-dialog
+     <el-dialog
       :lock-scroll="false"
       :title="transferTitle"
       class="tanchuang"
       :visible.sync="dialogVisibleMore"
       width="20%"
     >
-      <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
+      <div class="ullipar">
+        <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisibleMore = false">关闭本窗口</el-button>
       </span>
@@ -351,8 +353,14 @@ export default {
 .float-right {
   text-align: center;
 }
+.ullipar {
+  width: 60%;
+  margin-left: 20%;
+  border: 1px solid #7cb2e3;
+}
 .ulli {
   text-align: center;
+  border: 1px solid #7cb2e3;
 }
 .ulli li {
   list-style-type: none;
@@ -368,7 +376,7 @@ export default {
 }
 .tanchuang >>> .el-dialog {
   margin: 0 auto !important;
-  height: 80%;
+  height: 60%;
   overflow: hidden;
 }
 .tanchuang >>> .el-dialog__body {

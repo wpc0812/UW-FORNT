@@ -94,7 +94,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="折扣率上限:">
+                  <el-form-item label="商业险总折扣率上限:">
                     <el-input v-model="UwctrlVO.profitRateUp"></el-input>
                   </el-form-item>
                 </el-col>
@@ -104,15 +104,8 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="手续费上限:">
-                    <el-input v-model="UwctrlVO.costRateUpper"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
                   <el-form-item label="商业险跟单手续费上限:">
-                    <el-input v-model="UwctrlVO.costRateBIUpper"></el-input>
+                    <el-input v-model="UwctrlVO.costRateUpper"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24" class="text-center">
@@ -129,14 +122,16 @@
     <el-card class="circular mt4 shadow">
       <el-row class="text-left">
         <el-pagination
+          class="mb10 mt10 text-left"
+          @size-change="policySizeChange"
+          @current-change="policyCurrentChange"
+          :pager-count="5"
           small
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-sizes="[20, 40, 80, 160]"
-          :page-size="20"
-          layout="sizes, prev, pager, next"
-          :total="totalnum"
+          :current-page="pageInfo.policyPageNo"
+          :page-sizes="[10, 20, 50]"
+          :page-size="pageInfo.policyPageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfo.policyTotal"
         ></el-pagination>
       </el-row>
       <el-table
@@ -162,54 +157,97 @@
         <el-table-column prop="applicCode" label="关系人代码"></el-table-column>
         <el-table-column prop="insuredName" label="关系人名称"></el-table-column>
         <el-table-column prop="licenseNo" label="号牌号码"></el-table-column>
-        <el-table-column prop="profitRateUp" label="折扣率上限"></el-table-column>
-        <el-table-column prop="costRateUpper" label="手续费上限"></el-table-column>
-        <el-table-column prop="costRateBIUpper" label="商业险跟单手续费上限"></el-table-column>
-        <el-table-column prop="valid" label="核保类别"></el-table-column>
+        <el-table-column prop="profitRateUp" label="商业险总折扣率上限"></el-table-column>
+        <el-table-column prop="costRateUpper" label="商业险跟单手续费上限"></el-table-column>
+        <el-table-column prop="flag" label="核保类别"></el-table-column>
         <el-table-column prop="finishDateString" label="控制结束日期"></el-table-column>
-        <el-table-column prop="handlerUser" label="特批操作员"></el-table-column>
+        <el-table-column v-if="qx==true" prop="handlerUser" label="特批操作员"></el-table-column>
         <el-table-column label="修改">
           <template slot-scope="scope">
-            <el-button
-              type="text"
-              :disabled="scope.row.valid=='0'"
-              @click="acd('c', scope.row.id)"
-            >修改</el-button>
+            <el-button v-if="scope.row.valid!='0'" type="text" @click="acd('c', scope.row.id)">修改</el-button>
+            <el-button v-else type="text" :disabled="scope.row.valid=='0'">——</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="index" label="注销">
           <template slot-scope="scope">
             <el-button
+              v-if="scope.row.valid!='0'"
               type="text"
-              :disabled="scope.row.valid=='0'"
               @click="acDelete(scope.row.id,results)"
             >注销</el-button>
+            <el-button v-else type="text" :disabled="scope.row.valid=='0'">已注销</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
+
+    <!-- dialog弹出框 -->
+    <el-dialog
+      :title="msgTitle"
+      :visible.sync="outerVisible"
+      width="20%"
+      class="dialog-footer-parent"
+      :before-close="handleClose"
+    >
+      <span class="fontSizeTrue">{{msgContont}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="trues">确 定</el-button>
+        <el-button @click="outerVisible=false">取 消</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="来自网页的消息"
+      :visible.sync="outerVisible1"
+      width="20%"
+      class="dialog-footer-parent"
+      :before-close="handleClose1"
+    >
+      <span class="fontSizeTrue">注销成功</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="outerVisible1 = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
 import qs from "querystring";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   name: "queryCorrection",
 
   data() {
     return {
-      currentPage: 4,
-      totalnum: 1,
+      msgTitle: "提示",
+      outerVisible: false,
+      outerVisible1: false,
+      msgContont: "",
+
+      qx: false,
+      relationFlag: [
+        { value: "被保险人", label: "1" },
+        { value: "投保人", label: "2" }
+      ],
+      validFlag: [
+        { value: "人工核保", label: "1" },
+        { value: "自动核保通过", label: "2" },
+        { value: "自动打回", label: "2" }
+      ],
+      pageInfo: {
+        policyTotal: 0, //总条数
+        policyPageNo: 1, //第几页
+        policyPageSize: 10 //每页多少条
+      },
       dochoose: false,
       handleCurrentChange: {},
       categorys: [
-        { value: "全部", label: "0" },
+        { value: "全部", label: "" },
         { value: "1_人工核保", label: "1" },
         { value: "2_自动核保通过", label: "2" },
         { value: "3_自动打回", label: "3" }
       ],
+      ids: "",
       UwctrlVO: {
         applicCode: "",
         insuredFlag: "",
@@ -223,7 +261,7 @@ export default {
         profitRateUp: "",
         licenseNo: "",
         costRateUpper: "",
-        costRateBIUpper: ""
+        costRateUpper: ""
       },
       flags: [
         { value: "全部", label: "" },
@@ -242,73 +280,138 @@ export default {
     };
   },
   computed: {},
-  mounted() {},
   methods: {
-    // 页数显示
-    handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`);
+    // 弹窗得叉号
+    handleClose() {
+      this.outerVisible = false;
+    },
+    handleClose1() {
+      this.outerVisible1 = false;
+    },
+    // 条数
+    policySizeChange(val) {
+      this.pageInfo.policyPageSize = val;
+      setTimeout(() => {
+        this.query();
+      });
+    },
+    // 第几页
+    policyCurrentChange(val) {
+      this.pageInfo.policyPageNo = val;
+      setTimeout(() => {
+        this.query();
+      });
     },
     //增加修改
     acd(flag, row) {
       if (flag == "a") {
-        this.$router.push({
+        let addPage = this.$router.resolve({
           name: "增加核保特批页面",
           query: {
             row
           }
         });
+        window.open(addPage.href, "_blank");
       }
       if (flag == "c") {
-        // console.log(row);
-        this.$router.push({
+        let updatePage = this.$router.resolve({
           name: "修改核保特批页面",
           query: {
             row: row
           }
         });
+        window.open(updatePage.href, "_blank");
       }
     },
     //点击序号到详情页
     BusinessNum(idx, row) {
-      this.$router.push({ path: "/detailCorrection", query: { row: row } });
+      let particularsPage = this.$router.resolve({
+        path: "/detailCorrection",
+        query: { row: row }
+      });
+      window.open(particularsPage.href, "_blank");
     },
-    //注销
+    //注销弹窗
     acDelete(id, row) {
+      this.outerVisible = true;
+      this.msgTitle = "来自网页的消息";
+      this.msgContont = "您确信要注销该条记录吗？";
+      this.ids = id;
+    },
+    // 弹窗确定按钮
+    trues() {
+      this.outerVisible = false;
+      this.cancellation();
+    },
+    // 注销请求
+    cancellation() {
       let uwctrlVO = this.UwctrlVO;
       this.$fetch
-        .get(this.HOST + this.$url.correctionDelete, { params: { id: id } })
+        .get(this.HOST + this.$url.correctionDelete, {
+          params: { id: this.ids }
+        })
         .then(res => {
           if (res == true) {
-            setTimeout(()=>{
-              this.query();
-            },2000)
+            this.outerVisible1 = true;
+            this.query();
           }
         });
     },
     //查询
     query() {
-      let uwctrlVO = this.UwctrlVO;
       this.$fetch
-        .post(this.HOST + this.$url.correctionQury, uwctrlVO)
+        .post(this.HOST + this.$url.correctionQury, {
+          ...this.UwctrlVO,
+          ...this.pageInfo
+        })
         .then(res => {
-          if (res.length > 0) {
-            this.results = res;
+          if (res) {
+            if (
+              res.uwctrlVOS &&
+              res.uwctrlVOS instanceof Array &&
+              res.uwctrlVOS.length > 0
+            ) {
+              this.pageInfo.policyTotal = res.policyTotal;
+              for (let i = 0; i < res.uwctrlVOS.length; i++) {
+                for (let j = 0; j < this.relationFlag.length; j++) {
+                  if (
+                    res.uwctrlVOS[i].insuredFlag == this.relationFlag[j].label
+                  )
+                    res.uwctrlVOS[i].insuredFlag = this.relationFlag[j].value;
+                }
+              }
+              for (let i = 0; i < res.uwctrlVOS.length; i++) {
+                for (let j = 0; j < this.validFlag.length; j++) {
+                  if (res.uwctrlVOS[i].flag == this.validFlag[j].label)
+                    res.uwctrlVOS[i].flag = this.validFlag[j].value;
+                }
+              }
+              for (let i = 0; i < res.uwctrlVOS.length; i++) {
+                if (res.uwctrlVOS[i].businessNo == "") {
+                  res.uwctrlVOS[i].businessNo = "——";
+                }
+                if (res.uwctrlVOS[i].contractNo == "") {
+                  res.uwctrlVOS[i].contractNo = "——";
+                }
+              }
+              this.results = res.uwctrlVOS;
+            }
           }
         });
     }
   },
   created() {
-    this.UwctrlVO.finishDate1='2019-01-01'
-    this.UwctrlVO.finishDate2=new Date();
-    // console.log(typeof new Date())
-    let uwctrlVO = this.UwctrlVO;
-    this.$fetch
-      .post(this.HOST + this.$url.correctionQury, uwctrlVO)
-      .then(res => {
-        if (res) {
-          this.results = res;
-        }
-      });
+    this.UwctrlVO.finishDate1 = "2019-01-01";
+    this.UwctrlVO.finishDate2 = new Date().format("yyyy-MM-dd");
+    // console.log(new Date().format("yyyy-MM-dd"))
+    // let UwctrlRequestDto = this.UwctrlVO;
+    // this.$fetch
+    //   .post(this.HOST + this.$url.correctionQury, UwctrlRequestDto)
+    //   .then(res => {
+    //     if (res) {
+    //       this.results = res;
+    //     }
+    //   });
   }
 };
 </script>
@@ -323,5 +426,8 @@ export default {
 .collapse-no-background >>> .el-collapse-item__header {
   background: none;
   height: 40px;
+}
+.dialog-footer-parent >>> .el-dialog__footer {
+  text-align: center;
 }
 </style>

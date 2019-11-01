@@ -49,7 +49,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { relations } from "@/assets/js/baseCode";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 
 export default {
   name: "deletebatch",
@@ -83,12 +83,37 @@ export default {
       this.centerDialogVisible = false;
       // console.log("111")
       this.$fetch
-        .get(this.HOST + this.$url.deletebatchDel, {params: {uwmotorcademainid:this.$route.query.uwmotorcademainid,batchNo: this.$route.query.row}})
+        .get(this.HOST + this.$url.deletebatchDel, {
+          params: {
+            uwmotorcademainid: this.$route.query.uwmotorcademainid,
+            batchNo: this.$route.query.row
+          }
+        })
         .then(res => {
-          console.log(res);
-          setTimeout(()=>{
-            this.$router.go(-1)
-          },2000)
+          // console.log(res, typeof res);
+          if (res == true) {
+            alert("删除成功");
+            // if (this.$route.query.deletebatchType == "1") {
+            //   this.$router.push({
+            //     path: "/carAuditPage",
+            //     query: {
+            //       row: row.licenseNo,
+            //       uwmotorcademainid: this.uwmotorcademainids
+            //     }
+            //   });
+            // } else if (this.$route.query.deletebatchType == "2") {
+            //   this.$router.push({
+            //     path: "/carAuditPageother",
+            //     query: {
+            //       row: row.licenseNo,
+            //       uwmotorcademainid: this.uwmotorcademainids
+            //     }
+            //   });
+            // }
+            window.close();
+          } else {
+            console.log("删除失败");
+          }
         });
     },
     handleSizeChange(val) {
@@ -100,13 +125,13 @@ export default {
     }
   },
   created() {
-    // console.log(this.$route.query.row,this.$route.query.motorcadeNo);
+    console.log(this.$route.query.deletebatchType);
     this.$fetch
       .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
-        params: {uwmotorcademainid:this.$route.query.uwmotorcademainid}
+        params: { uwmotorcademainid: this.$route.query.uwmotorcademainid }
       })
       .then(res => {
-        this.results = res
+        this.results = res;
         console.log(res);
       });
   }

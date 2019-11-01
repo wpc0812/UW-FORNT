@@ -143,6 +143,18 @@ export default {
       if (this.muenArr.indexOf(to.path) > -1) {
         this.active = to.path;
       }
+      // if (to.path == "/otReported") {
+      //   let routeData = this.$router.resolve({
+      //     path: "/otReported"
+      //   });
+      //   window.open(routeData.href, "_blank");
+      // }
+      // if (to.path == "/rtReported") {
+      //   let routeData = this.$router.resolve({
+      //     path: "/rtReported"
+      //   });
+      //   window.open(routeData.href, "_blank");
+      // }
     }
   },
 

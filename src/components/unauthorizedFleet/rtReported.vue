@@ -86,7 +86,6 @@
         <el-table-column prop="insuredflag" label="关系人标志"></el-table-column>
         <el-table-column prop="insuredName" label="关系人名称"></el-table-column>
         <el-table-column prop="businessNature" label="业务来源"></el-table-column>
-        <el-table-column prop="lastFourYearPayPercent" width="115" label="历史满期赔付率"></el-table-column>
         <el-table-column prop="finishdateString" width="115" label="控制结束日期"></el-table-column>
         <el-table-column prop="isextendtime" label="是否续保"></el-table-column>
         <el-table-column prop="firstSubmitDateString" label="提交时间"></el-table-column>
@@ -110,6 +109,15 @@ export default {
   },
   data() {
     return {
+      relationFlag: [
+        { value: "被保险人", label: "1" },
+        { value: "投保人", label: "2" }
+      ],
+      carFlag: [
+        { value: "新车车队", label: "1" },
+        { value: "转入车队", label: "2" },
+        { value: "续保车队", label: "3" }
+      ],
       state: [
         { label: "0", value: "初始化（未录入车辆）" },
         { label: "1", value: "待审核（已录入车辆）" },
@@ -145,34 +153,61 @@ export default {
     // ...mapActions(["getUwMotorcadeMainVO"]),
     //导出
     rtReportedchu() {
-      let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
 
       let _url = this.HOST + this.$url.rtReportedToInsured;
       /**
        * params1  url  地址
        * params  data 参数
        */
-      utils.axiosDown(_url, uwMotorcadeMainVO);
+      utils.axiosDown(_url, this.UwMotorcadeMainVO);
     },
     // 查询列表
     query() {
       this.$fetch
         .post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
         .then(res => {
+          for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < this.state.length; j++) {
+              if (res[i].state == this.state[j].label)
+                res[i].state = this.state[j].value;
+            }
+          }
+          for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < this.relationFlag.length; j++) {
+              if (res[i].insuredflag == this.relationFlag[j].label)
+                res[i].insuredflag = this.relationFlag[j].value;
+            }
+          }
+          for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < this.carFlag.length; j++) {
+              if (res[i].businessNature == this.carFlag[j].label)
+                res[i].businessNature = this.carFlag[j].value;
+            }
+          }
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].isextendtime == "0") {
+              res[i].isextendtime = "未续保";
+            }
+            if (res[i].isextendtime == "1") {
+              res[i].isextendtime = "已续保";
+            }
+          }
+
           this.results = res;
         });
     },
-
+    //业务号跳转
     BusinessNum(row, state) {
       for (let i = 0; i < this.state.length; i++) {
         if (state == this.state[i].value) {
           state = this.state[i].label;
         }
       }
-      this.$router.push({
+      let businessNumPage = this.$router.resolve({
         path: "/carAuditPage",
-        query: { row: row.motorcadeNo, id:row.id,state }
+        query: { row: row.motorcadeNo, id: row.id, state }
       });
+      window.open(businessNumPage.href, "_blank");
     },
     // 未处理展开关闭状态
     untreated(val) {
@@ -185,19 +220,45 @@ export default {
     }
   },
   created() {
-    let uwMotorcadeMainVO = this.UwMotorcadeMainVO;
-    this.$fetch
-      .post(this.HOST + this.$url.rtAddGetUnder, uwMotorcadeMainVO)
-      .then(res => {
-        for (let i = 0; i < res.length; i++) {
-          res[i].state=res[i].state.trim()
-          for (let j = 0; j < this.state.length; j++) {
-            if (res[i].state == this.state[j].label)
-              res[i].state = this.state[j].value;
+    console.log(window.location.protocol,"1");
+    console.log(window.location.host,"1");
+    console.log(window.location.port,"1");
+     console.log(window.location.pathname,"1");
+    if (this.$route.query.motorcadeNo) {
+      this.UwMotorcadeMainVO.motorcadeNo = this.$route.query.motorcadeNo;
+      this.$fetch
+        .post(this.HOST + this.$url.rtAddGetUnder, this.UwMotorcadeMainVO)
+        .then(res => {
+          for (let i = 0; i < res.length; i++) {
+            res[i].state = res[i].state.trim();
+            for (let j = 0; j < this.state.length; j++) {
+              if (res[i].state == this.state[j].label)
+                res[i].state = this.state[j].value;
+            }
           }
-        }
-        this.results = res;
-      });
+              for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < this.relationFlag.length; j++) {
+              if (res[i].insuredflag == this.relationFlag[j].label)
+                res[i].insuredflag = this.relationFlag[j].value;
+            }
+          }
+          for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < this.carFlag.length; j++) {
+              if (res[i].businessNature == this.carFlag[j].label)
+                res[i].businessNature = this.carFlag[j].value;
+            }
+          }
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].isextendtime == "0") {
+              res[i].isextendtime = "未续保";
+            }
+            if (res[i].isextendtime == "1") {
+              res[i].isextendtime = "已续保";
+            }
+          }
+          this.results = res;
+        });
+    }
   }
 };
 </script>
@@ -224,5 +285,4 @@ export default {
   border-radius: 8px;
   margin-right: 10px;
 }
-
 </style>

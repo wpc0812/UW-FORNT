@@ -48,7 +48,7 @@
     </el-card>
     <el-form :model="UwMotorcadeInfoVO" class="updatastyleinput" label-width="185px">
       <!-- 异地车对信息 -->
-        <el-card class="circular mt4 shadow soildstyle">
+      <el-card class="circular mt4 shadow soildstyle">
         <el-collapse v-model="activeNames">
           <el-collapse-item name="2">
             <template slot="title">
@@ -131,14 +131,23 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="超分公司权限车辆总数:" :class="[selectView==true?'labelheight2':'lineHeightstyle']">
+                <el-form-item
+                  label="超分公司权限车辆总数:"
+                  :class="[selectView==true?'labelheight2':'lineHeightstyle']"
+                >
                   <el-input v-model="UwMotorcadeInfoVO.uppercarcount" :disabled="flagdisabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="超分公司权限车辆种类:" :class="[selectView==true?'labelheight2':'lineHeightstyle']">
+                <el-form-item
+                  label="超分公司权限车辆种类:"
+                  :class="[selectView==true?'labelheight2':'lineHeightstyle']"
+                >
                   <el-input v-model="UwMotorcadeInfoVO.uppercartype" :disabled="flagdisabled"></el-input>
-                  <div :class="[selectView==true?'showdiv':'hideDiv']" @click="showCarSpecies(carTypeCodes,'uppercartype')">点击查看</div>
+                  <div
+                    :class="[selectView==true?'showdiv':'hideDiv']"
+                    @click="showCarSpecies(carTypeCodes,'uppercartype')"
+                  >点击查看</div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -353,7 +362,7 @@
               <el-table-column
                 align="center"
                 prop="exceptNCDDiscountUpper"
-                label="自主核保系数*自助渠道系统下限(除nod系数)"
+                label="自主核保系数*自助渠道系统下限(除ncd系数)"
               ></el-table-column>
               <el-table-column align="center" prop="deductible" label="删除批次">
                 <template slot-scope="scope">
@@ -416,7 +425,7 @@
             <el-col :span="24" class="mt10">
               <el-input
                 type="textarea"
-                resize='none'
+                resize="none"
                 :autosize="{ minRows: 3, maxRows: 3}"
                 placeholder="核保员意见:"
                 v-model="textarea2"
@@ -450,7 +459,7 @@
       :visible.sync="dialogVisibleMore"
       width="20%"
     >
-       <div class="ullipar">
+      <div class="ullipar">
         <div class="ulli" v-for="(item,index) in arrays" :key="index">{{item}}</div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -469,6 +478,7 @@ export default {
   name: "carAuditPageother",
   data() {
     return {
+      keys: {reportFormsType: "teamquality"},
       selectView1: false,
       selectView: false,
       transferTitle: "",
@@ -552,6 +562,17 @@ export default {
     };
   },
   computed: {},
+  watch: {
+    dialogVisibleMore(val) {
+      if (val == true) {
+        document.body.style.height = "100vh";
+        document.body.style["overflow-y"] = "hidden";
+      } else {
+        document.body.style.height = "unset";
+        document.body.style["overflow-y"] = "auto";
+      }
+    }
+  },
   methods: {
     //信息提示
     open2() {
@@ -580,7 +601,7 @@ export default {
     },
     // 新增文件上传
     addpici() {
-       if (
+      if (
         this.UwMotorcadeInfoVO.appici &&
         this.UwMotorcadeInfoVO.appici.length > 0
       ) {
@@ -592,11 +613,18 @@ export default {
           },
           data: this.formDataAdd
         }).then(res => {
-          if (res == true) {
+          if (res == "true") {
             this.messages = "上传成功";
             this.open2();
             this.displaynone = "8";
             this.$forceUpdate();
+            this.carAuditPageFindMotors();
+          } else if (res !== "" && res !== "true") {
+            this.messages = res;
+            this.open3();
+          } else {
+            this.messages = "上传失败";
+            this.open4();
           }
         });
       } else {
@@ -604,12 +632,22 @@ export default {
         this.open3();
       }
     },
+     // 新增后查询
+    carAuditPageFindMotors(){
+        this.$fetch
+        .get(this.HOST + this.$url.carAuditPageFindMotor, {
+          params: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo}
+        })
+        .then(res => {
+          this.results=res;
+        })
+    },
     //修改文件选取
     upUploadname(file, fileList) {
       if (file) {
         let formData = new FormData();
         formData.append("file", file.raw);
-        formData.append("motorcadeNo", this.UwMotorcadeInfoVO.motorcadeNo);
+        formData.append("id", this.uwmotorcademainids);
         this.uploading = true;
         this.UwMotorcadeInfoVO.uppici = file.name;
         this.formDataUP = formData;
@@ -618,7 +656,7 @@ export default {
     },
     //修改文件上传
     updatepici() {
-       if (
+      if (
         this.UwMotorcadeInfoVO.uppici &&
         this.UwMotorcadeInfoVO.uppici.length > 0
       ) {
@@ -630,8 +668,16 @@ export default {
           },
           data: this.formDataUP
         }).then(res => {
-          this.messages = "上传成功";
-          this.open2();
+          if (res == "true") {
+            this.messages = "上传成功";
+            this.open2();
+          } else if (res !== "" && res !== "true") {
+            this.messages = res;
+            this.open3();
+          } else {
+            this.messages = "上传失败";
+            this.open4();
+          }
         });
       } else {
         this.messages = "请选择文件";
@@ -640,7 +686,8 @@ export default {
     },
     //导出get
     carAuditPagechu() {
-      let _url = "http://10.156.128.157:31366" + this.$url.carAuditPageToInsured;
+      let _url =
+        "http://10.156.128.157:31366" + this.$url.carAuditPageToInsured;
       let paramsFileData = {
         uwmotorcademainid: this.uwmotorcademainids,
         licenseNo: this.UwMotorcadeInfoVO.licenseNo
@@ -667,15 +714,15 @@ export default {
 
     //删除批次
     deletebatch(row) {
-
-      let deletebatchPage= this.$router.resolve({
+      let deletebatchPage = this.$router.resolve({
         path: "/deletebatch",
         query: {
           row: row.batchNo,
-          uwmotorcademainid: this.uwmotorcademainids
+          uwmotorcademainid: this.uwmotorcademainids,
+          deletebatchType:"2"
         }
       });
-      window.open(deletebatchPage.href, '_blank');
+      window.open(deletebatchPage.href, "_blank");
     },
     //提交审核
     submitaudit() {
@@ -744,14 +791,14 @@ export default {
     },
     //对比
     outerRatio() {
-       let outerRatioPage= this.$router.resolve({
+      let outerRatioPage = this.$router.resolve({
         path: "/carContrast",
         query: {
           motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo,
           nametype: "2"
         }
       });
-       window.open(outerRatioPage.href, '_blank');
+      window.open(outerRatioPage.href, "_blank");
     },
     //删除
     outerDelete() {
@@ -795,17 +842,19 @@ export default {
     },
     //查看审核意见
     auditOpinion() {
-      this.$router.push({
+      let auditOpinionPage = this.$router.resolve({
         path: "/auditOpinion",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
+      window.open(auditOpinionPage.href, "_blank");
     },
     //流转记录
     transferRecord() {
-      this.$router.push({
+      let transferRecordPage = this.$router.resolve({
         path: "/transferRecord",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
+      window.open(transferRecordPage.href, "_blank");
     },
     //车牌号查询
     selectCode() {
@@ -826,16 +875,10 @@ export default {
     },
     //历史赔付率
     selectHistory() {
-      let key = {
-        reportFormsType: "teamquality",
-        comcode: this.UwMotorcadeInfoVO.comcode,
-        businessNo: this.UwMotorcadeInfoVO.businessNo || "123", // 业务号
-        taskType: "" // 业务类型
-      };
+      let key = this.keys;
       this.$fetch
         .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
         .then(data => {
-          // window.open("http://www.baidu.com")
           window.open(data);
         });
     },
@@ -859,9 +902,13 @@ export default {
           }
         })
         .then(res => {
+          
+          this.keys.comcode=res.uwMotorcadeMain.comcode;
+          this.keys.appliname=res.uwMotorcadeMain.insuredCode;
+          this.keys.insuredname=res.uwMotorcadeMain.insuredName;
           this.uwmotorcademainids = res.uwMotorcadeMain.id;
           this.results = res.uwMotorcadeMain.uwMotorcadeInfos;
-          res.uwMotorcadeMain.finishdate=res.uwMotorcadeMain.finishdateString
+          res.uwMotorcadeMain.finishdate = res.uwMotorcadeMain.finishdateString;
           if (res.uwMotorcadeMain.uppercartype) {
             this.allData.uppercartype = res.uwMotorcadeMain.uppercartype.split(
               ","
@@ -870,8 +917,8 @@ export default {
               this.carTypeCodes,
               res.uwMotorcadeMain.uppercartype.split(",")
             );
-              if(res.uwMotorcadeMain.uppercartype.split(",").length>3){
-              this.selectView=true
+            if (res.uwMotorcadeMain.uppercartype.split(",").length > 3) {
+              this.selectView = true;
             }
           }
           if (res.uwMotorcadeMain.carmainmodel) {
@@ -882,8 +929,8 @@ export default {
               this.carTypeCodes,
               res.uwMotorcadeMain.carmainmodel.split(",")
             );
-              if(res.uwMotorcadeMain.carmainmodel.split(",").length>3){
-              this.selectView=true
+            if (res.uwMotorcadeMain.carmainmodel.split(",").length > 3) {
+              this.selectView = true;
             }
           }
           if (res.uwMotorcadeMain.carmainarea) {
@@ -894,11 +941,41 @@ export default {
               this.provinceCodes,
               res.uwMotorcadeMain.carmainarea.split(",")
             );
-              if(res.uwMotorcadeMain.carmainarea.split(",").length>3){
-              this.selectView1=true
+            if (res.uwMotorcadeMain.carmainarea.split(",").length > 3) {
+              this.selectView1 = true;
             }
           }
           this.UwMotorcadeInfoVO = res.uwMotorcadeMain;
+          if (
+            this.UwMotorcadeInfoVO.uppercartype &&
+            this.UwMotorcadeInfoVO.uppercartype.split(",").length > 3
+          ) {
+            this.UwMotorcadeInfoVO.uppercartype = res.uwMotorcadeMain.uppercartype
+              .split(",")
+              .slice(0, 3)
+              .join(",");
+          } else {
+          }
+          if (
+            this.UwMotorcadeInfoVO.carmainmodel &&
+            this.UwMotorcadeInfoVO.carmainmodel.split(",").length > 3
+          ) {
+            this.UwMotorcadeInfoVO.carmainmodel = res.uwMotorcadeMain.carmainmodel
+              .split(",")
+              .slice(0, 3)
+              .join(",");
+          } else {
+          }
+          if (
+            this.UwMotorcadeInfoVO.carmainarea &&
+            this.UwMotorcadeInfoVO.carmainarea.split(",").length > 3
+          ) {
+            this.UwMotorcadeInfoVO.carmainarea = res.uwMotorcadeMain.carmainarea
+              .split(",")
+              .slice(0, 3)
+              .join(",");
+          } else {
+          }
         });
     },
     //点击查看
@@ -968,7 +1045,7 @@ export default {
     this.init();
     this.parameter = this.$route.query;
     this.states = this.$route.query.state;
-    this.displaynone=this.$route.query.state;
+    this.displaynone = this.$route.query.state;
   }
 };
 </script>
@@ -992,13 +1069,19 @@ export default {
   text-align: center;
 }
 .updatastyleinput >>> .el-input__inner {
-  border-radius: 0px;
+  border-radius: 3px;
 }
 .labelheight >>> .el-form-item__label,
 .labelheight >>> .el-input__inner {
   line-height: 50px;
   height: 50px;
 }
+.labelheight {
+  margin-bottom: 2px;
+}
+/* .labelheight1 {
+  margin-bottom: 2px;
+} */
 .labelheight1 >>> .el-form-item__label,
 .labelheight1 >>> .el-input__inner {
   line-height: 72px;
@@ -1009,7 +1092,7 @@ export default {
   height: 72px;
 }
 .labelheight2 >>> .el-input__inner {
-   line-height: 69px;
+  line-height: 69px;
   height: 69px;
 }
 .acolor {
@@ -1028,7 +1111,7 @@ export default {
   bottom: -6px;
   left: 2px;
 }
-.hideDiv{
+.hideDiv {
   display: none;
 }
 .selectMargin {
@@ -1053,8 +1136,9 @@ export default {
   text-align: center;
   line-height: 67px;
   height: 67px;
-  border: 1px solid #94d8e4;;
+  border: 1px solid #94d8e4;
   color: #000;
+  border-radius: 3px;
 }
 .tanchuang {
   display: flex;
@@ -1064,7 +1148,7 @@ export default {
 }
 .tanchuang >>> .el-dialog {
   margin: 0 auto !important;
-  height: 50%;
+  height: 60%;
   overflow: hidden;
 }
 .tanchuang >>> .el-dialog__body {
@@ -1090,14 +1174,15 @@ export default {
 }
 .soildstyle >>> .el-textarea.is-disabled .el-textarea__inner {
   background-color: #ffffff;
-  border-radius: 0px;
+  border-radius: 3px;
   border-color: #94d8e4;
   color: #000;
-  font-weight: 700;
+  font-family: "Microsoft";
 }
 .soildstyle >>> .el-input.is-disabled .el-input__inner {
   border-color: #94d8e4;
   color: #000;
+  font-family: "Microsoft";
 }
 .buttonFile {
   padding: 5px 8px;

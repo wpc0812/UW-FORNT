@@ -83,6 +83,7 @@ export default {
 
   data() {
     return {
+      initValue: "",
       messages: "",
       flags: true,
       outerVisible: false,
@@ -111,7 +112,6 @@ export default {
       }
     };
   },
-  watch: {},
   computed: {
     ...mapGetters(["getList"])
   },
@@ -120,36 +120,40 @@ export default {
     ...mapActions(["getUwMotorcadeInfoVO"]),
     //保存
     save() {
-      this.$refs.UwMotorcadeInfoVO.validate(valids => {
-        if (valids) {
-          this.$fetch
-            .post(
-              this.HOST + this.$url.unNumPlateUpdate,
-              this.UwMotorcadeInfoVO
-            )
-            .then(res => {
-              if (res==true) {
-                this.outerVisible = true;
-                this.messages = "保存成功";
-                setTimeout(() => {
-                  this.outerVisible = false;
-                  this.$router.go(-1);
-                },2000);
-              } else{
-                this.outerVisible = true;
-                this.messages = "保存失败";
-              }
-            });
-        }
-      });
-      // this.outerVisible = true;
-      // this.getcorrection(this.correction);
+      console.log(this.initValue,this.UwMotorcadeInfoVO.licenseNo)
+      if (this.initValue == this.UwMotorcadeInfoVO.licenseNo) {
+        this.outerVisible = true;
+        this.messages = "请修改后在保存";
+      } else {
+        this.$refs.UwMotorcadeInfoVO.validate(valids => {
+          if (valids) {
+            this.$fetch
+              .post(
+                this.HOST + this.$url.unNumPlateUpdate,
+                this.UwMotorcadeInfoVO
+              )
+              .then(res => {
+                if (res == true) {
+                  this.outerVisible = true;
+                  this.messages = "保存成功";
+                  setTimeout(() => {
+                    this.outerVisible = false;
+                    this.$router.go(-1);
+                  }, 2000);
+                } else {
+                  this.outerVisible = true;
+                  this.messages = "保存失败";
+                }
+              });
+          }
+        });
+      }
     },
     goBack() {
       this.$router.go(-1);
     },
     handleClose(done) {
-      console.log("确认");
+      this.outerVisible=false;
     },
     acd() {},
 
@@ -172,7 +176,7 @@ export default {
   },
   created() {
     // console.log(this.$route.query.row,this.$route.query.motorcadeNo);
-    
+
     this.$fetch
       .get(this.HOST + this.$url.unNumPlateFindUwmotorcadeinfo, {
         params: {
@@ -181,12 +185,12 @@ export default {
         }
       })
       .then(res => {
-       
         if (res && res instanceof Array && res.length > 0) {
           this.UwMotorcadeInfoVO = res[0];
+          this.initValue = this.UwMotorcadeInfoVO.licenseNo;
         }
-        
       });
+    
   }
 };
 </script>

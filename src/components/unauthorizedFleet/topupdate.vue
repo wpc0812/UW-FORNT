@@ -80,7 +80,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="历史年度满期赔付率(%):" class="text-left">
-                        <el-button @click="selectHistory" size="small" type="text">查询</el-button>
+                    <el-button @click="selectHistory" size="small" type="text">查询</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -116,7 +116,7 @@
                 </el-col>
                 <el-col :span="8" v-if="this.$route.query.nametype=='2'">
                   <el-form-item label="超分公司权限车辆总数:" prop="uppercarcount" class="text-left">
-                     <el-input
+                    <el-input
                       v-model="UwMotorcadeMainVO.uppercarcount"
                       maxlength="6"
                       :min="0"
@@ -187,16 +187,21 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="商业险手续费上限(%):" prop="costRateUpper" class="labelheight2">
-                    <el-input v-model="UwMotorcadeMainVO.costRateUpper" class="inputheight" type="number"></el-input>
+                    <el-input
+                      v-model="UwMotorcadeMainVO.costRateUpper"
+                      class="inputheight"
+                      type="number"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item label="监控方案:" class="labelheight">
+                  <el-form-item label="监控方案:" class="labelheight1">
                     <el-input
                       type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
                     ></el-input>
@@ -205,32 +210,35 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="承保条件:" class="labelheight" prop="underWritingCondition">
+                  <el-form-item label="承保条件:" class="labelheight1" prop="underWritingCondition">
                     <el-input
-                     type="textarea"
+                      type="textarea"
                       :rows="1"
                       maxlength="99"
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
                     ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="关联关系人名称:" class="labelheight">
+                  <el-form-item label="关联关系人名称:" class="labelheight1">
                     <el-input
-                     type="textarea"
+                      type="textarea"
                       :rows="1"
                       maxlength="59"
+                      resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
                     ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="备注:" class="labelheight">
+                  <el-form-item label="备注:" class="labelheight1">
                     <el-input
-                       type="textarea"
+                      type="textarea"
                       :rows="1"
+                      resize="none"
                       maxlength="99"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
@@ -279,6 +287,128 @@ export default {
   name: "topupdate",
 
   data() {
+      //车队车辆总数
+    var carcountAllEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 6) {
+        callback(new Error("数字位数最多为6位"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
+      } else if (
+        parseInt(value) < parseInt(this.UwMotorcadeMainVO.foreigncarcount)
+      ) {
+        this.$refs["UwMotorcadeMainVO"].clearValidate("carcountAll");
+        callback(new Error("车队车辆总数大于等于异地车数量"));
+      } else if (parseInt(value) < 0) {
+        callback(new Error("车队车辆总数只能为正整数"));
+      } else if (
+        parseInt(value) >= parseInt(this.UwMotorcadeMainVO.foreigncarcount) &&
+        this.UwMotorcadeMainVO.foreigncarcount.length > 0 &&
+        this.UwMotorcadeMainVO.foreigncarcount.length <= 6
+      ) {
+        callback();
+      }
+    };
+        // 超分公司权限车辆总数
+    var uppercarcountEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 6) {
+        callback(new Error("数字位数最多为6位"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
+      } else if (parseInt(value) < 0) {
+        callback(new Error("车辆总数只能为正整数"));
+      } else if (
+        parseInt(value) > parseInt(this.UwMotorcadeMainVO.carcountAll)
+      ) {
+        this.$refs["UwMotorcadeMainVO"].clearValidate("uppercarcount");
+        callback(new Error("车队车辆总数小于车辆总数,请修改"));
+      } else if (
+        parseInt(value) <= parseInt(this.UwMotorcadeMainVO.carcountAll) &&
+        this.UwMotorcadeMainVO.carcountAll.length > 0 &&
+        this.UwMotorcadeMainVO.carcountAll.length <= 6
+      ) {
+        callback();
+      }
+    };
+    // 异地车数量
+    var foreigncarcountEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 6) {
+        callback(new Error("数字位数最多为6位"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
+      } else if (parseInt(value) < 0) {
+        callback(new Error("异地车辆数只能为正整数"));
+      } else if (
+        parseInt(value) > parseInt(this.UwMotorcadeMainVO.carcountAll)
+      ) {
+        this.$refs["UwMotorcadeMainVO"].clearValidate("foreigncarcount");
+        callback(new Error("车队车辆总数小于异地车辆数,请修改"));
+      } else if (
+        parseInt(value) <= parseInt(this.UwMotorcadeMainVO.carcountAll) &&
+        this.UwMotorcadeMainVO.carcountAll.length > 0 &&
+        this.UwMotorcadeMainVO.carcountAll.length <= 6
+      ) {
+        callback();
+      }
+    };
+    //商业险手续费上限
+    var costRateUpperEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && parseFloat(value) < 0) {
+        callback(new Error("商业险手续费上限应大于0"));
+      } else if (value && !/^\d+.?\d{0,2}$/.test(value)) {
+        callback(new Error("最多保留两位小数"));
+      } else if (value && /^\d+.?\d{0,2}$/.test(value)) {
+        callback();
+      }
+    };
+    // 控制结束日期
+    var finishdateEcc = (rules, value, callback) => {
+      let str = this.UwMotorcadeMainVO.finishdate.replace("/-/g", "/");
+      let newTime = new Date(str).getTime();
+      if (!value) {
+        callback(new Error("结束日期为必填项"));
+      } else if (
+        value &&
+        newTime < new Date().getTime() - 24 * 60 * 60 * 1000
+      ) {
+        callback(new Error("选中日期应大于等于当前日期"));
+      } else if (
+        value &&
+        newTime >= new Date().getTime() - 24 * 60 * 60 * 1000
+      ) {
+        callback();
+      }
+    };
+    // 预估保费规模
+    var estimatedPremiumSizeEcc = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项，且只能输入数字"));
+      } else if (value && value.length > 4) {
+        callback(new Error("最多为4位"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
+      } else if (parseInt(value) < 0) {
+        callback(new Error("预估保费规模只能为正整数"));
+      } else if (value && parseInt(value) > 0 && value.length <= 4) {
+        callback();
+      }
+    };
+    // 监控方案
+    var monitoringProgrammeEcc = (rules, value, callback) => {
+        if (value && value.length <= 100) {
+        this.rules.monitoringProgramme.required = true;
+        callback();
+      } else {
+        this.rules.monitoringProgramme.required = false;
+      }
+    };
     return {
       transferTitle: "",
       transferItems: [], // 穿梭框 数据
@@ -608,18 +738,9 @@ export default {
 }
 .checkboxmargin >>> .el-transfer-panel__header .el-checkbox__label span {
   display: none;
-  font-size: 12px;
-}
-.checkboxmargin >>> .el-icon-close:before {
-  display: none;
 }
 .checkboxmargin >>> .el-transfer-panel__item {
   display: block;
-}
-.labelheight >>> .el-form-item__label,
-.labelheight >>> .el-input__inner {
-  line-height: 69px;
-  height: 69px;
 }
 .checkboxmargin >>> .el-transfer-panel {
   width: 35%;
@@ -631,6 +752,23 @@ export default {
   color: #0066cc;
   text-decoration: none;
   margin-left: 13px;
+}
+.labelheight1 >>> .el-form-item__label,
+.labelheight1 >>> .el-input__inner {
+  line-height: 69px;
+  height: 69px;
+}
+.querycenter {
+  text-align: center;
+}
+.checkboxmargin >>> .el-dialog__footer {
+  text-align: center;
+}
+.diacenter {
+  text-align: center;
+}
+.diacenter >>> .el-dialog__footer {
+  text-align: center;
 }
 .labelheight2 >>> .el-form-item__label {
   height: 69px;

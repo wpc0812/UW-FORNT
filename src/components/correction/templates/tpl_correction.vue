@@ -61,7 +61,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="折扣率上限:">
+                  <el-form-item label="商业险总折扣率上限:" prop="profitRateUp">
                     <el-input v-model="UwctrlVO.profitRateUp"></el-input>
                   </el-form-item>
                 </el-col>
@@ -105,12 +105,12 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="号牌号码录入:" prop="licenseNo" :disabled="flag11">
-                    <el-input v-model="UwctrlVO.licenseNo"></el-input>
+                    <el-input v-model="UwctrlVO.licenseNo" title="请在号牌导入与录入两项中选择一项进行特批配置"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="手续费上限:">
-                    <el-input v-model="UwctrlVO.costRateUpper"></el-input>
+                  <el-form-item label="除NCD以外的折扣率上限:" prop="exceptNCDDiscountUpper">
+                    <el-input v-model="UwctrlVO.exceptNCDDiscountUpper"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -120,18 +120,20 @@
                 </el-col>
               </el-row>
               <el-col :span="8">
-                <el-form-item label="商业险跟单手续费上限:">
+                <el-form-item label="商业险跟单手续费上限:" prop="costRateBIUpper">
                   <el-input v-model="UwctrlVO.costRateBIUpper"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="号牌号码导入:" prop="licenses">
-                  <el-input v-model="UwctrlVO.licenses" :disabled="this.flag10">
+                  <el-input
+                    v-model="UwctrlVO.licenses"
+                    :disabled="this.flag10"
+                    title="选择文件录入则会清空控制人关系代码和名称"
+                  >
                     <template slot="append">
                       <el-upload
-                        :disabled="this.flag10"
                         class="upload-demo"
-                        ref="upload"
                         :multiple="true"
                         action
                         :on-remove="handleRemove"
@@ -145,16 +147,19 @@
                         :on-preview="handlePreview"
                         :before-remove="beforeRemove"
                       >
-                        <el-button slot="trigger" size="small" type="primary">浏览</el-button>
+                        <el-button
+                          slot="trigger"
+                          size="small"
+                          type="primary"
+                          title="选择文件录入则会清空控制人关系代码和名称"
+                        >浏览</el-button>
                       </el-upload>
                     </template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="3">
-
-                <a class="dec" href="./LicensenoAddModel.xls" download="">号牌号码导入模板下载</a>
-
+                <a class="dec" href="./LicensenoAddModel.xls" download>号牌号码导入模板下载</a>
               </el-col>
               <el-col :span="5">
                 <div class="reminder">请在号牌导入与录入两项中选择一项进行特批配置</div>
@@ -170,16 +175,28 @@
     </el-card>
     <!-- dialog弹出框 -->
     <el-dialog
-      title="提示"
+      :title="msgTitle"
       :visible.sync="outerVisible"
-      width="30%"
+      width="20%"
       class="dialog-footer-parent"
       :before-close="handleClose"
     >
-      <span class="fontSizeTrue">{{msg}}</span>
+      <span class="fontSizeTrue">{{msgContont}}</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="trues">确 定</el-button>
         <el-button @click="falses">取 消</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      :title="msgTitle1"
+      :visible.sync="outerVisible1"
+      width="20%"
+      class="dialog-footer-parent"
+      :before-close="handleClose1"
+    >
+      <span class="fontSizeTrue">{{msgContont1}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="outerVisible1=false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -187,8 +204,8 @@
 <script>
 import qs from "querystring";
 import { relations } from "@/assets/js/baseCode";
-import axios from 'axios'
-import utils from '../../../utils'
+import axios from "axios";
+import utils from "../../../utils";
 let [inputValidator, selectValidator] = [
   { required: true, message: "1", trigger: "blur" },
   { required: true, message: "2", trigger: "change" }
@@ -227,45 +244,181 @@ export default {
         this.$refs["UwctrlVO"].clearValidate("licenses");
         callback();
       } else if (value && this.UwctrlVO.licenses) {
-        callback(new Error("请在号牌导入与录入两项中选择一项进行特批配置"));
+        callback(new Error("请在号牌导入与录入中选择一项进行配置"));
       }
     };
     // 号码导入规则
     var validatePrice = (rules, value, callback) => {
       if (!value && !this.UwctrlVO.licenseNo) {
         callback(new Error("号码牌导入"));
+      } else if (
+        (value && this.UwctrlVO.applicCode) ||
+        (value && this.UwctrlVO.insuredName)
+      ) {
+        this.UwctrlVO.applicCode = "";
+        this.UwctrlVO.insuredName = "";
+        this.$refs["UwctrlVO"].clearValidate("applicCode");
+        this.$refs["UwctrlVO"].clearValidate("insuredName");
       } else if (value && !this.UwctrlVO.licenseNo) {
         callback();
       } else if (!value && this.UwctrlVO.licenseNo) {
         this.$refs["UwctrlVO"].clearValidate("licenseNo");
         callback();
       } else if (value && this.UwctrlVO.licenseNo) {
-        callback(new Error("请在号牌导入与录入两项中选择一项进行特批配置"));
+        callback(new Error("请在号牌导入与录入中选择一项进行配置"));
+      } else if (
+        value &&
+        !this.UwctrlVO.applicCode &&
+        !this.UwctrlVO.insuredName
+      ) {
+        this.$refs["UwctrlVO"].clearValidate("applicCode");
+        this.$refs["UwctrlVO"].clearValidate("insuredName");
+        callback();
+      }
+    };
+    //关系人代码
+    var applicCodeRule = (rules, value, callback) => {
+      if (!value && !this.UwctrlVO.licenses) {
+        callback(new Error("关系人代码必填"));
+      } else if (value && value.length != 16) {
+        callback(new Error("关系人代码为16位"));
+      } else if (
+        value &&
+        value.length == 16 &&
+        this.UwctrlVO.insuredName &&
+        !this.UwctrlVO.licenses
+      ) {
+        this.UwctrlVO.licenses = "";
+        this.$refs["UwctrlVO"].clearValidate("licenses");
+        callback();
+      } else if (!value && this.UwctrlVO.licenses) {
+        callback();
+      } else if (value && value.length == 16 && this.UwctrlVO.licenses) {
+        callback(new Error("导入文件包含关系人代码"));
+      }
+    };
+    //关系人名称
+    var insuredNameRule = (rules, value, callback) => {
+      if (!value && !this.UwctrlVO.licenses) {
+        callback(new Error("关系人名称必填"));
+      } else if (value && this.UwctrlVO.licenses) {
+        callback(new Error("导入文件包含关系人名称"));
+      } else if (value && this.UwctrlVO.applicCode && !this.UwctrlVO.licenses) {
+        this.$refs["UwctrlVO"].clearValidate("licenses");
+        callback();
+      } else if (!value && this.UwctrlVO.licenses) {
+        callback();
+      }
+    };
+    var profitRateUpRule = (rules, value, callback) => {
+      if (value && /^\+?[1-9][0-9]*$/.test(value) && value.length > 4) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "字数超长，请重新输入";
+        this.UwctrlVO.profitRateUp = "";
+      } else if (value && isNaN(value)) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "请输入有效数字";
+        this.UwctrlVO.profitRateUp = "";
+      } else if (value && value.indexOf(".") != -1 && value.length > 9) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "字数超长，请重新输入";
+        this.UwctrlVO.profitRateUp = "";
+      } else if (value && value.indexOf(".") != -1) {
+        if (value.split(".")[0].length > 4 || value.split(".")[1].length > 4) {
+          this.outerVisible1 = true;
+          this.msgTitle1 = "来自网页的消息";
+          this.msgContont1 = "小数点前后数字不能超过四位，请重新输入";
+          this.UwctrlVO.profitRateUp = "";
+        }
+      } else {
+        callback();
+      }
+    };
+    var exceptNCDDiscountUpperRule = (rules, value, callback) => {
+      if (value && /^\+?[1-9][0-9]*$/.test(value) && value.length > 4) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "字数超长，请重新输入";
+        this.UwctrlVO.exceptNCDDiscountUpper = "";
+      } else if (value && isNaN(value)) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "请输入有效数字";
+        this.UwctrlVO.exceptNCDDiscountUpper = "";
+      } else if (value && value.indexOf(".") != -1 && value.length > 9) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "字数超长，请重新输入";
+        this.UwctrlVO.exceptNCDDiscountUpper = "";
+      } else if (value && value.indexOf(".") != -1) {
+        if (value.split(".")[0].length > 4 || value.split(".")[1].length > 4) {
+          this.outerVisible1 = true;
+          this.msgTitle1 = "来自网页的消息";
+          this.msgContont1 = "小数点前后数字不能超过四位，请重新输入";
+          this.UwctrlVO.exceptNCDDiscountUpper = "";
+        }
+      } else {
+        callback();
+      }
+    };
+    var costRateBIUpperRule = (rules, value, callback) => {
+        if (value && /^\+?[1-9][0-9]*$/.test(value) && value.length > 4) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "字数超长，请重新输入";
+        this.UwctrlVO.costRateBIUpper = "";
+      } else if (value && isNaN(value)) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "请输入有效数字";
+        this.UwctrlVO.costRateBIUpper = "";
+      } else if (value && value.indexOf(".") != -1 && value.length > 9) {
+        this.outerVisible1 = true;
+        this.msgTitle1 = "来自网页的消息";
+        this.msgContont1 = "字数超长，请重新输入";
+        this.UwctrlVO.costRateBIUpper = "";
+      } else if (value && value.indexOf(".") != -1) {
+        if (value.split(".")[0].length > 4 || value.split(".")[1].length > 4) {
+          this.outerVisible1 = true;
+          this.msgTitle1 = "来自网页的消息";
+          this.msgContont1 = "小数点前后数字不能超过四位，请重新输入";
+          this.UwctrlVO.costRateBIUpper = "";
+        }
+      } else {
+        callback();
       }
     };
     return {
-      msg: "",
+      outerVisible1: false,
+      msgContont1: "",
+      fileData: "",
+      msgContont: "",
+      msgTitle: "提示",
+      msgTitle1: "提示",
       successtrue: false,
       licenseNoImportExcel: "",
-      httphref: "../../../../#/static/LicensenoAddModel.xls",
       UwctrlVO: {
-        insuredFlag: "",
+        insuredFlag: "1",
         applicCode: "",
         insuredName: "",
         businessNo: "",
         contractNo: "",
         profitRateUp: "",
-        flag: "",
+        flag: "1",
         message: "",
-        valid: "",
+        valid: "1",
         finishDate: "",
         licenseNo: "",
         costRateUpper: "",
         costRateBIUpper: "",
-        licenses: ""
+        licenses: "",
+        exceptNCDDiscountUpper: ""
       },
       valids: "",
-      flag10: false,
+      flag10: true,
       flag11: false,
       fileList: [],
       relationsss: [
@@ -289,19 +442,25 @@ export default {
       outerVisible: false,
       rules: {
         insuredFlag: [
-          { required: true, message: "关系人标志不能为空", trigger: ["change"] }
+          {
+            required: true,
+            message: "关系人标志不能为空",
+            trigger: ["blur", "change"]
+          }
         ],
         applicCode: [
-          { required: true, message: "关系人代码16位", trigger: ["blur"] },
           {
-            min: 16,
-            max: 16,
-            message: "长度为16个字符",
-            trigger: ["change", "blur"]
+            required: true,
+            validator: applicCodeRule,
+            trigger: ["blur", "change"]
           }
         ],
         insuredName: [
-          { required: true, message: "关系人名称必填", trigger: ["blur"] }
+          {
+            required: true,
+            validator: insuredNameRule,
+            trigger: ["blur", "change"]
+          }
         ],
         valid: [
           { required: true, message: "有效标志选择", trigger: ["change"] }
@@ -313,14 +472,28 @@ export default {
           { required: true, message: "结束日期必填", trigger: ["blur"] }
         ],
         licenseNo: [
-          // { required: true, message: "号码号牌录入", trigger: ["blur"] },
-          { validator: validateTotalSupply, trigger: ["blur", "change"] }
+          {
+            required: true,
+            validator: validateTotalSupply,
+            trigger: ["blur", "change"]
+          }
         ],
         licenses: [
-          // {required: true, message: '号码号牌导入', trigger: ['blur']},
-          { validator: validatePrice, trigger: ["blur", "change"] }
+          {
+            required: true,
+            validator: validatePrice,
+            trigger: ["blur", "change"]
+          }
         ],
-
+        profitRateUp: [
+          { validator: profitRateUpRule, trigger: ["blur", "change"] }
+        ],
+        exceptNCDDiscountUpper: [
+          { validator: exceptNCDDiscountUpperRule, trigger: ["blur", "change"] }
+        ],
+        costRateBIUpper: [
+          { validator: costRateBIUpperRule, trigger: ["blur", "change"] }
+        ],
         businessNo: [
           { required: false, trigger: ["change", "blur"] },
           {
@@ -349,6 +522,7 @@ export default {
   computed: {},
   methods: {
     uploadname(file) {
+      this.fileData = file;
       this.UwctrlVO.licenses = file.name;
     },
     // 成功回调
@@ -367,33 +541,64 @@ export default {
     },
     //返回
     goBack() {
-      this.$router.go(-1);
+      window.close();
     },
     //取消请求
     falses() {
       this.outerVisible = false;
       this.open3();
     },
+    // 保存
+    requestdata() {
+      this.$refs.UwctrlVO.validate(valids => {
+        if (valids) {
+          this.outerVisible = true;
+          this.msgContont="确定保存吗"
+        }
+      });
+    },
     // 确定请求
     trues() {
       this.outerVisible = false;
-      let uwctrlVO = this.UwctrlVO;
-      this.$fetch
-        .post(this.HOST + this.$url.correctionSave, uwctrlVO)
-        .then(res => {
+
+      if (this.UwctrlVO.licenses != "") {
+        let file = this.fileData;
+        this.customUpload(file);
+        let uwctrlVO = this.UwctrlVO;
+        this.$fetch
+          .post(this.HOST + this.$url.correctionSave, uwctrlVO)
+          .then(res => {
             if (res) {
-            this.open2();
-            setTimeout(() => {
-              this.$router.push({
-                path: "/queryCorrection",
-              });
-            }, 2000);
-          }
-        })
+              this.open2();
+              setTimeout(() => {
+                this.$router.push({
+                  path: "/queryCorrection"
+                });
+              }, 2000);
+            }
+          });
+      } else {
+        let uwctrlVO = this.UwctrlVO;
+        this.$fetch
+          .post(this.HOST + this.$url.correctionSave, uwctrlVO)
+          .then(res => {
+            if (res) {
+              this.open2();
+              setTimeout(() => {
+                this.$router.push({
+                  path: "/queryCorrection"
+                });
+              }, 2000);
+            }
+          });
+      }
     },
     //关闭弹窗
-    handleClose(done) {
-      // console.log("确认");
+    handleClose() {
+      this.outerVisible = false;
+    },
+    handleClose1() {
+      this.outerVisible1 = false;
     },
     // 移除选中文件
     beforeRemove(file, fileList) {
@@ -408,15 +613,11 @@ export default {
       );
     },
     // 文件上传成功回调
-    onSuccess(esponse, file, fileList) {
-    },
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    },
+    onSuccess(esponse, file, fileList) {},
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
     // 文件上传
     customUpload(file) {
-      
       let formData = new FormData();
       formData.append("file", file.raw);
       this.uploading = true;
@@ -429,24 +630,17 @@ export default {
         },
         timeout: 20000,
         data: formData
-      })
-        .then(res => {
+      }).then(res => {
+        if (res == "true") {
           this.successtrue = res;
-        })
-    },
-    downLoad(){
-    
-      let url ='./static/template/LicensenoAddModel.xls'
-        window.open (url)
-         
-    },
-    // 保存
-    requestdata() {
-      this.$refs.UwctrlVO.validate(valids => {
-        if(valids){
-          this.trues();
+        } else {
+          this.msgContont = res;
         }
       });
+    },
+    downLoad() {
+      let url = "./static/template/LicensenoAddModel.xls";
+      window.open(url);
     }
   },
   created() {}
@@ -454,7 +648,7 @@ export default {
 </script>
 <style scoped>
 .fontSizeTrue {
-  font-size: 25px;
+  font-size: 16px;
 }
 .dialog-footer-parent >>> .el-dialog__footer {
   text-align: center;
@@ -464,10 +658,8 @@ export default {
   color: #7cb2e3;
   position: relative;
   top: 6px;
+  font-size: 12px;
 }
-/* .marginstyle{
-  margin: 0 80px;
-} */
 .reminder {
   color: red;
   font-size: 12px;
@@ -475,5 +667,8 @@ export default {
 }
 .circular >>> .el-form-item {
   margin-bottom: 20px;
+}
+.circular >>> .el-form label {
+  font-size: 12px;
 }
 </style>

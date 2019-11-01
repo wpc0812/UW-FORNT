@@ -26,7 +26,7 @@ export const relations = [
 ]
 //核保类型
 export const underwritingTypes = [
-  { code: 'ST', value: '散单投保单'},
+  { code: 'T', value: '散单投保单'},
   { code: 'GT', value: '团单投保单'},
   { code: 'E', value: '批单'},
   { code: 'H', value: '团单方案'},
@@ -64,7 +64,7 @@ export const provinceCodes =[
   { value: '3110', label: '上海自贸区分公司31100000'},
   { value: '3200', label: '江苏32000000'},
   { value: '3300', label: '浙江33000000'},
-  { value: '3302', label: '宁波3302000000'},
+  { value: '3302', label: '宁波33020000'},
   { value: '3400', label: '安徽34000000'},
   { value: '3500', label: '福建35000000'},
   { value: '3502', label: '厦门35020000'},
@@ -86,7 +86,7 @@ export const provinceCodes =[
   { value: '6300', label: '青海63000000'},
   { value: '6400', label: '宁夏64000000'},
   { value: '6500', label: '新疆65000000'},
-  { value: '2300', label: '黑龙江2300000000'},
+  { value: '2300', label: '黑龙江23000000'},
   { value: '0000', label: '总公司00000000'},
 ]
  export const carTypeCodes = [

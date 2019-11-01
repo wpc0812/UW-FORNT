@@ -5,10 +5,10 @@
         <el-row class="pt5">
           <el-col :span="22" :offset="1" class="head">
             <span>
-              <i class="el-icon-user-solid"></i> 江苏车队质量（A3200000000）
+              <i class="el-icon-user-solid"></i> 江苏车队质量（{{comCode}}）
             </span>
             <span>
-              <i class="el-icon-user-solid"></i> 江苏省中国人民财产保险股份有限公司江苏省分公司（A3200000000）
+              <i class="el-icon-user-solid"></i> {{comName}}（{{comCode}}）
             </span>
             <span>
               IP:10.10.1.165
@@ -37,7 +37,8 @@ export default {
   components: { Screenfull },
   data(){
     return{
-
+      comCode:"",
+      comName:"",
     }
   },
   methods:{
@@ -54,6 +55,11 @@ export default {
 						
       })
     }
+  },
+  created(){
+    this.comCode=utils.getSessionData("comCode")
+    this.comName=utils.getSessionData("comName")
+    // console.log(utils.getSessionData("comCode"),utils.getSessionData("comName"))
   }
 };
 </script>

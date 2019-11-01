@@ -62,6 +62,7 @@
                 <el-col :span="8">
                   <el-form-item label="业务来源:" class="text-left" prop="businessNature">
                     <el-select
+                    :disabled="choseDis"
                       v-model="UwMotorcadeMainVO.businessNature"
                       clearable
                       @focus="businessNatureFocus"
@@ -170,11 +171,11 @@
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item label="监控方案:" class="labelheight1" prop="monitoringProgramme">
+                  <el-form-item label="监控方案:" class="labelheight1">
                     <el-input
                       type="textarea"
                       :rows="1"
-                      maxlength="99"
+                      maxlength="100"
                       resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.monitoringProgramme"
@@ -188,7 +189,7 @@
                     <el-input
                       type="textarea"
                       :rows="1"
-                      maxlength="99"
+                      maxlength="100"
                       resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.underWritingCondition"
@@ -200,7 +201,7 @@
                     <el-input
                       type="textarea"
                       :rows="1"
-                      maxlength="59"
+                      maxlength="60"
                       resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.insuredNameSUB"
@@ -212,7 +213,7 @@
                     <el-input
                       type="textarea"
                       :rows="1"
-                      maxlength="99"
+                      maxlength="100"
                       resize="none"
                       :autosize="{ minRows: 3, maxRows: 3}"
                       v-model="UwMotorcadeMainVO.remark"
@@ -255,7 +256,7 @@
       class="checkboxmargin"
       :visible.sync="SelectMsgDialog"
       width="50%"
-      :before-close="handleClose"
+      :before-close="handleClose1"
       :lock-scroll="false"
     >
       <div>
@@ -314,7 +315,7 @@
       :visible.sync="dialogVisibles"
       width="30%"
       class="diacenter"
-      :before-close="handleClose"
+      :before-close="handleClose2"
       :lock-scroll="false"
     >
       <span>{{message}}</span>
@@ -337,7 +338,9 @@ export default {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
-        callback(new Error("数字位数最多为6位"));
+        callback(new Error("车辆总数是0到999999之间的整数"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
       } else if (
         parseInt(value) < parseInt(this.UwMotorcadeMainVO.uppercarcount)
       ) {
@@ -358,14 +361,16 @@ export default {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 6) {
-        callback(new Error("数字位数最多为6位"));
+        callback(new Error("车辆总数是0到999999之间的整数"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
       } else if (parseInt(value) < 0) {
         callback(new Error("车辆总数只能为正整数"));
       } else if (
         parseInt(value) > parseInt(this.UwMotorcadeMainVO.carcountAll)
       ) {
         this.$refs["UwMotorcadeMainVO"].clearValidate("uppercarcount");
-        callback(new Error("车队车辆总数小于车辆总数,请修改"));
+        callback(new Error("车队车辆总数小于车辆总数"));
       } else if (
         parseInt(value) <= parseInt(this.UwMotorcadeMainVO.carcountAll) &&
         this.UwMotorcadeMainVO.carcountAll.length > 0 &&
@@ -396,7 +401,7 @@ export default {
         value &&
         newTime < new Date().getTime() - 24 * 60 * 60 * 1000
       ) {
-        callback(new Error("选中日期应大于等于当前日期"));
+        callback(new Error("日期应大于等于当前日期"));
       } else if (
         value &&
         newTime >= new Date().getTime() - 24 * 60 * 60 * 1000
@@ -409,7 +414,9 @@ export default {
       if (!value) {
         callback(new Error("必填项，且只能输入数字"));
       } else if (value && value.length > 4) {
-        callback(new Error("最多为4位"));
+        callback(new Error("预估保费规模最多输入4位正整数"));
+      } else if (value && !/^\+?[1-9][0-9]*$/.test(value)) {
+        callback(new Error("只能输入正整数"));
       } else if (parseInt(value) < 0) {
         callback(new Error("预估保费规模只能为正整数"));
       } else if (value && parseInt(value) > 0 && value.length <= 4) {
@@ -418,15 +425,15 @@ export default {
     };
     // 监控方案
     var monitoringProgrammeEcc = (rules, value, callback) => {
-      if (!value) {
-        callback(new Error("监控方案为必填项"));
-      } else if (value && value.length > 100) {
-        callback(new Error("监控方案为100字以内"));
-      } else if (value && value.length <= 100) {
+      if (value && value.length <= 100) {
+        this.rules.monitoringProgramme.required = true;
         callback();
+      } else {
+        this.rules.monitoringProgramme.required = false;
       }
     };
     return {
+      choseDis:false,
       transferTitle: "",
       message: "aaa",
       dialogVisibles: false,
@@ -449,6 +456,7 @@ export default {
         insuredCode: ""
       },
       UwMotorcadeMainVO: {
+        isextendtime:"0",
         comcode: "",
         insuredflag: "",
         insuredName: "",
@@ -558,7 +566,7 @@ export default {
         ],
         monitoringProgramme: [
           {
-            required: true,
+            required: false,
             validator: monitoringProgrammeEcc,
             trigger: ["blur", "change"]
           }
@@ -634,8 +642,30 @@ export default {
     },
     //弹窗选择
     choseCode(row) {
-      this.UwMotorcadeMainVO.insuredName = row.customerCName;
+        this.UwMotorcadeMainVO.insuredName = row.customerCName;
       this.UwMotorcadeMainVO.insuredCode = row.customerCode;
+      let UwMotorcadeMainVO = {
+        insuredName: row.customerCName,
+        insuredCode: row.customerCode
+      };
+      this.$fetch
+        .post(
+          this.HOST + this.$url.rtAddLastFourYearPayPercen,
+          UwMotorcadeMainVO
+        )
+        .then(res => {
+          if (res == "true") {
+            this.UwMotorcadeMainVO.businessNature = "3";
+            if(this.UwMotorcadeMainVO.businessNature == "3"){
+              this.UwMotorcadeMainVO.isextendtime="1";
+            }
+            this.choseDis = true;
+          } else {
+            this.message = "没有历史数据";
+            this.UwMotorcadeMainVO.businessNature = "1";
+          }
+          console.log(typeof res);
+        });
       this.SelectMsgDialog = false;
     },
     // 穿梭框 change 事件
@@ -644,6 +674,12 @@ export default {
     },
     handleClose: function() {
       this.transferDialog = false;
+    },
+    handleClose1: function() {
+      this.SelectMsgDialog = false;
+    },
+     handleClose2: function() {
+      this.dialogVisibles = false;
     },
     // 获取 页面显示的 label  (源数据，改变的数据)
     getShowlabel(items, options) {
@@ -781,28 +817,24 @@ export default {
     },
     //历史赔付率
     selectHistory() {
-      if (this.UwMotorcadeMainVO.businessNature == "") {
+        if (
+        this.UwMotorcadeMainVO.insuredflag == "" &&
+        this.UwMotorcadeMainVO.insuredName == ""
+      ) {
         this.dialogVisibles = true;
-        this.message = "请先选择业务来源";
-      } else if (this.UwMotorcadeMainVO.businessNature == "3") {
+        this.message = "关系人标志和关系人名称不能为空";
+      } else {
         let key = {
           reportFormsType: "teamquality",
           comcode: this.UwMotorcadeMainVO.comcode,
-          businessNo: this.UwMotorcadeMainVO.businessNo || "123", // 业务号
-          taskType: "" // 业务类型
+          appliname: this.UwMotorcadeMainVO.insuredCode,
+          insuredname:this.UwMotorcadeMainVO.insuredName
         };
         this.$fetch
           .get(this.HOST + this.$url.uwmainTeamquality, { params: key })
           .then(data => {
-            // window.open("http://www.baidu.com")
             window.open(data);
           });
-      } else if (
-        this.UwMotorcadeMainVO.businessNature == "1" ||
-        this.UwMotorcadeMainVO.businessNature == "2"
-      ) {
-        this.dialogVisibles = true;
-        this.message = "无历史数据";
       }
     }
   },

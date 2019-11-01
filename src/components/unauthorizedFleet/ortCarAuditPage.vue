@@ -780,17 +780,19 @@ export default {
     },
     //查看审核意见
     auditOpinion() {
-      this.$router.push({
+      let auditOpinionPage = this.$router.resolve({
         path: "/auditOpinion",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
+       window.open(auditOpinionPage.href, "_blank");
     },
     //流转记录
     transferRecord() {
-      this.$router.push({
+       let transferRecordPage = this.$router.resolve({
         path: "/transferRecord",
         query: { motorcadeNo: this.UwMotorcadeInfoVO.motorcadeNo }
       });
+      window.open(transferRecordPage.href, "_blank");
     },
     //车牌号查询
     selectCode() {

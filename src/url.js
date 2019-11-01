@@ -1,5 +1,7 @@
 // const webUrl = 'http://11.205.241.116:8082';
 module.exports  = {
+    //菜单接口
+    initMenu:'/user/getMenuByUser',//菜单
     //核保特批
     correctionSave:'/greenchannel/saveUwctrl',//核保特批 增加
     correctionQury: '/greenchannel/queryGreenChannel',//核保特批 查询(空值/id)
@@ -13,13 +15,14 @@ module.exports  = {
     underWriterInforUpdateCkecker: '/checker/updateCkecker', // 核保人员 修改
     underWriterInforDeleteChechker: '/checker/deleteCkecker', // 删除
     //  ----- 超权限车队 start ----
-    rtAddLastFourYearPayPercen: '/motorcade/lastFourYearPayPercen', //超权限车队  根据不同条件查询
+    rtAddLastFourYearPayPercen: '/motorcade/lastFourYearPayPercen', //超权限车队 查询满期历史赔付率
     rtAddGetUnder: '/motorcade/getUnderwritingTaskList', //超权限车队  根据不同条件查询
     rtAddFindMotorcadeMain: '/motorcade/findMotorcadeMainByMotorcadeNo', //超权限车队  异地已上报根据业务号查询查询
     rtAddSaves:'/motorcade/motorcadeMainSave', //超权限车队  异地新增
     rtAddToInsured:'/motorcade/toInsuredList',//超权限车队  异地新增  表单查询按钮
     rtReportedToInsured:'/motorcade/createMotorcadeMainExcel', //超权限车队 异地导出接口
     carAuditPageToInsured:'/motorcade/createMotorcadeInfoExcel', //超权限车队 异地详情导出接口
+    carAuditPageFindMotor:'/motorcade/findMotorcadeMainByMotorcadeNos', //超权限车队 新增批次然后查询车辆
     carAuditPageaddfile:'/motorcade/uwmotorcadeinfoImport', //超权限车队 异地详情增加上传文件
     carAuditPageUpdatefile:'/motorcade/uwmotorcadeinfoUpdate', //超权限车队 异地详情修改上传文件 
     carAuditPageSubmits:'/motorcade/submits', //超权限车队 异地详情提交审核
@@ -52,7 +55,7 @@ module.exports  = {
     telSaleInfo: '/uwmain/telSaleInfo', // 核保 --详细信息查询
     riskTypeRateInfo: '/uwmain/riskTypeRateInfo', // 核保 -风险类占比
     undwrtrevokeUndwrt:'/undwrt/revokeUndwrt', // 撤回
-    uwmainTeamquality: '/uwmain/teamquality', // 核保详情- 车队业务质量查询
+    uwmainTeamquality: '/motorcade/teamqualitys', // 核保详情- 车队业务质量查询
     recommendedQury: '/monopoly/getUwmonopolyList', // 推荐送修码查询
     monopolyGetUwMonopolyAllInfo: '/monopoly/getUwMonopolyAllInfo' , // 推荐送修码 详细信息
     autoDistributeSelectTaskList: '/autoDistribute/selectTaskList', // 自动推送 查询
@@ -108,7 +111,7 @@ module.exports  = {
     underwritingSimpleSelect:"/comprehensiveStatistics/SimpleUnderwritingStatisticsSelect",//核保 统计 简单核保统计 查询
     underwritingSimpleExport:"/export/SimpleUnderwritingStatisticsExport",//核保 统计 简单核保统计 导出
 
-
+    underwritingCarTeam:"/uwmain/teamquality",//核保 车队业务质量  查询 
 
 
 }
